@@ -291,12 +291,12 @@ def evaluate(model_path, n_dynamic_obstacles=None, obstacle_speed=None, n_eval_e
         episode_trajectory_lists = []
         for pos in episode_trajectory:
             episode_trajectory_lists.append(pos.tolist())
-            episode_trajectories.append({
-                "trajectory": episode_trajectory_lists,
-                "goal_pos": episode_goal_pos.tolist(),
-                "static_obstacles": episode_static_obstacles,
-                "outcome": traj_outcome,
-            })
+        episode_trajectories.append({
+            "trajectory": episode_trajectory_lists,
+            "goal_pos": episode_goal_pos.tolist(),
+            "static_obstacles": episode_static_obstacles,
+            "outcome": traj_outcome,
+        })
 
         # Print progress every 50 episodes
         if (episode_index + 1) % 50 == 0:
