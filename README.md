@@ -6,6 +6,21 @@ The robot learns a reactive navigation policy entirely through trial and error i
 
 ---
 
+## Research focus
+
+This project investigates the performance of PPO under varying environmental conditions rather than comparing different reinforcement learning algorithms. The four experiments isolate the effect of individual design choices:
+
+| Experiment | Variable studied |
+|---|---|
+| E1 | Obstacle density (N = 3, 6, 10) |
+| E2 | Obstacle speed (0.5, 1.0, 1.5) |
+| E3 | Generalization to unseen configurations |
+| E4 | Reward shaping vs no reward shaping (ablation) |
+
+The internal comparisons—particularly Experiment E4 and the progression from v1 to v4—serve as the primary ablation study. A comparison with other reinforcement learning algorithms (e.g., SAC or TD3) would require equivalent training budgets, network architectures, and curriculum designs to ensure a fair evaluation, and is therefore left for future work.
+
+---
+
 ## Environment
 
 The environment is built from scratch as a custom Gymnasium environment. It's a 2D space where the robot has to find its way to a target while dealing with both walls and moving obstacles. To sense its surroundings, the agent uses a simulated LIDAR with 24 rays that measure the distance to the nearest obstacle in each direction. It also receives the velocities of the 3 nearest dynamic obstacles, so it has some sense of where they're heading and not just how close they are.
