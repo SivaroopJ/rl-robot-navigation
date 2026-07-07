@@ -95,7 +95,7 @@ One outlier is N=9/speed=1.3, which gained only +14.0pp — the smallest improve
 
 ## E4 — Effect of reward shaping
 
-Both variants trained with action smoothing and linear LR scheduler enabled, evaluated at N=6, speed=1.0.
+Both variants share the same architecture, training budget, curriculum, and hyperparameters — reward shaping is the only variable. This makes E4 a controlled ablation of the shaping terms in the reward function. Evaluated at N=6, speed=1.0.
 
 | Variant | Success | Collisions | Truncated | Avg steps | Avg col/ep | vs v3 |
 |---|---|---|---|---|---|---|
@@ -129,6 +129,12 @@ Speed has a smaller and less consistent effect than density. Across E1 and E2, v
 ### Generalization
 
 Generalization improved substantially from v3 to v4. In v3, out-of-distribution configurations dropped off sharply; here, the policy transfers reasonably to all seven tested configurations. The uniform size of the gains (+14–23pp) suggests this is not specific to any one condition. The improvement may be partly explained by action smoothing, which encourages more stable trajectoriesand reduces reliance on highly specific avoidance maneuvers.  The LR schedule may help as well by reducing late-training overfitting to the curriculum's final stage distribution.
+
+### Scope and limitations
+
+This study only looks at one algorithm — PPO — across a range of environment conditions, rather than benchmarking it against other RL methods. The four experiments, and especially the ablation in E4, were set up specifically to isolate the effect of individual design choices (obstacle density, obstacle speed, reward shaping, action smoothing) within a controlled setting. Comparing PPO against something like SAC or TD3 would require giving each algorithm an equivalent training budget and its own tuned curriculum, which felt like a separate project in itself, so it was left out here.
+
+The v1 → v4 version history ends up doing some of this ablation work anyway. Each version changes one or two things at a time — the observation space, the reward terms, the curriculum, action smoothing, the LR schedule — so it's still possible to trace which change caused which improvement, even without a separate baseline algorithm to compare against.
 
 ### Effect of reward shaping
 
