@@ -1,0 +1,58 @@
+{
+  "arm": "ppo_lidar",
+  "seed": 0,
+  "sr": false,
+  "lidar": true,
+  "git_commit": "9e307cfcfd6a718c102a74c7e541e61b88d2a0af",
+  "total_timesteps": 3000000,
+  "tag": "_repilot",
+  "environment": {
+    "_comment": "10x10 maze of 1x1 cells (Trott et al. supplement). max_step sized from the measured route: 22 moves over a 50-step horizon needs 0.44 units/step, so 1.0 leaves 2.3x slack. goal_radius 0.5 is half a cell.",
+    "max_step": 1.0,
+    "max_steps": 50,
+    "goal_radius": 0.5,
+    "n_lidar_rays": 24,
+    "lidar_range": 5.0,
+    "start_goal_mode": "sampled",
+    "cell_margin": 0.15
+  },
+  "reward": {
+    "_comment": "Paper Eq. 2: +1 on reaching, -d(s_T,g) otherwise. collision -0.01 per contact. MEASURED, not assumed: an untrained policy earns +2.05 (Eq.2) / +2.13 (Eq.3) of terminal reward by moving rather than standing still, and pays for it with ~25 wall contacts, so the break-even price of a contact is c* = 0.083. Above c* the reward ranks 'freeze' above every exploratory policy and training cannot leave the start cell -- which is exactly what the first pilot did at c = 0.1 (1.2x c*): all four arms converged to standing still, ppo ending at distance 12.72 against freeze's 12.68, and ppo_sr_lidar learning near-perfect wall avoidance (0.9 contacts/ep vs 25 for random) while making no progress at all. c = 0.01 leaves an 8x margin: a random walk pays 0.25 against the 2.05 it earns, and greedy is restored to beating freeze, which matters because greedy IS the local optimum SR must be seen to escape. NOTE the earlier sizing argument ('10 collisions costs one goal bonus') benchmarked against the wrong quantity: a policy that never reaches the goal never sees the goal bonus, so the penalty competes with the exploration gradient, not with +1.",
+    "goal": 1.0,
+    "collision": -0.01
+  },
+  "ppo": {
+    "_comment": "PPO settings carried over from the Week 5 validation (batch 256, target_kl 0.02, linear LR decay, threads pinned). gamma 0.99: 0.99^50 = 0.605 still delivers the terminal payout, and Week 5 measured directly that higher gamma inflates value variance into policy collapse. ent_coef 0.0 (SB3 default, and what Weeks 4-5 used): at 0.01 it became the dominant gradient once advantages collapsed in the first pilot -- the SR arms' action std ROSE 1.01 -> 1.26 while entropy fell to -3.3, i.e. PPO+SR converged to a deliberately maximum-entropy policy.",
+    "total_timesteps": 3000000,
+    "n_envs": 8,
+    "learning_rate": 0.0003,
+    "lr_schedule": "linear",
+    "n_steps": 2048,
+    "batch_size": 256,
+    "n_epochs": 10,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "target_kl": 0.02,
+    "ent_coef": 0.0,
+    "torch_threads": 1,
+    "policy": "MlpPolicy",
+    "policy_kwargs": {
+      "net_arch": [
+        256,
+        256
+      ]
+    }
+  },
+  "ppo_effective": {
+    "batch_size": 256,
+    "n_steps": 2048,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "target_kl": 0.02,
+    "observation_dim": 28,
+    "torch_threads": 1
+  },
+  "sr_hyperparameters": null,
+  "model_dir": "models/experiment4/ppo_lidar_seed0_repilot",
+  "log_dir": "logs/experiment4/ppo_lidar_seed0_repilot"
+}

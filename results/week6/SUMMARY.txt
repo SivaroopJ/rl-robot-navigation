@@ -1,0 +1,70 @@
+====================================================================================================
+WEEK 4 RESULTS  --  results/week6
+====================================================================================================
+
+CONFIGURATION
+  timesteps/run 4000000      obstacles 6    speed_range [0.6, 0.75]
+  dt 0.1    start-goal bands [[4.0, 5.5], [5.5, 7.0], [7.0, 8.5], [8.5, 10.5]]
+  git 9e307cfcfd on Week_4
+  epsilon (randomized) 1.0242   [rho p50 under an untrained policy, 128 pairs]
+  epsilon (fixed) 1.1098   [rho p50 under an untrained policy, 128 pairs]
+
+MAIN TABLE  (200 eval episodes/seed, deterministic, mean +- std ACROSS SEEDS)
+
+  arm                                            success         collision       SPL           seeds
+  ------------------------------------------------------------------------------------------------
+  PPO            trained fixed  -> eval fixed    0.578 +- 0.013   0.420 +- 0.011   0.456+-0.013   3
+  PPO + SR       trained fixed  -> eval fixed    0.587 +- 0.021   0.402 +- 0.017   0.478+-0.022   3
+  PPO            trained random -> eval random   0.577 +- 0.010   0.357 +- 0.008   0.407+-0.007   3
+  PPO + SR       trained random -> eval random   0.425 +- 0.179   0.358 +- 0.008   0.313+-0.118   3
+  PPO    (ZERO-SHOT) fixed -> random             0.533 +- 0.031   0.465 +- 0.032   0.420+-0.019   3
+  PPO+SR (ZERO-SHOT) fixed -> random             0.560 +- 0.029   0.435 +- 0.025   0.460+-0.022   3
+
+PRIMARY COMPARISON  (RQ3: PPO vs PPO+SR, both TRAINED on randomized obstacles)
+    success   PPO 0.577 +- 0.010   vs   PPO+SR 0.425 +- 0.179   delta -0.152
+    collision PPO 0.357 +- 0.008   vs   PPO+SR 0.358 +- 0.008   delta +0.002  <- primary metric
+    NOTE: the success difference is smaller than the seed spread. At three seeds
+          this does not support a claim in either direction.
+
+PAIRED (McNemar) COUNTS -- episodes matched by seed, so scenario difficulty cancels
+    experiment1_fixed      seed 0: only-PPO  30 | only-SR  34 | both  82 | neither  54
+    experiment1_fixed      seed 1: only-PPO  35 | only-SR  30 | both  83 | neither  52
+    experiment1_fixed      seed 2: only-PPO  27 | only-SR  33 | both  90 | neither  50
+    primary_randomized     seed 0: only-PPO  85 | only-SR   7 | both  30 | neither  78
+    primary_randomized     seed 1: only-PPO  35 | only-SR  17 | both  78 | neither  70
+    primary_randomized     seed 2: only-PPO  35 | only-SR  40 | both  83 | neither  42
+    zero_shot              seed 0: only-PPO  34 | only-SR  30 | both  77 | neither  59
+    zero_shot              seed 1: only-PPO  23 | only-SR  34 | both  75 | neither  68
+    zero_shot              seed 2: only-PPO  22 | only-SR  31 | both  89 | neither  58
+
+COLLISION BREAKDOWN  (the research question is about DYNAMIC obstacles)
+
+  arm                                             dynamic   static     wall
+  PPO            trained fixed  -> eval fixed    202 (80%)       49        1
+  PPO + SR       trained fixed  -> eval fixed    190 (79%)       49        2
+  PPO            trained random -> eval random   145 (68%)       53       16
+  PPO + SR       trained random -> eval random   151 (70%)       57        7
+  PPO    (ZERO-SHOT) fixed -> random             218 (78%)       61        0
+  PPO+SR (ZERO-SHOT) fixed -> random             205 (79%)       55        1
+
+SUCCESS BY START-GOAL DISTANCE BAND
+
+  arm                                                 4.0-5.5     5.5-7.0     7.0-8.5    8.5-10.5
+  PPO            trained fixed  -> eval fixed           0.681       0.595       0.572       0.489
+  PPO + SR       trained fixed  -> eval fixed           0.681       0.614       0.536       0.529
+  PPO            trained random -> eval random          0.519       0.542       0.609       0.626
+  PPO + SR       trained random -> eval random          0.415       0.392       0.391       0.489
+  PPO    (ZERO-SHOT) fixed -> random                    0.689       0.621       0.529       0.339
+  PPO+SR (ZERO-SHOT) fixed -> random                    0.719       0.693       0.507       0.362
+
+SR HEALTH  (a null result is only about SR if the acceptance rule was actually active)
+    ppo_sr_fixed_seed0         accept_rate 0.92  rho_p50 0.25  eps 1.11  approx_kl 0.0002  std 0.283
+    ppo_sr_fixed_seed1         accept_rate 0.93  rho_p50 0.26  eps 1.11  approx_kl 0.0015  std 0.289
+    ppo_sr_fixed_seed2         accept_rate 0.92  rho_p50 0.30  eps 1.11  approx_kl 0.0000  std 0.302
+    ppo_sr_random_seed0        accept_rate 0.50  rho_p50 0.98  eps 1.02  approx_kl 0.0003  std 0.257
+    ppo_sr_random_seed1        accept_rate 0.79  rho_p50 0.48  eps 1.02  approx_kl 0.0001  std 0.232
+    ppo_sr_random_seed2        accept_rate 0.85  rho_p50 0.41  eps 1.02  approx_kl 0.0003  std 0.275
+
+  Healthy: accept_rate away from 0 and 1, approx_kl ~0.02, std well above 0.1.
+  accept_rate near 1 means SR degenerated into PPO and any null is about epsilon.
+====================================================================================================

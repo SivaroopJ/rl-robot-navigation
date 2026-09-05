@@ -1,0 +1,6343 @@
+{
+  "success_rate": 0.56,
+  "collision_rate": 0.44,
+  "timeout_rate": 0.0,
+  "wall_collisions": 0,
+  "static_collisions": 20,
+  "dynamic_collisions": 68,
+  "avg_episode_length": 87.965,
+  "avg_path_length": 9.768190977871418,
+  "mean_return": -1.4776225591119692,
+  "avg_final_distance": 2.1774714632332324,
+  "mean_spl": 0.43115484117524944,
+  "n_success": 112,
+  "n_collision": 88,
+  "n_timeout": 0,
+  "by_distance_band": {
+    "0": {
+      "n": 45,
+      "success_rate": 0.6,
+      "collision_rate": 0.4,
+      "dynamic_collision_rate": 0.3333333333333333,
+      "avg_episode_length": 87.37777777777778
+    },
+    "1": {
+      "n": 51,
+      "success_rate": 0.7254901960784313,
+      "collision_rate": 0.27450980392156865,
+      "dynamic_collision_rate": 0.21568627450980393,
+      "avg_episode_length": 103.50980392156863
+    },
+    "2": {
+      "n": 46,
+      "success_rate": 0.6304347826086957,
+      "collision_rate": 0.3695652173913043,
+      "dynamic_collision_rate": 0.30434782608695654,
+      "avg_episode_length": 83.73913043478261
+    },
+    "3": {
+      "n": 58,
+      "success_rate": 0.3275862068965517,
+      "collision_rate": 0.6724137931034483,
+      "dynamic_collision_rate": 0.4827586206896552,
+      "avg_episode_length": 78.10344827586206
+    }
+  },
+  "label": "ppo_fixed_seed0_zeroshot",
+  "model_path": "models/week4/ppo_fixed_seed0_v2/final_model.zip",
+  "sr": false,
+  "evaluated_on_randomized": true,
+  "n_dynamic_obstacles": 6,
+  "obstacle_speed": 0.675,
+  "n_episodes": 200,
+  "deterministic": true,
+  "eval_seed_base": 1000000,
+  "eval_seeds": [
+    1000000,
+    1000199
+  ],
+  "distance_bins": [
+    [
+      4.0,
+      5.5
+    ],
+    [
+      5.5,
+      7.0
+    ],
+    [
+      7.0,
+      8.5
+    ],
+    [
+      8.5,
+      10.5
+    ]
+  ],
+  "episodes": [
+    {
+      "episode": 0,
+      "seed": 1000000,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 80,
+      "return": 9.552900622482412,
+      "path_length": 9.813554763793945,
+      "straight_line_distance": 7.953479766845703,
+      "shortest_path": 8.611879502661802,
+      "spl": 0.8775494415575491,
+      "final_distance": 0.5938706398010254,
+      "distance_band": 2,
+      "start": [
+        1.7946369647979736,
+        4.312810897827148
+      ],
+      "goal": [
+        8.863553047180176,
+        0.6675034761428833
+      ],
+      "terminal_position": [
+        9.374792098999023,
+        0.9696904420852661
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 1,
+      "seed": 1000001,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 492,
+      "return": -8.847847877757886,
+      "path_length": 52.56015396118164,
+      "straight_line_distance": 6.8467254638671875,
+      "shortest_path": 9.194112549695431,
+      "spl": 0.17492552545576165,
+      "final_distance": 0.511368453502655,
+      "distance_band": 1,
+      "start": [
+        8.765191078186035,
+        8.318903923034668
+      ],
+      "goal": [
+        2.2806954383850098,
+        6.121413230895996
+      ],
+      "terminal_position": [
+        2.699923515319824,
+        5.828589916229248
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 2,
+      "seed": 1000002,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 28,
+      "return": -11.570853725075722,
+      "path_length": 2.1933536529541016,
+      "straight_line_distance": 7.613918304443359,
+      "shortest_path": 8.221320343559652,
+      "spl": 0.0,
+      "final_distance": 6.777097702026367,
+      "distance_band": 2,
+      "start": [
+        4.664230823516846,
+        9.236268997192383
+      ],
+      "goal": [
+        4.489696979522705,
+        1.6243515014648438
+      ],
+      "terminal_position": [
+        5.896598815917969,
+        8.253807067871094
+      ],
+      "collision_position": [
+        5.896598815917969,
+        8.253807067871094
+      ]
+    },
+    {
+      "episode": 3,
+      "seed": 1000003,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 84,
+      "return": -13.826264345960226,
+      "path_length": 9.516480445861816,
+      "straight_line_distance": 4.069306373596191,
+      "shortest_path": 4.132842712474619,
+      "spl": 0.0,
+      "final_distance": 2.677203416824341,
+      "distance_band": 0,
+      "start": [
+        3.4337384700775146,
+        5.048538684844971
+      ],
+      "goal": [
+        3.6050150394439697,
+        0.9828379154205322
+      ],
+      "terminal_position": [
+        6.096918106079102,
+        1.9615294933319092
+      ],
+      "collision_position": [
+        6.096918106079102,
+        1.9615294933319092
+      ]
+    },
+    {
+      "episode": 4,
+      "seed": 1000004,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 55,
+      "return": -10.508317327185068,
+      "path_length": 5.8893022537231445,
+      "straight_line_distance": 6.997568130493164,
+      "shortest_path": 7.5204581464244855,
+      "spl": 0.0,
+      "final_distance": 2.2851052284240723,
+      "distance_band": 1,
+      "start": [
+        7.507490634918213,
+        1.7937378883361816
+      ],
+      "goal": [
+        1.4700990915298462,
+        5.331514358520508
+      ],
+      "terminal_position": [
+        2.7601940631866455,
+        3.4454174041748047
+      ],
+      "collision_position": [
+        2.7601940631866455,
+        3.4454174041748047
+      ]
+    },
+    {
+      "episode": 5,
+      "seed": 1000005,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 107,
+      "return": 9.043599818192888,
+      "path_length": 12.689271926879883,
+      "straight_line_distance": 8.053681373596191,
+      "shortest_path": 8.574873734152927,
+      "spl": 0.6757577411505098,
+      "final_distance": 0.462706595659256,
+      "distance_band": 2,
+      "start": [
+        9.292753219604492,
+        2.8773720264434814
+      ],
+      "goal": [
+        1.4269726276397705,
+        4.606900691986084
+      ],
+      "terminal_position": [
+        1.0504297018051147,
+        4.8758111000061035
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 6,
+      "seed": 1000006,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 25,
+      "return": -10.059692307841033,
+      "path_length": 2.856166362762451,
+      "straight_line_distance": 8.561674118041992,
+      "shortest_path": 8.914213562373105,
+      "spl": 0.0,
+      "final_distance": 6.116091728210449,
+      "distance_band": 3,
+      "start": [
+        9.236352920532227,
+        5.279313564300537
+      ],
+      "goal": [
+        0.7119082808494568,
+        6.076882362365723
+      ],
+      "terminal_position": [
+        6.779658794403076,
+        5.3094305992126465
+      ],
+      "collision_position": [
+        6.779658794403076,
+        5.3094305992126465
+      ]
+    },
+    {
+      "episode": 7,
+      "seed": 1000007,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 103,
+      "return": 7.355136842466891,
+      "path_length": 12.676122665405273,
+      "straight_line_distance": 9.110800743103027,
+      "shortest_path": 9.641778489984137,
+      "spl": 0.760625212021477,
+      "final_distance": 0.5286704897880554,
+      "distance_band": 3,
+      "start": [
+        1.7573779821395874,
+        6.2397284507751465
+      ],
+      "goal": [
+        9.24643611907959,
+        1.0512131452560425
+      ],
+      "terminal_position": [
+        8.812230110168457,
+        1.3528050184249878
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 8,
+      "seed": 1000008,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 80,
+      "return": -13.968291479919571,
+      "path_length": 8.660820960998535,
+      "straight_line_distance": 8.515095710754395,
+      "shortest_path": 10.051219330881977,
+      "spl": 0.0,
+      "final_distance": 2.5091543197631836,
+      "distance_band": 3,
+      "start": [
+        1.409347653388977,
+        9.30843734741211
+      ],
+      "goal": [
+        8.579658508300781,
+        4.715672492980957
+      ],
+      "terminal_position": [
+        6.116339683532715,
+        5.193077087402344
+      ],
+      "collision_position": [
+        6.116339683532715,
+        5.193077087402344
+      ]
+    },
+    {
+      "episode": 9,
+      "seed": 1000009,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 37,
+      "return": -11.517413209134247,
+      "path_length": 4.064819812774658,
+      "straight_line_distance": 7.96720027923584,
+      "shortest_path": 9.590559159102169,
+      "spl": 0.0,
+      "final_distance": 5.756173610687256,
+      "distance_band": 2,
+      "start": [
+        4.140744209289551,
+        8.723129272460938
+      ],
+      "goal": [
+        3.602616548538208,
+        0.774122953414917
+      ],
+      "terminal_position": [
+        5.664768695831299,
+        6.148232936859131
+      ],
+      "collision_position": [
+        5.664768695831299,
+        6.148232936859131
+      ]
+    },
+    {
+      "episode": 10,
+      "seed": 1000010,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 117,
+      "return": 9.555081394384615,
+      "path_length": 12.507827758789062,
+      "straight_line_distance": 8.591103553771973,
+      "shortest_path": 10.06690475583122,
+      "spl": 0.8048483677557327,
+      "final_distance": 0.5651820302009583,
+      "distance_band": 3,
+      "start": [
+        8.313889503479004,
+        4.236807346343994
+      ],
+      "goal": [
+        1.3265527486801147,
+        9.235224723815918
+      ],
+      "terminal_position": [
+        1.8786952495574951,
+        9.114521026611328
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 11,
+      "seed": 1000011,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 108,
+      "return": 9.580030591459945,
+      "path_length": 10.558588981628418,
+      "straight_line_distance": 7.955446243286133,
+      "shortest_path": 9.31629509039023,
+      "spl": 0.88234281177156,
+      "final_distance": 0.4977550506591797,
+      "distance_band": 2,
+      "start": [
+        5.974917888641357,
+        1.6799957752227783
+      ],
+      "goal": [
+        8.129546165466309,
+        9.338109016418457
+      ],
+      "terminal_position": [
+        8.481294631958008,
+        8.985925674438477
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 12,
+      "seed": 1000012,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 67,
+      "return": 9.781722335610539,
+      "path_length": 7.846904277801514,
+      "straight_line_distance": 7.2902936935424805,
+      "shortest_path": 7.75060966544099,
+      "spl": 0.9877283309504697,
+      "final_distance": 0.5922569036483765,
+      "distance_band": 2,
+      "start": [
+        5.8564863204956055,
+        8.640345573425293
+      ],
+      "goal": [
+        4.422610282897949,
+        1.4924522638320923
+      ],
+      "terminal_position": [
+        4.541903018951416,
+        2.07257080078125
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 13,
+      "seed": 1000013,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 21,
+      "return": -13.162848591804504,
+      "path_length": 2.6464529037475586,
+      "straight_line_distance": 7.283165454864502,
+      "shortest_path": 8.63908729652602,
+      "spl": 0.0,
+      "final_distance": 5.085700988769531,
+      "distance_band": 2,
+      "start": [
+        1.3196860551834106,
+        4.515505313873291
+      ],
+      "goal": [
+        6.880593776702881,
+        9.218781471252441
+      ],
+      "terminal_position": [
+        3.4135115146636963,
+        5.498069763183594
+      ],
+      "collision_position": [
+        3.4135115146636963,
+        5.498069763183594
+      ]
+    },
+    {
+      "episode": 14,
+      "seed": 1000014,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 51,
+      "return": 10.001298146089539,
+      "path_length": 5.688684940338135,
+      "straight_line_distance": 5.574576377868652,
+      "shortest_path": 5.674264068711928,
+      "spl": 0.9974649902785178,
+      "final_distance": 0.5298680663108826,
+      "distance_band": 1,
+      "start": [
+        1.6674612760543823,
+        8.872879981994629
+      ],
+      "goal": [
+        7.23253059387207,
+        9.198311805725098
+      ],
+      "terminal_position": [
+        6.725960731506348,
+        9.04291820526123
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 15,
+      "seed": 1000015,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 127,
+      "return": 9.388463682145812,
+      "path_length": 12.73250961303711,
+      "straight_line_distance": 9.272635459899902,
+      "shortest_path": 10.913351365237943,
+      "spl": 0.8571249264216939,
+      "final_distance": 0.5984538197517395,
+      "distance_band": 3,
+      "start": [
+        9.37810230255127,
+        4.020963191986084
+      ],
+      "goal": [
+        1.4077976942062378,
+        8.759740829467773
+      ],
+      "terminal_position": [
+        1.7255483865737915,
+        9.266871452331543
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 16,
+      "seed": 1000016,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 66,
+      "return": 9.672377414652146,
+      "path_length": 7.468593120574951,
+      "straight_line_distance": 6.2178874015808105,
+      "shortest_path": 7.373401871576776,
+      "spl": 0.9872544604503978,
+      "final_distance": 0.5299373865127563,
+      "distance_band": 1,
+      "start": [
+        5.034226894378662,
+        3.4662814140319824
+      ],
+      "goal": [
+        8.902892112731934,
+        8.334089279174805
+      ],
+      "terminal_position": [
+        9.090508460998535,
+        7.838474750518799
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 17,
+      "seed": 1000017,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 57,
+      "return": 7.864605551585555,
+      "path_length": 6.997395992279053,
+      "straight_line_distance": 6.507794380187988,
+      "shortest_path": 6.601828996322957,
+      "spl": 0.943469399703466,
+      "final_distance": 0.5367886424064636,
+      "distance_band": 1,
+      "start": [
+        1.7636514902114868,
+        5.594130516052246
+      ],
+      "goal": [
+        6.109886169433594,
+        0.7504101991653442
+      ],
+      "terminal_position": [
+        5.684513568878174,
+        1.077824592590332
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 18,
+      "seed": 1000018,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 67,
+      "return": -11.96005057644652,
+      "path_length": 7.332237243652344,
+      "straight_line_distance": 5.54810094833374,
+      "shortest_path": 6.519848480983498,
+      "spl": 0.0,
+      "final_distance": 2.1447081565856934,
+      "distance_band": 1,
+      "start": [
+        9.399965286254883,
+        1.2804630994796753
+      ],
+      "goal": [
+        5.1524553298950195,
+        4.849788188934326
+      ],
+      "terminal_position": [
+        5.088490009307861,
+        2.7060341835021973
+      ],
+      "collision_position": [
+        5.088490009307861,
+        2.7060341835021973
+      ]
+    },
+    {
+      "episode": 19,
+      "seed": 1000019,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 6,
+      "return": -10.077715542167425,
+      "path_length": 0.7607395052909851,
+      "straight_line_distance": 9.089740753173828,
+      "shortest_path": 10.064823227814099,
+      "spl": 0.0,
+      "final_distance": 8.390117645263672,
+      "distance_band": 3,
+      "start": [
+        0.6824749112129211,
+        2.803333282470703
+      ],
+      "goal": [
+        9.294974327087402,
+        5.7099199295043945
+      ],
+      "terminal_position": [
+        1.2596355676651,
+        3.2959160804748535
+      ],
+      "collision_position": [
+        1.2596355676651,
+        3.2959160804748535
+      ]
+    },
+    {
+      "episode": 20,
+      "seed": 1000020,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 157,
+      "return": -17.564806931070052,
+      "path_length": 18.58710479736328,
+      "straight_line_distance": 10.257540702819824,
+      "shortest_path": 13.056854249492384,
+      "spl": 0.0,
+      "final_distance": 5.473512649536133,
+      "distance_band": 3,
+      "start": [
+        7.857069492340088,
+        1.5222333669662476
+      ],
+      "goal": [
+        0.8706681132316589,
+        9.032715797424316
+      ],
+      "terminal_position": [
+        6.158515453338623,
+        7.619206428527832
+      ],
+      "collision_position": [
+        6.158515453338623,
+        7.619206428527832
+      ]
+    },
+    {
+      "episode": 21,
+      "seed": 1000021,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 105,
+      "return": 9.020358630092232,
+      "path_length": 10.963715553283691,
+      "straight_line_distance": 7.4310688972473145,
+      "shortest_path": 8.504772721475254,
+      "spl": 0.7757199354673178,
+      "final_distance": 0.49557608366012573,
+      "distance_band": 2,
+      "start": [
+        8.642739295959473,
+        6.8417792320251465
+      ],
+      "goal": [
+        4.277866840362549,
+        0.8277391791343689
+      ],
+      "terminal_position": [
+        4.689706325531006,
+        1.1033909320831299
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 22,
+      "seed": 1000022,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 120,
+      "return": 6.501219921570737,
+      "path_length": 13.265122413635254,
+      "straight_line_distance": 7.158086776733398,
+      "shortest_path": 8.275483399593915,
+      "spl": 0.6238527728238319,
+      "final_distance": 0.5584426522254944,
+      "distance_band": 2,
+      "start": [
+        8.934226989746094,
+        9.160941123962402
+      ],
+      "goal": [
+        3.880340576171875,
+        4.091775417327881
+      ],
+      "terminal_position": [
+        4.425097942352295,
+        4.2146477699279785
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 23,
+      "seed": 1000023,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 88,
+      "return": 9.89593189777952,
+      "path_length": 9.375774383544922,
+      "straight_line_distance": 7.444584846496582,
+      "shortest_path": 8.826955262170054,
+      "spl": 0.9414641288363252,
+      "final_distance": 0.5632471442222595,
+      "distance_band": 2,
+      "start": [
+        9.243552207946777,
+        5.080060005187988
+      ],
+      "goal": [
+        3.1539430618286133,
+        9.362407684326172
+      ],
+      "terminal_position": [
+        3.6822376251220703,
+        9.167081832885742
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 24,
+      "seed": 1000024,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 32,
+      "return": -12.107078871922567,
+      "path_length": 3.5750732421875,
+      "straight_line_distance": 5.257290840148926,
+      "shortest_path": 5.8813708498984765,
+      "spl": 0.0,
+      "final_distance": 3.807387113571167,
+      "distance_band": 0,
+      "start": [
+        5.897773742675781,
+        6.618128299713135
+      ],
+      "goal": [
+        0.6964011192321777,
+        5.853387832641602
+      ],
+      "terminal_position": [
+        4.074329376220703,
+        4.096744060516357
+      ],
+      "collision_position": [
+        4.074329376220703,
+        4.096744060516357
+      ]
+    },
+    {
+      "episode": 25,
+      "seed": 1000025,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 68,
+      "return": 9.907641316764057,
+      "path_length": 7.705674648284912,
+      "straight_line_distance": 5.629842758178711,
+      "shortest_path": 7.6591883092036825,
+      "spl": 0.99396725903921,
+      "final_distance": 0.5380741953849792,
+      "distance_band": 1,
+      "start": [
+        5.099654197692871,
+        5.364439487457275
+      ],
+      "goal": [
+        1.1238987445831299,
+        9.35047721862793
+      ],
+      "terminal_position": [
+        1.6472949981689453,
+        9.225656509399414
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 26,
+      "seed": 1000026,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 38,
+      "return": 10.065161928068846,
+      "path_length": 4.478001117706299,
+      "straight_line_distance": 4.380739688873291,
+      "shortest_path": 4.652081528017129,
+      "spl": 1.0,
+      "final_distance": 0.5606032013893127,
+      "distance_band": 0,
+      "start": [
+        5.760918617248535,
+        4.199855804443359
+      ],
+      "goal": [
+        1.4556556940078735,
+        5.009541034698486
+      ],
+      "terminal_position": [
+        1.9756544828414917,
+        4.800072193145752
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 27,
+      "seed": 1000027,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 53,
+      "return": -12.178912399336696,
+      "path_length": 6.1041059494018555,
+      "straight_line_distance": 8.61302375793457,
+      "shortest_path": 9.903300858899119,
+      "spl": 0.0,
+      "final_distance": 4.234870433807373,
+      "distance_band": 3,
+      "start": [
+        3.533841133117676,
+        8.644403457641602
+      ],
+      "goal": [
+        8.920353889465332,
+        1.9235655069351196
+      ],
+      "terminal_position": [
+        6.564080238342285,
+        5.442386627197266
+      ],
+      "collision_position": [
+        6.564080238342285,
+        5.442386627197266
+      ]
+    },
+    {
+      "episode": 28,
+      "seed": 1000028,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 18,
+      "return": -11.418901462573558,
+      "path_length": 2.0020127296447754,
+      "straight_line_distance": 4.108119010925293,
+      "shortest_path": 4.47132034355964,
+      "spl": 0.0,
+      "final_distance": 2.421490430831909,
+      "distance_band": 0,
+      "start": [
+        1.142501711845398,
+        4.7280683517456055
+      ],
+      "goal": [
+        4.960430145263672,
+        3.2114713191986084
+      ],
+      "terminal_position": [
+        2.733793020248413,
+        4.163155555725098
+      ],
+      "collision_position": [
+        2.733793020248413,
+        4.163155555725098
+      ]
+    },
+    {
+      "episode": 29,
+      "seed": 1000029,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 50,
+      "return": -11.443363161990419,
+      "path_length": 6.115882873535156,
+      "straight_line_distance": 7.171131134033203,
+      "shortest_path": 7.881980515339459,
+      "spl": 0.0,
+      "final_distance": 2.1230580806732178,
+      "distance_band": 2,
+      "start": [
+        5.947013854980469,
+        8.423474311828613
+      ],
+      "goal": [
+        8.372834205627441,
+        1.675102710723877
+      ],
+      "terminal_position": [
+        8.058637619018555,
+        3.774782657623291
+      ],
+      "collision_position": [
+        8.058637619018555,
+        3.774782657623291
+      ]
+    },
+    {
+      "episode": 30,
+      "seed": 1000030,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 82,
+      "return": 9.053217484033667,
+      "path_length": 9.729284286499023,
+      "straight_line_distance": 8.130165100097656,
+      "shortest_path": 9.421930009000636,
+      "spl": 0.9684093640962993,
+      "final_distance": 0.5506349802017212,
+      "distance_band": 2,
+      "start": [
+        3.3709306716918945,
+        1.1670936346054077
+      ],
+      "goal": [
+        4.2180094718933105,
+        9.253008842468262
+      ],
+      "terminal_position": [
+        4.7617878913879395,
+        9.166383743286133
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 31,
+      "seed": 1000031,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 103,
+      "return": 7.64392699720338,
+      "path_length": 10.961262702941895,
+      "straight_line_distance": 4.273336410522461,
+      "shortest_path": 5.092031021678295,
+      "spl": 0.46454784997641235,
+      "final_distance": 0.5920184254646301,
+      "distance_band": 0,
+      "start": [
+        6.581177711486816,
+        1.669661283493042
+      ],
+      "goal": [
+        9.33328914642334,
+        4.938803195953369
+      ],
+      "terminal_position": [
+        8.748746871948242,
+        5.032590866088867
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 32,
+      "seed": 1000032,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 73,
+      "return": -12.67329905560473,
+      "path_length": 7.189764499664307,
+      "straight_line_distance": 7.77085542678833,
+      "shortest_path": 8.443502884254446,
+      "spl": 0.0,
+      "final_distance": 3.5333876609802246,
+      "distance_band": 2,
+      "start": [
+        5.826291084289551,
+        1.0610586404800415
+      ],
+      "goal": [
+        4.4776082038879395,
+        8.713982582092285
+      ],
+      "terminal_position": [
+        5.081274509429932,
+        5.2325439453125
+      ],
+      "collision_position": [
+        5.081274509429932,
+        5.2325439453125
+      ]
+    },
+    {
+      "episode": 33,
+      "seed": 1000033,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 62,
+      "return": 10.065717151388526,
+      "path_length": 7.338303565979004,
+      "straight_line_distance": 7.042119026184082,
+      "shortest_path": 7.575483399593904,
+      "spl": 1.0,
+      "final_distance": 0.5468431115150452,
+      "distance_band": 2,
+      "start": [
+        3.7834620475769043,
+        2.965439558029175
+      ],
+      "goal": [
+        6.992771148681641,
+        9.233755111694336
+      ],
+      "terminal_position": [
+        6.509299278259277,
+        8.978231430053711
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 34,
+      "seed": 1000034,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 37,
+      "return": -11.348758396343328,
+      "path_length": 3.952573776245117,
+      "straight_line_distance": 9.108846664428711,
+      "shortest_path": 10.153300858899115,
+      "spl": 0.0,
+      "final_distance": 6.848073482513428,
+      "distance_band": 3,
+      "start": [
+        8.724075317382812,
+        0.8372490406036377
+      ],
+      "goal": [
+        4.3784565925598145,
+        8.84266471862793
+      ],
+      "terminal_position": [
+        5.3055620193481445,
+        2.057637929916382
+      ],
+      "collision_position": [
+        5.3055620193481445,
+        2.057637929916382
+      ]
+    },
+    {
+      "episode": 35,
+      "seed": 1000035,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 21,
+      "return": -11.855222691781819,
+      "path_length": 2.5468130111694336,
+      "straight_line_distance": 9.027623176574707,
+      "shortest_path": 11.692031021678304,
+      "spl": 0.0,
+      "final_distance": 6.7493672370910645,
+      "distance_band": 3,
+      "start": [
+        6.533029079437256,
+        1.5253506898880005
+      ],
+      "goal": [
+        1.1500481367111206,
+        8.772522926330566
+      ],
+      "terminal_position": [
+        5.197066307067871,
+        3.3710782527923584
+      ],
+      "collision_position": [
+        5.197066307067871,
+        3.3710782527923584
+      ]
+    },
+    {
+      "episode": 36,
+      "seed": 1000036,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 186,
+      "return": -0.6416212759213522,
+      "path_length": 20.021320343017578,
+      "straight_line_distance": 4.504068851470947,
+      "shortest_path": 4.686396103067892,
+      "spl": 0.2340702822180391,
+      "final_distance": 0.5932648181915283,
+      "distance_band": 0,
+      "start": [
+        6.130291938781738,
+        0.634976327419281
+      ],
+      "goal": [
+        5.682246208190918,
+        5.116704940795898
+      ],
+      "terminal_position": [
+        5.557322978973389,
+        4.536741733551025
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 37,
+      "seed": 1000037,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 312,
+      "return": -26.23203298804583,
+      "path_length": 33.42670440673828,
+      "straight_line_distance": 4.302257061004639,
+      "shortest_path": 5.805634918610405,
+      "spl": 0.0,
+      "final_distance": 0.8805740475654602,
+      "distance_band": 0,
+      "start": [
+        9.183908462524414,
+        8.397477149963379
+      ],
+      "goal": [
+        6.108364105224609,
+        5.389081954956055
+      ],
+      "terminal_position": [
+        6.945786476135254,
+        5.116805553436279
+      ],
+      "collision_position": [
+        6.945786476135254,
+        5.116805553436279
+      ]
+    },
+    {
+      "episode": 38,
+      "seed": 1000038,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 69,
+      "return": 8.04566296376288,
+      "path_length": 8.038506507873535,
+      "straight_line_distance": 5.687101364135742,
+      "shortest_path": 7.033452377915609,
+      "spl": 0.8749700421373673,
+      "final_distance": 0.5258480310440063,
+      "distance_band": 1,
+      "start": [
+        5.310445785522461,
+        4.333765506744385
+      ],
+      "goal": [
+        9.082531929016113,
+        8.589877128601074
+      ],
+      "terminal_position": [
+        8.557462692260742,
+        8.618485450744629
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 39,
+      "seed": 1000039,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 38,
+      "return": 9.865109007107094,
+      "path_length": 4.704645156860352,
+      "straight_line_distance": 4.258256912231445,
+      "shortest_path": 4.460660171779821,
+      "spl": 0.9481395563436386,
+      "final_distance": 0.5174017548561096,
+      "distance_band": 0,
+      "start": [
+        9.142495155334473,
+        8.13476276397705
+      ],
+      "goal": [
+        4.953513145446777,
+        8.899734497070312
+      ],
+      "terminal_position": [
+        5.470351219177246,
+        8.923880577087402
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 40,
+      "seed": 1000040,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 216,
+      "return": 3.188574770523701,
+      "path_length": 23.273799896240234,
+      "straight_line_distance": 5.169766902923584,
+      "shortest_path": 6.655634918610403,
+      "spl": 0.2859711327021243,
+      "final_distance": 0.5721287131309509,
+      "distance_band": 0,
+      "start": [
+        5.819677829742432,
+        4.986079216003418
+      ],
+      "goal": [
+        9.172576904296875,
+        8.921121597290039
+      ],
+      "terminal_position": [
+        8.709474563598633,
+        8.585164070129395
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 41,
+      "seed": 1000041,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 18,
+      "return": -11.403387536061928,
+      "path_length": 1.7562294006347656,
+      "straight_line_distance": 5.568242073059082,
+      "shortest_path": 6.624873734152915,
+      "spl": 0.0,
+      "final_distance": 4.785369873046875,
+      "distance_band": 1,
+      "start": [
+        6.190877437591553,
+        7.718284606933594
+      ],
+      "goal": [
+        1.4262360334396362,
+        4.836702823638916
+      ],
+      "terminal_position": [
+        6.051262855529785,
+        6.065073490142822
+      ],
+      "collision_position": [
+        6.051262855529785,
+        6.065073490142822
+      ]
+    },
+    {
+      "episode": 42,
+      "seed": 1000042,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 37,
+      "return": 9.97710415883921,
+      "path_length": 4.478766441345215,
+      "straight_line_distance": 4.615492820739746,
+      "shortest_path": 4.945584412271568,
+      "spl": 1.0,
+      "final_distance": 0.5890178084373474,
+      "distance_band": 0,
+      "start": [
+        4.208634376525879,
+        3.3001952171325684
+      ],
+      "goal": [
+        6.022892475128174,
+        7.54416036605835
+      ],
+      "terminal_position": [
+        6.15160608291626,
+        6.9693779945373535
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 43,
+      "seed": 1000043,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 80,
+      "return": 10.165528941433877,
+      "path_length": 8.844158172607422,
+      "straight_line_distance": 7.794349193572998,
+      "shortest_path": 8.403300858899108,
+      "spl": 0.950152710398853,
+      "final_distance": 0.5871841907501221,
+      "distance_band": 2,
+      "start": [
+        7.581345558166504,
+        1.7884931564331055
+      ],
+      "goal": [
+        0.7412643432617188,
+        5.525493144989014
+      ],
+      "terminal_position": [
+        1.308876395225525,
+        5.675832271575928
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 44,
+      "seed": 1000044,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 45,
+      "return": -12.526625805767253,
+      "path_length": 5.165246963500977,
+      "straight_line_distance": 9.005731582641602,
+      "shortest_path": 10.453300858899107,
+      "spl": 0.0,
+      "final_distance": 5.783192157745361,
+      "distance_band": 3,
+      "start": [
+        8.608562469482422,
+        1.7881081104278564
+      ],
+      "goal": [
+        3.125588893890381,
+        8.932350158691406
+      ],
+      "terminal_position": [
+        4.333648681640625,
+        3.2767419815063477
+      ],
+      "collision_position": [
+        4.333648681640625,
+        3.2767419815063477
+      ]
+    },
+    {
+      "episode": 45,
+      "seed": 1000045,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 162,
+      "return": 3.7603948630858213,
+      "path_length": 17.55398941040039,
+      "straight_line_distance": 6.191822052001953,
+      "shortest_path": 7.089087296526012,
+      "spl": 0.4038447973727196,
+      "final_distance": 0.5971474051475525,
+      "distance_band": 1,
+      "start": [
+        6.713666915893555,
+        9.285343170166016
+      ],
+      "goal": [
+        2.9187021255493164,
+        4.392807483673096
+      ],
+      "terminal_position": [
+        2.327855110168457,
+        4.47932243347168
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 46,
+      "seed": 1000046,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 54,
+      "return": 8.912566605373286,
+      "path_length": 6.489877223968506,
+      "straight_line_distance": 5.7028303146362305,
+      "shortest_path": 5.936396103067892,
+      "spl": 0.9147162416483798,
+      "final_distance": 0.5973865389823914,
+      "distance_band": 1,
+      "start": [
+        5.295890808105469,
+        2.963721752166748
+      ],
+      "goal": [
+        4.882827281951904,
+        8.651573181152344
+      ],
+      "terminal_position": [
+        5.341508865356445,
+        8.268843650817871
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 47,
+      "seed": 1000047,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 73,
+      "return": 2.883337306790054,
+      "path_length": 7.671925067901611,
+      "straight_line_distance": 5.176607131958008,
+      "shortest_path": 5.6162950903902225,
+      "spl": 0.7320581263088854,
+      "final_distance": 0.4720248878002167,
+      "distance_band": 0,
+      "start": [
+        4.015358924865723,
+        0.841842770576477
+      ],
+      "goal": [
+        5.8541717529296875,
+        5.680853843688965
+      ],
+      "terminal_position": [
+        5.5679521560668945,
+        5.305506229400635
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 48,
+      "seed": 1000048,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 44,
+      "return": -12.064645155798644,
+      "path_length": 4.664094924926758,
+      "straight_line_distance": 7.055394172668457,
+      "shortest_path": 8.276345596729067,
+      "spl": 0.0,
+      "final_distance": 4.129091262817383,
+      "distance_band": 2,
+      "start": [
+        8.787104606628418,
+        6.779124736785889
+      ],
+      "goal": [
+        2.099266290664673,
+        4.53159236907959
+      ],
+      "terminal_position": [
+        6.178311347961426,
+        5.172515869140625
+      ],
+      "collision_position": [
+        6.178311347961426,
+        5.172515869140625
+      ]
+    },
+    {
+      "episode": 49,
+      "seed": 1000049,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 84,
+      "return": 8.224628278054297,
+      "path_length": 9.403515815734863,
+      "straight_line_distance": 7.371079444885254,
+      "shortest_path": 7.968376618407359,
+      "spl": 0.8473826996785508,
+      "final_distance": 0.5391547679901123,
+      "distance_band": 2,
+      "start": [
+        8.79379653930664,
+        1.4594651460647583
+      ],
+      "goal": [
+        1.9354890584945679,
+        4.160655498504639
+      ],
+      "terminal_position": [
+        2.246932029724121,
+        4.600759029388428
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 50,
+      "seed": 1000050,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 169,
+      "return": -16.199390533583937,
+      "path_length": 18.563739776611328,
+      "straight_line_distance": 5.321444988250732,
+      "shortest_path": 5.494974746830582,
+      "spl": 0.0,
+      "final_distance": 1.1368197202682495,
+      "distance_band": 0,
+      "start": [
+        1.7457765340805054,
+        4.4942803382873535
+      ],
+      "goal": [
+        7.052934169769287,
+        4.1045918464660645
+      ],
+      "terminal_position": [
+        6.373438358306885,
+        5.015988826751709
+      ],
+      "collision_position": [
+        6.373438358306885,
+        5.015988826751709
+      ]
+    },
+    {
+      "episode": 51,
+      "seed": 1000051,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 175,
+      "return": 5.70494857680751,
+      "path_length": 19.981605529785156,
+      "straight_line_distance": 5.788703441619873,
+      "shortest_path": 7.317766952966372,
+      "spl": 0.3662251735506588,
+      "final_distance": 0.5998510122299194,
+      "distance_band": 1,
+      "start": [
+        5.521280765533447,
+        4.560977458953857
+      ],
+      "goal": [
+        2.220126152038574,
+        9.316128730773926
+      ],
+      "terminal_position": [
+        2.7873482704162598,
+        9.511270523071289
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 52,
+      "seed": 1000052,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 84,
+      "return": 8.867918450385332,
+      "path_length": 8.952011108398438,
+      "straight_line_distance": 5.765280723571777,
+      "shortest_path": 6.6334523779156065,
+      "spl": 0.7410013568562659,
+      "final_distance": 0.5784677863121033,
+      "distance_band": 1,
+      "start": [
+        5.360709190368652,
+        3.9025774002075195
+      ],
+      "goal": [
+        7.783068656921387,
+        9.134272575378418
+      ],
+      "terminal_position": [
+        8.341083526611328,
+        8.9818115234375
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 53,
+      "seed": 1000053,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 63,
+      "return": 8.083033766481094,
+      "path_length": 7.7278971672058105,
+      "straight_line_distance": 6.495884895324707,
+      "shortest_path": 7.301219330881974,
+      "spl": 0.9447873299693361,
+      "final_distance": 0.49495694041252136,
+      "distance_band": 1,
+      "start": [
+        6.838699817657471,
+        1.2514821290969849
+      ],
+      "goal": [
+        0.7411231398582458,
+        3.4911434650421143
+      ],
+      "terminal_position": [
+        0.8491842746734619,
+        3.9741601943969727
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 54,
+      "seed": 1000054,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 81,
+      "return": 9.269561930093914,
+      "path_length": 9.08421802520752,
+      "straight_line_distance": 7.811511993408203,
+      "shortest_path": 8.22989898732234,
+      "spl": 0.9059556875985851,
+      "final_distance": 0.5165349841117859,
+      "distance_band": 2,
+      "start": [
+        1.3014065027236938,
+        4.307651519775391
+      ],
+      "goal": [
+        8.983445167541504,
+        5.723983287811279
+      ],
+      "terminal_position": [
+        9.045087814331055,
+        5.211139678955078
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 55,
+      "seed": 1000055,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 117,
+      "return": 9.625997196184471,
+      "path_length": 11.688092231750488,
+      "straight_line_distance": 8.579764366149902,
+      "shortest_path": 10.307716446627536,
+      "spl": 0.8818989653954658,
+      "final_distance": 0.5880190134048462,
+      "distance_band": 3,
+      "start": [
+        8.867979049682617,
+        5.025487422943115
+      ],
+      "goal": [
+        1.0949562788009644,
+        8.657630920410156
+      ],
+      "terminal_position": [
+        1.588891863822937,
+        8.976682662963867
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 56,
+      "seed": 1000056,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 82,
+      "return": 8.783948629949009,
+      "path_length": 9.103547096252441,
+      "straight_line_distance": 7.201520919799805,
+      "shortest_path": 8.413351365237947,
+      "spl": 0.9241838677037635,
+      "final_distance": 0.5924777984619141,
+      "distance_band": 2,
+      "start": [
+        2.8922483921051025,
+        9.050119400024414
+      ],
+      "goal": [
+        8.332450866699219,
+        4.331423282623291
+      ],
+      "terminal_position": [
+        7.761401176452637,
+        4.489322662353516
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 57,
+      "seed": 1000057,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 49,
+      "return": 9.819822982884943,
+      "path_length": 5.49380350112915,
+      "straight_line_distance": 5.337169170379639,
+      "shortest_path": 5.391421356237309,
+      "spl": 0.9813640686510178,
+      "final_distance": 0.563324511051178,
+      "distance_band": 0,
+      "start": [
+        6.055729389190674,
+        8.676619529724121
+      ],
+      "goal": [
+        0.7191158533096313,
+        8.753634452819824
+      ],
+      "terminal_position": [
+        1.1794995069503784,
+        9.078259468078613
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 58,
+      "seed": 1000058,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 43,
+      "return": -11.819750983500853,
+      "path_length": 5.01751708984375,
+      "straight_line_distance": 4.166820049285889,
+      "shortest_path": 5.214213562373094,
+      "spl": 0.0,
+      "final_distance": 0.9532557725906372,
+      "distance_band": 0,
+      "start": [
+        2.4025144577026367,
+        5.139625549316406
+      ],
+      "goal": [
+        5.7430877685546875,
+        7.630199909210205
+      ],
+      "terminal_position": [
+        5.733829975128174,
+        6.6769890785217285
+      ],
+      "collision_position": [
+        5.733829975128174,
+        6.6769890785217285
+      ]
+    },
+    {
+      "episode": 59,
+      "seed": 1000059,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 123,
+      "return": -14.412092698854394,
+      "path_length": 14.912107467651367,
+      "straight_line_distance": 6.022124290466309,
+      "shortest_path": 6.6970562748477125,
+      "spl": 0.0,
+      "final_distance": 3.2211458683013916,
+      "distance_band": 1,
+      "start": [
+        6.432377338409424,
+        4.432244300842285
+      ],
+      "goal": [
+        0.6289692521095276,
+        2.8240036964416504
+      ],
+      "terminal_position": [
+        3.4249284267425537,
+        4.423501491546631
+      ],
+      "collision_position": [
+        3.4249284267425537,
+        4.423501491546631
+      ]
+    },
+    {
+      "episode": 60,
+      "seed": 1000060,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 71,
+      "return": -10.787304682424292,
+      "path_length": 8.541102409362793,
+      "straight_line_distance": 8.242247581481934,
+      "shortest_path": 8.789949493661169,
+      "spl": 0.0,
+      "final_distance": 2.2785775661468506,
+      "distance_band": 2,
+      "start": [
+        8.859037399291992,
+        2.9338219165802
+      ],
+      "goal": [
+        0.6537196040153503,
+        3.713190793991089
+      ],
+      "terminal_position": [
+        2.649056911468506,
+        4.813438415527344
+      ],
+      "collision_position": [
+        2.649056911468506,
+        4.813438415527344
+      ]
+    },
+    {
+      "episode": 61,
+      "seed": 1000061,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 39,
+      "return": -11.69446810754016,
+      "path_length": 4.237821578979492,
+      "straight_line_distance": 9.070478439331055,
+      "shortest_path": 10.819848480983516,
+      "spl": 0.0,
+      "final_distance": 6.761391639709473,
+      "distance_band": 3,
+      "start": [
+        2.786853313446045,
+        9.093384742736816
+      ],
+      "goal": [
+        6.605712890625,
+        0.8659982681274414
+      ],
+      "terminal_position": [
+        5.8868937492370605,
+        7.589071750640869
+      ],
+      "collision_position": [
+        5.8868937492370605,
+        7.589071750640869
+      ]
+    },
+    {
+      "episode": 62,
+      "seed": 1000062,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 13,
+      "return": -11.448244993342087,
+      "path_length": 1.4952733516693115,
+      "straight_line_distance": 8.858479499816895,
+      "shortest_path": 10.035533905932752,
+      "spl": 0.0,
+      "final_distance": 7.817292213439941,
+      "distance_band": 3,
+      "start": [
+        3.9474282264709473,
+        9.184575080871582
+      ],
+      "goal": [
+        7.227128028869629,
+        0.9555878639221191
+      ],
+      "terminal_position": [
+        5.221096038818359,
+        8.5111083984375
+      ],
+      "collision_position": [
+        5.221096038818359,
+        8.5111083984375
+      ]
+    },
+    {
+      "episode": 63,
+      "seed": 1000063,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 68,
+      "return": 6.576030250173062,
+      "path_length": 7.9832587242126465,
+      "straight_line_distance": 7.617414951324463,
+      "shortest_path": 8.178427124746195,
+      "spl": 1.0,
+      "final_distance": 0.5541470646858215,
+      "distance_band": 2,
+      "start": [
+        1.212173581123352,
+        6.201501369476318
+      ],
+      "goal": [
+        8.5656099319458,
+        4.213541507720947
+      ],
+      "terminal_position": [
+        8.012167930603027,
+        4.185596942901611
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 64,
+      "seed": 1000064,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 54,
+      "return": -11.747551312670112,
+      "path_length": 5.51887321472168,
+      "straight_line_distance": 7.210196018218994,
+      "shortest_path": 8.979898987322343,
+      "spl": 0.0,
+      "final_distance": 4.239416599273682,
+      "distance_band": 2,
+      "start": [
+        8.822463035583496,
+        7.843681335449219
+      ],
+      "goal": [
+        2.517216205596924,
+        4.346426963806152
+      ],
+      "terminal_position": [
+        6.708845138549805,
+        4.981171131134033
+      ],
+      "collision_position": [
+        6.708845138549805,
+        4.981171131134033
+      ]
+    },
+    {
+      "episode": 65,
+      "seed": 1000065,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 48,
+      "return": -12.221125412499532,
+      "path_length": 5.742488861083984,
+      "straight_line_distance": 4.562070369720459,
+      "shortest_path": 4.570710678118655,
+      "spl": 0.0,
+      "final_distance": 2.2963950634002686,
+      "distance_band": 0,
+      "start": [
+        3.2009592056274414,
+        1.4013677835464478
+      ],
+      "goal": [
+        3.1644248962402344,
+        5.963291645050049
+      ],
+      "terminal_position": [
+        4.765251159667969,
+        4.316845417022705
+      ],
+      "collision_position": [
+        4.765251159667969,
+        4.316845417022705
+      ]
+    },
+    {
+      "episode": 66,
+      "seed": 1000066,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 59,
+      "return": 7.9037273559952155,
+      "path_length": 6.791164398193359,
+      "straight_line_distance": 6.093746662139893,
+      "shortest_path": 6.29472221513641,
+      "spl": 0.9268988123466696,
+      "final_distance": 0.5737457275390625,
+      "distance_band": 1,
+      "start": [
+        5.712562561035156,
+        1.8052211999893188
+      ],
+      "goal": [
+        1.001354694366455,
+        5.67022705078125
+      ],
+      "terminal_position": [
+        1.4924098253250122,
+        5.3734965324401855
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 67,
+      "seed": 1000067,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 321,
+      "return": -4.494943337849691,
+      "path_length": 36.648033142089844,
+      "straight_line_distance": 5.236505031585693,
+      "shortest_path": 5.593502884254441,
+      "spl": 0.15262764205019144,
+      "final_distance": 0.5371354818344116,
+      "distance_band": 0,
+      "start": [
+        9.223942756652832,
+        6.196872234344482
+      ],
+      "goal": [
+        4.092949867248535,
+        5.150976657867432
+      ],
+      "terminal_position": [
+        3.874692916870117,
+        4.660182952880859
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 68,
+      "seed": 1000068,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 22,
+      "return": -11.611885368358344,
+      "path_length": 2.5215768814086914,
+      "straight_line_distance": 5.791843891143799,
+      "shortest_path": 6.081370849898474,
+      "spl": 0.0,
+      "final_distance": 4.22096061706543,
+      "distance_band": 1,
+      "start": [
+        8.714755058288574,
+        4.8922271728515625
+      ],
+      "goal": [
+        2.9735007286071777,
+        5.656067848205566
+      ],
+      "terminal_position": [
+        6.9923319816589355,
+        4.365523815155029
+      ],
+      "collision_position": [
+        6.9923319816589355,
+        4.365523815155029
+      ]
+    },
+    {
+      "episode": 69,
+      "seed": 1000069,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 112,
+      "return": 8.575968455232214,
+      "path_length": 10.355186462402344,
+      "straight_line_distance": 6.414419174194336,
+      "shortest_path": 7.557716446627535,
+      "spl": 0.729848416932725,
+      "final_distance": 0.5627362132072449,
+      "distance_band": 1,
+      "start": [
+        5.500638961791992,
+        1.7093868255615234
+      ],
+      "goal": [
+        8.660850524902344,
+        7.29130744934082
+      ],
+      "terminal_position": [
+        9.197798728942871,
+        7.459707736968994
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 70,
+      "seed": 1000070,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 94,
+      "return": 7.0523388516157866,
+      "path_length": 10.994428634643555,
+      "straight_line_distance": 8.20190715789795,
+      "shortest_path": 8.75416305603427,
+      "spl": 0.796236289028228,
+      "final_distance": 0.5927000045776367,
+      "distance_band": 2,
+      "start": [
+        0.6910648941993713,
+        5.462372303009033
+      ],
+      "goal": [
+        8.717844009399414,
+        3.7765214443206787
+      ],
+      "terminal_position": [
+        8.764809608459473,
+        4.3673577308654785
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 71,
+      "seed": 1000071,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 74,
+      "return": 8.666463156696409,
+      "path_length": 8.374335289001465,
+      "straight_line_distance": 5.225464820861816,
+      "shortest_path": 6.2763455967290565,
+      "spl": 0.7494738842105082,
+      "final_distance": 0.510884165763855,
+      "distance_band": 0,
+      "start": [
+        4.552739143371582,
+        5.2427978515625
+      ],
+      "goal": [
+        9.36465072631836,
+        7.280195713043213
+      ],
+      "terminal_position": [
+        9.01832103729248,
+        7.655773162841797
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 72,
+      "seed": 1000072,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 83,
+      "return": -14.224050465913024,
+      "path_length": 9.424599647521973,
+      "straight_line_distance": 8.698731422424316,
+      "shortest_path": 11.112741699796961,
+      "spl": 0.0,
+      "final_distance": 2.1001269817352295,
+      "distance_band": 3,
+      "start": [
+        2.2010104656219482,
+        9.105490684509277
+      ],
+      "goal": [
+        6.95263671875,
+        1.8192040920257568
+      ],
+      "terminal_position": [
+        7.825841903686523,
+        3.729189872741699
+      ],
+      "collision_position": [
+        7.825841903686523,
+        3.729189872741699
+      ]
+    },
+    {
+      "episode": 73,
+      "seed": 1000073,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 73,
+      "return": -14.467026729544159,
+      "path_length": 8.024709701538086,
+      "straight_line_distance": 10.430007934570312,
+      "shortest_path": 12.017514421272224,
+      "spl": 0.0,
+      "final_distance": 4.084349632263184,
+      "distance_band": 3,
+      "start": [
+        1.7485517263412476,
+        9.359367370605469
+      ],
+      "goal": [
+        9.173480987548828,
+        2.034377336502075
+      ],
+      "terminal_position": [
+        6.773545742034912,
+        5.3392558097839355
+      ],
+      "collision_position": [
+        6.773545742034912,
+        5.3392558097839355
+      ]
+    },
+    {
+      "episode": 74,
+      "seed": 1000074,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 223,
+      "return": -17.46668632159708,
+      "path_length": 23.787128448486328,
+      "straight_line_distance": 9.919942855834961,
+      "shortest_path": 12.495584412271583,
+      "spl": 0.0,
+      "final_distance": 2.7247326374053955,
+      "distance_band": 3,
+      "start": [
+        6.015219688415527,
+        0.8224663138389587
+      ],
+      "goal": [
+        1.0181410312652588,
+        9.391857147216797
+      ],
+      "terminal_position": [
+        0.5946847200393677,
+        6.700230598449707
+      ],
+      "collision_position": [
+        0.5946847200393677,
+        6.700230598449707
+      ]
+    },
+    {
+      "episode": 75,
+      "seed": 1000075,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 127,
+      "return": 9.136612066533417,
+      "path_length": 13.458084106445312,
+      "straight_line_distance": 8.951981544494629,
+      "shortest_path": 10.561879502661796,
+      "spl": 0.7847981495080364,
+      "final_distance": 0.5784733295440674,
+      "distance_band": 3,
+      "start": [
+        8.66247844696045,
+        2.5764172077178955
+      ],
+      "goal": [
+        2.1963446140289307,
+        8.767304420471191
+      ],
+      "terminal_position": [
+        2.4642858505249023,
+        9.279982566833496
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 76,
+      "seed": 1000076,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 66,
+      "return": -11.622373450460145,
+      "path_length": 7.348580837249756,
+      "straight_line_distance": 10.243233680725098,
+      "shortest_path": 12.332590180780473,
+      "spl": 0.0,
+      "final_distance": 5.0150885581970215,
+      "distance_band": 3,
+      "start": [
+        1.4719589948654175,
+        8.903840065002441
+      ],
+      "goal": [
+        8.561334609985352,
+        1.5102900266647339
+      ],
+      "terminal_position": [
+        6.454724311828613,
+        6.0614776611328125
+      ],
+      "collision_position": [
+        6.454724311828613,
+        6.0614776611328125
+      ]
+    },
+    {
+      "episode": 77,
+      "seed": 1000077,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 124,
+      "return": 1.3922285612788983,
+      "path_length": 13.723095893859863,
+      "straight_line_distance": 8.26228141784668,
+      "shortest_path": 8.270710678118656,
+      "spl": 0.6026854830781462,
+      "final_distance": 0.565733790397644,
+      "distance_band": 2,
+      "start": [
+        9.08249282836914,
+        4.35107421875
+      ],
+      "goal": [
+        0.820222020149231,
+        4.337798118591309
+      ],
+      "terminal_position": [
+        1.0795263051986694,
+        4.840606212615967
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 78,
+      "seed": 1000078,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 31,
+      "return": -12.121470246755052,
+      "path_length": 3.4874002933502197,
+      "straight_line_distance": 8.510395050048828,
+      "shortest_path": 10.819848480983506,
+      "spl": 0.0,
+      "final_distance": 5.571737289428711,
+      "distance_band": 3,
+      "start": [
+        4.012748718261719,
+        0.6072048544883728
+      ],
+      "goal": [
+        3.012761116027832,
+        9.058645248413086
+      ],
+      "terminal_position": [
+        4.530275344848633,
+        3.6975443363189697
+      ],
+      "collision_position": [
+        4.530275344848633,
+        3.6975443363189697
+      ]
+    },
+    {
+      "episode": 79,
+      "seed": 1000079,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 13,
+      "return": -11.372360814362764,
+      "path_length": 1.8246726989746094,
+      "straight_line_distance": 9.385802268981934,
+      "shortest_path": 10.718986283848345,
+      "spl": 0.0,
+      "final_distance": 7.585749626159668,
+      "distance_band": 3,
+      "start": [
+        3.238617420196533,
+        1.5664912462234497
+      ],
+      "goal": [
+        8.812699317932129,
+        9.117841720581055
+      ],
+      "terminal_position": [
+        4.525638580322266,
+        2.859670877456665
+      ],
+      "collision_position": [
+        4.525638580322266,
+        2.859670877456665
+      ]
+    },
+    {
+      "episode": 80,
+      "seed": 1000080,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 10,
+      "return": -11.274907102808356,
+      "path_length": 1.038172721862793,
+      "straight_line_distance": 7.152775764465332,
+      "shortest_path": 7.9127416997969595,
+      "spl": 0.0,
+      "final_distance": 6.832695484161377,
+      "distance_band": 2,
+      "start": [
+        7.0708441734313965,
+        1.3825944662094116
+      ],
+      "goal": [
+        9.086109161376953,
+        8.245604515075684
+      ],
+      "terminal_position": [
+        8.070843696594238,
+        1.48875892162323
+      ],
+      "collision_position": [
+        8.070843696594238,
+        1.48875892162323
+      ]
+    },
+    {
+      "episode": 81,
+      "seed": 1000081,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 132,
+      "return": 7.587652326212265,
+      "path_length": 14.566594123840332,
+      "straight_line_distance": 9.049392700195312,
+      "shortest_path": 10.151828996322978,
+      "spl": 0.6969253697889506,
+      "final_distance": 0.5984715223312378,
+      "distance_band": 3,
+      "start": [
+        3.5330374240875244,
+        9.15810775756836
+      ],
+      "goal": [
+        8.961831092834473,
+        1.9179631471633911
+      ],
+      "terminal_position": [
+        8.779585838317871,
+        1.3479150533676147
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 82,
+      "seed": 1000082,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 24,
+      "return": -10.2079245634377,
+      "path_length": 3.072854995727539,
+      "straight_line_distance": 4.642730712890625,
+      "shortest_path": 11.46984848098351,
+      "spl": 0.0,
+      "final_distance": 2.4442076683044434,
+      "distance_band": 0,
+      "start": [
+        1.35360586643219,
+        4.482079029083252
+      ],
+      "goal": [
+        1.2110179662704468,
+        9.12261962890625
+      ],
+      "terminal_position": [
+        0.8289437294006348,
+        6.708459377288818
+      ],
+      "collision_position": [
+        0.8289437294006348,
+        6.708459377288818
+      ]
+    },
+    {
+      "episode": 83,
+      "seed": 1000083,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 64,
+      "return": -12.171137140714563,
+      "path_length": 5.89877986907959,
+      "straight_line_distance": 8.979615211486816,
+      "shortest_path": 11.750609665440994,
+      "spl": 0.0,
+      "final_distance": 5.642838954925537,
+      "distance_band": 3,
+      "start": [
+        6.417700290679932,
+        1.4983961582183838
+      ],
+      "goal": [
+        0.960726797580719,
+        8.629659652709961
+      ],
+      "terminal_position": [
+        5.637585163116455,
+        5.472346782684326
+      ],
+      "collision_position": [
+        5.637585163116455,
+        5.472346782684326
+      ]
+    },
+    {
+      "episode": 84,
+      "seed": 1000084,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 89,
+      "return": -17.098461877554655,
+      "path_length": 10.570115089416504,
+      "straight_line_distance": 5.961091041564941,
+      "shortest_path": 7.638477631085029,
+      "spl": 0.0,
+      "final_distance": 1.2720073461532593,
+      "distance_band": 1,
+      "start": [
+        1.2316025495529175,
+        5.044301986694336
+      ],
+      "goal": [
+        5.90631628036499,
+        8.74317455291748
+      ],
+      "terminal_position": [
+        5.883776664733887,
+        7.471366882324219
+      ],
+      "collision_position": [
+        5.883776664733887,
+        7.471366882324219
+      ]
+    },
+    {
+      "episode": 85,
+      "seed": 1000085,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 24,
+      "return": -11.756601183209568,
+      "path_length": 2.3386549949645996,
+      "straight_line_distance": 8.261618614196777,
+      "shortest_path": 9.405634918610408,
+      "spl": 0.0,
+      "final_distance": 6.921949863433838,
+      "distance_band": 2,
+      "start": [
+        8.986078262329102,
+        6.684005260467529
+      ],
+      "goal": [
+        0.8016467690467834,
+        5.557315826416016
+      ],
+      "terminal_position": [
+        7.695333003997803,
+        4.932435512542725
+      ],
+      "collision_position": [
+        7.695333003997803,
+        4.932435512542725
+      ]
+    },
+    {
+      "episode": 86,
+      "seed": 1000086,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 91,
+      "return": 9.584467820823193,
+      "path_length": 9.838322639465332,
+      "straight_line_distance": 8.204910278320312,
+      "shortest_path": 9.56837661840736,
+      "spl": 0.972561784061125,
+      "final_distance": 0.5214317440986633,
+      "distance_band": 2,
+      "start": [
+        4.932858467102051,
+        0.7353487610816956
+      ],
+      "goal": [
+        8.82410717010498,
+        7.958834171295166
+      ],
+      "terminal_position": [
+        9.03761100769043,
+        7.483116626739502
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 87,
+      "seed": 1000087,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 34,
+      "return": -11.518113205223926,
+      "path_length": 4.188587188720703,
+      "straight_line_distance": 8.611490249633789,
+      "shortest_path": 9.353300858899102,
+      "spl": 0.0,
+      "final_distance": 4.840922832489014,
+      "distance_band": 3,
+      "start": [
+        1.193504810333252,
+        5.655125617980957
+      ],
+      "goal": [
+        8.951942443847656,
+        1.9182270765304565
+      ],
+      "terminal_position": [
+        4.526548385620117,
+        3.880476951599121
+      ],
+      "collision_position": [
+        4.526548385620117,
+        3.880476951599121
+      ]
+    },
+    {
+      "episode": 88,
+      "seed": 1000088,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 115,
+      "return": 7.945413971901871,
+      "path_length": 12.385860443115234,
+      "straight_line_distance": 5.808062553405762,
+      "shortest_path": 6.402691193458114,
+      "spl": 0.5169355187605956,
+      "final_distance": 0.5761272311210632,
+      "distance_band": 1,
+      "start": [
+        8.750314712524414,
+        1.7889055013656616
+      ],
+      "goal": [
+        6.265381336212158,
+        7.038543224334717
+      ],
+      "terminal_position": [
+        6.092047214508057,
+        7.587977409362793
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 89,
+      "seed": 1000089,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 202,
+      "return": 3.6621846281341277,
+      "path_length": 21.271732330322266,
+      "straight_line_distance": 4.766176700592041,
+      "shortest_path": 5.097665940288696,
+      "spl": 0.23964507737915233,
+      "final_distance": 0.5812135338783264,
+      "distance_band": 0,
+      "start": [
+        8.726744651794434,
+        2.315507650375366
+      ],
+      "goal": [
+        5.890451908111572,
+        6.145897388458252
+      ],
+      "terminal_position": [
+        6.110477447509766,
+        5.607940196990967
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 90,
+      "seed": 1000090,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 66,
+      "return": -12.029104995308444,
+      "path_length": 6.97951078414917,
+      "straight_line_distance": 6.2945990562438965,
+      "shortest_path": 7.851219330881978,
+      "spl": 0.0,
+      "final_distance": 3.114109992980957,
+      "distance_band": 1,
+      "start": [
+        4.186082363128662,
+        9.00001049041748
+      ],
+      "goal": [
+        3.1986520290374756,
+        2.783342123031616
+      ],
+      "terminal_position": [
+        5.340399742126465,
+        5.044005393981934
+      ],
+      "collision_position": [
+        5.340399742126465,
+        5.044005393981934
+      ]
+    },
+    {
+      "episode": 91,
+      "seed": 1000091,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 115,
+      "return": 9.506900005508214,
+      "path_length": 11.930057525634766,
+      "straight_line_distance": 8.582322120666504,
+      "shortest_path": 10.113351365237946,
+      "spl": 0.8477202514327224,
+      "final_distance": 0.516208827495575,
+      "distance_band": 3,
+      "start": [
+        8.804841041564941,
+        4.45088529586792
+      ],
+      "goal": [
+        1.6614344120025635,
+        9.207773208618164
+      ],
+      "terminal_position": [
+        2.174879550933838,
+        9.154428482055664
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 92,
+      "seed": 1000092,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 48,
+      "return": -11.167168803978711,
+      "path_length": 5.251255989074707,
+      "straight_line_distance": 8.72493839263916,
+      "shortest_path": 9.682590180780458,
+      "spl": 0.0,
+      "final_distance": 5.732332706451416,
+      "distance_band": 3,
+      "start": [
+        8.752592086791992,
+        1.0278706550598145
+      ],
+      "goal": [
+        4.61209774017334,
+        8.707769393920898
+      ],
+      "terminal_position": [
+        4.366029739379883,
+        2.9807207584381104
+      ],
+      "collision_position": [
+        4.366029739379883,
+        2.9807207584381104
+      ]
+    },
+    {
+      "episode": 93,
+      "seed": 1000093,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 265,
+      "return": 4.184413973009214,
+      "path_length": 27.52792739868164,
+      "straight_line_distance": 6.1039204597473145,
+      "shortest_path": 6.857716446627534,
+      "spl": 0.24911851689044928,
+      "final_distance": 0.5942160487174988,
+      "distance_band": 1,
+      "start": [
+        0.6579907536506653,
+        9.34235668182373
+      ],
+      "goal": [
+        6.236815452575684,
+        6.865551948547363
+      ],
+      "terminal_position": [
+        5.816878795623779,
+        7.285963535308838
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 94,
+      "seed": 1000094,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 47,
+      "return": 9.401629446656443,
+      "path_length": 5.350072383880615,
+      "straight_line_distance": 5.21293830871582,
+      "shortest_path": 5.642031021678293,
+      "spl": 1.0,
+      "final_distance": 0.5922066569328308,
+      "distance_band": 0,
+      "start": [
+        6.064106464385986,
+        8.70158863067627
+      ],
+      "goal": [
+        4.5465240478515625,
+        3.7144386768341064
+      ],
+      "terminal_position": [
+        4.800535678863525,
+        4.24940299987793
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 95,
+      "seed": 1000095,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 151,
+      "return": -19.07600976759568,
+      "path_length": 17.087493896484375,
+      "straight_line_distance": 8.528640747070312,
+      "shortest_path": 10.902081528017142,
+      "spl": 0.0,
+      "final_distance": 5.436418533325195,
+      "distance_band": 3,
+      "start": [
+        5.292352199554443,
+        1.318712592124939
+      ],
+      "goal": [
+        1.7440767288208008,
+        9.07419204711914
+      ],
+      "terminal_position": [
+        6.001474857330322,
+        5.693480968475342
+      ],
+      "collision_position": [
+        6.001474857330322,
+        5.693480968475342
+      ]
+    },
+    {
+      "episode": 96,
+      "seed": 1000096,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 55,
+      "return": -13.432405384723097,
+      "path_length": 5.827497482299805,
+      "straight_line_distance": 8.511329650878906,
+      "shortest_path": 10.60563491861041,
+      "spl": 0.0,
+      "final_distance": 5.877170085906982,
+      "distance_band": 3,
+      "start": [
+        9.0554838180542,
+        5.678443431854248
+      ],
+      "goal": [
+        1.263414740562439,
+        9.102825164794922
+      ],
+      "terminal_position": [
+        5.479110240936279,
+        5.007823467254639
+      ],
+      "collision_position": [
+        5.479110240936279,
+        5.007823467254639
+      ]
+    },
+    {
+      "episode": 97,
+      "seed": 1000097,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 84,
+      "return": 10.22655279096216,
+      "path_length": 9.746099472045898,
+      "straight_line_distance": 8.863752365112305,
+      "shortest_path": 9.544722215136424,
+      "spl": 0.9793376563119357,
+      "final_distance": 0.5099440813064575,
+      "distance_band": 3,
+      "start": [
+        8.789529800415039,
+        1.4415562152862549
+      ],
+      "goal": [
+        0.8050264716148376,
+        5.290426731109619
+      ],
+      "terminal_position": [
+        1.2637888193130493,
+        5.513092517852783
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 98,
+      "seed": 1000098,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 24,
+      "return": -11.198369403369725,
+      "path_length": 2.7160518169403076,
+      "straight_line_distance": 9.015981674194336,
+      "shortest_path": 10.907716446627546,
+      "spl": 0.0,
+      "final_distance": 6.620602607727051,
+      "distance_band": 3,
+      "start": [
+        1.2294979095458984,
+        4.220160484313965
+      ],
+      "goal": [
+        9.295974731445312,
+        8.247552871704102
+      ],
+      "terminal_position": [
+        3.524306058883667,
+        5.004063606262207
+      ],
+      "collision_position": [
+        3.524306058883667,
+        5.004063606262207
+      ]
+    },
+    {
+      "episode": 99,
+      "seed": 1000099,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 85,
+      "return": -14.465471099771094,
+      "path_length": 9.503313064575195,
+      "straight_line_distance": 9.736671447753906,
+      "shortest_path": 11.056854249492382,
+      "spl": 0.0,
+      "final_distance": 2.4344370365142822,
+      "distance_band": 3,
+      "start": [
+        3.5675294399261475,
+        0.9663612842559814
+      ],
+      "goal": [
+        8.767095565795898,
+        9.198450088500977
+      ],
+      "terminal_position": [
+        6.420629978179932,
+        8.5499267578125
+      ],
+      "collision_position": [
+        6.420629978179932,
+        8.5499267578125
+      ]
+    },
+    {
+      "episode": 100,
+      "seed": 1000100,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 56,
+      "return": 9.944959205458872,
+      "path_length": 7.052188873291016,
+      "straight_line_distance": 5.701894283294678,
+      "shortest_path": 6.034924240491751,
+      "spl": 0.8557519302053885,
+      "final_distance": 0.5649614334106445,
+      "distance_band": 1,
+      "start": [
+        9.325033187866211,
+        2.886359214782715
+      ],
+      "goal": [
+        3.722742795944214,
+        3.947465419769287
+      ],
+      "terminal_position": [
+        3.921607494354248,
+        3.418660879135132
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 101,
+      "seed": 1000101,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 115,
+      "return": 9.250741851050407,
+      "path_length": 14.461490631103516,
+      "straight_line_distance": 8.646867752075195,
+      "shortest_path": 9.457716446627549,
+      "spl": 0.6539931939164045,
+      "final_distance": 0.5281045436859131,
+      "distance_band": 3,
+      "start": [
+        9.083185195922852,
+        6.282214164733887
+      ],
+      "goal": [
+        0.7356141209602356,
+        4.026913166046143
+      ],
+      "terminal_position": [
+        1.2185678482055664,
+        4.240571975708008
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 102,
+      "seed": 1000102,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 48,
+      "return": -11.458280264632776,
+      "path_length": 5.489675521850586,
+      "straight_line_distance": 9.29662799835205,
+      "shortest_path": 10.9340620433566,
+      "spl": 0.0,
+      "final_distance": 5.312328338623047,
+      "distance_band": 3,
+      "start": [
+        1.1078336238861084,
+        4.508908748626709
+      ],
+      "goal": [
+        9.050957679748535,
+        9.339444160461426
+      ],
+      "terminal_position": [
+        5.867117404937744,
+        5.086916446685791
+      ],
+      "collision_position": [
+        5.867117404937744,
+        5.086916446685791
+      ]
+    },
+    {
+      "episode": 103,
+      "seed": 1000103,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 43,
+      "return": -12.037681590940338,
+      "path_length": 4.683760643005371,
+      "straight_line_distance": 8.822356224060059,
+      "shortest_path": 10.136143571373744,
+      "spl": 0.0,
+      "final_distance": 5.803739070892334,
+      "distance_band": 3,
+      "start": [
+        3.006108045578003,
+        8.691590309143066
+      ],
+      "goal": [
+        9.051667213439941,
+        2.266235113143921
+      ],
+      "terminal_position": [
+        5.85404634475708,
+        7.109643459320068
+      ],
+      "collision_position": [
+        5.85404634475708,
+        7.109643459320068
+      ]
+    },
+    {
+      "episode": 104,
+      "seed": 1000104,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 75,
+      "return": 7.891315511777066,
+      "path_length": 8.603636741638184,
+      "straight_line_distance": 7.214203357696533,
+      "shortest_path": 8.639087296526009,
+      "spl": 1.0,
+      "final_distance": 0.5929291248321533,
+      "distance_band": 2,
+      "start": [
+        4.044951915740967,
+        3.5756587982177734
+      ],
+      "goal": [
+        8.964266777038574,
+        8.85250186920166
+      ],
+      "terminal_position": [
+        8.372903823852539,
+        8.809433937072754
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 105,
+      "seed": 1000105,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 319,
+      "return": -3.6553069564979523,
+      "path_length": 35.631099700927734,
+      "straight_line_distance": 6.033155918121338,
+      "shortest_path": 6.2692388155425105,
+      "spl": 0.17594850757242492,
+      "final_distance": 0.5902339816093445,
+      "distance_band": 1,
+      "start": [
+        9.119797706604004,
+        1.6015644073486328
+      ],
+      "goal": [
+        3.119509220123291,
+        0.9726722240447998
+      ],
+      "terminal_position": [
+        3.6204683780670166,
+        1.284787654876709
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 106,
+      "seed": 1000106,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 49,
+      "return": -12.557986249681562,
+      "path_length": 5.493859767913818,
+      "straight_line_distance": 8.416643142700195,
+      "shortest_path": 9.0284271247462,
+      "spl": 0.0,
+      "final_distance": 3.679462194442749,
+      "distance_band": 2,
+      "start": [
+        1.1776092052459717,
+        4.221024513244629
+      ],
+      "goal": [
+        9.337409973144531,
+        6.284402370452881
+      ],
+      "terminal_position": [
+        5.910893440246582,
+        4.943720817565918
+      ],
+      "collision_position": [
+        5.910893440246582,
+        4.943720817565918
+      ]
+    },
+    {
+      "episode": 107,
+      "seed": 1000107,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 32,
+      "return": -11.983531033620238,
+      "path_length": 3.9375524520874023,
+      "straight_line_distance": 6.135967254638672,
+      "shortest_path": 7.3991378028648445,
+      "spl": 0.0,
+      "final_distance": 3.7778351306915283,
+      "distance_band": 1,
+      "start": [
+        3.3525230884552,
+        5.3926100730896
+      ],
+      "goal": [
+        8.217702865600586,
+        9.131609916687012
+      ],
+      "terminal_position": [
+        6.146308422088623,
+        5.972280502319336
+      ],
+      "collision_position": [
+        6.146308422088623,
+        5.972280502319336
+      ]
+    },
+    {
+      "episode": 108,
+      "seed": 1000108,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 96,
+      "return": 9.57030778779881,
+      "path_length": 11.27823257446289,
+      "straight_line_distance": 9.047253608703613,
+      "shortest_path": 10.168376618407372,
+      "spl": 0.9015930954847884,
+      "final_distance": 0.5779176950454712,
+      "distance_band": 3,
+      "start": [
+        4.3008713722229,
+        9.312044143676758
+      ],
+      "goal": [
+        7.610683441162109,
+        0.8919525742530823
+      ],
+      "terminal_position": [
+        7.222044944763184,
+        1.3196779489517212
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 109,
+      "seed": 1000109,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 65,
+      "return": 6.911175465211272,
+      "path_length": 8.155198097229004,
+      "straight_line_distance": 7.005886077880859,
+      "shortest_path": 7.834062043356593,
+      "spl": 0.960621918677668,
+      "final_distance": 0.5607931613922119,
+      "distance_band": 2,
+      "start": [
+        2.8232357501983643,
+        5.270349502563477
+      ],
+      "goal": [
+        9.191556930541992,
+        2.3502604961395264
+      ],
+      "terminal_position": [
+        8.81181526184082,
+        2.7629168033599854
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 110,
+      "seed": 1000110,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 349,
+      "return": -3.127424995735055,
+      "path_length": 39.126739501953125,
+      "straight_line_distance": 6.674244403839111,
+      "shortest_path": 7.399747468305833,
+      "spl": 0.18912251729885268,
+      "final_distance": 0.560630738735199,
+      "distance_band": 1,
+      "start": [
+        7.707883358001709,
+        1.0285751819610596
+      ],
+      "goal": [
+        3.3977792263031006,
+        6.124508857727051
+      ],
+      "terminal_position": [
+        3.0560991764068604,
+        5.68002986907959
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 111,
+      "seed": 1000111,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 38,
+      "return": 8.944990215357393,
+      "path_length": 4.59274959564209,
+      "straight_line_distance": 4.553223609924316,
+      "shortest_path": 4.9269552621700425,
+      "spl": 1.0,
+      "final_distance": 0.5810760855674744,
+      "distance_band": 0,
+      "start": [
+        6.163631439208984,
+        6.482831001281738
+      ],
+      "goal": [
+        9.261312484741211,
+        3.1457340717315674
+      ],
+      "terminal_position": [
+        8.947142601013184,
+        3.6345558166503906
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 112,
+      "seed": 1000112,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 106,
+      "return": 8.10588274046313,
+      "path_length": 12.368067741394043,
+      "straight_line_distance": 9.331768035888672,
+      "shortest_path": 11.094722215136429,
+      "spl": 0.8970457186294412,
+      "final_distance": 0.543329656124115,
+      "distance_band": 3,
+      "start": [
+        3.196727752685547,
+        9.070438385009766
+      ],
+      "goal": [
+        8.0532865524292,
+        1.102017879486084
+      ],
+      "terminal_position": [
+        7.577841758728027,
+        1.364999532699585
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 113,
+      "seed": 1000113,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 70,
+      "return": -12.39435463224072,
+      "path_length": 7.553361415863037,
+      "straight_line_distance": 9.203958511352539,
+      "shortest_path": 10.349747468305834,
+      "spl": 0.0,
+      "final_distance": 3.798473358154297,
+      "distance_band": 3,
+      "start": [
+        4.066812992095947,
+        8.990626335144043
+      ],
+      "goal": [
+        8.321375846862793,
+        0.8290367126464844
+      ],
+      "terminal_position": [
+        5.765012741088867,
+        3.6385574340820312
+      ],
+      "collision_position": [
+        5.765012741088867,
+        3.6385574340820312
+      ]
+    },
+    {
+      "episode": 114,
+      "seed": 1000114,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 61,
+      "return": -10.906677472405136,
+      "path_length": 6.153965950012207,
+      "straight_line_distance": 8.850360870361328,
+      "shortest_path": 10.552691193458124,
+      "spl": 0.0,
+      "final_distance": 6.478427886962891,
+      "distance_band": 3,
+      "start": [
+        8.69588565826416,
+        9.056748390197754
+      ],
+      "goal": [
+        0.7964175343513489,
+        5.0658464431762695
+      ],
+      "terminal_position": [
+        7.272582530975342,
+        5.237061977386475
+      ],
+      "collision_position": [
+        7.272582530975342,
+        5.237061977386475
+      ]
+    },
+    {
+      "episode": 115,
+      "seed": 1000115,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 92,
+      "return": 8.91602912824601,
+      "path_length": 10.582262992858887,
+      "straight_line_distance": 6.260646343231201,
+      "shortest_path": 7.297665940288704,
+      "spl": 0.6896129821393882,
+      "final_distance": 0.5860293507575989,
+      "distance_band": 1,
+      "start": [
+        4.730004787445068,
+        8.933629989624023
+      ],
+      "goal": [
+        9.198283195495605,
+        4.548407077789307
+      ],
+      "terminal_position": [
+        8.662734985351562,
+        4.310460567474365
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 116,
+      "seed": 1000116,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 126,
+      "return": -14.663433145266026,
+      "path_length": 13.344429016113281,
+      "straight_line_distance": 4.190428733825684,
+      "shortest_path": 7.912741699796958,
+      "spl": 0.0,
+      "final_distance": 1.1946041584014893,
+      "distance_band": 0,
+      "start": [
+        3.2083728313446045,
+        8.894691467285156
+      ],
+      "goal": [
+        2.716123104095459,
+        4.733275413513184
+      ],
+      "terminal_position": [
+        1.655777931213379,
+        5.2835001945495605
+      ],
+      "collision_position": [
+        1.655777931213379,
+        5.2835001945495605
+      ]
+    },
+    {
+      "episode": 117,
+      "seed": 1000117,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 69,
+      "return": 9.398227341967868,
+      "path_length": 8.245904922485352,
+      "straight_line_distance": 6.083863735198975,
+      "shortest_path": 7.135533905932739,
+      "spl": 0.8653427335155421,
+      "final_distance": 0.5796356201171875,
+      "distance_band": 1,
+      "start": [
+        4.289280891418457,
+        5.394388198852539
+      ],
+      "goal": [
+        8.637613296508789,
+        1.1393440961837769
+      ],
+      "terminal_position": [
+        8.187420845031738,
+        1.5044525861740112
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 118,
+      "seed": 1000118,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 159,
+      "return": -14.288953532872256,
+      "path_length": 15.076367378234863,
+      "straight_line_distance": 8.676634788513184,
+      "shortest_path": 10.890559159102157,
+      "spl": 0.0,
+      "final_distance": 4.889557361602783,
+      "distance_band": 3,
+      "start": [
+        9.044238090515137,
+        8.698380470275879
+      ],
+      "goal": [
+        0.7269360423088074,
+        6.227249622344971
+      ],
+      "terminal_position": [
+        5.241100788116455,
+        4.348397254943848
+      ],
+      "collision_position": [
+        5.241100788116455,
+        4.348397254943848
+      ]
+    },
+    {
+      "episode": 119,
+      "seed": 1000119,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 43,
+      "return": -11.336427362221002,
+      "path_length": 5.102461814880371,
+      "straight_line_distance": 9.096332550048828,
+      "shortest_path": 11.566295090390234,
+      "spl": 0.0,
+      "final_distance": 5.708154201507568,
+      "distance_band": 3,
+      "start": [
+        7.244380950927734,
+        1.5468086004257202
+      ],
+      "goal": [
+        2.115178108215332,
+        9.059102058410645
+      ],
+      "terminal_position": [
+        5.191760540008545,
+        4.25101900100708
+      ],
+      "collision_position": [
+        5.191760540008545,
+        4.25101900100708
+      ]
+    },
+    {
+      "episode": 120,
+      "seed": 1000120,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 29,
+      "return": -13.444772721268237,
+      "path_length": 3.146383285522461,
+      "straight_line_distance": 9.154409408569336,
+      "shortest_path": 11.247056274847726,
+      "spl": 0.0,
+      "final_distance": 6.496993064880371,
+      "distance_band": 3,
+      "start": [
+        0.6469318866729736,
+        5.333517074584961
+      ],
+      "goal": [
+        9.308639526367188,
+        8.29629135131836
+      ],
+      "terminal_position": [
+        3.5031633377075195,
+        5.379552364349365
+      ],
+      "collision_position": [
+        3.5031633377075195,
+        5.379552364349365
+      ]
+    },
+    {
+      "episode": 121,
+      "seed": 1000121,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 54,
+      "return": 8.040084455627948,
+      "path_length": 6.176837921142578,
+      "straight_line_distance": 5.710495948791504,
+      "shortest_path": 6.002081528017129,
+      "spl": 0.9717077904007682,
+      "final_distance": 0.5067110657691956,
+      "distance_band": 1,
+      "start": [
+        6.1437153816223145,
+        7.4344048500061035
+      ],
+      "goal": [
+        5.295505046844482,
+        1.787254810333252
+      ],
+      "terminal_position": [
+        4.88535737991333,
+        2.0848031044006348
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 122,
+      "seed": 1000122,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 67,
+      "return": 7.9927492680435535,
+      "path_length": 8.12663745880127,
+      "straight_line_distance": 5.677678108215332,
+      "shortest_path": 7.578427124746193,
+      "spl": 0.932541554014895,
+      "final_distance": 0.5776642560958862,
+      "distance_band": 1,
+      "start": [
+        3.8475289344787598,
+        3.098700523376465
+      ],
+      "goal": [
+        3.773493766784668,
+        8.775896072387695
+      ],
+      "terminal_position": [
+        4.158905506134033,
+        9.206191062927246
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 123,
+      "seed": 1000123,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 251,
+      "return": 3.7058277828473365,
+      "path_length": 25.79782485961914,
+      "straight_line_distance": 5.604444980621338,
+      "shortest_path": 6.076345596729059,
+      "spl": 0.23553712880035288,
+      "final_distance": 0.5432853698730469,
+      "distance_band": 1,
+      "start": [
+        6.501971244812012,
+        0.7755531668663025
+      ],
+      "goal": [
+        5.969088554382324,
+        6.354606628417969
+      ],
+      "terminal_position": [
+        6.168625354766846,
+        6.859922409057617
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 124,
+      "seed": 1000124,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 93,
+      "return": -15.410206737462431,
+      "path_length": 11.94331169128418,
+      "straight_line_distance": 5.552687644958496,
+      "shortest_path": 9.502691193458123,
+      "spl": 0.0,
+      "final_distance": 2.10276460647583,
+      "distance_band": 1,
+      "start": [
+        3.5667362213134766,
+        3.759197235107422
+      ],
+      "goal": [
+        1.29848313331604,
+        8.827467918395996
+      ],
+      "terminal_position": [
+        1.2415618896484375,
+        6.725473880767822
+      ],
+      "collision_position": [
+        1.2415618896484375,
+        6.725473880767822
+      ]
+    },
+    {
+      "episode": 125,
+      "seed": 1000125,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 29,
+      "return": -11.144815605162876,
+      "path_length": 3.5383336544036865,
+      "straight_line_distance": 5.3821797370910645,
+      "shortest_path": 5.515685424949237,
+      "spl": 0.0,
+      "final_distance": 3.5481865406036377,
+      "distance_band": 0,
+      "start": [
+        3.764683246612549,
+        0.7811589241027832
+      ],
+      "goal": [
+        3.3854615688323975,
+        6.149962425231934
+      ],
+      "terminal_position": [
+        5.707993030548096,
+        3.4675240516662598
+      ],
+      "collision_position": [
+        5.707993030548096,
+        3.4675240516662598
+      ]
+    },
+    {
+      "episode": 126,
+      "seed": 1000126,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 45,
+      "return": 9.844470051350072,
+      "path_length": 5.106807708740234,
+      "straight_line_distance": 4.949166297912598,
+      "shortest_path": 5.31482322781408,
+      "spl": 1.0,
+      "final_distance": 0.5526680946350098,
+      "distance_band": 0,
+      "start": [
+        4.052615165710449,
+        2.3935813903808594
+      ],
+      "goal": [
+        8.351062774658203,
+        4.846660137176514
+      ],
+      "terminal_position": [
+        7.91553258895874,
+        4.506431579589844
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 127,
+      "seed": 1000127,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 57,
+      "return": -10.794481546152383,
+      "path_length": 6.068318843841553,
+      "straight_line_distance": 6.280452728271484,
+      "shortest_path": 8.067766952966377,
+      "spl": 0.0,
+      "final_distance": 3.6411147117614746,
+      "distance_band": 1,
+      "start": [
+        1.0519638061523438,
+        8.810803413391113
+      ],
+      "goal": [
+        6.029086589813232,
+        4.980355262756348
+      ],
+      "terminal_position": [
+        6.735074996948242,
+        8.55237102508545
+      ],
+      "collision_position": [
+        6.735074996948242,
+        8.55237102508545
+      ]
+    },
+    {
+      "episode": 128,
+      "seed": 1000128,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 59,
+      "return": 9.869583316205535,
+      "path_length": 6.828222274780273,
+      "straight_line_distance": 6.218166351318359,
+      "shortest_path": 6.407106781186546,
+      "spl": 0.9383272136366887,
+      "final_distance": 0.49109458923339844,
+      "distance_band": 1,
+      "start": [
+        5.37539529800415,
+        2.792781114578247
+      ],
+      "goal": [
+        4.852280139923096,
+        8.988903999328613
+      ],
+      "terminal_position": [
+        5.244050025939941,
+        8.692778587341309
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 129,
+      "seed": 1000129,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 156,
+      "return": -15.509468356496654,
+      "path_length": 15.283519744873047,
+      "straight_line_distance": 7.896058082580566,
+      "shortest_path": 9.72842712474619,
+      "spl": 0.0,
+      "final_distance": 3.294459581375122,
+      "distance_band": 2,
+      "start": [
+        9.025524139404297,
+        8.577341079711914
+      ],
+      "goal": [
+        1.8146833181381226,
+        5.359964370727539
+      ],
+      "terminal_position": [
+        5.086038589477539,
+        5.749450206756592
+      ],
+      "collision_position": [
+        5.086038589477539,
+        5.749450206756592
+      ]
+    },
+    {
+      "episode": 130,
+      "seed": 1000130,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 128,
+      "return": 3.94478047080338,
+      "path_length": 14.543793678283691,
+      "straight_line_distance": 5.069993019104004,
+      "shortest_path": 8.209188309203686,
+      "spl": 0.5644461473254652,
+      "final_distance": 0.5498880743980408,
+      "distance_band": 0,
+      "start": [
+        1.1659916639328003,
+        4.952322006225586
+      ],
+      "goal": [
+        4.350853443145752,
+        8.897127151489258
+      ],
+      "terminal_position": [
+        4.837348461151123,
+        8.64080810546875
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 131,
+      "seed": 1000131,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 60,
+      "return": 7.6287667225115,
+      "path_length": 7.019438743591309,
+      "straight_line_distance": 5.786568641662598,
+      "shortest_path": 6.058326112068518,
+      "spl": 0.8630784217042596,
+      "final_distance": 0.5997260808944702,
+      "distance_band": 1,
+      "start": [
+        4.010172367095947,
+        1.313024878501892
+      ],
+      "goal": [
+        0.6013044118881226,
+        5.98892068862915
+      ],
+      "terminal_position": [
+        1.0161569118499756,
+        5.55582857131958
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 132,
+      "seed": 1000132,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 125,
+      "return": 8.734604093886446,
+      "path_length": 14.532594680786133,
+      "straight_line_distance": 8.983424186706543,
+      "shortest_path": 10.961269837220819,
+      "spl": 0.7542541492410132,
+      "final_distance": 0.5137001276016235,
+      "distance_band": 3,
+      "start": [
+        7.516201972961426,
+        1.041420578956604
+      ],
+      "goal": [
+        3.1964807510375977,
+        8.918089866638184
+      ],
+      "terminal_position": [
+        3.612420082092285,
+        9.21955680847168
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 133,
+      "seed": 1000133,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 129,
+      "return": 6.153588408429641,
+      "path_length": 14.236190795898438,
+      "straight_line_distance": 8.292081832885742,
+      "shortest_path": 9.797056274847717,
+      "spl": 0.6881796131638197,
+      "final_distance": 0.5747226476669312,
+      "distance_band": 2,
+      "start": [
+        9.33349609375,
+        7.69568395614624
+      ],
+      "goal": [
+        1.483849287033081,
+        5.023294448852539
+      ],
+      "terminal_position": [
+        1.8462259769439697,
+        5.469376564025879
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 134,
+      "seed": 1000134,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 94,
+      "return": 7.451639395076199,
+      "path_length": 11.188212394714355,
+      "straight_line_distance": 6.882019996643066,
+      "shortest_path": 7.544112549695429,
+      "spl": 0.6742911453182183,
+      "final_distance": 0.5663249492645264,
+      "distance_band": 1,
+      "start": [
+        6.122356414794922,
+        8.516080856323242
+      ],
+      "goal": [
+        8.737252235412598,
+        2.150193691253662
+      ],
+      "terminal_position": [
+        8.289743423461914,
+        1.803120493888855
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 135,
+      "seed": 1000135,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 47,
+      "return": -11.6639149710536,
+      "path_length": 5.404388427734375,
+      "straight_line_distance": 4.477868556976318,
+      "shortest_path": 4.747665940288699,
+      "spl": 0.0,
+      "final_distance": 1.5820808410644531,
+      "distance_band": 0,
+      "start": [
+        3.2811713218688965,
+        3.2959651947021484
+      ],
+      "goal": [
+        5.910480976104736,
+        6.9206085205078125
+      ],
+      "terminal_position": [
+        5.671341896057129,
+        5.356705665588379
+      ],
+      "collision_position": [
+        5.671341896057129,
+        5.356705665588379
+      ]
+    },
+    {
+      "episode": 136,
+      "seed": 1000136,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 134,
+      "return": 4.357906828634441,
+      "path_length": 14.64383316040039,
+      "straight_line_distance": 9.108635902404785,
+      "shortest_path": 10.72548339959392,
+      "spl": 0.7324232174808979,
+      "final_distance": 0.5926689505577087,
+      "distance_band": 3,
+      "start": [
+        9.144049644470215,
+        9.060651779174805
+      ],
+      "goal": [
+        1.4492764472961426,
+        4.18646240234375
+      ],
+      "terminal_position": [
+        1.7599481344223022,
+        4.6911797523498535
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 137,
+      "seed": 1000137,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 7,
+      "return": -10.117927190382034,
+      "path_length": 0.7347471714019775,
+      "straight_line_distance": 7.354356288909912,
+      "shortest_path": 9.083452377915604,
+      "spl": 0.0,
+      "final_distance": 6.65170431137085,
+      "distance_band": 2,
+      "start": [
+        8.87871265411377,
+        8.878116607666016
+      ],
+      "goal": [
+        2.1884822845458984,
+        5.824041366577148
+      ],
+      "terminal_position": [
+        8.219135284423828,
+        8.630533218383789
+      ],
+      "collision_position": [
+        8.219135284423828,
+        8.630533218383789
+      ]
+    },
+    {
+      "episode": 138,
+      "seed": 1000138,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 127,
+      "return": 5.020166013389826,
+      "path_length": 13.926064491271973,
+      "straight_line_distance": 6.311715126037598,
+      "shortest_path": 8.126345596729065,
+      "spl": 0.5835349679604152,
+      "final_distance": 0.5543282628059387,
+      "distance_band": 1,
+      "start": [
+        0.6256340146064758,
+        9.043821334838867
+      ],
+      "goal": [
+        5.716047286987305,
+        5.312140941619873
+      ],
+      "terminal_position": [
+        5.162171840667725,
+        5.289740562438965
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 139,
+      "seed": 1000139,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 167,
+      "return": -21.374466149514774,
+      "path_length": 19.235063552856445,
+      "straight_line_distance": 5.146799087524414,
+      "shortest_path": 5.974873734152913,
+      "spl": 0.0,
+      "final_distance": 2.2365827560424805,
+      "distance_band": 0,
+      "start": [
+        5.8211469650268555,
+        9.015467643737793
+      ],
+      "goal": [
+        3.3515334129333496,
+        4.4998779296875
+      ],
+      "terminal_position": [
+        4.893337249755859,
+        2.879648447036743
+      ],
+      "collision_position": [
+        4.893337249755859,
+        2.879648447036743
+      ]
+    },
+    {
+      "episode": 140,
+      "seed": 1000140,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 47,
+      "return": -11.710247160401195,
+      "path_length": 5.4929280281066895,
+      "straight_line_distance": 8.685418128967285,
+      "shortest_path": 9.878427124746203,
+      "spl": 0.0,
+      "final_distance": 4.972328186035156,
+      "distance_band": 3,
+      "start": [
+        3.8922839164733887,
+        9.333954811096191
+      ],
+      "goal": [
+        4.378734111785889,
+        0.6621694564819336
+      ],
+      "terminal_position": [
+        5.184506416320801,
+        5.568775177001953
+      ],
+      "collision_position": [
+        5.184506416320801,
+        5.568775177001953
+      ]
+    },
+    {
+      "episode": 141,
+      "seed": 1000141,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 56,
+      "return": 9.893503778846934,
+      "path_length": 7.3776960372924805,
+      "straight_line_distance": 5.824413776397705,
+      "shortest_path": 6.216904755831209,
+      "spl": 0.8426620891408713,
+      "final_distance": 0.5797840356826782,
+      "distance_band": 1,
+      "start": [
+        4.593956470489502,
+        0.8814527988433838
+      ],
+      "goal": [
+        0.852184534072876,
+        5.344964027404785
+      ],
+      "terminal_position": [
+        1.4299511909484863,
+        5.3932881355285645
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 142,
+      "seed": 1000142,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 134,
+      "return": 4.810281527927145,
+      "path_length": 14.863143920898438,
+      "straight_line_distance": 4.255456924438477,
+      "shortest_path": 8.643502884254447,
+      "spl": 0.5815393385312769,
+      "final_distance": 0.5391721129417419,
+      "distance_band": 0,
+      "start": [
+        1.284977912902832,
+        5.363772869110107
+      ],
+      "goal": [
+        3.6585044860839844,
+        8.8958101272583
+      ],
+      "terminal_position": [
+        4.103103160858154,
+        9.20083236694336
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 143,
+      "seed": 1000143,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 83,
+      "return": -12.88119811564684,
+      "path_length": 9.805047035217285,
+      "straight_line_distance": 8.568315505981445,
+      "shortest_path": 9.990559159102165,
+      "spl": 0.0,
+      "final_distance": 3.702418804168701,
+      "distance_band": 3,
+      "start": [
+        7.013678550720215,
+        1.4332430362701416
+      ],
+      "goal": [
+        3.60787296295166,
+        9.2955904006958
+      ],
+      "terminal_position": [
+        3.8322718143463135,
+        5.599977970123291
+      ],
+      "collision_position": [
+        3.8322718143463135,
+        5.599977970123291
+      ]
+    },
+    {
+      "episode": 144,
+      "seed": 1000144,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 44,
+      "return": -12.926329916575924,
+      "path_length": 5.237061977386475,
+      "straight_line_distance": 8.247718811035156,
+      "shortest_path": 8.805634918610412,
+      "spl": 0.0,
+      "final_distance": 4.216243743896484,
+      "distance_band": 2,
+      "start": [
+        4.538563251495361,
+        8.892996788024902
+      ],
+      "goal": [
+        5.810115337371826,
+        0.7438848614692688
+      ],
+      "terminal_position": [
+        4.635392189025879,
+        4.793173313140869
+      ],
+      "collision_position": [
+        4.635392189025879,
+        4.793173313140869
+      ]
+    },
+    {
+      "episode": 145,
+      "seed": 1000145,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 30,
+      "return": -14.265494532883167,
+      "path_length": 3.029416084289551,
+      "straight_line_distance": 4.416983604431152,
+      "shortest_path": 6.600609665440988,
+      "spl": 0.0,
+      "final_distance": 4.826045513153076,
+      "distance_band": 0,
+      "start": [
+        2.6411101818084717,
+        4.944555759429932
+      ],
+      "goal": [
+        4.587504863739014,
+        8.909564018249512
+      ],
+      "terminal_position": [
+        5.390835762023926,
+        4.150848388671875
+      ],
+      "collision_position": [
+        5.390835762023926,
+        4.150848388671875
+      ]
+    },
+    {
+      "episode": 146,
+      "seed": 1000146,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 36,
+      "return": 9.73240043502301,
+      "path_length": 4.02163028717041,
+      "straight_line_distance": 4.063427448272705,
+      "shortest_path": 4.334924240491748,
+      "spl": 1.0,
+      "final_distance": 0.5116668939590454,
+      "distance_band": 0,
+      "start": [
+        6.9699859619140625,
+        4.104172706604004
+      ],
+      "goal": [
+        5.916136264801025,
+        8.028563499450684
+      ],
+      "terminal_position": [
+        6.058892726898193,
+        7.537214756011963
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 147,
+      "seed": 1000147,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 25,
+      "return": -11.527785618789494,
+      "path_length": 3.090994119644165,
+      "straight_line_distance": 4.481348514556885,
+      "shortest_path": 4.797665940288698,
+      "spl": 0.0,
+      "final_distance": 3.482184648513794,
+      "distance_band": 0,
+      "start": [
+        3.3897056579589844,
+        3.991919994354248
+      ],
+      "goal": [
+        6.207722187042236,
+        7.476352214813232
+      ],
+      "terminal_position": [
+        3.0305638313293457,
+        6.051124572753906
+      ],
+      "collision_position": [
+        3.0305638313293457,
+        6.051124572753906
+      ]
+    },
+    {
+      "episode": 148,
+      "seed": 1000148,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 83,
+      "return": 7.173428074456751,
+      "path_length": 9.863362312316895,
+      "straight_line_distance": 7.989785671234131,
+      "shortest_path": 8.639087296526016,
+      "spl": 0.8758765036683218,
+      "final_distance": 0.5431289672851562,
+      "distance_band": 2,
+      "start": [
+        8.814933776855469,
+        1.6582971811294556
+      ],
+      "goal": [
+        1.3133008480072021,
+        4.408239841461182
+      ],
+      "terminal_position": [
+        1.5636125802993774,
+        4.890249252319336
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 149,
+      "seed": 1000149,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 49,
+      "return": 9.827624616678804,
+      "path_length": 5.358859539031982,
+      "straight_line_distance": 5.382525444030762,
+      "shortest_path": 5.462132034355964,
+      "spl": 1.0,
+      "final_distance": 0.5241893529891968,
+      "distance_band": 0,
+      "start": [
+        0.8445457816123962,
+        8.919794082641602
+      ],
+      "goal": [
+        6.22482442855835,
+        8.764276504516602
+      ],
+      "terminal_position": [
+        5.742827892303467,
+        8.558233261108398
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 150,
+      "seed": 1000150,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 39,
+      "return": -12.230885093507823,
+      "path_length": 4.2302446365356445,
+      "straight_line_distance": 7.983415126800537,
+      "shortest_path": 8.207106781186553,
+      "spl": 0.0,
+      "final_distance": 4.948567867279053,
+      "distance_band": 2,
+      "start": [
+        9.167633056640625,
+        5.20628547668457
+      ],
+      "goal": [
+        1.1948537826538086,
+        5.6182451248168945
+      ],
+      "terminal_position": [
+        5.99671745300293,
+        4.422239303588867
+      ],
+      "collision_position": [
+        5.99671745300293,
+        4.422239303588867
+      ]
+    },
+    {
+      "episode": 151,
+      "seed": 1000151,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 75,
+      "return": 9.663471451989608,
+      "path_length": 8.28795051574707,
+      "straight_line_distance": 6.503849983215332,
+      "shortest_path": 7.744112549695427,
+      "spl": 0.9343820930134231,
+      "final_distance": 0.4898180365562439,
+      "distance_band": 1,
+      "start": [
+        3.6219441890716553,
+        4.8980937004089355
+      ],
+      "goal": [
+        8.68785285949707,
+        8.976897239685059
+      ],
+      "terminal_position": [
+        8.198271751403809,
+        8.992130279541016
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 152,
+      "seed": 1000152,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 13,
+      "return": -10.148754397640005,
+      "path_length": 1.2064834833145142,
+      "straight_line_distance": 9.003535270690918,
+      "shortest_path": 10.864213562373095,
+      "spl": 0.0,
+      "final_distance": 8.276894569396973,
+      "distance_band": 3,
+      "start": [
+        9.251954078674316,
+        5.902903079986572
+      ],
+      "goal": [
+        0.7294058203697205,
+        8.806317329406738
+      ],
+      "terminal_position": [
+        8.231879234313965,
+        5.310622215270996
+      ],
+      "collision_position": [
+        8.231879234313965,
+        5.310622215270996
+      ]
+    },
+    {
+      "episode": 153,
+      "seed": 1000153,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 12,
+      "return": -11.2942202873528,
+      "path_length": 1.6242519617080688,
+      "straight_line_distance": 8.869270324707031,
+      "shortest_path": 10.186143571373734,
+      "spl": 0.0,
+      "final_distance": 7.253848552703857,
+      "distance_band": 3,
+      "start": [
+        9.054015159606934,
+        3.678229808807373
+      ],
+      "goal": [
+        2.2132301330566406,
+        9.323370933532715
+      ],
+      "terminal_position": [
+        7.854011535644531,
+        4.7626800537109375
+      ],
+      "collision_position": [
+        7.854011535644531,
+        4.7626800537109375
+      ]
+    },
+    {
+      "episode": 154,
+      "seed": 1000154,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 57,
+      "return": 9.303573601413518,
+      "path_length": 6.270348072052002,
+      "straight_line_distance": 5.389379978179932,
+      "shortest_path": 6.326345596729058,
+      "spl": 1.0,
+      "final_distance": 0.530864417552948,
+      "distance_band": 0,
+      "start": [
+        5.921398162841797,
+        4.179388046264648
+      ],
+      "goal": [
+        7.915317535400391,
+        9.18635368347168
+      ],
+      "terminal_position": [
+        7.3846917152404785,
+        9.202268600463867
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 155,
+      "seed": 1000155,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 91,
+      "return": 8.831319723045453,
+      "path_length": 10.442447662353516,
+      "straight_line_distance": 5.9991984367370605,
+      "shortest_path": 7.22842712474619,
+      "spl": 0.692215786803096,
+      "final_distance": 0.5641565322875977,
+      "distance_band": 1,
+      "start": [
+        4.632938385009766,
+        5.365785598754883
+      ],
+      "goal": [
+        9.33173656463623,
+        9.095621109008789
+      ],
+      "terminal_position": [
+        8.770042419433594,
+        9.148273468017578
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 156,
+      "seed": 1000156,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 49,
+      "return": -11.966252571553923,
+      "path_length": 5.468251705169678,
+      "straight_line_distance": 5.371833324432373,
+      "shortest_path": 5.474264068711928,
+      "spl": 0.0,
+      "final_distance": 0.7700701355934143,
+      "distance_band": 0,
+      "start": [
+        2.821352958679199,
+        4.498915195465088
+      ],
+      "goal": [
+        8.184100151062012,
+        4.186606407165527
+      ],
+      "terminal_position": [
+        7.664938449859619,
+        4.755358695983887
+      ],
+      "collision_position": [
+        7.664938449859619,
+        4.755358695983887
+      ]
+    },
+    {
+      "episode": 157,
+      "seed": 1000157,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 131,
+      "return": 8.120387107133865,
+      "path_length": 14.088560104370117,
+      "straight_line_distance": 9.369111061096191,
+      "shortest_path": 11.669848480983504,
+      "spl": 0.8283208783957734,
+      "final_distance": 0.5816506147384644,
+      "distance_band": 3,
+      "start": [
+        7.048597812652588,
+        0.6843335628509521
+      ],
+      "goal": [
+        2.126763343811035,
+        8.656522750854492
+      ],
+      "terminal_position": [
+        2.570974826812744,
+        9.032013893127441
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 158,
+      "seed": 1000158,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 22,
+      "return": -10.312675891909748,
+      "path_length": 2.3777103424072266,
+      "straight_line_distance": 9.057268142700195,
+      "shortest_path": 11.779898987322339,
+      "spl": 0.0,
+      "final_distance": 7.570143699645996,
+      "distance_band": 3,
+      "start": [
+        6.351700305938721,
+        1.0899418592453003
+      ],
+      "goal": [
+        1.3464851379394531,
+        8.638579368591309
+      ],
+      "terminal_position": [
+        5.7062177658081055,
+        2.4498960971832275
+      ],
+      "collision_position": [
+        5.7062177658081055,
+        2.4498960971832275
+      ]
+    },
+    {
+      "episode": 159,
+      "seed": 1000159,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 49,
+      "return": 7.592518894467503,
+      "path_length": 6.053480625152588,
+      "straight_line_distance": 5.506892204284668,
+      "shortest_path": 5.847056274847711,
+      "spl": 0.9658998908087405,
+      "final_distance": 0.5617403388023376,
+      "distance_band": 1,
+      "start": [
+        6.287975788116455,
+        7.877277374267578
+      ],
+      "goal": [
+        5.050080299377441,
+        2.511321783065796
+      ],
+      "terminal_position": [
+        4.7449235916137695,
+        2.9829483032226562
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 160,
+      "seed": 1000160,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 64,
+      "return": 9.035075581312412,
+      "path_length": 7.060612678527832,
+      "straight_line_distance": 4.950871467590332,
+      "shortest_path": 5.349137802864843,
+      "spl": 0.7576024980285649,
+      "final_distance": 0.5458441972732544,
+      "distance_band": 0,
+      "start": [
+        4.071836948394775,
+        2.396535634994507
+      ],
+      "goal": [
+        8.581562042236328,
+        4.439452648162842
+      ],
+      "terminal_position": [
+        8.835598945617676,
+        3.9563262462615967
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 161,
+      "seed": 1000161,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 38,
+      "return": 9.401900815893896,
+      "path_length": 3.990736961364746,
+      "straight_line_distance": 4.1438164710998535,
+      "shortest_path": 4.2242640687119275,
+      "spl": 1.0,
+      "final_distance": 0.5831058621406555,
+      "distance_band": 0,
+      "start": [
+        5.339289665222168,
+        4.670647144317627
+      ],
+      "goal": [
+        1.2059468030929565,
+        4.965081214904785
+      ],
+      "terminal_position": [
+        1.7242982387542725,
+        4.698015213012695
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 162,
+      "seed": 1000162,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 52,
+      "return": 9.70948761398904,
+      "path_length": 6.122498035430908,
+      "straight_line_distance": 5.077824592590332,
+      "shortest_path": 6.371320343559639,
+      "spl": 1.0,
+      "final_distance": 0.5360277891159058,
+      "distance_band": 0,
+      "start": [
+        2.995683431625366,
+        5.538058280944824
+      ],
+      "goal": [
+        6.601077079772949,
+        9.113731384277344
+      ],
+      "terminal_position": [
+        6.303467750549316,
+        8.667912483215332
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 163,
+      "seed": 1000163,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 208,
+      "return": 0.6261131502105854,
+      "path_length": 22.60454559326172,
+      "straight_line_distance": 8.084357261657715,
+      "shortest_path": 10.626345596729072,
+      "spl": 0.4700977311349591,
+      "final_distance": 0.555897057056427,
+      "distance_band": 2,
+      "start": [
+        5.256941318511963,
+        2.63586163520813
+      ],
+      "goal": [
+        0.8163294196128845,
+        9.391436576843262
+      ],
+      "terminal_position": [
+        1.3633304834365845,
+        9.49048900604248
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 164,
+      "seed": 1000164,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 16,
+      "return": -11.399512111674994,
+      "path_length": 1.535498023033142,
+      "straight_line_distance": 5.204335689544678,
+      "shortest_path": 5.407106781186546,
+      "spl": 0.0,
+      "final_distance": 3.9626197814941406,
+      "distance_band": 0,
+      "start": [
+        4.134167194366455,
+        4.764279365539551
+      ],
+      "goal": [
+        9.313397407531738,
+        5.274850845336914
+      ],
+      "terminal_position": [
+        5.513155460357666,
+        4.15212345123291
+      ],
+      "collision_position": [
+        5.513155460357666,
+        4.15212345123291
+      ]
+    },
+    {
+      "episode": 165,
+      "seed": 1000165,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 125,
+      "return": 9.122319144604262,
+      "path_length": 14.31367015838623,
+      "straight_line_distance": 9.8643217086792,
+      "shortest_path": 12.649137802864864,
+      "spl": 0.8837103037094833,
+      "final_distance": 0.5770557522773743,
+      "distance_band": 3,
+      "start": [
+        1.47565758228302,
+        8.605415344238281
+      ],
+      "goal": [
+        7.5897603034973145,
+        0.8644464015960693
+      ],
+      "terminal_position": [
+        7.541746139526367,
+        1.439501166343689
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 166,
+      "seed": 1000166,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 125,
+      "return": 1.7228827612125315,
+      "path_length": 13.461960792541504,
+      "straight_line_distance": 5.659881114959717,
+      "shortest_path": 7.6142135623730995,
+      "spl": 0.5656095482458764,
+      "final_distance": 0.5928395986557007,
+      "distance_band": 1,
+      "start": [
+        5.225660800933838,
+        8.798135757446289
+      ],
+      "goal": [
+        1.1817634105682373,
+        4.838192462921143
+      ],
+      "terminal_position": [
+        1.7589739561080933,
+        4.702963829040527
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 167,
+      "seed": 1000167,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 48,
+      "return": 9.496367940213531,
+      "path_length": 5.652060508728027,
+      "straight_line_distance": 5.174691677093506,
+      "shortest_path": 5.559188309203676,
+      "spl": 0.9835684350192401,
+      "final_distance": 0.5958432555198669,
+      "distance_band": 0,
+      "start": [
+        5.722827911376953,
+        5.962989807128906
+      ],
+      "goal": [
+        0.7242133617401123,
+        4.624598503112793
+      ],
+      "terminal_position": [
+        1.3060798645019531,
+        4.752897262573242
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 168,
+      "seed": 1000168,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 87,
+      "return": 9.583407931029797,
+      "path_length": 8.742106437683105,
+      "straight_line_distance": 7.219038963317871,
+      "shortest_path": 8.440559159102163,
+      "spl": 0.9655063364041058,
+      "final_distance": 0.5769005417823792,
+      "distance_band": 2,
+      "start": [
+        5.736741542816162,
+        0.726737916469574
+      ],
+      "goal": [
+        8.971107482910156,
+        7.18068265914917
+      ],
+      "terminal_position": [
+        9.148483276367188,
+        6.63172721862793
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 169,
+      "seed": 1000169,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 85,
+      "return": 6.364954303950071,
+      "path_length": 9.5317964553833,
+      "straight_line_distance": 6.801389694213867,
+      "shortest_path": 7.558326112068524,
+      "spl": 0.7929592440887453,
+      "final_distance": 0.5605961084365845,
+      "distance_band": 1,
+      "start": [
+        9.393424034118652,
+        5.694241523742676
+      ],
+      "goal": [
+        4.173005104064941,
+        1.3346396684646606
+      ],
+      "terminal_position": [
+        4.265873908996582,
+        1.887489914894104
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 170,
+      "seed": 1000170,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 92,
+      "return": 7.354590598959476,
+      "path_length": 10.396921157836914,
+      "straight_line_distance": 4.695688247680664,
+      "shortest_path": 5.478427124746187,
+      "spl": 0.5269278319588582,
+      "final_distance": 0.5353028774261475,
+      "distance_band": 0,
+      "start": [
+        7.55586576461792,
+        1.8180501461029053
+      ],
+      "goal": [
+        4.085338592529297,
+        4.981107234954834
+      ],
+      "terminal_position": [
+        3.796633005142212,
+        4.530332088470459
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 171,
+      "seed": 1000171,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 91,
+      "return": 8.222591277124593,
+      "path_length": 10.507993698120117,
+      "straight_line_distance": 7.953133583068848,
+      "shortest_path": 9.450609665440998,
+      "spl": 0.8993733663098518,
+      "final_distance": 0.5003905296325684,
+      "distance_band": 2,
+      "start": [
+        1.8970589637756348,
+        4.783641338348389
+      ],
+      "goal": [
+        9.317999839782715,
+        7.6440558433532715
+      ],
+      "terminal_position": [
+        9.073953628540039,
+        8.080899238586426
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 172,
+      "seed": 1000172,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 69,
+      "return": 10.242599695688114,
+      "path_length": 8.837952613830566,
+      "straight_line_distance": 7.33909797668457,
+      "shortest_path": 7.887005768508887,
+      "spl": 0.8924019072207361,
+      "final_distance": 0.5675510168075562,
+      "distance_band": 2,
+      "start": [
+        9.194209098815918,
+        2.8686633110046387
+      ],
+      "goal": [
+        2.120521068572998,
+        4.824499607086182
+      ],
+      "terminal_position": [
+        2.647702217102051,
+        5.03472375869751
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 173,
+      "seed": 1000173,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 205,
+      "return": -16.37470244852011,
+      "path_length": 24.315858840942383,
+      "straight_line_distance": 8.31958293914795,
+      "shortest_path": 9.260407640085665,
+      "spl": 0.0,
+      "final_distance": 3.070664882659912,
+      "distance_band": 2,
+      "start": [
+        8.821016311645508,
+        6.903298854827881
+      ],
+      "goal": [
+        3.39080548286438,
+        0.6002622842788696
+      ],
+      "terminal_position": [
+        3.5735323429107666,
+        3.6654856204986572
+      ],
+      "collision_position": [
+        3.5735323429107666,
+        3.6654856204986572
+      ]
+    },
+    {
+      "episode": 174,
+      "seed": 1000174,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 95,
+      "return": -12.400838632776868,
+      "path_length": 9.672086715698242,
+      "straight_line_distance": 4.327006816864014,
+      "shortest_path": 5.09558441227157,
+      "spl": 0.0,
+      "final_distance": 1.491252064704895,
+      "distance_band": 0,
+      "start": [
+        6.8109893798828125,
+        1.1099042892456055
+      ],
+      "goal": [
+        6.367051601409912,
+        5.414077281951904
+      ],
+      "terminal_position": [
+        7.850647926330566,
+        5.263164520263672
+      ],
+      "collision_position": [
+        7.850647926330566,
+        5.263164520263672
+      ]
+    },
+    {
+      "episode": 175,
+      "seed": 1000175,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 164,
+      "return": 7.47736557276221,
+      "path_length": 16.43863868713379,
+      "straight_line_distance": 8.566204071044922,
+      "shortest_path": 8.922792206135794,
+      "spl": 0.5427938636500049,
+      "final_distance": 0.5308200120925903,
+      "distance_band": 3,
+      "start": [
+        5.174894332885742,
+        0.6412604451179504
+      ],
+      "goal": [
+        4.5626726150512695,
+        9.185558319091797
+      ],
+      "terminal_position": [
+        5.0922746658325195,
+        9.149620056152344
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 176,
+      "seed": 1000176,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 166,
+      "return": 8.489360502106138,
+      "path_length": 17.749164581298828,
+      "straight_line_distance": 9.191145896911621,
+      "shortest_path": 11.419848480983507,
+      "spl": 0.6434020276659037,
+      "final_distance": 0.5666514039039612,
+      "distance_band": 3,
+      "start": [
+        7.305037498474121,
+        1.0556195974349976
+      ],
+      "goal": [
+        2.452087879180908,
+        8.861132621765137
+      ],
+      "terminal_position": [
+        2.788635730743408,
+        9.317015647888184
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 177,
+      "seed": 1000177,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 31,
+      "return": -10.139265678124502,
+      "path_length": 3.5705974102020264,
+      "straight_line_distance": 8.510066986083984,
+      "shortest_path": 9.58198051533948,
+      "spl": 0.0,
+      "final_distance": 5.60184907913208,
+      "distance_band": 3,
+      "start": [
+        4.83889627456665,
+        8.796658515930176
+      ],
+      "goal": [
+        7.7927069664001465,
+        0.815665602684021
+      ],
+      "terminal_position": [
+        5.184921741485596,
+        5.773505210876465
+      ],
+      "collision_position": [
+        5.184921741485596,
+        5.773505210876465
+      ]
+    },
+    {
+      "episode": 178,
+      "seed": 1000178,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 73,
+      "return": 8.326714843919035,
+      "path_length": 8.283348083496094,
+      "straight_line_distance": 5.136532306671143,
+      "shortest_path": 5.834924240491747,
+      "spl": 0.7044161589825454,
+      "final_distance": 0.5437692999839783,
+      "distance_band": 0,
+      "start": [
+        5.799234867095947,
+        6.277115821838379
+      ],
+      "goal": [
+        7.042910099029541,
+        1.2934188842773438
+      ],
+      "terminal_position": [
+        7.58291482925415,
+        1.3572934865951538
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 179,
+      "seed": 1000179,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 58,
+      "return": -11.926538545754738,
+      "path_length": 7.034152507781982,
+      "straight_line_distance": 8.579522132873535,
+      "shortest_path": 10.617766952966377,
+      "spl": 0.0,
+      "final_distance": 3.842329740524292,
+      "distance_band": 3,
+      "start": [
+        0.8916222453117371,
+        5.538844585418701
+      ],
+      "goal": [
+        9.151390075683594,
+        7.859284400939941
+      ],
+      "terminal_position": [
+        6.691617965698242,
+        4.907502174377441
+      ],
+      "collision_position": [
+        6.691617965698242,
+        4.907502174377441
+      ]
+    },
+    {
+      "episode": 180,
+      "seed": 1000180,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 78,
+      "return": -12.043320965836756,
+      "path_length": 8.54720687866211,
+      "straight_line_distance": 6.72459077835083,
+      "shortest_path": 9.392031021678305,
+      "spl": 0.0,
+      "final_distance": 1.6608502864837646,
+      "distance_band": 1,
+      "start": [
+        0.9651085138320923,
+        9.358565330505371
+      ],
+      "goal": [
+        4.890352725982666,
+        3.8984758853912354
+      ],
+      "terminal_position": [
+        5.043060302734375,
+        5.552290916442871
+      ],
+      "collision_position": [
+        5.043060302734375,
+        5.552290916442871
+      ]
+    },
+    {
+      "episode": 181,
+      "seed": 1000181,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 106,
+      "return": 9.580497720860876,
+      "path_length": 11.368906021118164,
+      "straight_line_distance": 8.688728332519531,
+      "shortest_path": 10.378427124746189,
+      "spl": 0.9128782580723137,
+      "final_distance": 0.5221337676048279,
+      "distance_band": 3,
+      "start": [
+        0.852242648601532,
+        8.859950065612793
+      ],
+      "goal": [
+        8.731971740722656,
+        5.198821067810059
+      ],
+      "terminal_position": [
+        8.822540283203125,
+        5.713039875030518
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 182,
+      "seed": 1000182,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 113,
+      "return": -12.805633115000091,
+      "path_length": 12.270790100097656,
+      "straight_line_distance": 6.081638813018799,
+      "shortest_path": 7.488477631085027,
+      "spl": 0.0,
+      "final_distance": 2.217691421508789,
+      "distance_band": 1,
+      "start": [
+        0.9227458238601685,
+        8.679134368896484
+      ],
+      "goal": [
+        6.23097562789917,
+        5.711134433746338
+      ],
+      "terminal_position": [
+        8.353196144104004,
+        5.067445278167725
+      ],
+      "collision_position": [
+        8.353196144104004,
+        5.067445278167725
+      ]
+    },
+    {
+      "episode": 183,
+      "seed": 1000183,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 64,
+      "return": 9.7320226621232,
+      "path_length": 7.342823505401611,
+      "straight_line_distance": 6.3418989181518555,
+      "shortest_path": 6.9420310216782966,
+      "spl": 0.9454171159869934,
+      "final_distance": 0.5705382823944092,
+      "distance_band": 1,
+      "start": [
+        2.7159900665283203,
+        4.134617805480957
+      ],
+      "goal": [
+        8.794882774353027,
+        5.942032337188721
+      ],
+      "terminal_position": [
+        8.72087287902832,
+        5.376314640045166
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 184,
+      "seed": 1000184,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 62,
+      "return": 9.838405492599122,
+      "path_length": 6.958456039428711,
+      "straight_line_distance": 5.817546367645264,
+      "shortest_path": 6.949137802864844,
+      "spl": 0.9986608758450054,
+      "final_distance": 0.5872511863708496,
+      "distance_band": 1,
+      "start": [
+        8.966531753540039,
+        1.62262761592865
+      ],
+      "goal": [
+        4.3733930587768555,
+        5.192910671234131
+      ],
+      "terminal_position": [
+        4.244044303894043,
+        4.620081901550293
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 185,
+      "seed": 1000185,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 85,
+      "return": 6.3901090861763805,
+      "path_length": 9.732931137084961,
+      "straight_line_distance": 7.013335227966309,
+      "shortest_path": 8.21335136523794,
+      "spl": 0.8438723391294702,
+      "final_distance": 0.532866895198822,
+      "distance_band": 2,
+      "start": [
+        5.712793350219727,
+        8.064509391784668
+      ],
+      "goal": [
+        7.6616668701171875,
+        1.327391266822815
+      ],
+      "terminal_position": [
+        7.788711071014404,
+        1.844891905784607
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 186,
+      "seed": 1000186,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 50,
+      "return": -14.291355180554092,
+      "path_length": 5.355946063995361,
+      "straight_line_distance": 6.2769455909729,
+      "shortest_path": 6.5935028842544385,
+      "spl": 0.0,
+      "final_distance": 1.2484934329986572,
+      "distance_band": 1,
+      "start": [
+        2.2358314990997314,
+        5.357363224029541
+      ],
+      "goal": [
+        8.442075729370117,
+        4.417907238006592
+      ],
+      "terminal_position": [
+        7.232667922973633,
+        4.727856636047363
+      ],
+      "collision_position": [
+        7.232667922973633,
+        4.727856636047363
+      ]
+    },
+    {
+      "episode": 187,
+      "seed": 1000187,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 72,
+      "return": 9.607907644764055,
+      "path_length": 7.912511825561523,
+      "straight_line_distance": 6.03481388092041,
+      "shortest_path": 7.6591883092036825,
+      "spl": 0.9679844375664028,
+      "final_distance": 0.5453130006790161,
+      "distance_band": 1,
+      "start": [
+        5.781513690948486,
+        5.551446914672852
+      ],
+      "goal": [
+        0.9445545673370361,
+        9.16015911102295
+      ],
+      "terminal_position": [
+        1.4818875789642334,
+        9.253108024597168
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 188,
+      "seed": 1000188,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 84,
+      "return": 9.94338112603873,
+      "path_length": 9.287160873413086,
+      "straight_line_distance": 8.39509391784668,
+      "shortest_path": 8.776345596729065,
+      "spl": 0.9449976926590814,
+      "final_distance": 0.5523346662521362,
+      "distance_band": 2,
+      "start": [
+        9.031681060791016,
+        8.188996315002441
+      ],
+      "goal": [
+        0.714823305606842,
+        9.332449913024902
+      ],
+      "terminal_position": [
+        0.9527547359466553,
+        8.833990097045898
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 189,
+      "seed": 1000189,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 182,
+      "return": 0.398373082105536,
+      "path_length": 18.848812103271484,
+      "straight_line_distance": 6.474101543426514,
+      "shortest_path": 7.974873734152924,
+      "spl": 0.42309688750989083,
+      "final_distance": 0.5717044472694397,
+      "distance_band": 1,
+      "start": [
+        9.37307071685791,
+        7.225799560546875
+      ],
+      "goal": [
+        3.0562918186187744,
+        5.807246208190918
+      ],
+      "terminal_position": [
+        3.542119026184082,
+        5.505886077880859
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 190,
+      "seed": 1000190,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "static",
+      "timeout": false,
+      "steps": 23,
+      "return": -10.679482728475705,
+      "path_length": 2.1897878646850586,
+      "straight_line_distance": 8.853891372680664,
+      "shortest_path": 11.20416305603427,
+      "spl": 0.0,
+      "final_distance": 7.320311546325684,
+      "distance_band": 3,
+      "start": [
+        7.571944713592529,
+        1.6105455160140991
+      ],
+      "goal": [
+        2.75675106048584,
+        9.040573120117188
+      ],
+      "terminal_position": [
+        5.756729602813721,
+        2.3632161617279053
+      ],
+      "collision_position": [
+        5.756729602813721,
+        2.3632161617279053
+      ]
+    },
+    {
+      "episode": 191,
+      "seed": 1000191,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 97,
+      "return": 9.560630447173025,
+      "path_length": 10.265621185302734,
+      "straight_line_distance": 8.34139347076416,
+      "shortest_path": 9.923401871576779,
+      "spl": 0.9666635552248987,
+      "final_distance": 0.5188688635826111,
+      "distance_band": 2,
+      "start": [
+        7.93196439743042,
+        4.802207946777344
+      ],
+      "goal": [
+        0.6554766893386841,
+        8.880391120910645
+      ],
+      "terminal_position": [
+        1.1657975912094116,
+        8.974185943603516
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 192,
+      "seed": 1000192,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 66,
+      "return": -11.368001456663478,
+      "path_length": 7.539780616760254,
+      "straight_line_distance": 6.410638332366943,
+      "shortest_path": 8.305634918610412,
+      "spl": 0.0,
+      "final_distance": 1.4815043210983276,
+      "distance_band": 1,
+      "start": [
+        0.7962162494659424,
+        8.731911659240723
+      ],
+      "goal": [
+        5.997645854949951,
+        4.984724044799805
+      ],
+      "terminal_position": [
+        5.768649101257324,
+        6.448423385620117
+      ],
+      "collision_position": [
+        5.768649101257324,
+        6.448423385620117
+      ]
+    },
+    {
+      "episode": 193,
+      "seed": 1000193,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 53,
+      "return": -10.987725101178512,
+      "path_length": 6.757933616638184,
+      "straight_line_distance": 4.946162223815918,
+      "shortest_path": 5.567766952966369,
+      "spl": 0.0,
+      "final_distance": 0.660554826259613,
+      "distance_band": 0,
+      "start": [
+        9.174317359924316,
+        2.509690761566162
+      ],
+      "goal": [
+        4.514338970184326,
+        4.167738437652588
+      ],
+      "terminal_position": [
+        3.9175314903259277,
+        3.884624481201172
+      ],
+      "collision_position": [
+        3.9175314903259277,
+        3.884624481201172
+      ]
+    },
+    {
+      "episode": 194,
+      "seed": 1000194,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 116,
+      "return": 3.178233735903632,
+      "path_length": 13.402170181274414,
+      "straight_line_distance": 5.385215759277344,
+      "shortest_path": 5.768376618407353,
+      "spl": 0.4304061611206042,
+      "final_distance": 0.5731379985809326,
+      "distance_band": 0,
+      "start": [
+        6.300532817840576,
+        7.766504287719727
+      ],
+      "goal": [
+        3.6062512397766113,
+        3.1037373542785645
+      ],
+      "terminal_position": [
+        4.039919853210449,
+        3.4784622192382812
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 195,
+      "seed": 1000195,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 135,
+      "return": 8.231877713638823,
+      "path_length": 15.260303497314453,
+      "straight_line_distance": 8.733529090881348,
+      "shortest_path": 10.369848480983514,
+      "spl": 0.6795309466032852,
+      "final_distance": 0.4930424094200134,
+      "distance_band": 3,
+      "start": [
+        9.366706848144531,
+        7.813796520233154
+      ],
+      "goal": [
+        1.418512225151062,
+        4.194302082061768
+      ],
+      "terminal_position": [
+        1.7270535230636597,
+        4.57887077331543
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 196,
+      "seed": 1000196,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 211,
+      "return": 1.37192043219693,
+      "path_length": 22.780237197875977,
+      "straight_line_distance": 4.35755729675293,
+      "shortest_path": 5.0213203435596405,
+      "spl": 0.22042440998058735,
+      "final_distance": 0.5387577414512634,
+      "distance_band": 0,
+      "start": [
+        6.941863059997559,
+        1.5279310941696167
+      ],
+      "goal": [
+        4.87069845199585,
+        5.361804008483887
+      ],
+      "terminal_position": [
+        4.7437543869018555,
+        4.838215351104736
+      ],
+      "collision_position": null
+    },
+    {
+      "episode": 197,
+      "seed": 1000197,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 37,
+      "return": -11.834692418109626,
+      "path_length": 4.130196571350098,
+      "straight_line_distance": 9.395939826965332,
+      "shortest_path": 10.627564927611045,
+      "spl": 0.0,
+      "final_distance": 6.177173137664795,
+      "distance_band": 3,
+      "start": [
+        3.8627989292144775,
+        8.763527870178223
+      ],
+      "goal": [
+        9.085175514221191,
+        0.9526081085205078
+      ],
+      "terminal_position": [
+        5.670846462249756,
+        6.100406169891357
+      ],
+      "collision_position": [
+        5.670846462249756,
+        6.100406169891357
+      ]
+    },
+    {
+      "episode": 198,
+      "seed": 1000198,
+      "outcome": "COLLISION",
+      "success": false,
+      "collision": true,
+      "collision_type": "dynamic",
+      "timeout": false,
+      "steps": 207,
+      "return": -17.993691798765212,
+      "path_length": 23.424747467041016,
+      "straight_line_distance": 7.349904537200928,
+      "shortest_path": 10.159188309203685,
+      "spl": 0.0,
+      "final_distance": 4.755744457244873,
+      "distance_band": 2,
+      "start": [
+        4.715724945068359,
+        2.2941975593566895
+      ],
+      "goal": [
+        1.711961269378662,
+        9.002289772033691
+      ],
+      "terminal_position": [
+        3.0186610221862793,
+        4.429583549499512
+      ],
+      "collision_position": [
+        3.0186610221862793,
+        4.429583549499512
+      ]
+    },
+    {
+      "episode": 199,
+      "seed": 1000199,
+      "outcome": "SUCCESS",
+      "success": true,
+      "collision": false,
+      "collision_type": null,
+      "timeout": false,
+      "steps": 137,
+      "return": 7.7540432052337565,
+      "path_length": 15.097736358642578,
+      "straight_line_distance": 7.046647548675537,
+      "shortest_path": 7.878427124746198,
+      "spl": 0.5218283680146697,
+      "final_distance": 0.5695757269859314,
+      "distance_band": 2,
+      "start": [
+        6.392651557922363,
+        7.805065155029297
+      ],
+      "goal": [
+        6.999229907989502,
+        0.784573495388031
+      ],
+      "terminal_position": [
+        6.944936275482178,
+        1.351555585861206
+      ],
+      "collision_position": null
+    }
+  ]
+}

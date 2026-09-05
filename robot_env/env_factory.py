@@ -9,7 +9,8 @@ from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor, DummyVec
 from robot_env.robot_nav_env import RobotNavEnv
 
 
-def make_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_speed_range = None, rank=0, seed=0, use_reward_shaping=True):
+def make_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_speed_range = None, rank=0, seed=0, use_reward_shaping=True,
+             randomize_dynamic_obstacles=None):
     """
     Factory function used by SubprocVecEnv to create parallel RobotNavEnv instances. Each environment receives a different random seed.
 
@@ -28,6 +29,9 @@ def make_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_spe
         Base random seed. Each environment gets seed + rank.
     use_reward_shaping: bool
         If True, adds progress reward toward the target.
+    randomize_dynamic_obstacles: bool or None
+        Week 4. True selects smoothly stochastic obstacle motion, False the original
+        constant-velocity bounce, None the value in config.json.
 
     Returns
     callable
@@ -40,7 +44,8 @@ def make_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_spe
             obstacle_speed=obstacle_speed,
             obstacle_speed_range=obstacle_speed_range,
             render_mode=None,
-            use_reward_shaping=use_reward_shaping
+            use_reward_shaping=use_reward_shaping,
+            randomize_dynamic_obstacles=randomize_dynamic_obstacles
         )
         env.reset(seed=seed + rank)
         return env
@@ -48,7 +53,8 @@ def make_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_spe
     return environment_factory
 
 
-def create_parallel_envs(config, config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_speed_range=None, use_reward_shaping=True):
+def create_parallel_envs(config, config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_speed_range=None, use_reward_shaping=True,
+                         randomize_dynamic_obstacles=None, monitor_dir=None):
     """
     Create a vectorized environment with multiple parallel instances.
 
@@ -83,15 +89,19 @@ def create_parallel_envs(config, config_path, n_dynamic_obstacles, obstacle_spee
     env_factory_list = []
     for i in range(number_of_envs):
         env_factory_list.append(make_env(config_path = config_path, n_dynamic_obstacles = n_dynamic_obstacles, obstacle_speed = obstacle_speed,
-                                        obstacle_speed_range = obstacle_speed_range, rank=i, use_reward_shaping = use_reward_shaping, seed=base_seed))
+                                        obstacle_speed_range = obstacle_speed_range, rank=i, use_reward_shaping = use_reward_shaping, seed=base_seed,
+                                        randomize_dynamic_obstacles=randomize_dynamic_obstacles))
 
     parallel_env = SubprocVecEnv(env_factory_list)
-    monitored_env = VecMonitor(parallel_env, filename=os.path.join(log_dir, "monitor"), info_keywords=("is_success",),)
+    monitor_root = monitor_dir if monitor_dir is not None else log_dir
+    os.makedirs(monitor_root, exist_ok=True)
+    monitored_env = VecMonitor(parallel_env, filename=os.path.join(monitor_root, "monitor"), info_keywords=("is_success",),)
 
     return monitored_env
 
 
-def create_eval_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_speed_range=None, use_reward_shaping=True):
+def create_eval_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obstacle_speed_range=None, use_reward_shaping=True,
+                    randomize_dynamic_obstacles=None):
     """
     Create a single environment used for periodic evaluation during training.
 
@@ -127,7 +137,8 @@ def create_eval_env(config_path, n_dynamic_obstacles, obstacle_speed=None, obsta
         obstacle_speed=eval_speed,
         obstacle_speed_range=speed_range_arg,
         rank=0,
-        use_reward_shaping=use_reward_shaping
+        use_reward_shaping=use_reward_shaping,
+        randomize_dynamic_obstacles=randomize_dynamic_obstacles
     )
     eval_env = DummyVecEnv([env_factory])
 
