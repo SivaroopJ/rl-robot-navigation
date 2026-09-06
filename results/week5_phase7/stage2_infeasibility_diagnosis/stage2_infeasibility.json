@@ -1,0 +1,220 @@
+{
+ "label": "Week5-Phase7 / Stage 2 / D1a infeasibility diagnosis",
+ "base_rates": {
+  "dev_fixed": {
+   "condition": "fixed",
+   "steps": 2046,
+   "infeasible": 62,
+   "rate": 0.030303030303030304,
+   "status_counts": {
+    "optimal": 1984,
+    "infeasible": 62
+   }
+  },
+  "dev_randomized": {
+   "condition": "randomized",
+   "steps": 1861,
+   "infeasible": 84,
+   "rate": 0.045137023105857065,
+   "status_counts": {
+    "optimal": 1777,
+    "infeasible": 83,
+    "infeasible_inaccurate": 1
+   }
+  },
+  "validation_fixed": {
+   "condition": "fixed",
+   "steps": 5559,
+   "infeasible": 179,
+   "rate": 0.03220003597769383,
+   "status_counts": {
+    "optimal": 5380,
+    "infeasible": 178,
+    "infeasible_inaccurate": 1
+   }
+  },
+  "validation_randomized": {
+   "condition": "randomized",
+   "steps": 5689,
+   "infeasible": 218,
+   "rate": 0.03831956407101424,
+   "status_counts": {
+    "optimal": 5471,
+    "infeasible": 218
+   }
+  },
+  "final_fixed": {
+   "condition": "fixed",
+   "steps": 27039,
+   "infeasible": 902,
+   "rate": 0.033359221864713934,
+   "status_counts": {
+    "optimal": 26137,
+    "infeasible": 902
+   }
+  },
+  "final_randomized": {
+   "condition": "randomized",
+   "steps": 27032,
+   "infeasible": 892,
+   "rate": 0.03299792838117786,
+   "status_counts": {
+    "optimal": 26138,
+    "infeasible": 891,
+    "optimal_inaccurate": 2,
+    "infeasible_inaccurate": 1
+   }
+  }
+ },
+ "n_infeasible_analysed": 2337,
+ "n_feasible_control": 15761,
+ "distribution": {
+  "by_condition": {
+   "fixed": 1143,
+   "randomized": 1194
+  },
+  "h_min_n": 2337,
+  "h_min_median": 0.519437401753168,
+  "h_min_p95": 1.0597331517157185,
+  "h_min_min": 0.0072275593876839905,
+  "h_min_max": 1.495648485422134,
+  "h_min_mean": 0.5151773215979253,
+  "criticality_n": 2337,
+  "criticality_median": -0.8491933997918923,
+  "criticality_p95": -0.34217552322320216,
+  "criticality_min": -3.1327715241408947,
+  "criticality_max": -0.03435431526636187,
+  "criticality_mean": -1.0503273640807445,
+  "true_ttc_n": 2337,
+  "true_ttc_median": 1000.0,
+  "true_ttc_p95": 1000.0,
+  "true_ttc_min": 0.7965175412397505,
+  "true_ttc_max": 1000.0,
+  "true_ttc_mean": 718.6113000149016,
+  "true_closing_rate_n": 2337,
+  "true_closing_rate_median": -0.4432499781848682,
+  "true_closing_rate_p95": 0.6525497731419628,
+  "true_closing_rate_min": -0.6749995648565507,
+  "true_closing_rate_max": 0.6749337625595655,
+  "true_closing_rate_mean": -0.2377369078751376,
+  "true_clearance_n": 2337,
+  "true_clearance_median": 0.5152855157852172,
+  "true_clearance_p95": 1.044175934791565,
+  "true_clearance_min": 0.003773295879364036,
+  "true_clearance_max": 1.4832982540130615,
+  "true_clearance_mean": 0.5071873245761596,
+  "n_distinct_tracks": {
+   "3": 1060,
+   "2": 1088,
+   "4": 184,
+   "5": 5
+  },
+  "control_bound_limited": 884,
+  "control_true_ttc_median": 1000.0,
+  "control_h_min_median": 0.48454867005348196
+ },
+ "minimal_infeasible_subsets": {
+  "cardinality": {
+   "1": 884,
+   "2": 1402,
+   "3": 51
+  }
+ },
+ "staleness": {
+  "age_membership_in_mis": {
+   "0": 1327,
+   "1": 550,
+   "2": 595,
+   "4": 774,
+   "3": 595
+  },
+  "mis_age_span": {
+   "0": 884,
+   "4": 486,
+   "2": 272,
+   "1": 388,
+   "3": 307
+  },
+  "owner_displacement_n": 2337,
+  "owner_displacement_median": 0.26999638889609506,
+  "owner_displacement_p95": 0.2700008665725375,
+  "owner_displacement_min": 0.08656663995046228,
+  "owner_displacement_max": 0.27000184855029286,
+  "owner_displacement_mean": 0.26895583778091575
+ },
+ "counterfactuals": {
+  "K1_newest_feasible": 0.8724860932819855,
+  "K1_ci95": [
+   0.858793324775353,
+   0.8857509627727856
+  ],
+  "prefix_feasible": {
+   "0": 0.8724860932819855,
+   "1": 0.7133076593923834,
+   "2": 0.5297389816003423,
+   "3": 0.3281985451433462,
+   "4": 0.0
+  },
+  "leave_one_out_any": 0.8451005562687206,
+  "leave_one_out_oldest": 0.3281985451433462,
+  "leave_one_out_newest": 0.18356867779204109,
+  "leave_one_out_by_age": {
+   "0": 0.18356867779204109,
+   "1": 0.14719726144629866,
+   "2": 0.1715875053487377,
+   "3": 0.1668806161745828,
+   "4": 0.3281985451433462
+  }
+ },
+ "attribution": {
+  "control-bound limitation": 884,
+  "cross-age, involves an untracked (static) return": 866,
+  "cross-age, DIFFERENT tracks": 587
+ },
+ "remediability": {
+  "min_slack_n": 2337,
+  "min_slack_median": 0.18533933764173305,
+  "min_slack_p95": 1.3029104217274392,
+  "min_slack_min": 6.007947440112821e-05,
+  "min_slack_max": 1.9480266527493053,
+  "min_slack_mean": 0.3147433988291034,
+  "tier_counts": {
+   "2": 2022,
+   "1": 315
+  },
+  "min_control_scale_finite": 2113,
+  "min_control_scale_nan": 224,
+  "min_control_scale_n": 2113,
+  "min_control_scale_median": 1.6771372842374968,
+  "min_control_scale_p95": 12.07923183507642,
+  "min_control_scale_min": 1.0003160997346818,
+  "min_control_scale_max": 5317.811192788424,
+  "min_control_scale_mean": 9.31899389821899,
+  "alpha_restores_feasibility": 2337,
+  "min_alpha_feasible_n": 2337,
+  "min_alpha_feasible_median": 0.7571289062500001,
+  "min_alpha_feasible_p95": 2.8009155273437507,
+  "min_alpha_feasible_min": 0.400970458984375,
+  "min_alpha_feasible_max": 21.424023437499997,
+  "min_alpha_feasible_mean": 1.0705771920004612
+ },
+ "estimator_overshoot": {
+  "steps_with_superphysical_row": 1588,
+  "fraction": 0.6795036371416345,
+  "overshoot_amount_n": 1588,
+  "overshoot_amount_median": 0.8624518235132375,
+  "overshoot_amount_p95": 2.258339734010595,
+  "overshoot_amount_min": 0.00027371472419113196,
+  "overshoot_amount_max": 2.8789761281862694,
+  "overshoot_amount_mean": 0.8826275039122153,
+  "min_projected_error_n": 2337,
+  "min_projected_error_median": -1.1140273082081211,
+  "min_projected_error_p95": 0.0,
+  "min_projected_error_min": -3.553976128186269,
+  "min_projected_error_max": 0.07523407728221632,
+  "min_projected_error_mean": -1.0858946332196744,
+  "superphysical_given_control_bound": 1.0,
+  "superphysical_given_not_control_bound": 0.4845147969717825,
+  "pessimistic_rows_median": 1.0
+ }
+}
