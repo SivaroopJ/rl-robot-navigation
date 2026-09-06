@@ -31,9 +31,9 @@ WHAT IS DELIBERATELY NOT COVERED
                          would make the manifest fail for a reason that has nothing to do with
                          drift. The manifest covers VERSION-CONTROLLED artefacts only; the
                          JSON result files, which carry the same numbers, are covered.
-    Phase 7's own files -- they are under active development by definition. They are
-                         recognised by "phase7" or "exp7_" in the basename, which is why every
-                         Phase 7 file must be named that way.
+    Phase 7's own files -- they are under active development by definition. Modules that
+                         live in dr_control/ are listed EXPLICITLY in PHASE7_PATHS; Phase 7
+                         experiments and tests carry "exp7_"/"phase7" in the basename.
     __pycache__, .venv, models/, and anything git ignores.
 
 USAGE
@@ -77,9 +77,24 @@ FROZEN_GLOBS = [
 
 EXCLUDE_PARTS = {"__pycache__"}
 EXCLUDE_SUFFIXES = {".log", ".pyc"}
-#: Phase 7 lives in the same directories as the frozen code and is under active
-#: development, so it is identified by name and excluded. Every Phase 7 file carries
-#: "phase7" or "exp7_" in its basename; that naming rule is what makes this safe.
+#: Phase 7 lives in the same directories as the frozen code and is under active development,
+#: so its files are excluded -- but EXPLICITLY, by the path list the plan's file layout (§2.1)
+#: declares, not by a name heuristic. An explicit list is the safer construction: a marker rule
+#: such as "any file with phase7 in the name" would silently exempt a frozen file that someone
+#: renamed, which is exactly the drift this manifest exists to catch.
+#:
+#: Adding a path here is a deliberate act that shows up in review. It was needed once already:
+#: the gate's first live run flagged dr_control/fast_drccp.py, because the Stage 0 marker
+#: heuristic disagreed with the file names the approved plan specifies.
+PHASE7_PATHS = {
+    "dr_control/fast_drccp.py",        # Stage 1, Direction 2
+    "dr_control/recovery.py",          # Stage 4, Direction 1
+    "dr_control/predictive_cbf.py",    # Stage 3, Direction 3a
+    "dr_control/tracking2.py",         # Stage 5, Direction 3b/c
+    "dr_control/uncertainty.py",       # Stage 6, Direction 3d
+    "dr_control/policy_phase7.py",     # composed policy
+}
+#: Kept as a convenience for the experiment and test files, which DO carry the marker.
 EXCLUDE_MARKERS = ("phase7", "exp7_")
 
 
@@ -100,7 +115,8 @@ def frozen_files():
                 continue
             if EXCLUDE_PARTS & set(path.parts) or path.suffix in EXCLUDE_SUFFIXES:
                 continue
-            if any(m in path.name for m in EXCLUDE_MARKERS):
+            rel = path.relative_to(REPO).as_posix()
+            if rel in PHASE7_PATHS or any(m in path.name for m in EXCLUDE_MARKERS):
                 continue
             out.add(path.relative_to(REPO).as_posix())
     return sorted(out)

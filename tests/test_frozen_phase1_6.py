@@ -33,7 +33,12 @@ def test_no_frozen_file_has_been_modified():
 
 
 def test_no_new_file_has_appeared_in_the_frozen_area():
-    """A new dr_control/ or results/phase*/ file is drift too -- Phase 7 has its own homes."""
+    """A new dr_control/ or results/phase*/ file is drift too -- Phase 7 has its own homes.
+
+    Phase 7 modules under dr_control/ must be declared in PHASE7_PATHS. That is deliberate
+    friction: adding one is a reviewable act. The gate caught dr_control/fast_drccp.py on its
+    first live run, which is the behaviour intended.
+    """
     _, _, _, untracked = verify()
     assert not untracked, (
         "new files in the frozen area; Phase 7 output belongs in results/week5_phase7/ "
@@ -50,6 +55,17 @@ def test_manifest_covers_the_load_bearing_modules():
                      "evaluation/shortest_path.py", "evaluation/evaluate_week4.py",
                      "config.json"):
         assert required in entries, f"{required} is not in the frozen manifest"
+
+
+def test_declared_phase7_modules_are_excluded_from_the_frozen_set():
+    """Every declared Phase 7 module must be absent from the manifest, and no frozen module
+    may be smuggled into the declaration list."""
+    from experiments.exp7_0_frozen_manifest import PHASE7_PATHS
+    entries = read_manifest()
+    for rel in PHASE7_PATHS:
+        assert rel not in entries, f"{rel} is both declared Phase 7 and frozen"
+    for frozen in ("dr_control/drccp_controller.py", "dr_control/policy.py"):
+        assert frozen not in PHASE7_PATHS, f"{frozen} must never be declared Phase 7"
 
 
 def test_manifest_digests_are_reproducible():
