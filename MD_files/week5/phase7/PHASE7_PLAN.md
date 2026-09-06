@@ -1215,6 +1215,112 @@ before the original run and are **not** modified by this amendment. The closed-l
 re-uses the *same* 400 paired episodes recorded at `998eeaa`; only the criterion applied to
 them changes, so no new randomness enters.
 
+## 11.5 AMENDMENT 2 — Stage 1 gate, structural replacement of P4b and L4 (dated 2026-09-07)
+
+**Provenance chain, unchanged and not overwritten:**
+`998eeaa` original Stage 1 gate **FAILED** → `3c85f9d` Amendment 1 → `00587e3` Amendment 1
+rerun **FAILED** → this amendment → final rerun.
+
+**Trigger.** Both prior failures were properties of the *criteria*, not evidence that V1 solves
+a different problem: P4b's threshold sat below the noise floor of the arbiter measuring it
+(the arbiter's own error is ~1.4e−8, revealed by V1 achieving a lower objective than it on some
+steps), and L4's exact `≥ τ` test straddles a boundary that coincides with where the optimizer
+places the solution. **No third arbitrary numerical threshold is introduced.** Both criteria are
+replaced by threshold-free or scale-derived constructions.
+
+P1, P2, P3, P4a, the secondary E0/E1 diagnostics and the closed-loop test are **unchanged**
+from Amendment 1 and their Amendment-1 results stand.
+
+### 11.5.1 P4b → solver-independent KKT optimality certificate
+
+The arbiter-distance threshold is **withdrawn**. V1's returned solution is certified from the
+recorded problem and the solution alone, with no reference solver anywhere in the criterion.
+
+The reduced QP is written `min ½xᵀPx + qᵀx  s.t.  Cx ≤ d`, `x = [u_x, u_y, δ]`, with the `N`
+barrier rows, the CLF row, `δ ≥ 0` and the four box rows — all reconstructed from the recorded
+`ξ`, not from the solver. Multipliers are recovered **independently of the solver's own duals**
+by non-negative least squares, `λ = argmin_{λ≥0} ‖Cᵀλ + (Px* + q)‖₂`, which uses only
+`(P, q, C, d, x*)` and needs no active-set tolerance.
+
+Reported for every certified step:
+
+| residual | definition |
+|---|---|
+| primal feasibility | `r_prim = max(0, max_i (Cx* − d)_i)` |
+| dual feasibility | `r_dual = max(0, −min_i λ_i)` (0 by construction of NNLS; reported anyway) |
+| stationarity | `r_stat = ‖Px* + q + Cᵀλ‖∞` |
+| complementary slackness | `r_comp = max_i |λ_i · (Cx* − d)_i|`, and `c_sum = Σ_i λ_i (d − Cx*)_i` |
+
+From these, two **certified bounds** are derived — rigorous consequences of strong convexity,
+not estimates. With `μ = λ_min(P) = min(2(p0+p1), 2p3) > 0`:
+
+```
+f(x*) − f*        ≤  c_sum + ‖r_stat‖₂² / (2μ)
+‖x* − x_opt‖₂     ≤  sqrt( 2 (c_sum + ‖r_stat‖₂²/(2μ)) / μ )  =:  δ_cert
+```
+
+**PRE-REGISTERED PASS CONDITION, recorded here before the rerun:**
+
+> `max` over sampled solved steps of `δ_cert` **≤ 1e−6**, in action units.
+
+**Justification, from the problem's own scales and from nothing else.** The tolerance is not
+calibrated against V0, against the arbiter, or against any solver's behaviour. `1e−6` is:
+4 orders below `τ = 0.04`, the smallest quantity the DR-CBF formulation defines; 6 orders below
+the action box `max_v = 1.0`, the scale of the controller's output; and below the resolution at
+which any quantity this study interprets — actions, `min CBC`, guarantee tier, episode outcome —
+could change. A certified distance-to-optimum of 1e−6 means no interpreted result of Phase 7
+could differ had the exact optimum been used.
+
+`r_prim` is reported but carries no pass condition, because primal feasibility is already tested
+exactly and threshold-free by **P4a** (the LP oracle, 573/573 in the Amendment-1 run). Where
+`r_prim > 0` the bounds above are stated for the problem with constraints relaxed by `r_prim`,
+and `r_prim` is reported alongside so the reader can see the size of that relaxation.
+
+The arbiter results are retained as **secondary evidence only** and appear in no pass condition.
+
+### 11.5.2 L4 → guarantee tier from the certified optimum
+
+The tier is **no longer classified from a raw floating-point solver CBC value**.
+
+For each implementation the certificate of §11.5.1 bounds the distance to the exact optimum by
+`δ_cert`. Since every barrier gradient is a unit vector, the induced uncertainty in
+`min_i CBC_i` is bounded by the same `δ_cert`. The tier is therefore assigned to an **interval**:
+
+```
+CBC_interval = [ min CBC(x*) − δ_cert ,  min CBC(x*) + δ_cert ]
+tier = T0 if the whole interval is >= tau
+       T1 if the whole interval is in [0, tau)
+       T2 if the whole interval is < 0
+       INDETERMINATE if the interval straddles a boundary
+```
+
+**PASS CONDITION:** **0 steps at which V0's certified tier and V1's certified tier differ and
+both are determinate.** Steps where either tier is indeterminate are **reported as
+indeterminate**, with counts, and are **not** counted as regressions. This is the structural
+point: an excursion of ~1.96e−9 below `τ` is a **numerical residual**, not a guarantee-tier
+regression, and the certificate is what distinguishes the two.
+
+Separately and additionally, the **raw** quantities are reported with no thresholds attached:
+
+```
+CBC_V0 − tau     and     CBC_V1 − tau
+median, p95, p99, min, max, and counts below zero and below tau
+```
+
+**Wording constraint.** V1 having smaller residuals than V0 is **not** to be described as a
+safety improvement. It is a statement about numerical accuracy only.
+
+### 11.5.3 Terminology, unchanged
+
+V1 is described throughout as a **"mathematically equivalent accelerated implementation"**.
+The terms "trajectory-identical" and "behaviour-preserving" remain forbidden.
+
+### 11.5.4 Stopping rule, pre-registered
+
+If the KKT certificate or the certified-optimum tier test fails, **no further amendment or
+tolerance is introduced.** Stage 1 is then recorded as failed and **V0 is kept as the Stage 2–7
+substrate.**
+
 ## 12. Review record
 
 Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
@@ -1234,6 +1340,7 @@ Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
 | 11 | stage-by-stage implementation; Stage 0 first, then stop and report | §11.2, §10 |
 | + | contradicting results update the interpretation, never the pre-registered experiment | §11.1 |
 | A1 | **Amendment 1 (2026-09-06)**: Stage 1 gate amended after the forensic diagnosis; original failed result at `998eeaa` preserved | §11.4 |
+| A2 | **Amendment 2 (2026-09-07)**: P4b → solver-independent KKT certificate, L4 → tier from the certified optimum; no third threshold; stopping rule fixed | §11.5 |
 
 ## 13. Open questions to settle before Stage 1 begins
 
