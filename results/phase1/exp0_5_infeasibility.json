@@ -1,0 +1,322 @@
+{
+ "tau": 0.04,
+ "alpha_ref": 0.4,
+ "episodes": 50,
+ "categories": {
+  "other (3-way conflict)": 192,
+  "dynamic-dynamic conflict": 109,
+  "dynamic-static conflict": 43
+ },
+ "relaxation": {
+  "n": 344,
+  "min_slack_mean": 0.12238328969431743,
+  "min_slack_median": 0.0959466730990286,
+  "min_slack_max": 0.7409170346311426,
+  "min_slack_p90": 0.23363102670212513,
+  "min_control_scale_median": 1.8597448441721176,
+  "min_control_scale_max": 20.690100239711953,
+  "n_control_scale_unbounded": 328,
+  "min_alpha_feasible_median": 0.5344085693359375,
+  "n_no_alpha_restores_feasibility": 0,
+  "n_feasible_if_rw0": 80,
+  "n_feasible_if_rw0_and_alpha16": 335,
+  "n_feasible_with_unbounded_control": 16,
+  "n_feasible_rw0_and_unbounded_control": 94
+ },
+ "variants": [
+  {
+   "variant": "u=0 (reference fallback)",
+   "episodes": 50,
+   "success_rate": 0.6,
+   "collision_rate": 0.36,
+   "timeout_rate": 0.04,
+   "total_steps": 8037,
+   "infeasible_steps": 344,
+   "frac_infeasible_steps": 0.042802040562398905,
+   "episodes_with_any_infeasible": 0.46,
+   "collisions": 18,
+   "collisions_with_infeasibility_in_episode": 18,
+   "collisions_within_10_steps_of_infeasibility": 18,
+   "collisions_with_no_infeasible_step": 0,
+   "episodes_infeasible_but_no_collision": 5
+  },
+  {
+   "variant": "min-slack feasibility restoration",
+   "episodes": 50,
+   "success_rate": 0.7,
+   "collision_rate": 0.28,
+   "timeout_rate": 0.02,
+   "total_steps": 8670,
+   "infeasible_steps": 554,
+   "frac_infeasible_steps": 0.06389850057670127,
+   "episodes_with_any_infeasible": 0.46,
+   "collisions": 14,
+   "collisions_with_infeasibility_in_episode": 14,
+   "collisions_within_10_steps_of_infeasibility": 14,
+   "collisions_with_no_infeasible_step": 0,
+   "episodes_infeasible_but_no_collision": 9
+  },
+  {
+   "variant": "alpha = 0.8 (looser barrier; u=0 fallback)",
+   "episodes": 50,
+   "success_rate": 0.8,
+   "collision_rate": 0.14,
+   "timeout_rate": 0.06,
+   "total_steps": 6817,
+   "infeasible_steps": 51,
+   "frac_infeasible_steps": 0.007481296758104738,
+   "episodes_with_any_infeasible": 0.16,
+   "collisions": 7,
+   "collisions_with_infeasibility_in_episode": 7,
+   "collisions_within_10_steps_of_infeasibility": 7,
+   "collisions_with_no_infeasible_step": 0,
+   "episodes_infeasible_but_no_collision": 1
+  },
+  {
+   "variant": "alpha = 1.6 (looser barrier; u=0 fallback)",
+   "episodes": 50,
+   "success_rate": 0.8,
+   "collision_rate": 0.12,
+   "timeout_rate": 0.08,
+   "total_steps": 6917,
+   "infeasible_steps": 16,
+   "frac_infeasible_steps": 0.002313141535347694,
+   "episodes_with_any_infeasible": 0.1,
+   "collisions": 6,
+   "collisions_with_infeasibility_in_episode": 5,
+   "collisions_within_10_steps_of_infeasibility": 5,
+   "collisions_with_no_infeasible_step": 1,
+   "episodes_infeasible_but_no_collision": 0
+  }
+ ],
+ "representative_conflicts": [
+  {
+   "seed": 0,
+   "step": 457,
+   "category": "other (3-way conflict)",
+   "min_slack": 0.005451671536767638,
+   "min_control_scale": NaN,
+   "max_alpha_feasible": 0.406793212890625,
+   "feasible_at_rw0": true,
+   "feasible_at_rw0_alpha16": true,
+   "feasible_unbounded_control": false,
+   "feasible_rw0_unbounded": true,
+   "conflict": [
+    {
+     "label": "dynamic",
+     "dh_dt": -0.7077270160485103,
+     "h": 0.9879593769286645,
+     "grad": [
+      0.7583870328884518,
+      0.6518045016311641
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 0.10018648147506487,
+     "grad": [
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 1.218673771397713,
+     "grad": [
+      -1.0,
+      -0.0
+     ]
+    }
+   ]
+  },
+  {
+   "seed": 0,
+   "step": 458,
+   "category": "other (3-way conflict)",
+   "min_slack": 0.016890054964734183,
+   "min_control_scale": NaN,
+   "max_alpha_feasible": 0.42135009765625,
+   "feasible_at_rw0": true,
+   "feasible_at_rw0_alpha16": true,
+   "feasible_unbounded_control": false,
+   "feasible_rw0_unbounded": true,
+   "conflict": [
+    {
+     "label": "dynamic",
+     "dh_dt": -0.7076466426281498,
+     "h": 0.9171906024062042,
+     "grad": [
+      0.7598680898825225,
+      0.6500772923109118
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 0.10018648147506487,
+     "grad": [
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 1.218673771397713,
+     "grad": [
+      -1.0,
+      -0.0
+     ]
+    }
+   ]
+  },
+  {
+   "seed": 0,
+   "step": 459,
+   "category": "other (3-way conflict)",
+   "min_slack": 0.028298647371867436,
+   "min_control_scale": NaN,
+   "max_alpha_feasible": 0.43784790039062493,
+   "feasible_at_rw0": true,
+   "feasible_at_rw0_alpha16": true,
+   "feasible_unbounded_control": false,
+   "feasible_rw0_unbounded": true,
+   "conflict": [
+    {
+     "label": "dynamic",
+     "dh_dt": -0.7075541863685462,
+     "h": 0.8464304505809388,
+     "grad": [
+      0.7614895340578102,
+      0.6481772053384934
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 0.10018648147506487,
+     "grad": [
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 1.218673771397713,
+     "grad": [
+      -1.0,
+      -0.0
+     ]
+    }
+   ]
+  },
+  {
+   "seed": 0,
+   "step": 460,
+   "category": "other (3-way conflict)",
+   "min_slack": 0.03967284715306559,
+   "min_control_scale": NaN,
+   "max_alpha_feasible": 0.454345703125,
+   "feasible_at_rw0": true,
+   "feasible_at_rw0_alpha16": true,
+   "feasible_unbounded_control": false,
+   "feasible_rw0_unbounded": true,
+   "conflict": [
+    {
+     "label": "dynamic",
+     "dh_dt": -0.7074471002634737,
+     "h": 0.7756802520171266,
+     "grad": [
+      0.763272259772634,
+      0.6460769748734098
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 0.10018648147506487,
+     "grad": [
+      0.0,
+      -1.0
+     ]
+    },
+    {
+     "label": "static",
+     "dh_dt": 0.0,
+     "h": 1.218673771397713,
+     "grad": [
+      -1.0,
+      -0.0
+     ]
+    }
+   ]
+  },
+  {
+   "seed": 0,
+   "step": 461,
+   "category": "dynamic-dynamic conflict",
+   "min_slack": 0.051007054266257984,
+   "min_control_scale": NaN,
+   "max_alpha_feasible": 0.472784423828125,
+   "feasible_at_rw0": false,
+   "feasible_at_rw0_alpha16": true,
+   "feasible_unbounded_control": false,
+   "feasible_rw0_unbounded": false,
+   "conflict": [
+    {
+     "label": "dynamic",
+     "dh_dt": -0.7073221296890975,
+     "h": 0.7049416256277827,
+     "grad": [
+      0.7652415095756372,
+      0.6437432966815267
+     ]
+    },
+    {
+     "label": "dynamic",
+     "dh_dt": -0.4484208397460791,
+     "h": 2.339040675895488,
+     "grad": [
+      -0.7585931739874734,
+      -0.6515645757556275
+     ]
+    }
+   ]
+  },
+  {
+   "seed": 0,
+   "step": 462,
+   "category": "dynamic-dynamic conflict",
+   "min_slack": 0.062294384132326325,
+   "min_control_scale": NaN,
+   "max_alpha_feasible": 0.492193603515625,
+   "feasible_at_rw0": false,
+   "feasible_at_rw0_alpha16": true,
+   "feasible_unbounded_control": false,
+   "feasible_rw0_unbounded": false,
+   "conflict": [
+    {
+     "label": "dynamic",
+     "dh_dt": -0.7071750629448899,
+     "h": 0.6342165611781043,
+     "grad": [
+      0.767428062560732,
+      0.6411350628333167
+     ]
+    },
+    {
+     "label": "dynamic",
+     "dh_dt": -0.44021665147409383,
+     "h": 2.294605676761298,
+     "grad": [
+      -0.7475593878357034,
+      -0.6641949726237834
+     ]
+    }
+   ]
+  }
+ ]
+}
