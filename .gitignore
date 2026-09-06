@@ -235,3 +235,9 @@ tensorboard_logs/
 # Virtual environment
 venv/
 .env
+# Week5-Phase7 / Stage 0: the two 200-episode trace files are ~24 MB of DERIVED data that
+# rebuilds in ~37 min each. Their sha256 digests and full per-episode summaries ARE committed
+# in meta_final_*.json, and the enriched infeasible corpus extracted from them is committed in
+# full, so every Stage 1 gate except the final-tier L2-L4 sweep runs from what is in git.
+#   python -m experiments.exp7_0_trace_corpus --tiers final --conditions fixed randomized
+results/week5_phase7/stage0_trace_corpus/trace_final_*.npz
