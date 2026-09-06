@@ -1091,6 +1091,130 @@ results/week5_phase7/stage7_factorial/
 Every result JSON carries a top-level `"label": "Week5-Phase7 / Stage <n> / <name>"` and every
 console report opens with that line. No Phase 1–6 result file is written to, renamed or moved.
 
+## 11.4 AMENDMENT 1 — Stage 1 gate criteria (dated 2026-09-06)
+
+**Linked to:** the original Stage 1 run, commit `998eeaa` (`Week5-Phase7-Stage1`), and the
+forensic diagnosis `MD_files/week5/phase7/STAGE1_FORENSIC.md` (commit `4c45c08`).
+
+**Status of the original result: PERMANENTLY RECORDED AS FAILED.** The original gate text is
+preserved verbatim in §4.4/§4.5 above and in `STAGE1_REPORT.md`; the original failed
+measurements stand in `results/week5_phase7/stage1_equivalence/stage1_equivalence.json`. This
+amendment does not rewrite, relabel or supersede them. Any rerun is reported as a *second* run
+alongside the first.
+
+**Trigger.** The forensic diagnosis established (a) independent feasible-set equality —
+99 888 membership comparisons, 0 disagreements, decided without consulting the accelerated
+implementation; (b) identical reconstructed coefficients and critical-row ordering; (c) that
+the numerical discrepancies are primarily V0/SCS solver error rather than a different
+mathematical problem — `corr(‖u_acc − u_V0‖, ‖u_V0 − u_arbiter‖) = 1.000000`, median ratio
+1.000000. No implementation error was found; classification **G** (pre-registered tolerance
+inappropriate) on top of **D**, with **B** and **E** ruled out by measurement.
+
+**Approved by the reviewer on 2026-09-06 as Amendment B, with revisions**, which are
+incorporated below. In particular the relative criterion
+`‖u_acc − u_arbiter‖ ≤ ‖u_V0 − u_arbiter‖` proposed in `STAGE1_REPORT.md` §7 was **rejected as
+a primary criterion** because it is defined relative to V0's error; it is retained as
+diagnostic evidence only.
+
+### 11.4.1 Notation, corrected to remove a collision
+
+`V0` = the frozen reference controller. `V1` = **the accelerated candidate**, which is
+`reduced_osqp` and nothing else. The four accelerated variants were previously also called
+V1–V4; those labels are **retired** and renamed to avoid ambiguity:
+
+| old | new | role after this amendment |
+|---|---|---|
+| V1 | `PAR-SCS` | **excluded** from substrate candidacy (§11.4.6) |
+| V2 | `PAR-CLARABEL` | ablation only |
+| V3 | **`RED-OSQP` = V1** | the sole substrate candidate |
+| V4 | `RED-OSQP-WS` | ablation only (measured null on speed) |
+
+### 11.4.2 PRIMARY gate — mathematical equivalence (all four mandatory)
+
+| # | requirement | pass condition |
+|---|---|---|
+| **P1** | independent feasible-set equality on the pre-registered corpus | **0 disagreements**. Membership decided twice per probe: V0 side by solving the `(t, s_i)` feasibility LP with scipy HiGHS for the fixed `u`; reduced side by direct arithmetic. **The V0 side must remain independent of the accelerated implementation.** Any disagreement is enumerated with its distance to the constraint boundary. |
+| **P2** | identical reconstructed constraint coefficients and critical-row ordering | bitwise `array_equal` between the kept-sample matrix re-derived from the recorded `xi` and the matrix the corpus recorded V0 using; criticality sort `α·h + ∂h/∂t` ascending. Over **every** corpus step, not a sample. |
+| **P3** | identical variable bounds, τ, α/barrier formulation, and objective formulation | `‖ū‖_∞ = max(1, α, \|u_x\|, \|u_y\|) = 1` exactly over ≥ 10^6 admissible `u`, hence `τ = r_W/ε = 0.04` constant; `p0 = 3`, `p1 = 4·h_crit`, `p3 = 5·h_crit` exact; `\|u\| ≤ max_v` per axis and `δ ≥ 0` identical; preconditions `ε·n_keep < 1` and `max_v ≤ max(1, α)` asserted |
+| **P4** | independent arbiter confirmation that the accelerated solution solves the **same** mathematical problem | for each sampled solved step: (a) `u_V1` lies in the V0 feasible set per the **independent LP oracle** of P1, and (b) suboptimality gap `J(u_V1) − J* ≤ J_tol` where `J*` is the arbiter optimum |
+
+**`J_tol` is pre-registered here, before the rerun, at `1e-9`, with justification.**
+It is anchored to the *arbiter's own* reproducibility, not to the candidate's performance:
+solving the frozen formulation with CLARABEL at `tol 1e-14` and at `tol 1e-12` over 194 solved
+steps gives a self-inconsistency of median 5.1e−14, p99 8.2e−13, **max 3.2e−12** in the
+objective (and max 7.1e−12 in the action). `J_tol = 1e-9` is ~300× that maximum — loose enough
+that the arbiter's own noise cannot cause a failure, and 7 orders below `τ = 0.04` and below
+any quantity the study interprets. *Disclosure:* the candidate's action accuracy (~1.8e−8) was
+already known from the failed run, so this threshold cannot be claimed to have been set blind;
+it is however derived solely from arbiter measurements and is not a function of any candidate
+result.
+
+### 11.4.3 SECONDARY — numerical solution accuracy (reported, not a pass/fail gate)
+
+Compare **both** implementations independently against the arbiter:
+
+```
+E0 = ||u_V0 - u_arbiter||_inf        E1 = ||u_V1 - u_arbiter||_inf
+```
+
+Report for each: **median, p95, p99, maximum**, and the **fraction of cases where E1 < E0**.
+No tolerance is attached to E0/E1 and none is invented. The original failed thresholds
+(`‖u − u_V0‖ ≤ 1e−6`, `‖u − u_arbiter‖ ≤ 1e−8`, objective `≤ 1e−8`) remain recorded in
+`STAGE1_REPORT.md` §1 as failed, and are re-reported unchanged in the rerun for continuity.
+The `corr = 1.000000` / `ratio = 1.000000` result is retained as **diagnostic evidence only**
+and is explicitly **not** promoted into any criterion.
+
+### 11.4.4 SAFETY — L4 retained unchanged, mandatory
+
+**0 guarantee-tier regressions.** A regression is a step whose tier under V1 is strictly worse
+than under V0 (T0→T1, T0→T2, T1→T2). Improvements are reported separately and are not failures.
+Evaluated over every solved corpus step.
+
+### 11.4.5 CLOSED LOOP — statistical, never trajectory identity
+
+**Trajectory identity is NOT required and is not tested.** The 4/400 divergent episodes from
+the original run remain reported. B0 vs B1 is evaluated with the paired protocol of §6.4:
+**success, collision and timeout**, each with an **exact paired McNemar test** and a
+**paired bootstrap 95 % CI** (10 000 resamples over seeds), on the same 200 paired seeds per
+condition.
+
+Pass condition: for all three outcomes in both conditions, McNemar `p > 0.05` **and** the 95 %
+CI on the paired difference contained within **±0.03** absolute. The ±0.03 margin is
+pre-registered here with justification: it must be strictly smaller than the smallest effect
+Direction 1 aims to detect (0.03–0.10 per §6.4), so that substrate noise can never be mistaken
+for a D1 effect.
+
+If it passes, the result is stated as **"statistically/distributionally equivalent"**.
+**The terms "behaviour-preserving" and "trajectory-identical" are forbidden.** The system is
+described throughout as a **"mathematically equivalent accelerated implementation"**.
+
+### 11.4.6 STATUS HANDLING
+
+`RED-OSQP` is the **only** substrate candidate. **`PAR-SCS` is excluded** on the measured
+status-level regression: 2 steps moved to `optimal_inaccurate` on problems the LP-exact oracle
+calls infeasible.
+
+The five statuses — `optimal`, `optimal_inaccurate`, `infeasible`, `infeasible_inaccurate`,
+`solver_error` — are **preserved as distinct** in all evidence and are never silently collapsed.
+The coarse policy-level predicate is reported **separately and additionally**, never as a
+substitute.
+
+### 11.4.7 The τ observation, and how it must be worded
+
+The finding that V0 attains `min CBC < τ` on 413 of 603 solved steps (68.5 %, reaching
+0.03996336) while the reduced formulation reaches 0.04000000 is **retained**. It is to be
+described as a **numerical violation of the theoretical DR-CBF floor in the frozen SCS
+implementation**, of magnitude up to 3.7e−5. It must **not** be called "unsafe" without
+qualification: it is a solver-accuracy artefact, its magnitude is ~0.09 % of τ, and no claim
+about physical safety follows from it.
+
+### 11.4.8 Seed hygiene, unchanged
+
+No tuning of the accelerated solver on `EVAL_SEED_BASE` seeds. Solver settings were fixed
+before the original run and are **not** modified by this amendment. The closed-loop analysis
+re-uses the *same* 400 paired episodes recorded at `998eeaa`; only the criterion applied to
+them changes, so no new randomness enters.
+
 ## 12. Review record
 
 Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
@@ -1109,6 +1233,7 @@ Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
 | 10 | `Sigma_v` assumed uncalibrated; NEES/NIS/coverage precede any safety interpretation | §5.4, G6 |
 | 11 | stage-by-stage implementation; Stage 0 first, then stop and report | §11.2, §10 |
 | + | contradicting results update the interpretation, never the pre-registered experiment | §11.1 |
+| A1 | **Amendment 1 (2026-09-06)**: Stage 1 gate amended after the forensic diagnosis; original failed result at `998eeaa` preserved | §11.4 |
 
 ## 13. Open questions to settle before Stage 1 begins
 
