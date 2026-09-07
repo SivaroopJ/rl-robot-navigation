@@ -1387,6 +1387,146 @@ randomized breakdown.
 The hypothesis is not to be forced to survive. Stage 3 has not started, and no intervention is
 implemented until Stage 2b is reviewed.
 
+## 11.7 AMENDMENT 4 — evidence-driven reordering and the Stage 3 design (dated 2026-09-07)
+
+**Linked to:** Stage 2 `df42437`, provenance correction `5415bc7`, Amendment 3 `e2cda71`,
+Stage 2b result `c2019ff`. Chain preserved: `998eeaa` → `4c45c08` → `3c85f9d` → `00587e3` →
+`4e55219` → `cc692ab` → `df42437` → `5415bc7` → `e2cda71` → `c2019ff`. V0 is not modified.
+
+### 11.7.1 Two mechanisms, kept explicitly separate from here on
+
+Stage 2b established causally that infeasibility has **two distinct mechanisms**, and no text in
+this plan may collapse them:
+
+| # | mechanism | measured size | signature |
+|---|---|---|---|
+| **M1** | **estimator-induced**: super-physical estimated closing rates | 66.1 % of the infeasibility rate; 69.4 % of baseline infeasible steps; **all 884 cardinality-1 subsets** | a single row demands more closing-rate compensation than the action box can deliver |
+| **M2** | **genuine multi-constraint geometric conflict** | the residual 792 steps (0.0114) that survive exact ground-truth velocity | **entirely** multi-constraint (738 pairwise, 54 three-way, 0 singletons); 2.05× worse under randomized motion (0.0154 vs 0.0075) |
+
+**Velocity estimation does not explain all infeasibility.** M2 is real, separate, and untouched
+by any velocity fix.
+
+**The de-staling intervention (D3a, §5.1) is NOT the explanation or the fix for infeasibility.**
+Stage 2 contradicted the staleness hypothesis in its stated mechanism (§11.6.1). D3a remains an
+independent `[extension]` if retained, and is to be justified on its own terms — consistency
+between the `h` and `∂h/∂t` channels — never as an infeasibility remedy.
+
+### 11.7.2 The evidence-driven stage ordering, replacing §0 and §10
+
+```
+Stage 3  velocity-estimation intervention          addresses M1
+Stage 4  residual / genuine infeasibility recovery  addresses M2, sized by Stage 3's residual
+Stage 5+ uncertainty and advanced estimator work    ONLY if justified by Stage 3's results
+```
+
+The causal sequence is fixed: **estimated-velocity problem → address the estimator → measure the
+residual genuine infeasibility → then design recovery for what remains.** Recovery must not be
+used to compensate for estimator-induced infeasibility before the estimator intervention is
+tested, so **Stage 3 runs on the FROZEN `u = 0` fallback**, unchanged.
+
+### 11.7.3 Stage 3 — hypotheses
+
+* **H3-efficacy.** Preventing physically impossible closing-rate estimates reduces the
+  infeasibility rate relative to the frozen baseline.
+* **H3-safety (stated symmetrically, so the result cannot be spun).** The intervention acts in
+  *both* directions and the net sign is unknown:
+  * it removes *pessimistic* overshoot → fewer infeasible steps → fewer `u = 0` fallbacks →
+    plausibly **fewer** collisions (Phase 6: 86 % / 67 % of collisions follow an infeasible step);
+  * it also removes conservatism on rows where a high estimate was warranted → more
+    *optimistic* error → plausibly **more** collisions (Phase 4: `P(e>0 | TTC<1s) = 0.142`
+    already, and capping can only raise it).
+* **H3-residual.** After the intervention, the surviving infeasibility is predominantly M2 —
+  multi-constraint, with few or no cardinality-1 subsets.
+
+### 11.7.4 Stage 3 — treatments, with the capping rule fixed BEFORE the experiment
+
+The intervention lives **upstream of the controller**, in `ξ` construction. **The DR-CBF
+controller itself is not modified at all**: α, τ, ε, the objective, sample selection and the
+`u = 0` fallback are untouched, and V0 remains the solver.
+
+| arm | definition |
+|---|---|
+| **C0** frozen baseline | the Phase 6 system, unchanged — reproduces the published numbers |
+| **T1** projection clamp *(primary)* | `∂h/∂tᵢ := max(∂h/∂tᵢ, −v_cap)` when building `ξ`. Exactly Stage 2b's A4, so its open-loop effect is already measured |
+| **T2** velocity-vector clamp *(variant)* | inside a NEW tracker subclass: `v̂ := v̂ · min(1, v_cap/‖v̂‖)`. Repairs the estimate rather than the derived quantity; Stage 2b showed it is at least as effective as T1 on closing rows, but it also alters receding rows where T1 is a no-op, so it is not strictly dominated |
+| **D-oracle** *(diagnostic only)* | ground-truth velocity. An upper bound on any estimator. **Never a headline arm**, always labelled |
+
+**`v_cap` IS PRE-REGISTERED HERE AT 0.96, AND IS DERIVED, NOT TUNED.**
+
+A single row is unsatisfiable inside the action box iff `max_v·‖∇h‖₁ < τ − α·h − ∂h/∂t`. With
+unit gradients `‖∇h‖₁ ≥ 1`, and with the clamp `∂h/∂t ≥ −v_cap` and `h ≥ 0`:
+
+```
+max_v * ||grad h||_1  >=  max_v  =  1.0
+tau - alpha*h - dh_dt  <=  tau + v_cap
+so  v_cap <= max_v - tau  =  1.0 - 0.04  =  0.96   ==>   NO cardinality-1 subset can exist
+```
+
+`v_cap = 0.96` is therefore **the largest cap that provably eliminates the entire M1 singleton
+class**, and it is derived from `max_v` and `τ` alone — both controller-internal constants. The
+guarantee is conditional on `h ≥ 0`, which held on **69 226 / 69 226** corpus steps.
+
+**Information-ledger note, and a correction to how Stage 2b must be read.** Stage 2b's A4 used
+`V_PHYS = 0.675 / 0.75`, the *configured obstacle speed* — environment ground truth. That is
+legitimate for a diagnostic but **would break the information ledger as an intervention**: the
+controller is not entitled to know how fast obstacles are. `v_cap = 0.96` uses no environment
+knowledge whatsoever. Because 0.96 is a **looser** cap than 0.675/0.75, it clamps less, so
+**Stage 2b's −52.1 % is an UPPER bound on what T1 at `v_cap = 0.96` can achieve, and a smaller
+reduction is expected.** That prediction is pre-registered.
+
+Sensitivity arms, reported from dev/validation seeds only and never used to select a value:
+`v_cap ∈ {0.96, 1.0}` (1.0 = the robot's own `MAX_SPEED`, also ledger-clean), plus
+`v_cap = V_PHYS` as a clearly-labelled diagnostic that reproduces Stage 2b's A4.
+
+### 11.7.5 Stage 3 — metrics, both sides, mandatory
+
+**Infeasibility side:** infeasibility rate; absolute count; minimal-infeasible-subset cardinality
+distribution (the M1/M2 split); super-physical row rate; required slack; fraction of steps where
+the clamp actually bound (**intervention frequency**); `u = 0` fallback frequency.
+
+**Safety side:** collision rate, split **dynamic / static / wall**; success; timeout; **minimum
+true clearance**; SPL; collisions while feasible vs collisions after an infeasible step.
+
+**Estimator side:** velocity-estimation error `‖v̂ − v‖`; projected error `e = ∂h/∂t_est −
+∂h/∂t_true` with `P(e>0)`, p95, p99; **`P(e>0 | TTC < 1 s)`** — the Phase 4 primary, directly
+comparable to its 0.142; and the *pessimistic* tail `P(e < −0.05)`, which the clamp targets.
+
+**Protocol:** the frozen environment and evaluation code, the same paired seeds, and the Phase 6
+200-paired-episode protocol per condition. Tiering as §6.2: dev 20 → validation 50 → final 200.
+
+### 11.7.6 Stage 3 — gate G-S3, pre-registered
+
+**Safety is a veto, not a trade.** A method that reduces infeasibility but increases collisions
+is **not** an acceptable improvement.
+
+1. **Safety veto.** If the paired collision rate increases significantly (exact McNemar
+   `p < 0.05`) in either condition, the arm is **rejected regardless of any infeasibility gain**.
+2. **Efficacy.** The infeasibility rate must fall relative to C0, paired, with the reduction and
+   its CI reported.
+3. **Residual characterisation.** The surviving infeasibility must be characterised by MIS
+   cardinality, to size M2 for Stage 4.
+4. **Honest power statement, pre-registered.** At n = 200 paired episodes the collision test
+   resolves roughly 0.08 absolute (Phase 6 could not resolve 0.275 vs 0.335). **A non-significant
+   collision result therefore does NOT establish safety — it only fails to detect harm**, and
+   must be reported in those words. Because of this, two higher-`n` per-step safety endpoints are
+   *also* required and are treated as primary alongside collision:
+   * minimum true clearance (n = 400 episodes),
+   * `P(e>0 | TTC < 1 s)` (n ≈ 10⁴ steps), which must not worsen materially against Phase 4's 0.142.
+5. **Outcome routing.** Accept for Stage 4 only if efficacy holds and no safety endpoint worsens.
+   If efficacy holds but a safety endpoint worsens, the arm is rejected and the M1 finding stands
+   as *diagnostic only*. If efficacy fails, H3-efficacy is contradicted and Stage 3 reports that
+   rather than escalating to richer estimators.
+
+**Only if Stage 3 is accepted** does improved motion-model work (CT / IMM) or uncertainty
+propagation become justified; none of it is authorised by this amendment.
+
+### 11.7.7 Files Stage 3 would add, when approved
+
+New only; nothing frozen is edited. `dr_control/capped_velocity.py` (T1/T2, subclassing the
+frozen source and tracker), `dr_control/policy_phase7.py`, `tests/test_dr_control_phase7_stage3.py`,
+`experiments/exp7_3_velocity_intervention.py`, `results/week5_phase7/stage3_velocity_intervention/`.
+`PHASE7_PATHS` in the manifest generator gains the new `dr_control/` modules — a reviewable act.
+
 ## 12. Review record
 
 Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
@@ -1408,6 +1548,7 @@ Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
 | A1 | **Amendment 1 (2026-09-06)**: Stage 1 gate amended after the forensic diagnosis; original failed result at `998eeaa` preserved | §11.4 |
 | A2 | **Amendment 2 (2026-09-07)**: P4b → solver-independent KKT certificate, L4 → tier from the certified optimum; no third threshold; stopping rule fixed | §11.5 |
 | A3 | **Amendment 3 (2026-09-07)**: G-D1a recorded CONTRADICTED in the stated mechanism; Stage 2b velocity causal counterfactual inserted before any intervention | §11.6 |
+| A4 | **Amendment 4 (2026-09-07)**: M1/M2 mechanisms separated; stages reordered to velocity intervention → residual recovery → advanced estimator; Stage 3 designed with `v_cap = 0.96` derived and a safety veto | §11.7 |
 
 ## 13. Open questions to settle before Stage 1 begins
 
