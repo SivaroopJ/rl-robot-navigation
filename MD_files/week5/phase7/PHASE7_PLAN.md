@@ -1570,6 +1570,121 @@ frozen source and tracker), `dr_control/policy_phase7.py`, `tests/test_dr_contro
 `experiments/exp7_3_velocity_intervention.py`, `results/week5_phase7/stage3_velocity_intervention/`.
 `PHASE7_PATHS` in the manifest generator gains the new `dr_control/` modules — a reviewable act.
 
+## 11.8 AMENDMENT 5 — Stage 3 outcome, T1 accepted, and the Stage 4 design (dated 2026-09-07)
+
+**Linked to:** Stage 3 result `c4ae28b`, its pre-registration `5284025` and clarification
+`6566d76`. Chain preserved: `cc692ab` → `df42437` → `5415bc7` → `e2cda71` → `c2019ff` →
+`5284025` → `6566d76` → `c4ae28b`. V0 remains frozen and no previous result is overwritten.
+
+### 11.8.1 Stage 3 conclusions, recorded precisely
+
+* **M1 was eliminated exactly.** Singleton (cardinality-1) infeasibility counts went
+  **405 → 0** (fixed) and **298 → 0** (randomized); the rate went 0.0148 → 0.0000 and
+  0.0114 → 0.0000.
+* **Total infeasibility fell 36.4 % (fixed) and 26.3 % (randomized)** — smaller than the
+  privileged Stage-2b A4 (−52.1 %), exactly as pre-registered, because `v_cap = 0.96` is looser
+  than the ground-truth 0.675/0.75 that A4 used.
+* **The residual under T1 is entirely M2 / multi-constraint: 0.0232 (fixed) and 0.0283
+  (randomized).**
+* **T1 is NOT claimed to improve navigation safety.** Collision differences were not
+  significant (0.140 → 0.135, p = 1.000 fixed; 0.275 → 0.280, p = 1.000 randomized), and at
+  n = 200 the test resolves only ~0.08 absolute.
+* **The small M2 increase is reported as observed and is not explained away.** M2 rose
+  0.0216 → 0.0232 (fixed) and 0.0271 → 0.0283 (randomized) under T1. Changed actions imply
+  changed visited states; that is noted as a mechanism, not offered as a dismissal.
+* **The singleton → fallback → collision conjecture is WEAKENED and must not be presented as
+  established.** Eliminating the entire singleton class moved fallback-associated collisions
+  only 24 → 22 (fixed) and 37 → 39 (randomized).
+* **D-oracle remains diagnostic and ledger-breaking only.** Its randomized improvement
+  (0.275 → 0.195, p = 0.0070) demonstrates the value of accurate velocity information but
+  **does NOT authorise estimator-accuracy work at Stage 5+**.
+
+### 11.8.2 Decision: T1 accepted, T2 rejected
+
+**T1 (projection clamp, `v_cap = 0.96`) is the accepted Stage-3 configuration and is carried
+forward.** `v_cap = 0.96` carries forward unchanged, derived not tuned, under the stated
+conditions `h ≥ 0` and `‖∇h‖₁ = 1` only.
+
+**T2 (vector clamp) is rejected in favour of T1** and is not continued unless explicitly
+requested later. Basis: T2 clamps more often (0.110–0.130 vs 0.070–0.094) and buys more
+infeasibility reduction, but moves three randomized endpoints adversely — collision +0.015,
+mean clearance 0.182 → 0.177, worst-case clearance −0.0593 → −0.0712.
+
+**V0 stays frozen and the `u = 0` fallback stays unchanged** everywhere except inside the
+Stage-4 treatment arms defined below.
+
+### 11.8.3 Gating rule for estimator work
+
+Estimator-accuracy work — IMM, constant-turn models, covariance propagation, uncertainty
+margins — **remains gated on Stage 4 outcomes** and is not authorised by the D-oracle result or
+by anything in this amendment.
+
+### 11.8.4 Stage 4 — objective and scope
+
+**Recover the residual genuine multi-constraint infeasibility (M2) and nothing else**, sized
+from the measured Stage-3 T1 residual: **2.32 % (fixed), 2.83 % (randomized)**, which is
+**100 % multi-constraint** in both conditions.
+
+Out of scope, and not to appear in any Stage-4 arm: governor logic, IMM/CT estimation,
+uncertainty modelling, de-staling / predictive barriers, changes to `α`, `τ`, `ε`, `v_cap`, the
+objective, sample selection, the planner, the LiDAR pipeline, `robot_env/` or `evaluation/`.
+
+**The Stage-4 baseline is the Stage-3 T1 configuration**, not the frozen C0 — Stage 3 changed
+the states visited, so C0's infeasible steps are not the population Stage 4 acts on.
+
+### 11.8.5 Stage 4 — arms
+
+| arm | fallback on an infeasible step |
+|---|---|
+| **B4** baseline | T1 + the frozen `u = 0` fallback (reproduces Stage 3's T1 row) |
+| **R1** drop the Wasserstein margin | re-solve with `τ := 0`; gives up distributional robustness **only** |
+| **R2** minimum-violation lexicographic | maximise the worst margin `min_i CBC_i`, then minimise the frozen objective among the maximisers |
+| **LADDER** | R0 → R1 → R2, stopping at the first feasible rung — the composed policy |
+| *(ablation)* **R1.5** | local `α'` relaxation, **only if** its three admission checks of §3.3-D2 pass; otherwise not run |
+
+Every rung is convex, parameter-free, and applies **only** on steps the frozen problem declares
+infeasible. On feasible steps the ladder must be **bit-identical** to B4 — a hard test.
+
+### 11.8.6 Stage 4 — the five-way distinction, mandatory in every record
+
+1. feasible DR solution · 2. infeasible DR problem · 3. recovered action ·
+4. **actual CBC violation of the recovered action** · 5. subsequent collision.
+
+Per step: the rung reached; the achieved margin `m = min_i CBC_i` recomputed from the returned
+action against the samples the controller saw; the guarantee tier T0 (`m ≥ τ`) / T1
+(`0 ≤ m < τ`) / T2 (`m < 0`); and the implied worst-case decay bound for T2. **A recovered
+action is never described as "safe"; `m` and its tier are always printed beside it.**
+
+### 11.8.7 Stage 4 — metrics and gate G-S4
+
+Metrics: infeasibility rate and MIS cardinality (must stay ≥ 2 — a Stage-4 arm that creates
+singletons is broken); **rung distribution**; **tier distribution and `m`**; rung-switching rate
+(chatter); collision split dynamic/static/wall; success; timeout; minimum true clearance; SPL;
+collisions while feasible vs after a recovered step; `‖u − u_nom‖`.
+
+**G-S4, pre-registered.**
+1. **Safety veto**, unchanged: a significant paired collision increase against B4 rejects the
+   arm regardless of any other gain. A non-significant result at n = 200 is reported as
+   *failed to detect harm*, never as proof of safety.
+2. **Inertness:** on feasible steps the ladder is bit-identical to B4.
+3. **Characterisation, not outcome, is the primary claim.** The deliverable is the rung/tier/`m`
+   distribution over the M2 population — what guarantee is actually obtained when the problem is
+   infeasible.
+4. **Pre-registered expectation about collisions.** Stage 3 removed ~40 % of infeasible steps
+   and moved fallback-associated collisions by 24 → 22 and 37 → 39, i.e. essentially not at all.
+   **Stage 4 is therefore expected to show little or no collision benefit**, and a null result
+   is a valid, reportable outcome — not a reason to escalate.
+
+### 11.8.8 Stage 4 — pre-registered predictions
+
+* **P1.** R1 alone (`τ := 0`) resolves only a small minority of M2 steps: Stage 2 measured the
+  required uniform slack at median 0.1853 against `τ = 0.04`, with only 315 of 2 337 steps in
+  the `slack ≤ τ` tier. Predicted R1 success on M2: **well under 25 %**.
+* **P2.** R2 always returns an action, and most recovered actions land in **tier T2**
+  (`m < 0`), because the required slack exceeds `τ` on the large majority of steps.
+* **P3.** Collision rate is **not** significantly reduced relative to B4, following §11.8.7-4.
+* **P4.** The residual MIS cardinality stays ≥ 2 in every arm; no arm creates singletons.
+
 ## 12. Review record
 
 Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
@@ -1592,6 +1707,7 @@ Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
 | A2 | **Amendment 2 (2026-09-07)**: P4b → solver-independent KKT certificate, L4 → tier from the certified optimum; no third threshold; stopping rule fixed | §11.5 |
 | A3 | **Amendment 3 (2026-09-07)**: G-D1a recorded CONTRADICTED in the stated mechanism; Stage 2b velocity causal counterfactual inserted before any intervention | §11.6 |
 | A4 | **Amendment 4 (2026-09-07)**: M1/M2 mechanisms separated; stages reordered to velocity intervention → residual recovery → advanced estimator; Stage 3 designed with `v_cap = 0.96` derived and a safety veto | §11.7 |
+| A5 | **Amendment 5 (2026-09-07)**: Stage 3 outcome recorded; T1 accepted and T2 rejected; singleton→fallback→collision conjecture weakened; estimator work gated on Stage 4; Stage 4 designed against M2 only | §11.8 |
 
 ## 13. Open questions to settle before Stage 1 begins
 
