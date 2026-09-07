@@ -1520,6 +1520,49 @@ is **not** an acceptable improvement.
 **Only if Stage 3 is accepted** does improved motion-model work (CT / IMM) or uncertainty
 propagation become justified; none of it is authorised by this amendment.
 
+### 11.7.8 CLARIFICATION to G-S3 (recorded 2026-09-07, before implementation)
+
+**The efficacy gate is MECHANISM-SPECIFIC. "Total infeasibility decreased" is NOT the success
+criterion.** Three quantities are reported separately for every arm and condition:
+
+1. **singleton / M1 infeasibility** — steps whose minimal infeasible subset has cardinality 1
+2. **multi-constraint / M2 infeasibility** — steps whose MIS has cardinality ≥ 2
+3. **total infeasibility**
+
+**PRE-REGISTERED PREDICTION, recorded before the run:**
+
+> T1 reduces the singleton / M1 infeasibility rate relative to C0, but residual
+> multi-constraint / M2 infeasibility remains.
+
+T1 is **not** required or expected to eliminate M2. An arm that removes the singleton class
+while leaving M2 substantially intact **satisfies** the efficacy criterion; an arm that reduces
+total infeasibility without reducing the singleton class does **not**.
+
+**The `v_cap = 0.96` guarantee, stated precisely and not generalised.**
+
+> **Under the observed corpus conditions `h ≥ 0` and `‖∇h‖₁ = 1`**, any `v_cap ≤ max_v − τ =
+> 0.96` eliminates the singleton infeasibility class.
+
+Both conditions are empirical facts of this corpus (`h ≥ 0` on 69 226/69 226 steps; gradients
+are unit vectors by construction, and `‖∇h‖₁ = 1` exactly when a gradient is axis-aligned, which
+is the worst case — off-axis gradients give `‖∇h‖₁ ∈ (1, √2]` and are strictly easier). **The
+guarantee is not claimed beyond those conditions**: it does not hold for `h < 0`, nor for any
+configuration with a different `max_v` or `τ`, and the code asserts the preconditions rather
+than assuming them.
+
+**Stage 2b's A4 result (−52.1 %) remains an UPPER-BOUND DIAGNOSTIC, not an expected T1 result.**
+A4 used the privileged physical obstacle speed (0.675 / 0.75); T1 uses the ledger-clean derived
+0.96, which is looser and therefore clamps less. A smaller reduction is expected and predicted.
+
+**Safety, restated.** G-S3 remains a **veto**: a significant paired collision increase rejects
+the intervention regardless of infeasibility reduction. **A non-significant collision test at
+n = 200 must NOT be described as proof of safety.** The higher-`n` endpoints — minimum true
+clearance and `P(e > 0 | TTC < 1 s)` — are retained and are evaluated alongside navigation
+outcomes.
+
+**Information ledger.** T1 and T2 use only information available to the controller.
+Ground-truth velocity remains **diagnostic only** and never enters a headline arm.
+
 ### 11.7.7 Files Stage 3 would add, when approved
 
 New only; nothing frozen is edited. `dr_control/capped_velocity.py` (T1/T2, subclassing the
