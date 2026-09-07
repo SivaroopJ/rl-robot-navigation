@@ -129,6 +129,9 @@ a single row can demand more than the action box can deliver.
 | overshoot magnitude, median | **0.8625 m/s** | 0.2423 m/s | — |
 | overshoot magnitude, max | 2.8790 m/s | 1.0310 m/s | — |
 
+Reproduce with `python -m experiments.exp7_2_superphysical_baserate`; artefact at
+`results/week5_phase7/stage2_infeasibility_diagnosis/stage2_superphysical_baserate.json`.
+
 Read the other way:
 
 ```
