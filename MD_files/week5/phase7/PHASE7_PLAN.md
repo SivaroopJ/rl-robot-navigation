@@ -1321,6 +1321,72 @@ If the KKT certificate or the certified-optimum tier test fails, **no further am
 tolerance is introduced.** Stage 1 is then recorded as failed and **V0 is kept as the Stage 2–7
 substrate.**
 
+## 11.6 AMENDMENT 3 — G-D1a verdict and stage reordering (dated 2026-09-07)
+
+**Linked to:** Stage 2 diagnostic `df42437`, provenance correction `5415bc7`. Chain preserved:
+`998eeaa` → `4c45c08` → `3c85f9d` → `00587e3` → `4e55219` → `cc692ab` → `df42437` → `5415bc7`.
+No previous result is overwritten.
+
+### 11.6.1 Decision 1 — G-D1a is recorded as CONTRADICTED in the stated mechanism
+
+The Finding C staleness hypothesis (§0, §3.2, §5.1) is **CONTRADICTED in its stated
+mechanism**. The 32.8 % oldest-sample leave-one-out restoration rate is **not** reinterpreted
+as a pass: it establishes that sample age can have *some* influence, and nothing more. It does
+not establish the proposed stale-geometry/current-velocity mechanism.
+
+Decisive evidence, retained in full:
+
+* same-track stale-vs-current conflict: **0 of 1 402** pairwise conflicts (0.00 %)
+* the **newest** sample is the most implicated age (34.55 % of MIS rows) — not the oldest
+* infeasibility is **not** concentrated near contact: `h_min` median 0.5194 vs 0.4845 on
+  feasible controls, and 0.3 % vs 2.2 % inside 1 s TTC
+* the K = 1 counterfactual is **confounded** by changing the constraint count, so its 87.25 %
+  is not a staleness share
+
+The modest age effect is preserved as evidence, not promoted: every pairwise conflict is
+cross-age, and removing the oldest row restores feasibility 1.79× more often than removing the
+newest.
+
+### 11.6.2 Decision 2 — the remaining stages are reordered, and a diagnostic is inserted first
+
+The super-physical estimated closing-rate result is now the **leading candidate mechanism**
+for infeasibility, but it is an **ASSOCIATION, NOT A CAUSAL FINDING**. Accordingly:
+
+**Nothing is implemented yet.** No IMM, no CT tracking, no uncertainty margin, no predictive
+barrier, no recovery ladder, no slack, no estimator redesign of any kind.
+
+**Stage 2b — velocity-estimation causal counterfactual — is inserted before any intervention.**
+V0 stays completely frozen. Primary question:
+
+> If ONLY the velocity supplied to `∂h/∂t` is changed, how much of the observed infeasibility
+> disappears?
+
+Four arms, on identical recorded states, geometry and constraints:
+
+| arm | `∂h/∂t` supplied |
+|---|---|
+| **A1** frozen estimate | as recorded (baseline) |
+| **A2** ground truth | `−∇h·v_true` of the obstacle that produced the buffered point — **the primary causal test** |
+| **A3** zero | `0` |
+| **A4** physically capped estimate | `max(∂h/∂t_est, −v_phys)` |
+
+Held identical across arms: robot state, LiDAR geometry, sample selection, critical-row
+ordering, `h`, control bounds, objective, `α`, `τ`, and the V0 solver.
+
+Reported per arm: infeasibility rate; minimal infeasible subset size; `h_crit`; closing-rate
+distribution; super-physical-row rate; feasibility margin and required control; and a fixed vs
+randomized breakdown.
+
+### 11.6.3 Interpretation rule, fixed in advance
+
+* If **ground-truth velocity substantially reduces infeasibility** while everything else is
+  held fixed, velocity estimation becomes the **leading supported mechanism**.
+* If it does **not**, the velocity-overshoot explanation is **explicitly rejected as
+  sufficient** and alternative causes are investigated.
+
+The hypothesis is not to be forced to survive. Stage 3 has not started, and no intervention is
+implemented until Stage 2b is reviewed.
+
 ## 12. Review record
 
 Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
@@ -1341,6 +1407,7 @@ Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
 | + | contradicting results update the interpretation, never the pre-registered experiment | §11.1 |
 | A1 | **Amendment 1 (2026-09-06)**: Stage 1 gate amended after the forensic diagnosis; original failed result at `998eeaa` preserved | §11.4 |
 | A2 | **Amendment 2 (2026-09-07)**: P4b → solver-independent KKT certificate, L4 → tier from the certified optimum; no third threshold; stopping rule fixed | §11.5 |
+| A3 | **Amendment 3 (2026-09-07)**: G-D1a recorded CONTRADICTED in the stated mechanism; Stage 2b velocity causal counterfactual inserted before any intervention | §11.6 |
 
 ## 13. Open questions to settle before Stage 1 begins
 
