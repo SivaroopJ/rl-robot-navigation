@@ -94,6 +94,7 @@ PHASE7_PATHS = {
     "dr_control/uncertainty.py",       # Stage 6, Direction 3d
     "dr_control/policy_phase7.py",     # composed policy
     "dr_control/capped_velocity.py",   # Stage 3, M1 intervention (Amendment 4)
+    "dr_control/recovery.py",          # Stage 4, M2 recovery ladder (Amendment 5)
 }
 #: Kept as a convenience for the experiment and test files, which DO carry the marker.
 EXCLUDE_MARKERS = ("phase7", "exp7_")
