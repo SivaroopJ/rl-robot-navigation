@@ -1904,7 +1904,8 @@ structurally plausible source of super-physical closing rates, and it is the one
 **What E1 replaces it with.** The surface-point noise is propagated through the reconstruction
 geometry, per point count:
 
-* **n = 1:** the neighbouring rays returned no hit in this segment, which bounds the disc's
+* **n = 1:** **[CORRECTED before implementation — see §11.9.18, which supersedes this
+  bullet.]** the neighbouring rays returned no hit in this segment, which bounds the disc's
   angular extent and hence the admissible incidence interval. The tangential displacement is
   modelled as bounded on `[−r·sin Δ, +r·sin Δ]` with `Δ = 2π/24` the ray spacing, giving
   `σ_t² = r²sin²Δ / 3`; the radial variance stays `σ_range²`. `R` is that diagonal **rotated
@@ -2262,6 +2263,99 @@ results/week5_phase7/stage5_estimator/  written per condition, never overwritten
 is gated by §11.9.13-F. `dr_control/velocity_tracker.py` is **extended by subclass, never
 edited**; `dr_control/policy_phase7.py` gains an arm name, no behavioural change. Nothing under
 `robot_env/`, `evaluation/`, or any Phase 1–6 or Stage 0–4 artefact is modified. V0 stays frozen.
+
+### 11.9.18 PRE-IMPLEMENTATION CORRECTION to §11.9.8 (recorded 2026-09-08, BEFORE any code or run)
+
+Working the `n = 1` derivation through before implementing it showed the formula written in
+§11.9.8 to be **wrong**. It is corrected here rather than silently in place, per §11.9.15. The
+error was found by derivation, not by data: **no Stage-5 code existed and no experiment had been
+run when this was written.** No threshold, gate, endpoint, arm or prediction changes.
+
+**What §11.9.8 said (WRONG).** "the tangential displacement is modelled as bounded on
+`[−r·sin Δ, +r·sin Δ]` with `Δ = 2π/24` the ray spacing, giving `σ_t² = r²sin²Δ/3`; the radial
+variance stays `σ_range²`."
+
+**Why it is wrong.** Two independent errors.
+
+1. The ray-spacing bound constrains *which* discs give a one-point return (a disc subtending less
+   than the ray spacing), **not where on the disc the surviving ray lands**. Given that a ray
+   does hit, its offset from the centre bearing is bounded by the disc's own half-width, so the
+   tangential offset is bounded by `r`, not by `r·sin Δ`. The old formula understated `σ_t` by a
+   factor of `1/sin Δ ≈ 3.9`.
+2. "Radial error near zero" holds only for a head-on hit. It grows to `r` at the limb.
+
+**The exact geometry.** Let the ray hit the disc at perpendicular offset `s` from the centre,
+`|s| ≤ r`. The reconstruction places the centre **on the ray line** at range `ρ + r`, while the
+true centre is off the ray line by `s` and its projection on the ray is `ρ + √(r² − s²)`.
+Therefore, **exactly**:
+
+```
+e_tangential = −s                     (perpendicular to the ray)
+e_radial     = r − √(r² − s²)         (along the ray, always ≥ 0: the estimate sits BEYOND the true centre)
+```
+
+With `s ~ U(−r, r)` — the only distribution available for a single return, since nothing
+observed says where on the disc the ray landed — the **mean-square** errors are, in closed form:
+
+```
+MSE_t = r²/3                      = 0.030000   (r = 0.3)   ->  σ_t = 0.1732
+MSE_r = r²·(2 − π/2 − 1/3)        = 0.008628   (r = 0.3)   ->  σ_r = 0.0929
+```
+
+Verified against 2×10⁶ Monte-Carlo draws: 0.030007 and 0.008633. The radial term is a **mean
+square, not a variance** — `e_radial` has mean `r(1 − π/4) ≈ 0.215 r`, a genuine bias that a
+Kalman `R` cannot represent, so the bias is folded in conservatively as `MSE = Var + bias²`.
+That is the standard conservative treatment and introduces **no parameter**.
+
+The range-measurement variance adds to the **radial** axis only, since range noise displaces the
+point along the ray:
+
+```
+R_1pt = (MSE_r + σ_range(d)²)·û ûᵀ  +  MSE_t·t̂ t̂ᵀ ,      σ_range(d) = SIGMA_R_BASE·(1 + d/3)
+```
+
+**Consequences, stated plainly.**
+
+* The corrected covariance is **anisotropic with the large axis tangential**, ratio
+  `σ_t/σ_r = 1.86` (3.5× in variance) — the direction §11.9.8 predicted, which is what admission
+  check A2 tests.
+* It is **more conservative than the frozen isotropic value**, not less: frozen 1-point `s` is
+  0.0800 at `d = 1` m and 0.1000 at `d = 2` m, against `σ_t = 0.1732`. The *earlier, wrong*
+  formula would have given `σ_t = 0.0448`, i.e. it would have made the filter **trust a
+  one-point reconstruction more** than the frozen code does — the opposite of the intent, and it
+  would plausibly have **increased** super-physical rates. Recording this because it is the kind
+  of error the pre-registration exists to catch.
+* Still **zero new tuned parameters**: only `r_nominal`, the existing `σ_range` and its retained
+  range-growth factor appear. `POINT_COUNT_FACTOR` is still removed.
+
+**`n = 2` and `n ≥ 3` are unchanged in substance** and are stated precisely for implementation:
+
+* **n = 2:** first-order propagation of the two range measurements through the **exact frozen
+  two-root map** `c = m ± b·n̂`, `b = √(r² − a²)`: `R = J Σ_ρ Jᵀ`, `Σ_ρ = diag(σ_range(ρ₁)²,
+  σ_range(ρ₂)²)`, `J = ∂c/∂(ρ₁, ρ₂)` evaluated by central differences **on that same map** so
+  the covariance describes the reconstruction actually used. This reproduces the `a → r`
+  blow-up along `n̂` that the frozen code merely flags. If the chord is degenerate (`a ≥ r`) the
+  map is not differentiable there and the **1-point form is used instead**, which is the
+  conservative choice.
+* **n ≥ 3:** first-order propagation through the Gauss-Newton fixed-radius fit.
+  `nᵢ = (c − qᵢ)/‖c − qᵢ‖`, residual sensitivity to range `∂fᵢ/∂ρᵢ = −nᵢ·ûᵢ`, giving
+  `R = (JᵀJ)⁻¹ Jᵀ Σ_f J (JᵀJ)⁻¹` with `Σ_f = diag(σ_range(ρᵢ)²(nᵢ·ûᵢ)²)` — the correct
+  first-order form rather than the cruder `σ²(JᵀJ)⁻¹`.
+
+**One uniform numerical rule, derived not tuned:** the eigenvalues of `R` are floored at
+`min_i σ_range(ρᵢ)²`. A reconstruction can never be more certain than the range measurement it
+is built from. This also keeps `R` symmetric positive-definite when a fit is ill-conditioned.
+
+**Scope limit, deliberate.** `Track.__init__`'s initial covariance `P` keeps its frozen
+`SIGMA_R_BASE²` position block. Replacing it with `R` would be a **second** change, and §11.9.7
+allows exactly one. Recorded as a known asymmetry, not an oversight.
+
+**Implementation note.** The frozen `Track.measurement_noise(n_points, range_to_sensor)`
+signature cannot carry the ray geometry `R` depends on, so
+`GeometricLidarVelocityTracker` overrides `update()` with the frozen algorithm and **one**
+substitution — the source of `R`. Admission check A1 is what guarantees no drift: with
+`use_geometric_R=False` the subclass must be **bit-identical** to the frozen tracker over a real
+scan trace.
 
 **Stage 5 is NOT implemented and NOT run under this amendment. It awaits explicit approval.**
 
