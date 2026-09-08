@@ -1685,6 +1685,586 @@ collisions while feasible vs after a recovered step; `‖u − u_nom‖`.
 * **P3.** Collision rate is **not** significantly reduced relative to B4, following §11.8.7-4.
 * **P4.** The residual MIS cardinality stays ≥ 2 in every arm; no arm creates singletons.
 
+## 11.9 AMENDMENT 6 — Stage 4 outcome, and the Stage 5 design (dated 2026-09-08)
+
+**Linked to:** Stage 4 result `91bb969`, its implementation `0073790` and its pre-registration
+`aa66cd7`. Chain preserved: `cc692ab` → `df42437` → `5415bc7` → `e2cda71` → `c2019ff` →
+`5284025` → `6566d76` → `c4ae28b` → `aa66cd7` → `0073790` → `91bb969`. V0 remains frozen; no
+previous result is overwritten or restated. Nothing in this amendment revises an earlier
+conclusion.
+
+### 11.9.1 Stage 4 verdicts, recorded exactly
+
+* **P1 CONFIRMED.** R1 (`τ := 0`) recovers **13.3 % (fixed)** and **12.1 % (randomized)** of the
+  infeasible steps it faces — both below the pre-registered 25 % threshold. Dropping the
+  Wasserstein margin alone does not resolve the M2 population.
+* **P2 CONFIRMED.** R2 always returns an action (377/377 fixed, 580/580 randomized) and the
+  returned actions are **predominantly tier T2**.
+* **P3 CONTRADICTED.** R2 significantly reduces collisions in both conditions:
+  * fixed **0.135 → 0.055**, paired p = **0.0004**
+  * randomized **0.280 → 0.175**, paired p **< 0.0001**
+
+  LADDER shows the same effect:
+  * fixed **0.135 → 0.065**, p = **0.0013**
+  * randomized **0.280 → 0.180**, p = **0.0002**
+
+  P3 continues to **HOLD for R1** (p = 0.18 fixed, 0.73 randomized).
+* **P4 HOLDS.** No treatment arm creates MIS cardinality 1; the residual minimal infeasible
+  subsets stay ≥ 2 in every arm and both conditions.
+
+### 11.9.2 Mechanistic interpretation, stated with the distinction intact
+
+Stage 3 and Stage 4 intervened on **different objects**, and the conclusions must not be merged.
+
+* **Stage 3 weakened** the singleton → fallback → collision conjecture: eliminating the entire
+  singleton (M1) class did not materially change fallback-associated collisions (24 → 22 fixed,
+  37 → 39 randomized). That record stands unchanged.
+* **Stage 4 changed the action taken after infeasibility** and found collisions **after an
+  infeasible step** falling **22 → 4 (fixed)** and **39 → 12 (randomized)**, while collisions
+  while feasible rose slightly (5 → 7 and 17 → 23).
+
+**Therefore the broader hypothesis — that the `u = 0` infeasible-step fallback is an important
+collision pathway — is now strongly supported.** Stage 3 could not have detected this, because
+it removed infeasible *steps* and never changed the *fallback*.
+
+**Explicitly NOT claimed: that singleton infeasibility itself causes collisions.** Stage 3
+remains the direct test of that narrower claim, and it weakened it.
+
+**Closed-loop qualification, preserved.** The treatment arms visit different states, so the
+lower subsequent infeasibility rate under recovery (0.0232 → 0.0124 fixed, 0.0282 → 0.0189
+randomized) is an **outcome of changed trajectories**, not evidence that recovery "removed" the
+underlying M2 population. Every per-arm recovery fraction is conditional on that arm's own
+trajectory distribution.
+
+### 11.9.3 Safety qualification, mandatory wherever Stage 4 is cited
+
+**Recovered actions are NOT safe guarantees.**
+
+* **No recovered action reached T0** in any arm or condition.
+* Most recoveries are **T2 with `m < 0`** (79.8 %/76.7 % under R2; 96.3 %/96.9 % under LADDER),
+  meaning the original DR-CBF forward-invariance/robustness guarantee **is lost on those steps**.
+  Median `m` −0.070/−0.059, minimum −0.572/−0.638; worst implied decay floors −1.43/−1.59.
+* **Worst-case clearance does not uniformly improve.** Fixed −0.0510 → −0.0398 (R2, better) but
+  −0.0580 (LADDER, worse); randomized −0.0629 → −0.0702 (R2 and LADDER, worse) and **−0.1451**
+  for the R1.5 ablation.
+* **R2 introduced small static-collision regressions in randomized** (0 → 2; 0 → 1 for LADDER and
+  R1.5) — a category that had been exactly zero since Phase 6.
+* **R1.5 remains an ablation and is NOT promoted**, despite passing all three admission checks
+  and performing comparably to R2. Its worst-clearance regression is the stated reason.
+
+The collision reduction is an **outcome measurement**, not a guarantee: the ladder trades a hard
+constraint for a quantified violation, and in this environment that trade paid.
+
+### 11.9.4 The two directions Stage 4 leaves open
+
+**No estimator intervention is authorised by this amendment.** IMM, constant-turn models,
+covariance propagation into the barrier, and uncertainty margins remain **gated** and are NOT
+implemented at Stage 5.
+
+| | claim | evidence | what it costs |
+|---|---|---|---|
+| **A. estimator accuracy** | accurate velocity information can materially improve safety | **D-oracle**, randomized collision **0.275 → 0.195, p = 0.0070** (Stage 3) | nothing yet — D-oracle is **privileged and diagnostic only** |
+| **B. recovery** | replacing the `u = 0` fallback materially improves empirical collision outcomes | Stage 4 R2/LADDER, both conditions, §11.9.1 | the DR guarantee itself: no T0, predominantly T2 |
+
+Direction B is **established and closed as an empirical result**. It is not re-litigated at
+Stage 5 and it is not re-tuned; R2/LADDER as run at Stage 4 (`91bb969`) is the recovery
+configuration, unchanged, and it remains **the current empirical fallback baseline**.
+
+Direction A is **unestablished**. The only evidence for it is a privileged diagnostic.
+**D-oracle is an upper bound / target, not proof that a practical estimator reproduces its
+benefit**, and no part of the Stage-5 design assumes it will.
+
+### 11.9.5 Provenance of every claim Stage 5 rests on
+
+Stage 5 must not silently inherit a hypothesis as though it were a result. The status of each
+claim at the moment Stage 5 is designed:
+
+**Established by Phases 1–4 (frozen, not re-opened):**
+* The τ collapse identity: with `εN = 0.5 < 1` the DR constraint is exactly `minᵢ CBCᵢ ≥ τ`,
+  `τ = r_W‖ū‖∞/ε = 0.04`, constant. Verified analytically and over 69 226 steps at Stage 0.
+* The DRCCP feasible set reduces exactly to the nominal CBF set at `r_W = 0, ε = 1, N = 1`.
+* `ξ` ordering, the clearance convention, and the LiDAR radius bookkeeping.
+* The frozen estimator's structure: fixed-radius reconstruction, compactness-led static
+  rejection, CV Kalman filter with isotropic `R` and hand-set `POINT_COUNT_FACTOR`.
+* `P(e > 0 | h < 0.6 & binding) = 0.142` for the CV estimator **in the standalone Phase-4
+  harness**. **This number is NOT the Stage-5 reference** — see §11.9.10.
+
+**Established by Stage 2 (diagnosis, observational):**
+* Staleness (G-D1a) is **CONTRADICTED** in its stated mechanism: 0/1402 same-track conflicts.
+* Estimated closing rates exceeding the physical obstacle-speed bound ("super-physical" rows)
+  are strongly associated with infeasibility: `P(≥1 super-physical row | infeasible) = 0.6795`
+  vs `0.0450` at base rate (15.1×); `P(infeasible | ≥1 super-physical row) = 0.3454` vs `0.01159`
+  (29.8×). **Association, measured against a controlled base rate — not causation.**
+* The super-physical test itself uses the configured obstacle-speed bound (0.675 / 0.75) as a
+  **metric threshold only**. It is a diagnostic instrument, never an input to any controller.
+
+**Established by Stage 2b (causal counterfactual):**
+* Substituting ground-truth obstacle velocity removes **all 884 singleton (cardinality-1)
+  infeasible steps** and reduces total infeasibility by **52.1 %**. Velocity-estimation error is
+  therefore a **cause** of the M1 class, not merely a correlate. Privileged; diagnostic only.
+
+**Established by Stage 3 (intervention, non-privileged):**
+* T1 (projection cap, `v_cap = 0.96`, derived) eliminates M1 exactly: **405 → 0** (fixed),
+  **298 → 0** (randomized). Total infeasibility −36.4 % / −26.3 %. Accepted configuration.
+* The residual is **100 % M2 / multi-constraint**: 0.0232 (fixed), 0.0283 (randomized).
+* T1 does **not** improve navigation safety: collisions 0.140 → 0.135 (p = 1.000) and
+  0.275 → 0.280 (p = 1.000).
+* The singleton → fallback → collision conjecture is **WEAKENED**: 24 → 22 and 37 → 39.
+* D-oracle improves randomized collisions 0.275 → 0.195 (p = 0.0070) — **privileged**.
+* In-environment optimistic tail under T1: `P(e > 0 | TTC < 1 s)` = **0.397** (fixed, from C0
+  0.405) and **0.498** (randomized, from C0 0.485). Mixed sign; T1 was **worse** under
+  randomized motion.
+
+**Established by Stage 4 (intervention, non-privileged):**
+* §11.9.1 verdicts; §11.9.2 mechanism; §11.9.3 safety qualification. In particular the `u = 0`
+  fallback **is** an important collision pathway, and recovery buys that at the cost of the
+  guarantee (no T0; 77–97 % T2).
+
+**Merely HYPOTHESES for Stage 5 — none of these is a result:**
+* H-a. A **non-privileged** estimator change can reduce optimistic closing-rate error.
+* H-b. Such a change reduces the super-physical row rate **without** making the estimator
+  sluggish (see §11.9.8 — the sluggish failure mode makes the super-physical rate trivially
+  improvable while making safety worse).
+* H-c. Any of that reduces **M2** infeasibility. Stage 3 showed velocity work eliminates M1;
+  **nothing establishes that it touches M2 at all**, and M2 is the entire residual.
+* H-d. An estimator intervention can leave rescued steps in **T0** — i.e. retain the DR
+  guarantee — which no recovery rung has ever achieved.
+* H-e. Any of it reduces collisions. D-oracle is the only evidence and it is privileged.
+
+### 11.9.6 Stage 5 — the research question, stated precisely
+
+**The remaining research question is NOT "can we get fewer collisions?".** Stage 4 already
+answered that empirically, in the affirmative, by sacrificing the guarantee.
+
+> **Q(Stage 5): Can better velocity estimation reduce the *need* for recovery — i.e. reduce
+> infeasibility — while *retaining* the DR-CBF guarantee (T0), rather than trading it away?**
+
+The two sub-questions, kept apart:
+
+* **Q-EST (accuracy).** Does a minimal, non-privileged estimator change reduce optimistic
+  closing-rate error and super-physical rows? This is answered on **step-level** endpoints and is
+  independent of anything downstream.
+* **Q-GUAR (guarantee).** Does that accuracy gain convert into **fewer infeasible steps that
+  remain in T0**, rather than into recovered steps in T2? This is the question that distinguishes
+  Direction A from Direction B and is the **primary Stage-5 claim**.
+
+Deliberately **not** the primary question: Q-COLL (does it reduce collisions). Collisions are a
+**safety-veto and secondary** endpoint at Stage 5, for the reason in §11.9.11: at n = 200 the
+paired test cannot resolve the effect sizes an estimator change plausibly produces, whereas the
+step-level endpoints rest on 10⁴–10⁵ observations.
+
+### 11.9.7 Stage 5 — baseline, and exactly what changes
+
+**The Stage-5 baseline is the Stage-4 B4 configuration, unchanged in every respect:**
+
+| component | Stage-5 baseline | status |
+|---|---|---|
+| controller | frozen V0 (CVXPY/SCS reference) | **frozen, never modified** |
+| `α`, `r_W`, `ε`, `τ` | 0.4, 0.004, 0.1, 0.04 | unchanged |
+| barrier source | T1 `ProjectionCappedSource`, `v_cap = 0.96` | **accepted at Stage 3, carried forward unchanged** |
+| velocity estimator | frozen `LidarVelocityTracker` (CV, isotropic `R`, `POINT_COUNT_FACTOR`) | the **only** thing the treatment changes |
+| fallback on infeasible | frozen `u = 0` | unchanged in A0/A1; LADDER in A2/A3 |
+| recovery ladder | `RecoveryLadder` exactly as run at Stage 4 | **not re-tuned, not re-designed** |
+| objective, sample selection, criticality sort, planner, LiDAR pipeline | frozen | unchanged |
+| `robot_env/`, `evaluation/` | untouched | unchanged |
+
+**Exactly one thing differs between baseline and treatment:** the measurement-noise covariance
+returned by the tracker's `measurement_noise`. Nothing else in the estimator — motion model,
+gate, association, confirmation logic, segmentation, static rejection, `r_nominal` — is altered.
+
+**Implementation constraint:** `dr_control/velocity_tracker.py` is **extended by subclass, not
+edited**, so the frozen sha256 manifest continues to cover it and A0 remains bit-reproducible.
+
+### 11.9.8 Stage 5 — the first estimator intervention (E1), and the failure it targets
+
+**E1 = geometry-derived reconstruction covariance. Nothing else.** This is deliberately the
+smallest interpretable change with a derivation behind it, and it is **not** IMM, not CT, not
+covariance-into-the-barrier, and not an uncertainty margin.
+
+**The failure mechanism it targets, traced through the stages.** Stage 2 found that infeasible
+steps are dominated by **super-physical estimated closing rates** — the estimator reporting an
+obstacle closing faster than any obstacle can move. Stage 2b showed those estimates are a
+**cause** of singleton infeasibility, and Stage 3 confirmed it by removing the class entirely
+with a cap. But T1 caps the **symptom** at the barrier — it clips `∂h/∂t` after the fact — and
+Stage 3 measured that it does **not** improve the optimistic tail (0.485 → 0.498 randomized,
+worse). The estimate itself is still wrong; T1 only stops the wrongness from entering in one
+direction.
+
+**Where the wrongness comes from, geometrically.** At the ranges where the barrier binds
+(`h < 1 m`) an obstacle returns **1–4 LiDAR points** (measured: 4.07 points at 0.6 m, 1.00 at
+2.0 m). For a one-point return the fixed-radius reconstruction `c = q + r·u_ray` is exact only
+head-on and carries up to `r·sin θ_incidence` of **tangential** error, with near-zero **radial**
+error. The frozen filter is told `R = diag(s², s²)` — **isotropic** — with `s` inflated by a
+hand-set `POINT_COUNT_FACTOR = {1: 3.0, 2: 1.5}`. So the filter under-states the error in the
+one direction where it is large and over-states it in the direction where it is small. Frame to
+frame, the reconstructed centre slides tangentially along the obstacle surface, and the Kalman
+filter — trusting that displacement too much — converts it into velocity. **That is a
+structurally plausible source of super-physical closing rates, and it is the one E1 addresses.**
+
+**What E1 replaces it with.** The surface-point noise is propagated through the reconstruction
+geometry, per point count:
+
+* **n = 1:** the neighbouring rays returned no hit in this segment, which bounds the disc's
+  angular extent and hence the admissible incidence interval. The tangential displacement is
+  modelled as bounded on `[−r·sin Δ, +r·sin Δ]` with `Δ = 2π/24` the ray spacing, giving
+  `σ_t² = r²sin²Δ / 3`; the radial variance stays `σ_range²`. `R` is that diagonal **rotated
+  into the ray frame** — anisotropic, with the large axis tangential.
+* **n = 2:** first-order propagation of `σ_range` through the two-root chord construction
+  `c = m ± b·n̂`, `b = √(r² − a²)`, which correctly blows up the normal variance as `a → r`
+  (the near-degenerate chord the frozen code merely flags).
+* **n ≥ 3:** the Gauss-Newton fixed-radius fit's own covariance, `σ_range²(JᵀJ)⁻¹`.
+
+**Degrees of freedom: zero new tuned parameters.** E1 uses only quantities that already exist —
+`r_nominal = 0.3`, `SIGMA_R_BASE = 0.02`, the ray spacing `Δ`, and the existing range-growth
+factor `(1 + d/3)`, which is **retained unchanged** so that exactly one thing varies. It
+**removes** two hand-set constants (`POINT_COUNT_FACTOR`). It is therefore not tunable, and
+§11.9.15 forbids making it so.
+
+**No privileged information.** E1 reads ray geometry and the existing design constant
+`r_nominal`. No obstacle speed bound, identity, radius, position or velocity enters. In
+particular the configured obstacle-speed range (0.6–0.75) — which the Stage-2 *metric* uses as a
+threshold and which Stage-2b A4 used as a privileged input — **does not appear anywhere in E1**.
+The four frozen leakage layers are re-applied to it (§11.9.13-A3).
+
+**The honest failure mode, pre-registered.** Inflating `R` makes the filter slower. A sluggish
+filter reports **smaller** velocities, which mechanically reduces the super-physical rate while
+**increasing** optimistic error — it under-states genuine closing. **The super-physical rate is
+therefore not admissible as E1's primary endpoint**, and §11.9.13-A4 requires improvement on the
+optimistic tail *and* non-increase in the super-physical rate jointly, precisely to make this
+failure mode non-passing.
+
+### 11.9.9 Stage 5 — arms, and the relationship to recovery
+
+| arm | estimator | fallback on an infeasible step | role |
+|---|---|---|---|
+| **A0** | frozen CV + isotropic `R` | frozen `u = 0` | **baseline** (= Stage-4 B4) |
+| **A1** | **E1** | frozen `u = 0` | estimator main effect |
+| **A2** | frozen CV + isotropic `R` | **LADDER** (R0→R1→R2) | recovery replication (= Stage-4 LADDER) |
+| **A3** | **E1** | **LADDER** | interaction |
+| **D-oracle** | ground-truth obstacle velocity | frozen `u = 0` | **`IS_DIAGNOSTIC_ONLY`** |
+
+**Why a 2 × 2 factorial is appropriate here**, where the eight-cell structure of §6.1 was
+rejected: both factors act on the **same population of steps**, each has exactly two levels
+already defined by prior stages, and the **interaction is the scientific question** — *does
+recovery still add anything once estimation improves?* No cell is a new configuration invented
+for Stage 5.
+
+**Recovery is a fixed factor, not a comparator to be optimised.** A2 reproduces Stage 4's
+LADDER **exactly as run** (`91bb969`): same rungs, same order, same admission logic, no
+re-tuning. R1.5 is **not** included — it remains an unpromoted ablation (§11.9.3). Stage 5 must
+never compare the estimator against a newly configured recovery arm.
+
+**D-oracle is ledger-breaking and appears for exactly one purpose:** to size the remaining
+headroom, i.e. the denominator of "what fraction of the achievable gap did E1 close". It is
+never a headline arm, never a safety comparator, and never a target to tune toward.
+
+### 11.9.10 Stage 5 — endpoints, kept separate
+
+Seven families, each with its own comparator, unit of observation, and role. **Collision
+improvement is explicitly NOT the estimator's success criterion.**
+
+**(1) Velocity-estimation accuracy — PRIMARY for Q-EST.** Unit: step.
+* `P(e > 0 | TTC < 1 s)` on the binding subset, `e = dh_dt_est − dh_dt_true`, `e > 0` optimistic.
+* **Reference is the Stage-3 T1 in-environment value: 0.397 (fixed), 0.498 (randomized)** — i.e.
+  arm A0 measured in this same run, which is the only valid comparator. **Phase 4's 0.142 is a
+  different harness and a different subset (`h < 0.6 & binding`, standalone) and must not be
+  compared against.** Both are reported side by side with the incomparability stated.
+* Secondary: `p95`, `p99`, `max` of `e`; the pessimistic tail `P(e < −0.05)`; all split by range
+  band and by point count (1 / 2 / ≥3), since E1's predicted effect is concentrated at 1–2 points.
+* Also reported: mean `‖v̂ − v‖` — **reported, never a success criterion**, per §5.4.
+
+**(2) Super-physical rate.** Unit: step. Fraction of steps with ≥1 row whose estimated closing
+rate exceeds the configured physical bound (0.675 fixed / 0.75 randomized, metric only).
+**Directional guard, not a primary endpoint** (§11.9.8).
+
+**(3) M1 / singleton infeasibility.** Unit: step. Count and rate of cardinality-1 minimal
+infeasible subsets. **Expected to be 0 in every arm**, because T1 already eliminates the class;
+this is a **regression check**, not an effect to be found. A non-zero count in any arm means E1
+broke something.
+
+**(4) Total and M2 infeasibility.** Unit: step. Total infeasibility rate; the M2 /
+multi-constraint share; MIS cardinality distribution. **This is where H-c is tested, and nothing
+establishes that velocity work touches M2 at all.** Baseline: 0.0232 (fixed), 0.0283
+(randomized) under T1 + `u = 0`.
+
+**(5) DR-CBF feasibility and guarantee preservation — PRIMARY for Q-GUAR, and the primary
+Stage-5 claim.** Unit: step.
+* **T0 share** — steps solved with `m ≥ τ`, the DR guarantee intact.
+* T1-tier and T2 shares; the achieved margin `m = minᵢ CBCᵢ` distribution; for recovering arms
+  the rung distribution and the implied decay floor for T2.
+* The decisive contrast: **does E1 convert infeasible-and-recovered-in-T2 steps into
+  feasible-in-T0 steps, or does it merely move them around?** A0 vs A1 answers it without
+  recovery in the way; A2 vs A3 answers it with recovery present.
+* **A recovered action is never described as "safe"; `m` and its tier are printed beside it**
+  (§11.8.6, unchanged).
+
+**(6) True collision outcomes — SAFETY VETO and secondary.** Unit: episode. Collision rate split
+dynamic / static / wall; collisions while feasible vs after an infeasible step; success;
+timeout. Governed by §11.9.12.
+
+**(7) Clearance.** Unit: episode. Mean minimum true clearance **and worst-case minimum clearance
+across episodes**, both reported for every arm. Stage 4 showed these can move adversely while
+collisions improve (−0.1451 for R1.5), so worst-case clearance is reported in the headline, never
+a footnote.
+
+**Cross-cutting, reported for every arm:** `‖u − u_nom‖`; SPL; solver status distribution; and —
+**reported, not gating** — `Σ_v` calibration (NEES, NIS, empirical coverage of the `z_β`-σ
+interval). Calibration exists at Stage 5 solely to license or forbid *later* Stage-6 work; **no
+Stage-5 claim depends on `Σ_v` being calibrated**, because E1 applies no margin.
+
+### 11.9.11 Stage 5 — paired experimental design
+
+**Conditions.** Both, run separately and never pooled: **fixed** (`obstacle_speed = 1.0`) and
+**randomized** (`obstacle_speed_range = U[0.6, 0.75]`), `n_dynamic_obstacles = 6`, `config.json`,
+exactly as Stages 3 and 4.
+
+**Episode count and seeds.**
+* **Validation tier: 50 episodes per condition**, seeds `DEV_SEED_BASE + 1_000 … +1_049` — the
+  same held-out block Stages 3 and 4 used. **All admission checks, all diagnostics and any
+  sensitivity curve run here.**
+* **Final tier: 200 episodes per condition per arm**, seeds `EVAL_SEED_BASE … EVAL_SEED_BASE +
+  199`, matching Phases 3–6 and Stage 4 so the numbers are directly comparable.
+* **`EVAL_SEED_BASE` is touched once, after admission passes.** No Stage-5 quantity — no
+  constant, no threshold, no arm selection — is chosen using it. E1 has no free parameter to
+  tune in any case (§11.9.8).
+
+**Pairing.** Episode `k` uses the same seed in every arm and condition, so `env.reset(seed=...)`
+gives identical initial states, obstacle placements and motion streams. Records are matched
+**by seed**, and every test below is paired at the episode level.
+
+**Exact comparisons, pre-registered.**
+
+| # | comparison | question | status |
+|---|---|---|---|
+| C1 | **A1 vs A0** | estimator main effect, recovery absent | **PRIMARY** |
+| C2 | A3 vs A2 | estimator effect with recovery present | secondary |
+| C3 | A2 vs A0 | recovery replication (must reproduce Stage 4) | **replication check** |
+| C4 | A3 vs A0 | combined | secondary |
+| C5 | (A3−A2) − (A1−A0) | **interaction**: does recovery still add once estimation improves? | secondary |
+| C6 | D-oracle vs A0 | headroom denominator | **diagnostic only** |
+
+**Statistical tests.**
+* **Binary episode-level endpoints** (collision, static collision, wall collision, success,
+  timeout): **exact two-sided McNemar** on the discordant pairs, as implemented in
+  `experiments/exp7_4_recovery.py::mcnemar`. Reported as `n01`, `n10`, `p`.
+* **Continuous episode-level endpoints** (mean and worst-case clearance, SPL, `‖u − u_nom‖`):
+  **paired percentile bootstrap, 10 000 resamples**, as in
+  `experiments/exp7_3_velocity_intervention.py::boot`, resampling **episode pairs**.
+* **Step-level rates** (optimistic tail, super-physical rate, infeasibility, tier shares):
+  reported as proportions with an **episode-level cluster bootstrap** (10 000 resamples of
+  episodes, not steps). Steps within an episode are **not** independent and a naive binomial
+  interval would be anti-conservative; this is pre-registered rather than discovered later.
+* **Interaction C5:** difference-in-differences on the paired episode-level indicators, tested by
+  the same episode-level bootstrap. McNemar does not extend to a DiD statistic and is not used
+  for it.
+
+**Confidence intervals.** Every reported effect carries a **two-sided 95 % CI** on the *paired
+difference* — including, mandatorily, every **non-significant** one, so that the magnitude of
+harm not excluded is visible (§11.9.12).
+
+**Significance level and multiplicity.** α = 0.05, two-sided. **C1 on the endpoint families (1)
+and (5) is the single pre-registered primary comparison**; C2–C5 are secondary and are reported
+with their CIs as descriptive, without inventing an α-spending scheme after the fact. **The
+safety veto is deliberately NOT multiplicity-corrected** — correction there would make harm
+harder to detect, which is the wrong direction.
+
+**Minimum resolvable effect, stated up front.** At the observed collision rates (0.135 fixed /
+0.280 randomized) and n = 200 paired episodes, exact McNemar resolves roughly **≥ 0.06–0.08
+absolute**. Estimator effects plausibly smaller than that are **undetectable by design**, and a
+null on collisions is therefore expected and uninformative. The step-level endpoints rest on
+**10⁴–10⁵ steps** per arm-condition and resolve far smaller differences. **This asymmetry is the
+entire reason the primary claim is guarantee-preservation and not collisions**, and it is
+recorded here so that the null cannot later be read as evidence of safety or of no effect.
+
+### 11.9.12 Stage 5 — safety veto, pre-registered
+
+1. **Veto.** A **statistically significant paired increase in collision rate against A0** (for
+   A1) or **against A2** (for A3), in **either** condition, at α = 0.05 two-sided uncorrected,
+   **rejects the estimator intervention outright** — regardless of any gain on any primary
+   endpoint. There is no offsetting argument.
+2. **Non-significance is never proof of safety.** A non-significant result is reported verbatim
+   as **"failed to detect harm at n = 200; the 95 % CI does not exclude an increase of up to
+   X"**, with X stated numerically. The phrases "safe", "no harm", and "safety preserved" are not
+   used for a non-significant result anywhere in the Stage-5 report.
+3. **Mandatory headline reporting even when non-significant**, with these pre-registered flag
+   thresholds:
+   * worst-case minimum clearance regressing by **> 0.02 m** against A0 in either condition;
+   * **any** new static or wall collision in an arm where the comparator had none;
+   * the M1/singleton count being **non-zero** in any arm (§11.9.10-3).
+   Each triggers an explicit headline statement, not a footnote. None of them is itself a veto —
+   they are disclosure obligations, so that a favourable primary result cannot bury them.
+4. **A recovered or clamped action is never called "safe" because it exists.** Achieved margin
+   `m` and guarantee tier accompany every such report (standing rule, §11.8.6).
+
+### 11.9.13 Stage 5 — admission, acceptance, escalation and termination gates
+
+**A. Admission — before any final-tier run.** All must pass, in order:
+
+* **A1 Inertness.** With E1 disabled the pipeline is **bit-identical** to A0 over a fixed trace —
+  hard test, not statistical.
+* **A2 Correctness.** E1's `R` is anisotropic in the derived direction (tangential > radial) for
+  a one-point return on a hand-computed numeric case; reduces to the frozen isotropic form in the
+  limit of many well-spread points; is symmetric positive-definite everywhere.
+* **A3 Leakage.** All four frozen layers re-applied to the new class: signature (no obstacle
+  argument), AST import scan, runtime tripwire, and bit-identical action under corruption of the
+  ground-truth observation slice `obs[28:52]`. **Non-negotiable.**
+* **A4 Validation-tier directional check** (50 held-out episodes per condition): E1 must show
+  **both** (i) a lower `P(e > 0 | TTC < 1 s)` than A0 **and** (ii) a **non-increase** in the
+  super-physical rate — jointly, in **both** conditions. The conjunction is what makes the
+  sluggish-filter failure mode of §11.9.8 non-passing.
+* **A5 Regression.** Frozen sha256 manifest PASS; full test suite PASS.
+
+Failing any of A1–A3 or A5 is an **implementation defect**: fix and re-run admission. Failing
+**A4** is a **scientific result** — see D2.
+
+**B. Acceptance of E1 (after the final tier).** E1 is **ACCEPTED** iff all hold:
+1. No safety veto fired (§11.9.12-1);
+2. `P(e > 0 | TTC < 1 s)` is lower than A0 in **both** conditions, with the 95 % CI excluding
+   zero in at least one;
+3. The super-physical rate does not increase in either condition;
+4. M1 / singleton count remains 0 in every arm;
+5. **Either** the total infeasibility rate falls, **or** the **T0 share rises**, in at least one
+   condition with the CI excluding zero. *(This is the Q-GUAR criterion; either route counts,
+   because fewer infeasible steps and more guaranteed steps are both wins for the guarantee.)*
+
+**Acceptance does NOT require a collision improvement.** A collision improvement is welcome, is
+reported, and is **not** required; its absence does not reject E1.
+
+**C. Rejection of E1.** Any of: a safety veto; the optimistic tail worsening in either condition
+with the CI excluding zero; the super-physical rate rising; a non-zero M1 count.
+
+**D. Termination of the estimator branch.** The branch **terminates — it does not escalate — if**:
+* **D1.** E1 is REJECTED under C. A more complex estimator is not the remedy for an intervention
+  that made the measurement worse.
+* **D2.** E1 fails **A4** at the validation tier. The final tier is **not run**, `EVAL_SEED_BASE`
+  is not touched, and **the null is the reported Stage-5 result**.
+* **D3.** E1 is accepted on Q-EST (accuracy improves) but shows **no** movement in infeasibility
+  or T0 share in either condition. This falsifies **H-c/H-d**: better velocity estimates do not
+  reach the M2 population. That is a **substantive finding** — the residual infeasibility is
+  genuinely geometric and **recovery is the only lever that acts on it** — and it is reported as
+  such, not treated as a reason to try a bigger estimator.
+
+In all three cases: **LADDER remains the established empirical fallback baseline**, Stage 4's
+conclusions stand unchanged, and no further estimator work is authorised without a new approval.
+
+**E. Escalation to a richer estimator (IMM / CT) — all three required.**
+1. E1 is **ACCEPTED** under B, and significantly improves `P(e > 0 | TTC < 1 s)`, yet closes
+   **< 50 %** of the A0 → D-oracle gap on that endpoint.
+2. The residual is attributable to **motion-model** mismatch, **measured not assumed**: NIS fails
+   its χ² band on track segments whose estimated heading change over the confirmation window
+   exceeds a threshold fixed a priori at **15° per 0.5 s**, while **passing** on straight
+   segments. A uniform NIS failure across both indicates the *measurement* model — E1's own
+   object — and is **not** evidence for CT.
+3. Headroom remains: the D-oracle collision advantage over the best non-privileged arm is
+   **≥ 0.05 absolute in the randomized condition**.
+
+Any one failing forbids escalation. **A collision improvement under E1 is not, by itself, grounds
+to escalate**, and neither is the D-oracle result alone.
+
+**F. Escalation to uncertainty / covariance work (Stage 6, U2 `z_β` margins) — all three
+required.**
+1. E1 is **ACCEPTED** under B;
+2. **`Σ_v` calibration passes on validation seeds**: NEES and NIS inside their χ² bands and
+   empirical coverage of the `z_β`-σ interval within **±10 %** of nominal. If calibration fails,
+   U2 may still be *proposed*, but only as **"a heuristic tightening of unknown confidence
+   level"** — the phrase "chance-constrained" is not used for it, per §5.4;
+3. A residual optimistic tail remains that a per-sample margin could plausibly address, i.e.
+   `P(e > 0 | TTC < 1 s)` under E1 is still **> 0.25** in either condition.
+
+**U3 (enlarging `r_W`) remains REJECTED as primary** for the three reasons in §5.3, and no gate
+here revives it.
+
+### 11.9.14 Stage 5 — decision tree
+
+```
+              ┌─ A1/A2/A3/A5 fail ──► implementation defect: fix, re-run admission
+ADMISSION ────┤
+              └─ A4 fails ──────────► D2: TERMINATE. Final tier NOT run. Report the null.
+                                       LADDER remains the fallback baseline.
+   │ A4 passes
+   ▼
+FINAL TIER (200 paired episodes x 2 conditions x 4 arms + D-oracle diagnostic)
+   │
+   ├─ safety veto fires ────────────► C: REJECT E1. TERMINATE (D1). Report the harm.
+   │
+   ├─ optimistic tail worse, or super-physical up, or M1 non-zero
+   │                        ────────► C: REJECT E1. TERMINATE (D1).
+   │
+   ├─ accuracy improves, infeasibility and T0 share both unmoved
+   │                        ────────► D3: TERMINATE with a POSITIVE finding —
+   │                                   the residual M2 is geometric, not estimator-induced;
+   │                                   recovery is the only lever that acts on it.
+   │
+   └─ E1 ACCEPTED under B
+          │
+          ├─ E-1,2,3 all hold ──────► propose Stage 6a: IMM{CV,CT}. NEW APPROVAL REQUIRED.
+          ├─ F-1,2,3 all hold ──────► propose Stage 6b: U2 z_beta margin. NEW APPROVAL REQUIRED.
+          └─ neither ───────────────► STOP. E1 is the accepted estimator. Report and close
+                                       the estimator branch. No further escalation.
+```
+
+**A negative or null estimator result is a valid scientific outcome and terminates the branch.
+It does not automatically trigger a more complicated estimator.** Escalation requires the
+affirmative, pre-registered evidence in E or F — never the mere absence of success.
+
+### 11.9.15 Stage 5 — no post-hoc optimisation
+
+* **No parameter sweep is authorised.** E1 introduces **no free parameter** (§11.9.8); there is
+  nothing to sweep. If implementation reveals that a constant is in fact needed, it must be
+  **derived and recorded in this plan before the run**, or the intervention is redesigned — it is
+  **not** selected empirically.
+* **No arm may be added, dropped, split or re-ordered after data exist.** The five arms of
+  §11.9.9 are the complete set.
+* **`v_cap = 0.96`, `α`, `r_W`, `ε`, `τ` are not touched.** The pre-registered `v_cap`
+  sensitivity arms remain **not run** and are not revived by Stage 5.
+* **Recovery is not re-tuned.** A2/A3 use Stage 4's LADDER exactly as run.
+* **No threshold in §11.9.12 or §11.9.13 may be amended after seeing the final tier.** Any
+  amendment is recorded here **before** the rerun it justifies, with the original result
+  preserved — the standing rule since §11.4.
+* **Every deviation is classified** `[adaptation]` / `[reference implementation correction]` /
+  `[extension]` with provenance, as throughout Phase 7. **E1 is an `[extension]`.**
+* Results are written **per condition**, never overwritten, under
+  `results/week5_phase7/stage5_estimator/`, labelled **`Week5-Phase7 / Stage 5 / <name>`**.
+
+### 11.9.16 Stage 5 — pre-registered predictions
+
+* **Q-EST.** E1 reduces `P(e > 0 | TTC < 1 s)` against A0, concentrated in the 1–2-point
+  returns. Direction predicted; magnitude not predicted.
+* **Q-GUAR.** E1 closes only a **minority** of the A0 → D-oracle accuracy gap: a geometry-correct
+  covariance improves conditioning, not the CV model's structural mismatch with an OU-steered
+  turn.
+* **M1.** Stays 0 in every arm — T1 already removed the class. Regression check only.
+* **M2.** **Genuinely uncertain, and this is the most informative cell of the design.** Stage 3
+  established that velocity work removes M1; **nothing establishes it touches M2**. A null here
+  (D3) is a real finding, not a failure.
+* **T0.** E1 is expected to retain a **non-zero T0 share on steps it rescues** — the one thing no
+  recovery rung achieved. If it does not, Direction A has no advantage over Direction B on its
+  own terms, and that is the finding.
+* **Collisions.** The estimator main effect is **not expected to reach significance at n = 200**
+  (§11.9.11). The recovery main effect (C3) is expected to reproduce Stage 4.
+* **Interaction (C5).** Expected **sub-additive**: if E1 removes infeasible steps LADDER would
+  otherwise have recovered, the two improvements partly overlap. A significant interaction in
+  either direction is reportable, not a problem.
+
+### 11.9.17 Stage 5 — files, when approved
+
+```
+dr_control/tracking2.py                 E1 only: geometry-derived reconstruction covariance,
+                                        as a SUBCLASS of LidarVelocityTracker (D3b of §5.2).
+                                        NOT IMM, NOT CT -- those stay unwritten.
+experiments/exp7_5_estimator.py         2x2 factorial + D-oracle diagnostic, paired, per condition
+tests/test_dr_control_phase7_stage5.py  inertness, anisotropy, isotropic limit, SPD, 4 leakage layers
+MD_files/week5/phase7/STAGE5_REPORT.md
+results/week5_phase7/stage5_estimator/  written per condition, never overwritten
+```
+
+`dr_control/uncertainty.py` stays **reserved and unwritten** — it is Stage 6 (`Σ_v` margins) and
+is gated by §11.9.13-F. `dr_control/velocity_tracker.py` is **extended by subclass, never
+edited**; `dr_control/policy_phase7.py` gains an arm name, no behavioural change. Nothing under
+`robot_env/`, `evaluation/`, or any Phase 1–6 or Stage 0–4 artefact is modified. V0 stays frozen.
+
+**Stage 5 is NOT implemented and NOT run under this amendment. It awaits explicit approval.**
+
 ## 12. Review record
 
 Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
@@ -1708,6 +2288,7 @@ Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
 | A3 | **Amendment 3 (2026-09-07)**: G-D1a recorded CONTRADICTED in the stated mechanism; Stage 2b velocity causal counterfactual inserted before any intervention | §11.6 |
 | A4 | **Amendment 4 (2026-09-07)**: M1/M2 mechanisms separated; stages reordered to velocity intervention → residual recovery → advanced estimator; Stage 3 designed with `v_cap = 0.96` derived and a safety veto | §11.7 |
 | A5 | **Amendment 5 (2026-09-07)**: Stage 3 outcome recorded; T1 accepted and T2 rejected; singleton→fallback→collision conjecture weakened; estimator work gated on Stage 4; Stage 4 designed against M2 only | §11.8 |
+| A6 | **Amendment 6 (2026-09-08)**: Stage 4 outcome recorded — P1/P2/P4 confirmed, P3 CONTRADICTED for R2/LADDER/R1.5; the `u = 0` fallback established as a collision pathway while the singleton claim stays weakened; recovered actions never called safe; Stage 5 designed as a 2×2 estimator × fallback factorial (A0–A3 + D-oracle diagnostic) around **one** minimal, parameter-free, geometry-derived estimator change (E1 = D3b reconstruction covariance); primary claim is guarantee preservation (T0), not collisions; safety veto, admission/acceptance/escalation/termination gates and a stopping decision tree pre-registered; IMM/CT and `Σ_v` margins remain gated | §11.9 |
 
 ## 13. Open questions to settle before Stage 1 begins
 
