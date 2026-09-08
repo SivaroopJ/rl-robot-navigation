@@ -1,0 +1,5921 @@
+{
+  "label": "Week5-Phase7 / FINAL / updated DR-CBF on the Phase-6 canonical harness / randomized",
+  "condition": "randomized",
+  "eval_seed_base": 1000000,
+  "episodes": 200,
+  "controller": {
+    "policy": "Phase7Policy(arm=T1_projection_cap, v_cap=0.96, use_planner=True)",
+    "recovery": "RecoveryLadder(mode='ladder') as committed at 91bb969"
+  },
+  "integrity": {
+    "EVAL_SEED_BASE": 1000000,
+    "barrier_source": "ProjectionCappedSource",
+    "tracker": "LidarVelocityTracker",
+    "v_cap": 0.96,
+    "ladder_mode": "ladder",
+    "ladder_alpha": 0.4,
+    "ladder_tau": 0.04,
+    "use_planner": true,
+    "sb3_or_torch_imports_in_controller": [],
+    "models_path_references_in_controller": [],
+    "obs_corruption_invariant": true
+  },
+  "summary": {
+    "updated_DR-CBF (T1+LADDER)": {
+      "arm": "updated DR-CBF",
+      "episodes": 200,
+      "success_rate": 0.815,
+      "collision_rate": 0.18,
+      "dynamic_collision_rate": 0.175,
+      "static_collision_rate": 0.005,
+      "wall_collision_rate": 0.0,
+      "timeout_rate": 0.005,
+      "min_clearance_mean": 0.20428612017631528,
+      "min_clearance_worst": -0.07017234563827512,
+      "mean_spl": 0.6757175389128747,
+      "mean_path_length": 9.881211568117141,
+      "mean_steps": 151.33,
+      "planner_failures": 0,
+      "n_infeasible": 573,
+      "n_solver_fail": 576,
+      "collisions_after_infeasible": 12,
+      "collisions_while_feasible": 24,
+      "mean_u_dev": 0.6281130832643557,
+      "min_cbc_solved": 0.03990257348335939,
+      "mean_step_time_ms": 42.07786788556974
+    },
+    "DR-CBF (LiDAR, A*)": {
+      "arm": "DR-CBF",
+      "episodes": 200,
+      "success_rate": 0.725,
+      "collision_rate": 0.275,
+      "dynamic_collision_rate": 0.275,
+      "static_collision_rate": 0.0,
+      "wall_collision_rate": 0.0,
+      "timeout_rate": 0.0,
+      "min_clearance_mean": 0.18153829291462897,
+      "min_clearance_worst": -0.05930385589599607,
+      "mean_spl": 0.6257454297928127,
+      "mean_path_length": 8.718259453773499,
+      "mean_steps": 135.16,
+      "planner_failures": 0,
+      "n_infeasible": 892,
+      "n_solver_fail": 894,
+      "collisions_after_infeasible": 37,
+      "collisions_while_feasible": 18,
+      "mean_u_dev": 0.6177158135440683,
+      "min_cbc_solved": 0.03989861892404889,
+      "mean_step_time_ms": 36.430616888415734
+    },
+    "ppo_random_seed0": {
+      "arm": "ppo_random_seed0",
+      "episodes": 200,
+      "success_rate": 0.565,
+      "collision_rate": 0.35,
+      "dynamic_collision_rate": 0.215,
+      "static_collision_rate": 0.115,
+      "wall_collision_rate": 0.02,
+      "timeout_rate": 0.085,
+      "min_clearance_mean": 0.10919253508746625,
+      "min_clearance_worst": -0.1289623141288757,
+      "mean_spl": 0.3965089125010746,
+      "mean_path_length": 17.64861795693636,
+      "mean_steps": 164.905,
+      "planner_failures": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collisions_after_infeasible": 0,
+      "collisions_while_feasible": 70,
+      "mean_u_dev": NaN,
+      "min_cbc_solved": NaN,
+      "mean_step_time_ms": 0.5374435287447592
+    },
+    "ppo_random_seed1": {
+      "arm": "ppo_random_seed1",
+      "episodes": 200,
+      "success_rate": 0.635,
+      "collision_rate": 0.275,
+      "dynamic_collision_rate": 0.18,
+      "static_collision_rate": 0.08,
+      "wall_collision_rate": 0.015,
+      "timeout_rate": 0.09,
+      "min_clearance_mean": 0.1417200291454792,
+      "min_clearance_worst": -0.11956990361213682,
+      "mean_spl": 0.4829821018650105,
+      "mean_path_length": 15.759720736443997,
+      "mean_steps": 152.395,
+      "planner_failures": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collisions_after_infeasible": 0,
+      "collisions_while_feasible": 55,
+      "mean_u_dev": NaN,
+      "min_cbc_solved": NaN,
+      "mean_step_time_ms": 0.5346326594604998
+    },
+    "ppo_random_seed2": {
+      "arm": "ppo_random_seed2",
+      "episodes": 200,
+      "success_rate": 0.6,
+      "collision_rate": 0.38,
+      "dynamic_collision_rate": 0.22,
+      "static_collision_rate": 0.125,
+      "wall_collision_rate": 0.035,
+      "timeout_rate": 0.02,
+      "min_clearance_mean": 0.09500306162238122,
+      "min_clearance_worst": -0.17286679744720457,
+      "mean_spl": 0.4085128483519456,
+      "mean_path_length": 14.523199056684971,
+      "mean_steps": 125.685,
+      "planner_failures": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collisions_after_infeasible": 0,
+      "collisions_while_feasible": 76,
+      "mean_u_dev": NaN,
+      "min_cbc_solved": NaN,
+      "mean_step_time_ms": 0.5351743569220975
+    },
+    "ppo_sr_random_seed0": {
+      "arm": "ppo_sr_random_seed0",
+      "episodes": 200,
+      "success_rate": 0.625,
+      "collision_rate": 0.33,
+      "dynamic_collision_rate": 0.22,
+      "static_collision_rate": 0.1,
+      "wall_collision_rate": 0.01,
+      "timeout_rate": 0.045,
+      "min_clearance_mean": 0.11368137545883655,
+      "min_clearance_worst": -0.10075817108154295,
+      "mean_spl": 0.4649814946579258,
+      "mean_path_length": 13.347563824653626,
+      "mean_steps": 119.79,
+      "planner_failures": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collisions_after_infeasible": 0,
+      "collisions_while_feasible": 66,
+      "mean_u_dev": NaN,
+      "min_cbc_solved": NaN,
+      "mean_step_time_ms": 0.5446896325346954
+    },
+    "ppo_sr_random_seed1": {
+      "arm": "ppo_sr_random_seed1",
+      "episodes": 200,
+      "success_rate": 0.615,
+      "collision_rate": 0.365,
+      "dynamic_collision_rate": 0.27,
+      "static_collision_rate": 0.085,
+      "wall_collision_rate": 0.01,
+      "timeout_rate": 0.02,
+      "min_clearance_mean": 0.09200140011310577,
+      "min_clearance_worst": -0.16200662255287168,
+      "mean_spl": 0.428975639281952,
+      "mean_path_length": 13.923171270489693,
+      "mean_steps": 123.62,
+      "planner_failures": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collisions_after_infeasible": 0,
+      "collisions_while_feasible": 73,
+      "mean_u_dev": NaN,
+      "min_cbc_solved": NaN,
+      "mean_step_time_ms": 0.5408164481903894
+    },
+    "ppo_sr_random_seed2": {
+      "arm": "ppo_sr_random_seed2",
+      "episodes": 200,
+      "success_rate": 0.505,
+      "collision_rate": 0.335,
+      "dynamic_collision_rate": 0.2,
+      "static_collision_rate": 0.12,
+      "wall_collision_rate": 0.015,
+      "timeout_rate": 0.16,
+      "min_clearance_mean": 0.09015335772931575,
+      "min_clearance_worst": -0.12945750951766966,
+      "mean_spl": 0.3395999192405795,
+      "mean_path_length": 21.08629397928715,
+      "mean_steps": 200.19,
+      "planner_failures": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collisions_after_infeasible": 0,
+      "collisions_while_feasible": 67,
+      "mean_u_dev": NaN,
+      "min_cbc_solved": NaN,
+      "mean_step_time_ms": 0.5437985286921383
+    }
+  },
+  "paired": {
+    "updated vs initial DR-CBF [success]": {
+      "only_a": 23,
+      "only_b": 5,
+      "p": 0.0009122341871261597,
+      "diff": 0.09,
+      "ci95": [
+        0.04,
+        0.14
+      ]
+    },
+    "updated vs initial DR-CBF [collision]": {
+      "only_a": 5,
+      "only_b": 24,
+      "p": 0.0005461126565933228,
+      "diff": -0.095,
+      "ci95": [
+        -0.15,
+        -0.045
+      ]
+    },
+    "updated vs initial DR-CBF [dynamic_collision]": {
+      "only_a": 5,
+      "only_b": 25,
+      "p": 0.00032491423189640045,
+      "diff": -0.1,
+      "ci95": [
+        -0.155,
+        -0.05
+      ]
+    },
+    "updated vs ppo_random_seed0 [success]": {
+      "only_a": 70,
+      "only_b": 20,
+      "p": 1.136356508423801e-07,
+      "diff": 0.25,
+      "ci95": [
+        0.165,
+        0.34
+      ]
+    },
+    "updated vs ppo_random_seed0 [collision]": {
+      "only_a": 23,
+      "only_b": 57,
+      "p": 0.00018311656412975104,
+      "diff": -0.17,
+      "ci95": [
+        -0.255,
+        -0.085
+      ]
+    },
+    "updated vs ppo_random_seed0 [dynamic_collision]": {
+      "only_a": 25,
+      "only_b": 33,
+      "p": 0.3581433018061379,
+      "diff": -0.04,
+      "ci95": [
+        -0.115,
+        0.035
+      ]
+    },
+    "updated vs ppo_random_seed1 [success]": {
+      "only_a": 55,
+      "only_b": 19,
+      "p": 3.376813810738314e-05,
+      "diff": 0.18,
+      "ci95": [
+        0.1,
+        0.26
+      ]
+    },
+    "updated vs ppo_random_seed1 [collision]": {
+      "only_a": 24,
+      "only_b": 43,
+      "p": 0.027119992403126347,
+      "diff": -0.095,
+      "ci95": [
+        -0.175,
+        -0.015
+      ]
+    },
+    "updated vs ppo_random_seed1 [dynamic_collision]": {
+      "only_a": 26,
+      "only_b": 27,
+      "p": 1.0,
+      "diff": -0.005,
+      "ci95": [
+        -0.075,
+        0.065
+      ]
+    },
+    "updated vs ppo_random_seed2 [success]": {
+      "only_a": 63,
+      "only_b": 20,
+      "p": 2.4306979592052185e-06,
+      "diff": 0.215,
+      "ci95": [
+        0.13,
+        0.3
+      ]
+    },
+    "updated vs ppo_random_seed2 [collision]": {
+      "only_a": 19,
+      "only_b": 59,
+      "p": 6.41506390670917e-06,
+      "diff": -0.2,
+      "ci95": [
+        -0.28,
+        -0.115
+      ]
+    },
+    "updated vs ppo_random_seed2 [dynamic_collision]": {
+      "only_a": 24,
+      "only_b": 33,
+      "p": 0.2892437471090205,
+      "diff": -0.045,
+      "ci95": [
+        -0.12,
+        0.03
+      ]
+    },
+    "updated vs ppo_sr_random_seed0 [success]": {
+      "only_a": 59,
+      "only_b": 21,
+      "p": 2.52911025646706e-05,
+      "diff": 0.19,
+      "ci95": [
+        0.105,
+        0.275
+      ]
+    },
+    "updated vs ppo_sr_random_seed0 [collision]": {
+      "only_a": 22,
+      "only_b": 52,
+      "p": 0.0006428073490507031,
+      "diff": -0.15,
+      "ci95": [
+        -0.23,
+        -0.065
+      ]
+    },
+    "updated vs ppo_sr_random_seed0 [dynamic_collision]": {
+      "only_a": 24,
+      "only_b": 33,
+      "p": 0.2892437471090205,
+      "diff": -0.045,
+      "ci95": [
+        -0.12,
+        0.03
+      ]
+    },
+    "updated vs ppo_sr_random_seed1 [success]": {
+      "only_a": 59,
+      "only_b": 19,
+      "p": 6.41506390670917e-06,
+      "diff": 0.2,
+      "ci95": [
+        0.115,
+        0.28
+      ]
+    },
+    "updated vs ppo_sr_random_seed1 [collision]": {
+      "only_a": 19,
+      "only_b": 56,
+      "p": 2.242964215897027e-05,
+      "diff": -0.185,
+      "ci95": [
+        -0.265,
+        -0.105
+      ]
+    },
+    "updated vs ppo_sr_random_seed1 [dynamic_collision]": {
+      "only_a": 20,
+      "only_b": 39,
+      "p": 0.018337087779101986,
+      "diff": -0.095,
+      "ci95": [
+        -0.17,
+        -0.02
+      ]
+    },
+    "updated vs ppo_sr_random_seed2 [success]": {
+      "only_a": 82,
+      "only_b": 20,
+      "p": 4.2948486907135817e-10,
+      "diff": 0.31,
+      "ci95": [
+        0.22,
+        0.4
+      ]
+    },
+    "updated vs ppo_sr_random_seed2 [collision]": {
+      "only_a": 23,
+      "only_b": 54,
+      "p": 0.0005387801699960487,
+      "diff": -0.155,
+      "ci95": [
+        -0.24,
+        -0.07
+      ]
+    },
+    "updated vs ppo_sr_random_seed2 [dynamic_collision]": {
+      "only_a": 28,
+      "only_b": 33,
+      "p": 0.6089207154048287,
+      "diff": -0.025,
+      "ci95": [
+        -0.1,
+        0.05
+      ]
+    }
+  },
+  "episodes_updated": [
+    {
+      "seed": 1000000,
+      "outcome": "success",
+      "steps": 142,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.88254451751709,
+      "shortest_path": 8.611879502661802,
+      "spl": 0.8714232946177982,
+      "min_clearance": 0.2927115201950073,
+      "mean_step_time": 0.03646743284377702,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6094288259490385,
+      "min_cbc_solved": 0.03996749881544476,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 142
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000001,
+      "outcome": "collision",
+      "steps": 175,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 10.635065078735352,
+      "shortest_path": 9.194112549695431,
+      "spl": 0.0,
+      "min_clearance": -0.036054468154907204,
+      "mean_step_time": 0.039402882021718794,
+      "planner_failed": 0,
+      "n_infeasible": 5,
+      "n_solver_fail": 5,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.7591344007864809,
+      "min_cbc_solved": 0.039911273623281784,
+      "n_recovered": 5,
+      "rungs": {
+        "R0": 170,
+        "R2": 4,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 5
+      }
+    },
+    {
+      "seed": 1000002,
+      "outcome": "collision",
+      "steps": 74,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 3.863070249557495,
+      "shortest_path": 8.221320343559652,
+      "spl": 0.0,
+      "min_clearance": -0.015902137756347634,
+      "mean_step_time": 0.03793102300354607,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7626057670000018,
+      "min_cbc_solved": 0.03998025095217708,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 74
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000003,
+      "outcome": "success",
+      "steps": 37,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 3.5064444541931152,
+      "shortest_path": 4.132842712474619,
+      "spl": 1.0,
+      "min_clearance": 0.4019010305404663,
+      "mean_step_time": 0.03485508072756331,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.1160052898315575,
+      "min_cbc_solved": 0.0399746977728537,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 37
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000004,
+      "outcome": "success",
+      "steps": 82,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.707551956176758,
+      "shortest_path": 7.5204581464244855,
+      "spl": 1.0,
+      "min_clearance": 0.28327895402908326,
+      "mean_step_time": 0.03749659977762437,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.26395961336069035,
+      "min_cbc_solved": 0.03994607323888483,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 81,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000005,
+      "outcome": "success",
+      "steps": 153,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.468186378479004,
+      "shortest_path": 8.574873734152927,
+      "spl": 0.8191365174565062,
+      "min_clearance": 0.17840411663055422,
+      "mean_step_time": 0.03728824919485335,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.590512589927807,
+      "min_cbc_solved": 0.039929682482975126,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 152,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000006,
+      "outcome": "success",
+      "steps": 305,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 18.039775848388672,
+      "shortest_path": 8.914213562373105,
+      "spl": 0.49414214662591444,
+      "min_clearance": 0.2779380321502685,
+      "mean_step_time": 0.0419944320946596,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8024156121685524,
+      "min_cbc_solved": 0.03996309633492506,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 298,
+        "R2": 6,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 7
+      }
+    },
+    {
+      "seed": 1000007,
+      "outcome": "success",
+      "steps": 156,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.297760963439941,
+      "shortest_path": 9.641778489984137,
+      "spl": 0.8534238351462172,
+      "min_clearance": 0.23031772375106813,
+      "mean_step_time": 0.04237990653312478,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5647579805089495,
+      "min_cbc_solved": 0.03997446567423826,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 149,
+        "R2": 5,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 7
+      }
+    },
+    {
+      "seed": 1000008,
+      "outcome": "success",
+      "steps": 157,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.221126556396484,
+      "shortest_path": 10.051219330881977,
+      "spl": 0.8224462192170994,
+      "min_clearance": 0.04943295717239382,
+      "mean_step_time": 0.04066425198644613,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5707744506194559,
+      "min_cbc_solved": 0.039916863727624846,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 153,
+        "R2": 2,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000009,
+      "outcome": "collision",
+      "steps": 148,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 8.395992279052734,
+      "shortest_path": 9.590559159102169,
+      "spl": 0.0,
+      "min_clearance": -0.03210417032241819,
+      "mean_step_time": 0.04208448739577639,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8508584029050831,
+      "min_cbc_solved": 0.039961689882983126,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 147,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000010,
+      "outcome": "collision",
+      "steps": 130,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 7.952089309692383,
+      "shortest_path": 10.06690475583122,
+      "spl": 0.0,
+      "min_clearance": -0.04776290655136106,
+      "mean_step_time": 0.03890759624236335,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8313291598731242,
+      "min_cbc_solved": 0.03997482346941846,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 127,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000011,
+      "outcome": "success",
+      "steps": 300,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 17.891597747802734,
+      "shortest_path": 9.31629509039023,
+      "spl": 0.5207078329007461,
+      "min_clearance": 0.18568571805953982,
+      "mean_step_time": 0.04254013942088932,
+      "planner_failed": 0,
+      "n_infeasible": 5,
+      "n_solver_fail": 5,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8006297342037209,
+      "min_cbc_solved": 0.03990894863500524,
+      "n_recovered": 5,
+      "rungs": {
+        "R0": 295,
+        "R1": 4,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 4,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000012,
+      "outcome": "success",
+      "steps": 82,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.366820335388184,
+      "shortest_path": 7.75060966544099,
+      "spl": 1.0,
+      "min_clearance": 0.4150349020957947,
+      "mean_step_time": 0.040239173197755364,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.34882031342343767,
+      "min_cbc_solved": 0.03997008022289625,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 82
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000013,
+      "outcome": "collision",
+      "steps": 67,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 4.484612464904785,
+      "shortest_path": 8.63908729652602,
+      "spl": 0.0,
+      "min_clearance": -0.025403356552124,
+      "mean_step_time": 0.0431593008297704,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6313200694729308,
+      "min_cbc_solved": 0.03997265540051305,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 67
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000014,
+      "outcome": "success",
+      "steps": 56,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.029433727264404,
+      "shortest_path": 5.674264068711928,
+      "spl": 1.0,
+      "min_clearance": 0.33399678468704225,
+      "mean_step_time": 0.04447887513379101,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.16953978303037123,
+      "min_cbc_solved": 0.039921674590764296,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 56
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000015,
+      "outcome": "success",
+      "steps": 152,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.153614044189453,
+      "shortest_path": 10.913351365237943,
+      "spl": 0.9784587598244288,
+      "min_clearance": 0.3218975067138672,
+      "mean_step_time": 0.04144766519235227,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4999639678736297,
+      "min_cbc_solved": 0.03995095262885512,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 152
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000016,
+      "outcome": "success",
+      "steps": 90,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.031584739685059,
+      "shortest_path": 7.373401871576776,
+      "spl": 1.0,
+      "min_clearance": 0.37511022090911866,
+      "mean_step_time": 0.04186842329412078,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4240617432401961,
+      "min_cbc_solved": 0.03992399488257636,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 90
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000017,
+      "outcome": "success",
+      "steps": 91,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.542725563049316,
+      "shortest_path": 6.601828996322957,
+      "spl": 1.0,
+      "min_clearance": 0.4934634208679199,
+      "mean_step_time": 0.039318661129992494,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4679857244475959,
+      "min_cbc_solved": 0.03996182290463332,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 91
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000018,
+      "outcome": "success",
+      "steps": 84,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.297299385070801,
+      "shortest_path": 6.519848480983498,
+      "spl": 1.0,
+      "min_clearance": 0.3000345230102539,
+      "mean_step_time": 0.039920104013401125,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.44289348585143984,
+      "min_cbc_solved": 0.039977710350128676,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 84
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000019,
+      "outcome": "success",
+      "steps": 195,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.834529876708984,
+      "shortest_path": 10.064823227814099,
+      "spl": 0.7275146548173389,
+      "min_clearance": 0.19198998212814333,
+      "mean_step_time": 0.042251872243240285,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6360219608800171,
+      "min_cbc_solved": 0.039926187761027465,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 194,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000020,
+      "outcome": "collision",
+      "steps": 280,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 15.301761627197266,
+      "shortest_path": 13.056854249492384,
+      "spl": 0.0,
+      "min_clearance": -0.023171520233154275,
+      "mean_step_time": 0.04068295581840045,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.9263440238439534,
+      "min_cbc_solved": 0.039925287936078684,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 277,
+        "R2": 2,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000021,
+      "outcome": "collision",
+      "steps": 93,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 7.461610317230225,
+      "shortest_path": 8.504772721475254,
+      "spl": 0.0,
+      "min_clearance": -0.04690167903900144,
+      "mean_step_time": 0.04228655422251591,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8757428819558536,
+      "min_cbc_solved": 0.03994200812573427,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 92,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000022,
+      "outcome": "success",
+      "steps": 138,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.642017364501953,
+      "shortest_path": 8.275483399593915,
+      "spl": 0.8582730238654134,
+      "min_clearance": 0.26360286474227906,
+      "mean_step_time": 0.0421449838508177,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6020040469738533,
+      "min_cbc_solved": 0.039958761186768,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 136,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000023,
+      "outcome": "collision",
+      "steps": 296,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 15.532590866088867,
+      "shortest_path": 8.826955262170054,
+      "spl": 0.0,
+      "min_clearance": -0.010855948925018288,
+      "mean_step_time": 0.04539000021720091,
+      "planner_failed": 0,
+      "n_infeasible": 10,
+      "n_solver_fail": 10,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.9607951864613117,
+      "min_cbc_solved": 0.03992965549513455,
+      "n_recovered": 10,
+      "rungs": {
+        "R0": 286,
+        "R2": 7,
+        "R1": 3
+      },
+      "tiers": {
+        "2": 10
+      }
+    },
+    {
+      "seed": 1000024,
+      "outcome": "collision",
+      "steps": 186,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 11.77244758605957,
+      "shortest_path": 5.8813708498984765,
+      "spl": 0.0,
+      "min_clearance": -0.002082562446594216,
+      "mean_step_time": 0.046609727419807664,
+      "planner_failed": 0,
+      "n_infeasible": 19,
+      "n_solver_fail": 19,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 1.1080502950242432,
+      "min_cbc_solved": 0.03997242977591564,
+      "n_recovered": 19,
+      "rungs": {
+        "R0": 167,
+        "R1": 8,
+        "R2": 11
+      },
+      "tiers": {
+        "2": 18,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000025,
+      "outcome": "success",
+      "steps": 103,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.246621131896973,
+      "shortest_path": 7.6591883092036825,
+      "spl": 0.9287668472580645,
+      "min_clearance": 0.28898943662643434,
+      "mean_step_time": 0.042276224005036056,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5184758157654203,
+      "min_cbc_solved": 0.03993334459446607,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 100,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000026,
+      "outcome": "success",
+      "steps": 41,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.037347316741943,
+      "shortest_path": 4.652081528017129,
+      "spl": 1.0,
+      "min_clearance": 0.4395661473274231,
+      "mean_step_time": 0.04331284309680596,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.1856089640060175,
+      "min_cbc_solved": 0.03999905508009394,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 40,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000027,
+      "outcome": "success",
+      "steps": 308,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 20.843612670898438,
+      "shortest_path": 9.903300858899119,
+      "spl": 0.4751240111425583,
+      "min_clearance": 0.11067589521408083,
+      "mean_step_time": 0.04278706077655608,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8135016898063694,
+      "min_cbc_solved": 0.03990604878526405,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 301,
+        "R2": 4,
+        "R1": 3
+      },
+      "tiers": {
+        "2": 6,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000028,
+      "outcome": "success",
+      "steps": 97,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.703384876251221,
+      "shortest_path": 4.47132034355964,
+      "spl": 0.7839766104823344,
+      "min_clearance": 0.27337577342987057,
+      "mean_step_time": 0.04262559502217535,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7186459712209463,
+      "min_cbc_solved": 0.03996868329337047,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 95,
+        "R2": 1,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000029,
+      "outcome": "success",
+      "steps": 135,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.066286087036133,
+      "shortest_path": 7.881980515339459,
+      "spl": 0.8693725787684871,
+      "min_clearance": 0.24394721984863282,
+      "mean_step_time": 0.04045259205245033,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6092206354427427,
+      "min_cbc_solved": 0.039934234830514975,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 132,
+        "R2": 1,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000030,
+      "outcome": "success",
+      "steps": 195,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.982675552368164,
+      "shortest_path": 9.421930009000636,
+      "spl": 0.7257309921206485,
+      "min_clearance": 0.26234980821609494,
+      "mean_step_time": 0.04569540332035663,
+      "planner_failed": 0,
+      "n_infeasible": 16,
+      "n_solver_fail": 16,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6769339492276207,
+      "min_cbc_solved": 0.03997190320740707,
+      "n_recovered": 16,
+      "rungs": {
+        "R0": 179,
+        "R2": 13,
+        "R2_lp": 2,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 16
+      }
+    },
+    {
+      "seed": 1000031,
+      "outcome": "success",
+      "steps": 57,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.698934078216553,
+      "shortest_path": 5.092031021678295,
+      "spl": 1.0,
+      "min_clearance": 0.3326664686203003,
+      "mean_step_time": 0.039562332078308,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4296340177293984,
+      "min_cbc_solved": 0.03997857331970971,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 57
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000032,
+      "outcome": "success",
+      "steps": 246,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 16.419639587402344,
+      "shortest_path": 8.443502884254446,
+      "spl": 0.5142319256954071,
+      "min_clearance": 0.1923170328140259,
+      "mean_step_time": 0.04371299283773964,
+      "planner_failed": 0,
+      "n_infeasible": 9,
+      "n_solver_fail": 9,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8157110328961811,
+      "min_cbc_solved": 0.0399320388893738,
+      "n_recovered": 9,
+      "rungs": {
+        "R0": 237,
+        "R2": 7,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 9
+      }
+    },
+    {
+      "seed": 1000033,
+      "outcome": "success",
+      "steps": 165,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.795799255371094,
+      "shortest_path": 7.575483399593904,
+      "spl": 0.7017065823843447,
+      "min_clearance": 0.18950353264808656,
+      "mean_step_time": 0.04209374533895629,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7046719980223806,
+      "min_cbc_solved": 0.03997221893489622,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 165
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000034,
+      "outcome": "success",
+      "steps": 148,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.712390899658203,
+      "shortest_path": 10.153300858899115,
+      "spl": 0.9478090329230866,
+      "min_clearance": 0.2940324068069458,
+      "mean_step_time": 0.039851939575463485,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5268068145058912,
+      "min_cbc_solved": 0.03993883910058063,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 147,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000035,
+      "outcome": "success",
+      "steps": 193,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.444437026977539,
+      "shortest_path": 11.692031021678304,
+      "spl": 0.9395387671078941,
+      "min_clearance": 0.27340151071548463,
+      "mean_step_time": 0.041298501980684,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5404437227507785,
+      "min_cbc_solved": 0.0399074581491585,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 193
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000036,
+      "outcome": "success",
+      "steps": 69,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.720376968383789,
+      "shortest_path": 4.686396103067892,
+      "spl": 0.9928012390655462,
+      "min_clearance": 0.33497631549835205,
+      "mean_step_time": 0.03976322733965851,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5434895973797245,
+      "min_cbc_solved": 0.039984456836322485,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 69
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000037,
+      "outcome": "success",
+      "steps": 259,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.859213829040527,
+      "shortest_path": 5.805634918610405,
+      "spl": 0.4189007392645394,
+      "min_clearance": 0.11133430600166322,
+      "mean_step_time": 0.040093045892521134,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8971523710783205,
+      "min_cbc_solved": 0.039962705394711584,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 257,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000038,
+      "outcome": "collision",
+      "steps": 48,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 2.917576551437378,
+      "shortest_path": 7.033452377915609,
+      "spl": 0.0,
+      "min_clearance": -0.06025317907333372,
+      "mean_step_time": 0.047602908157083824,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 1.1587546178112478,
+      "min_cbc_solved": 0.03996971647695846,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 44,
+        "R1": 1,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000039,
+      "outcome": "success",
+      "steps": 70,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.234250545501709,
+      "shortest_path": 4.460660171779821,
+      "spl": 1.0,
+      "min_clearance": 0.29264469146728517,
+      "mean_step_time": 0.04163576634600759,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5084844038237727,
+      "min_cbc_solved": 0.03998316884486838,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 70
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000040,
+      "outcome": "collision",
+      "steps": 82,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 2.825383424758911,
+      "shortest_path": 6.655634918610403,
+      "spl": 0.0,
+      "min_clearance": -0.033946549892425515,
+      "mean_step_time": 0.0410704241367057,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 1.026110870636351,
+      "min_cbc_solved": 0.03995479081176767,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 82
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000041,
+      "outcome": "success",
+      "steps": 113,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.704623699188232,
+      "shortest_path": 6.624873734152915,
+      "spl": 0.8598568850093119,
+      "min_clearance": 0.2580599308013916,
+      "mean_step_time": 0.04103917807270567,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5871137525830201,
+      "min_cbc_solved": 0.03996152151346882,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 112,
+        "R1": 1
+      },
+      "tiers": {
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000042,
+      "outcome": "success",
+      "steps": 62,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.530036449432373,
+      "shortest_path": 4.945584412271568,
+      "spl": 1.0,
+      "min_clearance": 0.5295385241508483,
+      "mean_step_time": 0.0410628171295919,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.42131729447086386,
+      "min_cbc_solved": 0.0399725911895817,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 61,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000043,
+      "outcome": "success",
+      "steps": 95,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.665495872497559,
+      "shortest_path": 8.403300858899108,
+      "spl": 1.0,
+      "min_clearance": 0.31784827709198,
+      "mean_step_time": 0.039346203027832274,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.37370216494862135,
+      "min_cbc_solved": 0.039968261041461714,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 95
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000044,
+      "outcome": "success",
+      "steps": 211,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.873748779296875,
+      "shortest_path": 10.453300858899107,
+      "spl": 0.7534589983709423,
+      "min_clearance": 0.2635347485542297,
+      "mean_step_time": 0.04135731533412508,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6722967798316676,
+      "min_cbc_solved": 0.03991303978616857,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 208,
+        "R1": 2,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000045,
+      "outcome": "collision",
+      "steps": 280,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 18.32242202758789,
+      "shortest_path": 7.089087296526012,
+      "spl": 0.0,
+      "min_clearance": -0.023650622367858865,
+      "mean_step_time": 0.041869404487910544,
+      "planner_failed": 0,
+      "n_infeasible": 6,
+      "n_solver_fail": 6,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.9024612844112876,
+      "min_cbc_solved": 0.03996247611722259,
+      "n_recovered": 6,
+      "rungs": {
+        "R0": 274,
+        "R2": 3,
+        "R1": 3
+      },
+      "tiers": {
+        "2": 6
+      }
+    },
+    {
+      "seed": 1000046,
+      "outcome": "collision",
+      "steps": 256,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "static",
+      "path_length": 7.1199517250061035,
+      "shortest_path": 5.936396103067892,
+      "spl": 0.0,
+      "min_clearance": -6.027817726134144e-05,
+      "mean_step_time": 0.046724540603918285,
+      "planner_failed": 0,
+      "n_infeasible": 11,
+      "n_solver_fail": 11,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.9458032210877585,
+      "min_cbc_solved": 0.03992071039949891,
+      "n_recovered": 11,
+      "rungs": {
+        "R0": 245,
+        "R2": 11
+      },
+      "tiers": {
+        "2": 11
+      }
+    },
+    {
+      "seed": 1000047,
+      "outcome": "success",
+      "steps": 110,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.61655330657959,
+      "shortest_path": 5.6162950903902225,
+      "spl": 0.8488248836150543,
+      "min_clearance": 0.3166813492774963,
+      "mean_step_time": 0.04007635925769467,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6262320470990774,
+      "min_cbc_solved": 0.039960726326446316,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 109,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000048,
+      "outcome": "success",
+      "steps": 244,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 17.04924201965332,
+      "shortest_path": 8.276345596729067,
+      "spl": 0.48543774480933544,
+      "min_clearance": 0.07567926645278933,
+      "mean_step_time": 0.042976905239677274,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8076091818093386,
+      "min_cbc_solved": 0.03993338521892456,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 237,
+        "R1": 2,
+        "R2": 4,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 7
+      }
+    },
+    {
+      "seed": 1000049,
+      "outcome": "success",
+      "steps": 186,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.700218200683594,
+      "shortest_path": 7.968376618407359,
+      "spl": 0.627420449987108,
+      "min_clearance": 0.0924928426742554,
+      "mean_step_time": 0.0403988094185479,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7315243657222497,
+      "min_cbc_solved": 0.039958394239432204,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 186
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000050,
+      "outcome": "collision",
+      "steps": 367,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 9.265892028808594,
+      "shortest_path": 5.494974746830582,
+      "spl": 0.0,
+      "min_clearance": -0.030842041969299294,
+      "mean_step_time": 0.04167254778876271,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.9340504201251725,
+      "min_cbc_solved": 0.03995571292998841,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 366,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000051,
+      "outcome": "success",
+      "steps": 139,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.570453643798828,
+      "shortest_path": 7.317766952966372,
+      "spl": 0.7646206988012441,
+      "min_clearance": 0.1888359308242798,
+      "mean_step_time": 0.045868354870455354,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6759410118102167,
+      "min_cbc_solved": 0.039922811987623985,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 136,
+        "R2_lp": 1,
+        "R1": 1,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000052,
+      "outcome": "success",
+      "steps": 98,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.904508590698242,
+      "shortest_path": 6.6334523779156065,
+      "spl": 0.9607421427286219,
+      "min_clearance": 0.24576064348220822,
+      "mean_step_time": 0.04450437975025793,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5535331126693976,
+      "min_cbc_solved": 0.03991835073840733,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 91,
+        "R1": 3,
+        "R2": 4
+      },
+      "tiers": {
+        "2": 7
+      }
+    },
+    {
+      "seed": 1000053,
+      "outcome": "success",
+      "steps": 122,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.223226547241211,
+      "shortest_path": 7.301219330881974,
+      "spl": 0.8878776826757182,
+      "min_clearance": 0.3919204592704773,
+      "mean_step_time": 0.03916004738392553,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6178079167640187,
+      "min_cbc_solved": 0.03997881822049075,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 122
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000054,
+      "outcome": "success",
+      "steps": 148,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.008363723754883,
+      "shortest_path": 8.22989898732234,
+      "spl": 0.8223021479313994,
+      "min_clearance": 0.1292410731315613,
+      "mean_step_time": 0.044690565753577126,
+      "planner_failed": 0,
+      "n_infeasible": 11,
+      "n_solver_fail": 11,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5993787718081484,
+      "min_cbc_solved": 0.039944569514080375,
+      "n_recovered": 11,
+      "rungs": {
+        "R0": 137,
+        "R2": 8,
+        "R1": 3
+      },
+      "tiers": {
+        "2": 10,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000055,
+      "outcome": "success",
+      "steps": 201,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.325901985168457,
+      "shortest_path": 10.307716446627536,
+      "spl": 0.7195160526226599,
+      "min_clearance": 0.28354885578155514,
+      "mean_step_time": 0.0429770279518185,
+      "planner_failed": 0,
+      "n_infeasible": 6,
+      "n_solver_fail": 6,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6634046767887535,
+      "min_cbc_solved": 0.03990855503482228,
+      "n_recovered": 6,
+      "rungs": {
+        "R0": 195,
+        "R2": 4,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 6
+      }
+    },
+    {
+      "seed": 1000056,
+      "outcome": "success",
+      "steps": 101,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.390353202819824,
+      "shortest_path": 8.413351365237947,
+      "spl": 1.0,
+      "min_clearance": 0.34662182331085206,
+      "mean_step_time": 0.04094739991244814,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4509196671213747,
+      "min_cbc_solved": 0.03995747601826058,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 100,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000057,
+      "outcome": "success",
+      "steps": 61,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.258540153503418,
+      "shortest_path": 5.391421356237309,
+      "spl": 1.0,
+      "min_clearance": 0.45682830810546876,
+      "mean_step_time": 0.04500550011814129,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.25017374696667005,
+      "min_cbc_solved": 0.039913203313743,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 59,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000058,
+      "outcome": "success",
+      "steps": 93,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.808948516845703,
+      "shortest_path": 5.214213562373094,
+      "spl": 0.8976174512912444,
+      "min_clearance": 0.24443593025207516,
+      "mean_step_time": 0.041649972767098455,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6555759033148053,
+      "min_cbc_solved": 0.03993261151464822,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 93
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000059,
+      "outcome": "success",
+      "steps": 108,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.0117902755737305,
+      "shortest_path": 6.6970562748477125,
+      "spl": 0.9551136031802855,
+      "min_clearance": 0.29513121843338014,
+      "mean_step_time": 0.04055689606940615,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5232129093861766,
+      "min_cbc_solved": 0.03994357602756024,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 108
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000060,
+      "outcome": "success",
+      "steps": 211,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.74483871459961,
+      "shortest_path": 8.789949493661169,
+      "spl": 0.6896869933388806,
+      "min_clearance": 0.2033688545227051,
+      "mean_step_time": 0.042552332039613505,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7363155792671093,
+      "min_cbc_solved": 0.039932360264940445,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 207,
+        "R2_lp": 1,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000061,
+      "outcome": "collision",
+      "steps": 129,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 8.044549942016602,
+      "shortest_path": 10.819848480983516,
+      "spl": 0.0,
+      "min_clearance": -0.026396429538726784,
+      "mean_step_time": 0.04682884349256696,
+      "planner_failed": 0,
+      "n_infeasible": 13,
+      "n_solver_fail": 13,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.7171489460493758,
+      "min_cbc_solved": 0.039973852047911006,
+      "n_recovered": 13,
+      "rungs": {
+        "R0": 116,
+        "R2": 13
+      },
+      "tiers": {
+        "2": 13
+      }
+    },
+    {
+      "seed": 1000062,
+      "outcome": "collision",
+      "steps": 183,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 11.00765609741211,
+      "shortest_path": 10.035533905932752,
+      "spl": 0.0,
+      "min_clearance": -0.008999562263488747,
+      "mean_step_time": 0.04614253761946565,
+      "planner_failed": 0,
+      "n_infeasible": 13,
+      "n_solver_fail": 13,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.8596722938570672,
+      "min_cbc_solved": 0.03996419014378727,
+      "n_recovered": 13,
+      "rungs": {
+        "R0": 170,
+        "R1": 2,
+        "R2": 11
+      },
+      "tiers": {
+        "2": 13
+      }
+    },
+    {
+      "seed": 1000063,
+      "outcome": "success",
+      "steps": 192,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.790740966796875,
+      "shortest_path": 8.178427124746195,
+      "spl": 0.6936313118723346,
+      "min_clearance": 0.20465537309646603,
+      "mean_step_time": 0.043309560102594936,
+      "planner_failed": 0,
+      "n_infeasible": 6,
+      "n_solver_fail": 6,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6931098611042055,
+      "min_cbc_solved": 0.03995476730773018,
+      "n_recovered": 6,
+      "rungs": {
+        "R0": 186,
+        "R2_lp": 2,
+        "R2": 3,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 6
+      }
+    },
+    {
+      "seed": 1000064,
+      "outcome": "success",
+      "steps": 187,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.678730010986328,
+      "shortest_path": 8.979898987322343,
+      "spl": 0.6117626647946599,
+      "min_clearance": 0.07432343959808352,
+      "mean_step_time": 0.046130701072792955,
+      "planner_failed": 0,
+      "n_infeasible": 17,
+      "n_solver_fail": 17,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7255051912090474,
+      "min_cbc_solved": 0.03996533500784605,
+      "n_recovered": 17,
+      "rungs": {
+        "R0": 170,
+        "R2": 13,
+        "R1": 4
+      },
+      "tiers": {
+        "2": 17
+      }
+    },
+    {
+      "seed": 1000065,
+      "outcome": "success",
+      "steps": 119,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.565239429473877,
+      "shortest_path": 4.570710678118655,
+      "spl": 0.6041726399710953,
+      "min_clearance": 0.2801360130310058,
+      "mean_step_time": 0.04273111338946311,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7019822046324388,
+      "min_cbc_solved": 0.03991093238764199,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 116,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000066,
+      "outcome": "success",
+      "steps": 160,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.92973518371582,
+      "shortest_path": 6.29472221513641,
+      "spl": 0.6339264943801707,
+      "min_clearance": 0.1513449788093567,
+      "mean_step_time": 0.04209873896688805,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7387240065569997,
+      "min_cbc_solved": 0.03996366476962143,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 156,
+        "R2": 4
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000067,
+      "outcome": "success",
+      "steps": 174,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.781545639038086,
+      "shortest_path": 5.593502884254441,
+      "spl": 0.5718424358141118,
+      "min_clearance": 0.2197371959686279,
+      "mean_step_time": 0.04293676779468961,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8052928310615752,
+      "min_cbc_solved": 0.03996965446794819,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 174
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000068,
+      "outcome": "success",
+      "steps": 136,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.04446029663086,
+      "shortest_path": 6.081370849898474,
+      "spl": 0.6723862619159087,
+      "min_clearance": 0.045956099033355735,
+      "mean_step_time": 0.043841156258542256,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7524272006283369,
+      "min_cbc_solved": 0.03991790126068342,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 135,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000069,
+      "outcome": "success",
+      "steps": 174,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.746696472167969,
+      "shortest_path": 7.557716446627535,
+      "spl": 0.7032595054862372,
+      "min_clearance": 0.23691035509109498,
+      "mean_step_time": 0.04048397561171274,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7274331641911157,
+      "min_cbc_solved": 0.03992277298886543,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 174
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000070,
+      "outcome": "success",
+      "steps": 214,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.985631942749023,
+      "shortest_path": 8.75416305603427,
+      "spl": 0.6259397567353362,
+      "min_clearance": 0.2235341906547546,
+      "mean_step_time": 0.0425242742868445,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7116234326916303,
+      "min_cbc_solved": 0.03997191875031494,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 214
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000071,
+      "outcome": "success",
+      "steps": 98,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.778059005737305,
+      "shortest_path": 6.2763455967290565,
+      "spl": 0.9259797814413283,
+      "min_clearance": 0.3794698238372803,
+      "mean_step_time": 0.04260364173654923,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5518139962848417,
+      "min_cbc_solved": 0.03997553978459792,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 97,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000072,
+      "outcome": "collision",
+      "steps": 206,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 12.339482307434082,
+      "shortest_path": 11.112741699796961,
+      "spl": 0.0,
+      "min_clearance": -0.018176889419555642,
+      "mean_step_time": 0.04156672121285578,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7992520428022744,
+      "min_cbc_solved": 0.03996209560631786,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 204,
+        "R2": 1,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000073,
+      "outcome": "success",
+      "steps": 170,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.584552764892578,
+      "shortest_path": 12.017514421272224,
+      "spl": 0.9549417167050835,
+      "min_clearance": 0.1570013999938965,
+      "mean_step_time": 0.04239462961730383,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4801370703801387,
+      "min_cbc_solved": 0.03996530454457076,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 166,
+        "R2": 3,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000074,
+      "outcome": "success",
+      "steps": 195,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.480762481689453,
+      "shortest_path": 12.495584412271583,
+      "spl": 0.9269197071934165,
+      "min_clearance": 0.23771018981933595,
+      "mean_step_time": 0.04177716265145976,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5393267623646429,
+      "min_cbc_solved": 0.0399363624676415,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 194,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000075,
+      "outcome": "timeout",
+      "steps": 500,
+      "success": 0,
+      "collision": 0,
+      "timeout": 1,
+      "collision_type": null,
+      "path_length": 11.025455474853516,
+      "shortest_path": 10.561879502661796,
+      "spl": 0.0,
+      "min_clearance": 0.02299102544784548,
+      "mean_step_time": 0.04085846483660862,
+      "planner_failed": 0,
+      "n_infeasible": 8,
+      "n_solver_fail": 8,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 1.0112280515032241,
+      "min_cbc_solved": 0.039940205730166746,
+      "n_recovered": 8,
+      "rungs": {
+        "R0": 492,
+        "R2": 3,
+        "R1": 5
+      },
+      "tiers": {
+        "2": 7,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000076,
+      "outcome": "success",
+      "steps": 191,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.662571907043457,
+      "shortest_path": 12.332590180780473,
+      "spl": 0.8410932446889668,
+      "min_clearance": 0.27533360719680783,
+      "mean_step_time": 0.04036723411793172,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5567336840027435,
+      "min_cbc_solved": 0.03996935126947243,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 190,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000077,
+      "outcome": "success",
+      "steps": 95,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.169215202331543,
+      "shortest_path": 8.270710678118656,
+      "spl": 1.0,
+      "min_clearance": 0.31691207885742184,
+      "mean_step_time": 0.04193309033044467,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.2814329526088717,
+      "min_cbc_solved": 0.03994910415870079,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 95
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000078,
+      "outcome": "success",
+      "steps": 145,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.963315963745117,
+      "shortest_path": 10.819848480983506,
+      "spl": 0.9869138604382062,
+      "min_clearance": 0.30720484256744385,
+      "mean_step_time": 0.04131767607037107,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4309175779998908,
+      "min_cbc_solved": 0.03996184574240297,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 144,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000079,
+      "outcome": "success",
+      "steps": 152,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.030195236206055,
+      "shortest_path": 10.718986283848345,
+      "spl": 0.9717857258467936,
+      "min_clearance": 0.31456298828125,
+      "mean_step_time": 0.04129777757503019,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4564278972098567,
+      "min_cbc_solved": 0.039908423183387096,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 151,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000080,
+      "outcome": "success",
+      "steps": 131,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.123383522033691,
+      "shortest_path": 7.9127416997969595,
+      "spl": 0.8673034166202773,
+      "min_clearance": 0.34647634029388424,
+      "mean_step_time": 0.03995733943995344,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5434729111735531,
+      "min_cbc_solved": 0.039916472567954164,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 130,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000081,
+      "outcome": "success",
+      "steps": 189,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.078221321105957,
+      "shortest_path": 10.151828996322978,
+      "spl": 0.7762392719214581,
+      "min_clearance": 0.03704442977905276,
+      "mean_step_time": 0.04138837393777317,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6486638075639134,
+      "min_cbc_solved": 0.039926419203492436,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 188,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000082,
+      "outcome": "success",
+      "steps": 315,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 20.444107055664062,
+      "shortest_path": 11.46984848098351,
+      "spl": 0.5610344560295079,
+      "min_clearance": 0.13648184537887575,
+      "mean_step_time": 0.04297495917454066,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7744840017111901,
+      "min_cbc_solved": 0.03990769920324162,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 311,
+        "R2": 3,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000083,
+      "outcome": "success",
+      "steps": 247,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 15.913691520690918,
+      "shortest_path": 11.750609665440994,
+      "spl": 0.7383962200199053,
+      "min_clearance": 0.22729034423828126,
+      "mean_step_time": 0.041814934859157875,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6841329994071507,
+      "min_cbc_solved": 0.03992556482876737,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 247
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000084,
+      "outcome": "success",
+      "steps": 282,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 17.597190856933594,
+      "shortest_path": 7.638477631085029,
+      "spl": 0.43407369353360953,
+      "min_clearance": 0.18519195318222048,
+      "mean_step_time": 0.04090676807587081,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8491027842188301,
+      "min_cbc_solved": 0.039942131603720524,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 279,
+        "R2": 2,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 2,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000085,
+      "outcome": "success",
+      "steps": 203,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.219267845153809,
+      "shortest_path": 9.405634918610408,
+      "spl": 0.6614711123692648,
+      "min_clearance": 0.25825777053833004,
+      "mean_step_time": 0.043482268469986214,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.694170547542694,
+      "min_cbc_solved": 0.03997000050891905,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 196,
+        "R1": 4,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 6,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000086,
+      "outcome": "success",
+      "steps": 211,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.33456802368164,
+      "shortest_path": 9.56837661840736,
+      "spl": 0.6675036598661207,
+      "min_clearance": 0.12033923864364626,
+      "mean_step_time": 0.042909850470690826,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6829943447603214,
+      "min_cbc_solved": 0.039911643205925496,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 210,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000087,
+      "outcome": "success",
+      "steps": 187,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.512960433959961,
+      "shortest_path": 9.353300858899102,
+      "spl": 0.7474890461184871,
+      "min_clearance": 0.04325469732284548,
+      "mean_step_time": 0.03969652518470657,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6479201116783774,
+      "min_cbc_solved": 0.03996120658575736,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 187
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000088,
+      "outcome": "success",
+      "steps": 187,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.983668327331543,
+      "shortest_path": 6.402691193458114,
+      "spl": 0.5342847464207006,
+      "min_clearance": 0.07845708131790163,
+      "mean_step_time": 0.0421564906298925,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8168182063143538,
+      "min_cbc_solved": 0.039946926145015195,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 185,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000089,
+      "outcome": "success",
+      "steps": 75,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.307685375213623,
+      "shortest_path": 5.097665940288696,
+      "spl": 0.9604310692744341,
+      "min_clearance": 0.3321234703063965,
+      "mean_step_time": 0.04165404504165053,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5696653431230906,
+      "min_cbc_solved": 0.03997507988243995,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 75
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000090,
+      "outcome": "success",
+      "steps": 130,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.232343673706055,
+      "shortest_path": 7.851219330881978,
+      "spl": 0.8504037120327796,
+      "min_clearance": 0.14093234539031985,
+      "mean_step_time": 0.04152694776152762,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6102987624311969,
+      "min_cbc_solved": 0.039967697581666295,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 130
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000091,
+      "outcome": "success",
+      "steps": 222,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.869561195373535,
+      "shortest_path": 10.113351365237946,
+      "spl": 0.7291760152160729,
+      "min_clearance": 0.2335359692573547,
+      "mean_step_time": 0.04122529883747333,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7170800067223648,
+      "min_cbc_solved": 0.039919923224747175,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 221,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000092,
+      "outcome": "success",
+      "steps": 180,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.278950691223145,
+      "shortest_path": 9.682590180780458,
+      "spl": 0.7885519230646854,
+      "min_clearance": 0.33078953027725216,
+      "mean_step_time": 0.04253511499717004,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6393786412217008,
+      "min_cbc_solved": 0.03995302833359082,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 177,
+        "R2": 2,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000093,
+      "outcome": "success",
+      "steps": 97,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.100839138031006,
+      "shortest_path": 6.857716446627534,
+      "spl": 0.9657614140135433,
+      "min_clearance": 0.35764312744140625,
+      "mean_step_time": 0.04251890674175829,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4748027039614188,
+      "min_cbc_solved": 0.03991215696222383,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 96,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000094,
+      "outcome": "success",
+      "steps": 77,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.506540775299072,
+      "shortest_path": 5.642031021678293,
+      "spl": 1.0,
+      "min_clearance": 0.41816521883010865,
+      "mean_step_time": 0.041761622173022234,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.49938779361899155,
+      "min_cbc_solved": 0.03991536996048618,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 77
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000095,
+      "outcome": "success",
+      "steps": 197,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.589938163757324,
+      "shortest_path": 10.902081528017142,
+      "spl": 0.8659360662628973,
+      "min_clearance": 0.26750571727752687,
+      "mean_step_time": 0.04158996248932149,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6002956413312541,
+      "min_cbc_solved": 0.03993365403400445,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 196,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000096,
+      "outcome": "success",
+      "steps": 129,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.458927154541016,
+      "shortest_path": 10.60563491861041,
+      "spl": 1.0,
+      "min_clearance": 0.2870739817619324,
+      "mean_step_time": 0.042750198245156815,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.33171877452663834,
+      "min_cbc_solved": 0.03992337470020435,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 127,
+        "R2_lp": 1,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000097,
+      "outcome": "success",
+      "steps": 129,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.714971542358398,
+      "shortest_path": 9.544722215136424,
+      "spl": 0.9824755711862184,
+      "min_clearance": 0.4703306198120117,
+      "mean_step_time": 0.03842159466233191,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.49281676004065983,
+      "min_cbc_solved": 0.03990257348335939,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 129
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000098,
+      "outcome": "success",
+      "steps": 177,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.854259490966797,
+      "shortest_path": 10.907716446627546,
+      "spl": 0.9201516513907481,
+      "min_clearance": 0.34760543107986447,
+      "mean_step_time": 0.04077169209150439,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5223460824449389,
+      "min_cbc_solved": 0.039952811844978564,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 177
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000099,
+      "outcome": "success",
+      "steps": 154,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.42521858215332,
+      "shortest_path": 11.056854249492382,
+      "spl": 0.9677586621199231,
+      "min_clearance": 0.32880665063858033,
+      "mean_step_time": 0.04232665848035317,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.46949620500393,
+      "min_cbc_solved": 0.03992497627506047,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 153,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000100,
+      "outcome": "success",
+      "steps": 136,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.744169235229492,
+      "shortest_path": 6.034924240491751,
+      "spl": 0.7792862032298951,
+      "min_clearance": 0.25959035158157345,
+      "mean_step_time": 0.04148695134876214,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.672470123970776,
+      "min_cbc_solved": 0.03993874069581972,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 136
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000101,
+      "outcome": "success",
+      "steps": 217,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.590812683105469,
+      "shortest_path": 9.457716446627549,
+      "spl": 0.6958904273902834,
+      "min_clearance": 0.2239660263061523,
+      "mean_step_time": 0.040596527537794504,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7115499135625134,
+      "min_cbc_solved": 0.039915885422836,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 217
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000102,
+      "outcome": "collision",
+      "steps": 187,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 9.886807441711426,
+      "shortest_path": 10.9340620433566,
+      "spl": 0.0,
+      "min_clearance": -0.0309689402580261,
+      "mean_step_time": 0.044843764780188866,
+      "planner_failed": 0,
+      "n_infeasible": 12,
+      "n_solver_fail": 12,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7975457773594667,
+      "min_cbc_solved": 0.03997835902412958,
+      "n_recovered": 12,
+      "rungs": {
+        "R0": 175,
+        "R1": 2,
+        "R2": 10
+      },
+      "tiers": {
+        "2": 12
+      }
+    },
+    {
+      "seed": 1000103,
+      "outcome": "collision",
+      "steps": 123,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 7.326483726501465,
+      "shortest_path": 10.136143571373744,
+      "spl": 0.0,
+      "min_clearance": -0.009067511558532693,
+      "mean_step_time": 0.04044420411999572,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7149180825603842,
+      "min_cbc_solved": 0.039947367796853456,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 123
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000104,
+      "outcome": "success",
+      "steps": 127,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.743298530578613,
+      "shortest_path": 8.639087296526009,
+      "spl": 0.9880810161418899,
+      "min_clearance": 0.20962848663330075,
+      "mean_step_time": 0.04027409594062364,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5116411723760431,
+      "min_cbc_solved": 0.03990565956962093,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 127
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000105,
+      "outcome": "success",
+      "steps": 64,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.54052734375,
+      "shortest_path": 6.2692388155425105,
+      "spl": 1.0,
+      "min_clearance": 0.5802021026611328,
+      "mean_step_time": 0.041031506945728324,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.1671510348371706,
+      "min_cbc_solved": 0.039904957053371715,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 64
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000106,
+      "outcome": "success",
+      "steps": 136,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.17292594909668,
+      "shortest_path": 9.0284271247462,
+      "spl": 0.9842472483532139,
+      "min_clearance": 0.27150650024414064,
+      "mean_step_time": 0.041290633492548405,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4890458841011123,
+      "min_cbc_solved": 0.039965274346311724,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 136
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000107,
+      "outcome": "success",
+      "steps": 165,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.598657608032227,
+      "shortest_path": 7.3991378028648445,
+      "spl": 0.6981202786716484,
+      "min_clearance": 0.29813594818115235,
+      "mean_step_time": 0.042586247145311174,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7195778299294888,
+      "min_cbc_solved": 0.03996577816397284,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 162,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000108,
+      "outcome": "success",
+      "steps": 183,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.697680473327637,
+      "shortest_path": 10.168376618407372,
+      "spl": 0.8008058353466018,
+      "min_clearance": 0.31745911836624147,
+      "mean_step_time": 0.04126704484606009,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6308240311186729,
+      "min_cbc_solved": 0.03995943703976088,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 182,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000109,
+      "outcome": "success",
+      "steps": 127,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.766757011413574,
+      "shortest_path": 7.834062043356593,
+      "spl": 0.8936100354050316,
+      "min_clearance": 0.12694343328475954,
+      "mean_step_time": 0.0438101652727323,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7645848354033317,
+      "min_cbc_solved": 0.03994498871978186,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 123,
+        "R2": 3,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000110,
+      "outcome": "success",
+      "steps": 96,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.498418807983398,
+      "shortest_path": 7.399747468305833,
+      "spl": 0.9868410471321617,
+      "min_clearance": 0.2722053170204162,
+      "mean_step_time": 0.040689222217527764,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4847051902439257,
+      "min_cbc_solved": 0.03997049828348173,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 94,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000111,
+      "outcome": "success",
+      "steps": 106,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.9973344802856445,
+      "shortest_path": 4.9269552621700425,
+      "spl": 0.6160746776711112,
+      "min_clearance": 0.02130093574523928,
+      "mean_step_time": 0.04459148688782182,
+      "planner_failed": 0,
+      "n_infeasible": 6,
+      "n_solver_fail": 6,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7588122771640263,
+      "min_cbc_solved": 0.03991704076789657,
+      "n_recovered": 6,
+      "rungs": {
+        "R0": 100,
+        "R2": 6
+      },
+      "tiers": {
+        "2": 6
+      }
+    },
+    {
+      "seed": 1000112,
+      "outcome": "success",
+      "steps": 326,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 22.692813873291016,
+      "shortest_path": 11.094722215136429,
+      "spl": 0.4889090562803537,
+      "min_clearance": 0.05132504701614382,
+      "mean_step_time": 0.042965739603337195,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8051758939044421,
+      "min_cbc_solved": 0.039940764248489344,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 319,
+        "R2": 3,
+        "R1": 4
+      },
+      "tiers": {
+        "2": 6,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000113,
+      "outcome": "success",
+      "steps": 149,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.5860595703125,
+      "shortest_path": 10.349747468305834,
+      "spl": 0.9776770477780629,
+      "min_clearance": 0.21845800876617433,
+      "mean_step_time": 0.040654959114918475,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5221188281472128,
+      "min_cbc_solved": 0.039962551003882324,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 149
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000114,
+      "outcome": "success",
+      "steps": 348,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 21.595287322998047,
+      "shortest_path": 10.552691193458124,
+      "spl": 0.48865713318016213,
+      "min_clearance": 0.08739330768585207,
+      "mean_step_time": 0.042308754019704166,
+      "planner_failed": 0,
+      "n_infeasible": 8,
+      "n_solver_fail": 8,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8134648229225793,
+      "min_cbc_solved": 0.03990964281561778,
+      "n_recovered": 8,
+      "rungs": {
+        "R0": 340,
+        "R1": 4,
+        "R2": 3,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 8
+      }
+    },
+    {
+      "seed": 1000115,
+      "outcome": "success",
+      "steps": 115,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.049347877502441,
+      "shortest_path": 7.297665940288704,
+      "spl": 0.9066157968753402,
+      "min_clearance": 0.2624370694160461,
+      "mean_step_time": 0.038317862181397884,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5911459817493632,
+      "min_cbc_solved": 0.03990749697919049,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 114,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000116,
+      "outcome": "collision",
+      "steps": 112,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 7.2736945152282715,
+      "shortest_path": 7.912741699796958,
+      "spl": 0.0,
+      "min_clearance": -0.01773015260696409,
+      "mean_step_time": 0.041286483467307074,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.9269105999234851,
+      "min_cbc_solved": 0.03995490385750686,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 109,
+        "R2": 2,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000117,
+      "outcome": "success",
+      "steps": 195,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.671468734741211,
+      "shortest_path": 7.135533905932739,
+      "spl": 0.6113655503092905,
+      "min_clearance": 0.09040536880493166,
+      "mean_step_time": 0.04381263993787937,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7641624456729069,
+      "min_cbc_solved": 0.03996063337619782,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 194,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000118,
+      "outcome": "collision",
+      "steps": 171,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 10.985884666442871,
+      "shortest_path": 10.890559159102157,
+      "spl": 0.0,
+      "min_clearance": -0.045174574851989724,
+      "mean_step_time": 0.044447641179771624,
+      "planner_failed": 0,
+      "n_infeasible": 6,
+      "n_solver_fail": 6,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.862779260683168,
+      "min_cbc_solved": 0.03995983524929529,
+      "n_recovered": 6,
+      "rungs": {
+        "R0": 165,
+        "R2": 1,
+        "R2_lp": 1,
+        "R1": 4
+      },
+      "tiers": {
+        "2": 6
+      }
+    },
+    {
+      "seed": 1000119,
+      "outcome": "success",
+      "steps": 189,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.451319694519043,
+      "shortest_path": 11.566295090390234,
+      "spl": 0.8003625506103077,
+      "min_clearance": 0.04079999923706057,
+      "mean_step_time": 0.04344534477287972,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5953194191582346,
+      "min_cbc_solved": 0.03996968294923242,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 187,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000120,
+      "outcome": "success",
+      "steps": 228,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.474689483642578,
+      "shortest_path": 11.247056274847726,
+      "spl": 0.7770153748415601,
+      "min_clearance": 0.16506257057189944,
+      "mean_step_time": 0.042477425926654974,
+      "planner_failed": 0,
+      "n_infeasible": 10,
+      "n_solver_fail": 10,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.641498940674403,
+      "min_cbc_solved": 0.039954337969761625,
+      "n_recovered": 10,
+      "rungs": {
+        "R0": 218,
+        "R2": 2,
+        "R1": 7,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 9,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000121,
+      "outcome": "collision",
+      "steps": 49,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 3.5642428398132324,
+      "shortest_path": 6.002081528017129,
+      "spl": 0.0,
+      "min_clearance": -0.019939637184143044,
+      "mean_step_time": 0.053601547075454524,
+      "planner_failed": 0,
+      "n_infeasible": 6,
+      "n_solver_fail": 6,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.49232009046283376,
+      "min_cbc_solved": 0.039974125690579856,
+      "n_recovered": 6,
+      "rungs": {
+        "R0": 43,
+        "R2": 4,
+        "R2_lp": 2
+      },
+      "tiers": {
+        "2": 6
+      }
+    },
+    {
+      "seed": 1000122,
+      "outcome": "collision",
+      "steps": 57,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 3.7607386112213135,
+      "shortest_path": 7.578427124746193,
+      "spl": 0.0,
+      "min_clearance": -0.05378935337066648,
+      "mean_step_time": 0.04984424647000994,
+      "planner_failed": 0,
+      "n_infeasible": 6,
+      "n_solver_fail": 6,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6617664660138807,
+      "min_cbc_solved": 0.03999459292964963,
+      "n_recovered": 6,
+      "rungs": {
+        "R0": 51,
+        "R2": 6
+      },
+      "tiers": {
+        "2": 6
+      }
+    },
+    {
+      "seed": 1000123,
+      "outcome": "success",
+      "steps": 159,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.581628799438477,
+      "shortest_path": 6.076345596729059,
+      "spl": 0.6341662491752089,
+      "min_clearance": 0.18070497512817385,
+      "mean_step_time": 0.042461284551236475,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7538282572626603,
+      "min_cbc_solved": 0.039968843746996774,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 156,
+        "R2": 2,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000124,
+      "outcome": "success",
+      "steps": 228,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.980395317077637,
+      "shortest_path": 9.502691193458123,
+      "spl": 0.6797154857166441,
+      "min_clearance": 0.07068510055541993,
+      "mean_step_time": 0.044137666530380225,
+      "planner_failed": 0,
+      "n_infeasible": 9,
+      "n_solver_fail": 9,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7196968518629121,
+      "min_cbc_solved": 0.03995745805235815,
+      "n_recovered": 9,
+      "rungs": {
+        "R0": 219,
+        "R2": 7,
+        "R2_lp": 1,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 8,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000125,
+      "outcome": "collision",
+      "steps": 66,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 5.422598361968994,
+      "shortest_path": 5.515685424949237,
+      "spl": 0.0,
+      "min_clearance": -0.0694252014160156,
+      "mean_step_time": 0.045480984143179026,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5303097944377283,
+      "min_cbc_solved": 0.0399775957641441,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 63,
+        "R2": 1,
+        "R1": 1,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000126,
+      "outcome": "success",
+      "steps": 69,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.096260070800781,
+      "shortest_path": 5.31482322781408,
+      "spl": 1.0,
+      "min_clearance": 0.5047860264778137,
+      "mean_step_time": 0.041887787973805185,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.48869819504549084,
+      "min_cbc_solved": 0.03997417557107197,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 69
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000127,
+      "outcome": "success",
+      "steps": 112,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.643997192382812,
+      "shortest_path": 8.067766952966377,
+      "spl": 0.9333375258469292,
+      "min_clearance": 0.24929329156875607,
+      "mean_step_time": 0.04133594405305173,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4990508639967807,
+      "min_cbc_solved": 0.03991071266801511,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 112
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000128,
+      "outcome": "success",
+      "steps": 89,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.549767017364502,
+      "shortest_path": 6.407106781186546,
+      "spl": 0.9782190365245451,
+      "min_clearance": 0.3246047019958496,
+      "mean_step_time": 0.04203676468734577,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4622406747996088,
+      "min_cbc_solved": 0.03997796000896717,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 88,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000129,
+      "outcome": "success",
+      "steps": 169,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.964309692382812,
+      "shortest_path": 9.72842712474619,
+      "spl": 0.887281315257337,
+      "min_clearance": 0.2600716471672058,
+      "mean_step_time": 0.0414863523976194,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5864061598029137,
+      "min_cbc_solved": 0.039949215455006695,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 169
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000130,
+      "outcome": "success",
+      "steps": 166,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.933135032653809,
+      "shortest_path": 8.209188309203686,
+      "spl": 0.8264448517227556,
+      "min_clearance": 0.2712665915489197,
+      "mean_step_time": 0.040089313557977416,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6656125816998384,
+      "min_cbc_solved": 0.039975172723020314,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 165,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000131,
+      "outcome": "success",
+      "steps": 155,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.009445190429688,
+      "shortest_path": 6.058326112068518,
+      "spl": 0.6052609307318106,
+      "min_clearance": 0.2782976746559143,
+      "mean_step_time": 0.041461463819348045,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7386957002573111,
+      "min_cbc_solved": 0.039905843180415415,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 152,
+        "R2": 2,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000132,
+      "outcome": "success",
+      "steps": 168,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.428718566894531,
+      "shortest_path": 10.961269837220819,
+      "spl": 0.8819308103425523,
+      "min_clearance": 0.33000530004501344,
+      "mean_step_time": 0.04224124683172531,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5700835610309682,
+      "min_cbc_solved": 0.03996332151126247,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 165,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000133,
+      "outcome": "success",
+      "steps": 128,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.241694450378418,
+      "shortest_path": 9.797056274847717,
+      "spl": 0.9565854871295959,
+      "min_clearance": 0.3315519213676453,
+      "mean_step_time": 0.042043473830744915,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.43295649258903923,
+      "min_cbc_solved": 0.03997985479257769,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 126,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000134,
+      "outcome": "collision",
+      "steps": 36,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 2.5814263820648193,
+      "shortest_path": 7.544112549695429,
+      "spl": 0.0,
+      "min_clearance": -0.01830193996429441,
+      "mean_step_time": 0.03931933233333337,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4182031693761008,
+      "min_cbc_solved": 0.0399732222485518,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 36
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000135,
+      "outcome": "collision",
+      "steps": 50,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 3.3936519622802734,
+      "shortest_path": 4.747665940288699,
+      "spl": 0.0,
+      "min_clearance": -0.008754646778106667,
+      "mean_step_time": 0.04404287320561707,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5373912245259524,
+      "min_cbc_solved": 0.039985398667638214,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 50
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000136,
+      "outcome": "success",
+      "steps": 217,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 16.08163833618164,
+      "shortest_path": 10.72548339959392,
+      "spl": 0.666939721897796,
+      "min_clearance": 0.07851787805557253,
+      "mean_step_time": 0.044011233047762464,
+      "planner_failed": 0,
+      "n_infeasible": 10,
+      "n_solver_fail": 10,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7328491673909899,
+      "min_cbc_solved": 0.0399609326997748,
+      "n_recovered": 10,
+      "rungs": {
+        "R0": 207,
+        "R2": 10
+      },
+      "tiers": {
+        "2": 10
+      }
+    },
+    {
+      "seed": 1000137,
+      "outcome": "success",
+      "steps": 124,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.306344032287598,
+      "shortest_path": 9.083452377915604,
+      "spl": 0.9760494933779915,
+      "min_clearance": 0.1863123416900635,
+      "mean_step_time": 0.04595428995408809,
+      "planner_failed": 0,
+      "n_infeasible": 8,
+      "n_solver_fail": 8,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.48063872540177094,
+      "min_cbc_solved": 0.03996645212657192,
+      "n_recovered": 8,
+      "rungs": {
+        "R0": 116,
+        "R2_lp": 1,
+        "R2": 6,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 8
+      }
+    },
+    {
+      "seed": 1000138,
+      "outcome": "success",
+      "steps": 124,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.813545227050781,
+      "shortest_path": 8.126345596729065,
+      "spl": 0.9220291480195116,
+      "min_clearance": 0.18622329235076907,
+      "mean_step_time": 0.04145548301335845,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5188385399111844,
+      "min_cbc_solved": 0.03995027879667734,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 122,
+        "R2": 1,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000139,
+      "outcome": "collision",
+      "steps": 71,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 4.12650203704834,
+      "shortest_path": 5.974873734152913,
+      "spl": 0.0,
+      "min_clearance": -0.010943686962127663,
+      "mean_step_time": 0.04049654054278377,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6749693217876103,
+      "min_cbc_solved": 0.03998049420126193,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 71
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000140,
+      "outcome": "success",
+      "steps": 168,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.99142837524414,
+      "shortest_path": 9.878427124746203,
+      "spl": 0.898739161781308,
+      "min_clearance": 0.07799121141433718,
+      "mean_step_time": 0.04133905958137586,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5736455963955255,
+      "min_cbc_solved": 0.03997713570827255,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 167,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000141,
+      "outcome": "success",
+      "steps": 70,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.558196544647217,
+      "shortest_path": 6.216904755831209,
+      "spl": 1.0,
+      "min_clearance": 0.4710832953453064,
+      "mean_step_time": 0.03887360329141042,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.3327102819390446,
+      "min_cbc_solved": 0.03998051168282174,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 70
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000142,
+      "outcome": "success",
+      "steps": 165,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.9614896774292,
+      "shortest_path": 8.643502884254447,
+      "spl": 0.7885335970394866,
+      "min_clearance": 0.29091466665267945,
+      "mean_step_time": 0.04283309030191352,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6601290677910598,
+      "min_cbc_solved": 0.03996079847838918,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 161,
+        "R2": 3,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000143,
+      "outcome": "success",
+      "steps": 195,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.082250595092773,
+      "shortest_path": 9.990559159102165,
+      "spl": 0.8268789891810262,
+      "min_clearance": 0.21152451038360592,
+      "mean_step_time": 0.042787186421143514,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6589841416893907,
+      "min_cbc_solved": 0.03996607985436662,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 191,
+        "R2": 4
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000144,
+      "outcome": "collision",
+      "steps": 171,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 10.14218521118164,
+      "shortest_path": 8.805634918610412,
+      "spl": 0.0,
+      "min_clearance": -0.00452378988265989,
+      "mean_step_time": 0.04575832272547553,
+      "planner_failed": 0,
+      "n_infeasible": 14,
+      "n_solver_fail": 14,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.9981630287521384,
+      "min_cbc_solved": 0.03995113689075733,
+      "n_recovered": 14,
+      "rungs": {
+        "R0": 157,
+        "R2": 10,
+        "R1": 4
+      },
+      "tiers": {
+        "2": 13,
+        "1": 1
+      }
+    },
+    {
+      "seed": 1000145,
+      "outcome": "collision",
+      "steps": 65,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 3.688080072402954,
+      "shortest_path": 6.600609665440988,
+      "spl": 0.0,
+      "min_clearance": -0.04293767213821409,
+      "mean_step_time": 0.04236319485980158,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8384414743352249,
+      "min_cbc_solved": 0.0399783147682137,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 65
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000146,
+      "outcome": "success",
+      "steps": 49,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.041375637054443,
+      "shortest_path": 4.334924240491748,
+      "spl": 1.0,
+      "min_clearance": 0.3041727066040039,
+      "mean_step_time": 0.04024313534229842,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.41486374889649463,
+      "min_cbc_solved": 0.03996346583206026,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 49
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000147,
+      "outcome": "success",
+      "steps": 97,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.6716485023498535,
+      "shortest_path": 4.797665940288698,
+      "spl": 0.8459032569280253,
+      "min_clearance": 0.06253226995468142,
+      "mean_step_time": 0.042511724869326986,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6840919981767737,
+      "min_cbc_solved": 0.039973106507752765,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 95,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000148,
+      "outcome": "success",
+      "steps": 124,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.74659252166748,
+      "shortest_path": 8.639087296526016,
+      "spl": 0.9877089020809936,
+      "min_clearance": 0.41346290111541745,
+      "mean_step_time": 0.03915352961555454,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.49801486543493423,
+      "min_cbc_solved": 0.039977270977716195,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 124
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000149,
+      "outcome": "success",
+      "steps": 51,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.820217609405518,
+      "shortest_path": 5.462132034355964,
+      "spl": 1.0,
+      "min_clearance": 0.44845643043518063,
+      "mean_step_time": 0.03931559276237499,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.059789463931897324,
+      "min_cbc_solved": 0.0399979126011879,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 51
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000150,
+      "outcome": "success",
+      "steps": 124,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.395536422729492,
+      "shortest_path": 8.207106781186553,
+      "spl": 0.977555973548897,
+      "min_clearance": 0.45226575136184693,
+      "mean_step_time": 0.04184018775366337,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4762550199592372,
+      "min_cbc_solved": 0.039966065744437285,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 124
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000151,
+      "outcome": "success",
+      "steps": 114,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.694615840911865,
+      "shortest_path": 7.744112549695427,
+      "spl": 1.0,
+      "min_clearance": 0.2899072289466858,
+      "mean_step_time": 0.04115446035550058,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5345724962001909,
+      "min_cbc_solved": 0.0399747850043381,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 114
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000152,
+      "outcome": "success",
+      "steps": 151,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.417917251586914,
+      "shortest_path": 10.864213562373095,
+      "spl": 0.9515057188615671,
+      "min_clearance": 0.2859702229499817,
+      "mean_step_time": 0.041752820657967094,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.38663107080265585,
+      "min_cbc_solved": 0.03995464825097114,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 148,
+        "R1": 1,
+        "R2_lp": 1,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000153,
+      "outcome": "success",
+      "steps": 187,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.990398406982422,
+      "shortest_path": 10.186143571373734,
+      "spl": 0.8495250304145016,
+      "min_clearance": 0.19277074337005617,
+      "mean_step_time": 0.040179360019202456,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6204897128962557,
+      "min_cbc_solved": 0.03993471062111891,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 186,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000154,
+      "outcome": "success",
+      "steps": 92,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.464449882507324,
+      "shortest_path": 6.326345596729058,
+      "spl": 0.9786363436505288,
+      "min_clearance": 0.3020336151123047,
+      "mean_step_time": 0.04433707476583431,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5127399758144767,
+      "min_cbc_solved": 0.03991539480805714,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 91,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000155,
+      "outcome": "collision",
+      "steps": 61,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 3.7661821842193604,
+      "shortest_path": 7.22842712474619,
+      "spl": 0.0,
+      "min_clearance": -0.007316267490386941,
+      "mean_step_time": 0.05050065972437685,
+      "planner_failed": 0,
+      "n_infeasible": 9,
+      "n_solver_fail": 9,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 1.2502519171687887,
+      "min_cbc_solved": 0.039974856148482146,
+      "n_recovered": 9,
+      "rungs": {
+        "R0": 52,
+        "R2": 9
+      },
+      "tiers": {
+        "2": 9
+      }
+    },
+    {
+      "seed": 1000156,
+      "outcome": "success",
+      "steps": 106,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.294922828674316,
+      "shortest_path": 5.474264068711928,
+      "spl": 0.7504211075673228,
+      "min_clearance": 0.0037259697914123757,
+      "mean_step_time": 0.046275886053544525,
+      "planner_failed": 0,
+      "n_infeasible": 8,
+      "n_solver_fail": 10,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6405347855928533,
+      "min_cbc_solved": 0.03996103818979224,
+      "n_recovered": 8,
+      "rungs": {
+        "R0": 98,
+        "R2": 7,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 8
+      }
+    },
+    {
+      "seed": 1000157,
+      "outcome": "success",
+      "steps": 218,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 15.046381950378418,
+      "shortest_path": 11.669848480983504,
+      "spl": 0.7755916684469123,
+      "min_clearance": 0.3200031638145447,
+      "mean_step_time": 0.04058869703461356,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6262670156025206,
+      "min_cbc_solved": 0.03996890606889464,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 216,
+        "R1": 1,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000158,
+      "outcome": "collision",
+      "steps": 341,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 18.880760192871094,
+      "shortest_path": 11.779898987322339,
+      "spl": 0.0,
+      "min_clearance": -0.021956896781921365,
+      "mean_step_time": 0.0405427191913117,
+      "planner_failed": 0,
+      "n_infeasible": 10,
+      "n_solver_fail": 10,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.9021258839760302,
+      "min_cbc_solved": 0.039943751823789814,
+      "n_recovered": 10,
+      "rungs": {
+        "R0": 331,
+        "R1": 2,
+        "R2": 8
+      },
+      "tiers": {
+        "2": 10
+      }
+    },
+    {
+      "seed": 1000159,
+      "outcome": "success",
+      "steps": 81,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.621882438659668,
+      "shortest_path": 5.847056274847711,
+      "spl": 1.0,
+      "min_clearance": 0.36089953184127804,
+      "mean_step_time": 0.04086190115597191,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4579778752070666,
+      "min_cbc_solved": 0.039962999635221874,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 81
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000160,
+      "outcome": "success",
+      "steps": 223,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.342144012451172,
+      "shortest_path": 5.349137802864843,
+      "spl": 0.5172174934351019,
+      "min_clearance": 0.11164470911026003,
+      "mean_step_time": 0.0401682565521215,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8793083524669951,
+      "min_cbc_solved": 0.03996587735101734,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 223
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000161,
+      "outcome": "success",
+      "steps": 42,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 3.8454599380493164,
+      "shortest_path": 4.2242640687119275,
+      "spl": 1.0,
+      "min_clearance": 0.9063499212265014,
+      "mean_step_time": 0.039423865834361915,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.19927248527002925,
+      "min_cbc_solved": 0.039987793341587585,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 42
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000162,
+      "outcome": "success",
+      "steps": 92,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.527749538421631,
+      "shortest_path": 6.371320343559639,
+      "spl": 0.9760362749916696,
+      "min_clearance": 0.33257921934127804,
+      "mean_step_time": 0.04192220391680324,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5510460473948134,
+      "min_cbc_solved": 0.039966681694914866,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 92
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000163,
+      "outcome": "success",
+      "steps": 218,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 14.85383129119873,
+      "shortest_path": 10.626345596729072,
+      "spl": 0.715394256768316,
+      "min_clearance": 0.2405014872550964,
+      "mean_step_time": 0.04189237740388516,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6404092621892051,
+      "min_cbc_solved": 0.039971026842962054,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 217,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000164,
+      "outcome": "success",
+      "steps": 82,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 5.443842887878418,
+      "shortest_path": 5.407106781186546,
+      "spl": 0.9932518062242996,
+      "min_clearance": 0.38552006483078,
+      "mean_step_time": 0.0421322189106765,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5062821782554823,
+      "min_cbc_solved": 0.03997552735882842,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 81,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000165,
+      "outcome": "collision",
+      "steps": 136,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 10.510787963867188,
+      "shortest_path": 12.649137802864864,
+      "spl": 0.0,
+      "min_clearance": -0.014909362792968728,
+      "mean_step_time": 0.04455445517155835,
+      "planner_failed": 0,
+      "n_infeasible": 9,
+      "n_solver_fail": 9,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.5539702930173015,
+      "min_cbc_solved": 0.03994864505680194,
+      "n_recovered": 9,
+      "rungs": {
+        "R0": 127,
+        "R2": 7,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 9
+      }
+    },
+    {
+      "seed": 1000166,
+      "outcome": "success",
+      "steps": 100,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.842613697052002,
+      "shortest_path": 7.6142135623730995,
+      "spl": 0.9708770387651815,
+      "min_clearance": 0.2760545253753662,
+      "mean_step_time": 0.04287065961165354,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4633283105615094,
+      "min_cbc_solved": 0.0399365416458112,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 97,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000167,
+      "outcome": "success",
+      "steps": 80,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.347323417663574,
+      "shortest_path": 5.559188309203676,
+      "spl": 0.8758318969115949,
+      "min_clearance": 0.03099467754364016,
+      "mean_step_time": 0.05036676839808933,
+      "planner_failed": 0,
+      "n_infeasible": 12,
+      "n_solver_fail": 12,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.621715285816232,
+      "min_cbc_solved": 0.039909604561345596,
+      "n_recovered": 12,
+      "rungs": {
+        "R0": 68,
+        "R2": 11,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 12
+      }
+    },
+    {
+      "seed": 1000168,
+      "outcome": "success",
+      "steps": 104,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.190258026123047,
+      "shortest_path": 8.440559159102163,
+      "spl": 1.0,
+      "min_clearance": 0.287206494808197,
+      "mean_step_time": 0.03994089691751959,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.35764995878715405,
+      "min_cbc_solved": 0.039905751652965865,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 103,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000169,
+      "outcome": "success",
+      "steps": 253,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 15.32946491241455,
+      "shortest_path": 7.558326112068524,
+      "spl": 0.49305870460927975,
+      "min_clearance": 0.11298956871032717,
+      "mean_step_time": 0.04132903186722176,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8462188152171807,
+      "min_cbc_solved": 0.03993490143718956,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 253
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000170,
+      "outcome": "success",
+      "steps": 67,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 4.74441385269165,
+      "shortest_path": 5.478427124746187,
+      "spl": 1.0,
+      "min_clearance": 0.2565095543861389,
+      "mean_step_time": 0.03812923299934048,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.39432865431042724,
+      "min_cbc_solved": 0.03996774435089159,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 67
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000171,
+      "outcome": "success",
+      "steps": 152,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.121889114379883,
+      "shortest_path": 9.450609665440998,
+      "spl": 0.8497306139495647,
+      "min_clearance": 0.36647237539291383,
+      "mean_step_time": 0.0429251536207678,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5429162803875754,
+      "min_cbc_solved": 0.03992865589684804,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 151,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000172,
+      "outcome": "success",
+      "steps": 172,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.346366882324219,
+      "shortest_path": 7.887005768508887,
+      "spl": 0.7622971288581584,
+      "min_clearance": 0.28087642192840573,
+      "mean_step_time": 0.04101581280498744,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6604472079657682,
+      "min_cbc_solved": 0.03994616355001396,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 171,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000173,
+      "outcome": "success",
+      "steps": 158,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.075252532958984,
+      "shortest_path": 9.260407640085665,
+      "spl": 0.9191241221788008,
+      "min_clearance": 0.34124709367752076,
+      "mean_step_time": 0.04111217247776074,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5856501064640913,
+      "min_cbc_solved": 0.03990625042110851,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 158
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000174,
+      "outcome": "success",
+      "steps": 101,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.717955589294434,
+      "shortest_path": 5.09558441227157,
+      "spl": 0.7585022473789149,
+      "min_clearance": 0.2617135882377624,
+      "mean_step_time": 0.040580550487623504,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7053940785345719,
+      "min_cbc_solved": 0.039929264749417936,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 101
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000175,
+      "outcome": "success",
+      "steps": 228,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.003890991210938,
+      "shortest_path": 8.922792206135794,
+      "spl": 0.6861632577638898,
+      "min_clearance": 0.19448826909065248,
+      "mean_step_time": 0.042858856491205334,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7217747780198814,
+      "min_cbc_solved": 0.039970220853802196,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 225,
+        "R2_lp": 1,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000176,
+      "outcome": "collision",
+      "steps": 231,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 13.011087417602539,
+      "shortest_path": 11.419848480983507,
+      "spl": 0.0,
+      "min_clearance": -0.04852805137634275,
+      "mean_step_time": 0.0413256810400514,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.9142328626045062,
+      "min_cbc_solved": 0.03995762104065963,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 224,
+        "R1": 3,
+        "R2": 4
+      },
+      "tiers": {
+        "2": 7
+      }
+    },
+    {
+      "seed": 1000177,
+      "outcome": "success",
+      "steps": 203,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.508634567260742,
+      "shortest_path": 9.58198051533948,
+      "spl": 0.7660292947096488,
+      "min_clearance": 0.12584307193756106,
+      "mean_step_time": 0.04230587903623529,
+      "planner_failed": 0,
+      "n_infeasible": 7,
+      "n_solver_fail": 7,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.687254527223412,
+      "min_cbc_solved": 0.03990762761236421,
+      "n_recovered": 7,
+      "rungs": {
+        "R0": 196,
+        "R2": 6,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 7
+      }
+    },
+    {
+      "seed": 1000178,
+      "outcome": "success",
+      "steps": 208,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 15.026576042175293,
+      "shortest_path": 5.834924240491747,
+      "spl": 0.3883069718686937,
+      "min_clearance": 0.2079276084899902,
+      "mean_step_time": 0.041212195268599316,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8248607838750399,
+      "min_cbc_solved": 0.03994621156154421,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 206,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000179,
+      "outcome": "collision",
+      "steps": 93,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 7.538232326507568,
+      "shortest_path": 10.617766952966377,
+      "spl": 0.0,
+      "min_clearance": -0.004474616050720193,
+      "mean_step_time": 0.04695108294316758,
+      "planner_failed": 0,
+      "n_infeasible": 9,
+      "n_solver_fail": 9,
+      "collided_after_infeasible": 1,
+      "mean_u_dev": 0.9741626066301394,
+      "min_cbc_solved": 0.03997692939374908,
+      "n_recovered": 9,
+      "rungs": {
+        "R0": 84,
+        "R1": 2,
+        "R2": 6,
+        "R2_lp": 1
+      },
+      "tiers": {
+        "2": 9
+      }
+    },
+    {
+      "seed": 1000180,
+      "outcome": "success",
+      "steps": 164,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.881214141845703,
+      "shortest_path": 9.392031021678305,
+      "spl": 0.7904942129272393,
+      "min_clearance": 0.3180322766304016,
+      "mean_step_time": 0.0416233792543275,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6040674715697355,
+      "min_cbc_solved": 0.03996120518467562,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 161,
+        "R2": 2,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000181,
+      "outcome": "success",
+      "steps": 277,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 18.28724479675293,
+      "shortest_path": 10.378427124746189,
+      "spl": 0.5675227318326802,
+      "min_clearance": 0.04195418357849123,
+      "mean_step_time": 0.0422092750723161,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7677412536543823,
+      "min_cbc_solved": 0.03994677756614619,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 273,
+        "R2": 2,
+        "R2_lp": 2
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000182,
+      "outcome": "success",
+      "steps": 86,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.329549312591553,
+      "shortest_path": 7.488477631085027,
+      "spl": 1.0,
+      "min_clearance": 0.34608365297317506,
+      "mean_step_time": 0.03967275503118588,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.3906885786798054,
+      "min_cbc_solved": 0.03992113714574455,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 86
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000183,
+      "outcome": "success",
+      "steps": 96,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.360857009887695,
+      "shortest_path": 6.9420310216782966,
+      "spl": 0.9431009204978716,
+      "min_clearance": 0.3601765751838684,
+      "mean_step_time": 0.04459798469664141,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5124671917312472,
+      "min_cbc_solved": 0.03997117488135682,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 95,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000184,
+      "outcome": "success",
+      "steps": 94,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.902235984802246,
+      "shortest_path": 6.949137802864844,
+      "spl": 1.0,
+      "min_clearance": 0.35776026248931886,
+      "mean_step_time": 0.04155102600046295,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.49190436957726164,
+      "min_cbc_solved": 0.03997921996677822,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 93,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000185,
+      "outcome": "collision",
+      "steps": 92,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 6.268563270568848,
+      "shortest_path": 8.21335136523794,
+      "spl": 0.0,
+      "min_clearance": -0.003113305568695046,
+      "mean_step_time": 0.04471127296742254,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7321093698291282,
+      "min_cbc_solved": 0.0399110536852578,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 88,
+        "R2": 4
+      },
+      "tiers": {
+        "2": 4
+      }
+    },
+    {
+      "seed": 1000186,
+      "outcome": "success",
+      "steps": 101,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.50599479675293,
+      "shortest_path": 6.5935028842544385,
+      "spl": 0.8784315820611504,
+      "min_clearance": 0.1713146209716797,
+      "mean_step_time": 0.0418349391974435,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5801091476474713,
+      "min_cbc_solved": 0.039905972138374435,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 101
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000187,
+      "outcome": "success",
+      "steps": 97,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 7.827385902404785,
+      "shortest_path": 7.6591883092036825,
+      "spl": 0.9785116518722518,
+      "min_clearance": 0.3489410400390625,
+      "mean_step_time": 0.04237855898369987,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4382608586586707,
+      "min_cbc_solved": 0.03991416060159905,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 95,
+        "R2": 2
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000188,
+      "outcome": "success",
+      "steps": 117,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.733268737792969,
+      "shortest_path": 8.776345596729065,
+      "spl": 1.0,
+      "min_clearance": 0.292590868473053,
+      "mean_step_time": 0.04274731590890159,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4004949360064024,
+      "min_cbc_solved": 0.03993543003336458,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 117
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000189,
+      "outcome": "success",
+      "steps": 149,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 8.20637321472168,
+      "shortest_path": 7.974873734152924,
+      "spl": 0.9717902812227134,
+      "min_clearance": 0.3020077466964722,
+      "mean_step_time": 0.04193444340567936,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6158579422929277,
+      "min_cbc_solved": 0.03994409988753933,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 149
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000190,
+      "outcome": "success",
+      "steps": 176,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 12.258089065551758,
+      "shortest_path": 11.20416305603427,
+      "spl": 0.9140219977288891,
+      "min_clearance": 0.10750087499618532,
+      "mean_step_time": 0.04207162546464877,
+      "planner_failed": 0,
+      "n_infeasible": 4,
+      "n_solver_fail": 4,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.5503137872484316,
+      "min_cbc_solved": 0.03997516540037664,
+      "n_recovered": 4,
+      "rungs": {
+        "R0": 172,
+        "R2": 2,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 2,
+        "1": 2
+      }
+    },
+    {
+      "seed": 1000191,
+      "outcome": "success",
+      "steps": 123,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 10.051337242126465,
+      "shortest_path": 9.923401871576779,
+      "spl": 0.9872718059828406,
+      "min_clearance": 0.2849696397781372,
+      "mean_step_time": 0.04147020671933102,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4431347179962861,
+      "min_cbc_solved": 0.03994384166558744,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 122,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000192,
+      "outcome": "success",
+      "steps": 209,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.150450706481934,
+      "shortest_path": 8.305634918610412,
+      "spl": 0.6315855710189854,
+      "min_clearance": 0.13773431777954104,
+      "mean_step_time": 0.04261616470613049,
+      "planner_failed": 0,
+      "n_infeasible": 9,
+      "n_solver_fail": 9,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7554223241342287,
+      "min_cbc_solved": 0.039931853722080635,
+      "n_recovered": 9,
+      "rungs": {
+        "R0": 200,
+        "R2": 8,
+        "R1": 1
+      },
+      "tiers": {
+        "2": 9
+      }
+    },
+    {
+      "seed": 1000193,
+      "outcome": "success",
+      "steps": 105,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.1323466300964355,
+      "shortest_path": 5.567766952966369,
+      "spl": 0.9079341545438392,
+      "min_clearance": 0.27857131958007814,
+      "mean_step_time": 0.04117491691195894,
+      "planner_failed": 0,
+      "n_infeasible": 1,
+      "n_solver_fail": 1,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6196864341821299,
+      "min_cbc_solved": 0.03994402439029606,
+      "n_recovered": 1,
+      "rungs": {
+        "R0": 104,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 1
+      }
+    },
+    {
+      "seed": 1000194,
+      "outcome": "success",
+      "steps": 135,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 9.06971549987793,
+      "shortest_path": 5.768376618407353,
+      "spl": 0.6360041413079595,
+      "min_clearance": 0.19973322153091433,
+      "mean_step_time": 0.04505090337953772,
+      "planner_failed": 0,
+      "n_infeasible": 5,
+      "n_solver_fail": 5,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.7509079145987728,
+      "min_cbc_solved": 0.03997646442771202,
+      "n_recovered": 5,
+      "rungs": {
+        "R0": 130,
+        "R2": 3,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 3,
+        "1": 2
+      }
+    },
+    {
+      "seed": 1000195,
+      "outcome": "success",
+      "steps": 194,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 13.077179908752441,
+      "shortest_path": 10.369848480983514,
+      "spl": 0.792972839200833,
+      "min_clearance": 0.28652116060256955,
+      "mean_step_time": 0.0422792365719305,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6530316644006636,
+      "min_cbc_solved": 0.03995931708148183,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 192,
+        "R2_lp": 1,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000196,
+      "outcome": "success",
+      "steps": 107,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 6.9134345054626465,
+      "shortest_path": 5.0213203435596405,
+      "spl": 0.7263134321431768,
+      "min_clearance": 0.36709823608398434,
+      "mean_step_time": 0.03803372642604164,
+      "planner_failed": 0,
+      "n_infeasible": 0,
+      "n_solver_fail": 0,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.6979879603876649,
+      "min_cbc_solved": 0.03991789011367233,
+      "n_recovered": 0,
+      "rungs": {
+        "R0": 107
+      },
+      "tiers": {}
+    },
+    {
+      "seed": 1000197,
+      "outcome": "success",
+      "steps": 141,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 11.124834060668945,
+      "shortest_path": 10.627564927611045,
+      "spl": 0.9553009842352652,
+      "min_clearance": 0.3294160485267639,
+      "mean_step_time": 0.0403921704438799,
+      "planner_failed": 0,
+      "n_infeasible": 2,
+      "n_solver_fail": 2,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.4883808507767296,
+      "min_cbc_solved": 0.03994615791202705,
+      "n_recovered": 2,
+      "rungs": {
+        "R0": 139,
+        "R1": 1,
+        "R2": 1
+      },
+      "tiers": {
+        "2": 2
+      }
+    },
+    {
+      "seed": 1000198,
+      "outcome": "collision",
+      "steps": 157,
+      "success": 0,
+      "collision": 1,
+      "timeout": 0,
+      "collision_type": "dynamic",
+      "path_length": 8.497207641601562,
+      "shortest_path": 10.159188309203685,
+      "spl": 0.0,
+      "min_clearance": -0.07017234563827512,
+      "mean_step_time": 0.04059137058797275,
+      "planner_failed": 0,
+      "n_infeasible": 3,
+      "n_solver_fail": 3,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8013104324219432,
+      "min_cbc_solved": 0.03996974927204677,
+      "n_recovered": 3,
+      "rungs": {
+        "R0": 154,
+        "R2": 3
+      },
+      "tiers": {
+        "2": 3
+      }
+    },
+    {
+      "seed": 1000199,
+      "outcome": "success",
+      "steps": 306,
+      "success": 1,
+      "collision": 0,
+      "timeout": 0,
+      "collision_type": null,
+      "path_length": 17.16608238220215,
+      "shortest_path": 7.878427124746198,
+      "spl": 0.45895312333550126,
+      "min_clearance": 0.046438837051391624,
+      "mean_step_time": 0.04279106314289475,
+      "planner_failed": 0,
+      "n_infeasible": 5,
+      "n_solver_fail": 5,
+      "collided_after_infeasible": 0,
+      "mean_u_dev": 0.8346677827680624,
+      "min_cbc_solved": 0.03991423650281159,
+      "n_recovered": 5,
+      "rungs": {
+        "R0": 301,
+        "R2": 3,
+        "R1": 2
+      },
+      "tiers": {
+        "2": 3,
+        "1": 2
+      }
+    }
+  ]
+}
