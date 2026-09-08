@@ -268,12 +268,14 @@ def agg(recs):
     }
 
 
-def admission_a4(A, B, ca, cb, rng):
+def admission_a4(fixed_a0, fixed_a1, rand_a0, rand_a1, rng):
     """A4 (11.9.13): E1 must show BOTH a lower optimistic tail AND a non-increase in the
     super-physical rate, in BOTH conditions. The conjunction is what makes the sluggish-filter
     failure mode non-passing."""
     out = {}
-    for cond, a, b in (("fixed", A, ca), ("randomized", B, cb)):
+    # Explicit names: an earlier positional signature (A, B, ca, cb) paired fixed-A0 against
+    # randomized-A0 instead of fixed-A0 against fixed-A1.
+    for cond, a, b in (("fixed", fixed_a0, fixed_a1), ("randomized", rand_a0, rand_a1)):
         ra, rb, d, lo, hi = cluster_boot_rate(a, b, "n_e_pos_ttc1", "n_ttc1", rng)
         sa, sb, ds, slo, shi = cluster_boot_rate(a, b, "n_superphys_steps", "steps", rng)
         out[cond] = {
@@ -306,7 +308,7 @@ def main():
         if arm not in ARMS:
             raise SystemExit(f"unknown arm {arm!r}")
     rnd = a.condition == "randomized"
-    env = make_env(rnd, obstacle_speed=(0.675 if rnd else 1.0))
+    env = make_env(rnd)   # Stages 3-4 use the default obstacle_speed = 0.675 in BOTH conditions
     oracle = ShortestPathOracle(env.WORLD_SIZE, env.AGENT_RADIUS, env.static_obstacles)
     v_phys = V_PHYS[a.condition]
 
