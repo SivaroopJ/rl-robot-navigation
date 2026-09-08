@@ -1,0 +1,156 @@
+{
+  "arm": "ppo_fixed",
+  "seed": 1,
+  "sr": false,
+  "randomize": false,
+  "git_commit": "9e307cfcfd6a718c102a74c7e541e61b88d2a0af",
+  "git_branch": "Week_4",
+  "total_timesteps": 5000000,
+  "n_dynamic_obstacles": 6,
+  "obstacle_speed": 1.0,
+  "obstacle_speed_range": [
+    0.6,
+    0.75
+  ],
+  "tag": "_v2",
+  "dt": 0.1,
+  "start_goal": {
+    "sampling": "stratified",
+    "region_grid": 4,
+    "region_free_threshold": 0.25,
+    "distance_bins": [
+      [
+        4.0,
+        5.5
+      ],
+      [
+        5.5,
+        7.0
+      ],
+      [
+        7.0,
+        8.5
+      ],
+      [
+        8.5,
+        10.5
+      ]
+    ],
+    "min_separation": 4.0,
+    "max_attempts": 200
+  },
+  "dynamic_obstacles": {
+    "randomize": false,
+    "speed_range": [
+      1.0,
+      1.0
+    ],
+    "angular_noise_sigma": 0.35,
+    "angular_velocity_decay": 0.8,
+    "max_turn_rate": 0.7,
+    "boundary_margin": 2.2,
+    "boundary_steer_gain": 4.0,
+    "randomize_initial_heading": true,
+    "randomize_initial_position": true,
+    "trajectory_seed": null,
+    "steer_full_error": 0.7853981633974483,
+    "steer_full_depth": 0.35
+  },
+  "reward": {
+    "goal": 10.0,
+    "collision": -10.0,
+    "progress_scale": 0.3,
+    "step_penalty": -0.02,
+    "danger_zone_radius": 0.8,
+    "proximity_penalty_scale": 0.3,
+    "action_smoothing_scale": 0.16
+  },
+  "environment": {
+    "world_size": 10.0,
+    "agent_radius": 0.3,
+    "obstacle_radius": 0.3,
+    "target_radius": 0.6,
+    "max_speed": 1.0,
+    "max_steps": 500,
+    "n_lidar_rays": 24,
+    "lidar_range": 5.0,
+    "n_dynamic_obstacles": 3,
+    "obstacle_speed": 1.0,
+    "static_obstacles": [
+      [
+        2.0,
+        2.0,
+        0.5,
+        1.5
+      ],
+      [
+        7.0,
+        3.0,
+        1.0,
+        0.5
+      ],
+      [
+        4.5,
+        7.0,
+        0.5,
+        1.0
+      ],
+      [
+        2.0,
+        7.5,
+        1.5,
+        0.5
+      ],
+      [
+        7.5,
+        7.0,
+        0.5,
+        1.5
+      ]
+    ]
+  },
+  "observation": {
+    "obstacle_mode": "paired",
+    "n_obstacle_slots": 6
+  },
+  "termination": {
+    "timeout_penalty": 0.0
+  },
+  "ppo": {
+    "total_timesteps": 3000000,
+    "n_envs": 8,
+    "learning_rate": 0.0003,
+    "n_steps": 2048,
+    "batch_size": 256,
+    "n_epochs": 10,
+    "gamma": 0.99,
+    "ent_coef": 0.01,
+    "policy": "MlpPolicy",
+    "policy_kwargs": {
+      "net_arch": [
+        256,
+        256
+      ]
+    },
+    "gae_lambda": 0.95,
+    "target_kl": 0.02,
+    "lr_schedule": "linear",
+    "torch_threads": 1
+  },
+  "ppo_effective": {
+    "batch_size": 256,
+    "n_steps": 2048,
+    "n_epochs": 10,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "ent_coef": 0.01,
+    "target_kl": 0.02,
+    "learning_rate_at_start": 0.0003,
+    "learning_rate_at_end": 0.0,
+    "observation_dim": 52,
+    "torch_threads": 1
+  },
+  "sr_hyperparameters": null,
+  "model_dir": "models/week4/ppo_fixed_seed1_v2",
+  "log_dir": "logs/week4/ppo_fixed_seed1_v2"
+}

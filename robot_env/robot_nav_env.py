@@ -25,8 +25,13 @@ Reward:
 import numpy as np
 import gymnasium as gym
 from gymnasium import spaces
+
+from robot_env.lidar_core import cast_rays
 import json
 from pathlib import Path
+
+from robot_env.dynamic_obstacles import build_motion_model
+from robot_env.start_goal import StartGoalSampler
 
 def load_config(config_path = "config.json"):
     """
@@ -51,7 +56,7 @@ class RobotNavEnv(gym.Env):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 30}
 
     def __init__(self, config_path = "config.json", n_dynamic_obstacles = None, obstacle_speed = None, obstacle_speed_range = None, 
-                 render_mode = None, use_reward_shaping = True):   
+                 render_mode = None, use_reward_shaping = True, randomize_dynamic_obstacles = None):   
         """
         Initialize the RobotNavEnv environment. Loads all parameters from config.json.
 
@@ -71,12 +76,28 @@ class RobotNavEnv(gym.Env):
         use_reward_shaping: bool
             If True, adds progress reward toward the target.
             If False, only goal, collision and step penalty rewards aare used.
+        randomize_dynamic_obstacles: bool or None
+            Week 4. True gives every dynamic obstacle a smoothly stochastic heading
+            (Ornstein-Uhlenbeck steering, see robot_env/dynamic_obstacles.py); False keeps
+            the original constant-velocity billiard motion. None falls back to
+            config["dynamic_obstacles"]["randomize"]. Obstacle count, radius and speed are
+            unaffected either way -- only the DIRECTION process changes.
         """     
         super().__init__()
 
         config = load_config(config_path)
         environment_config = config["environment"]
         reward_config = config["reward"]
+        self.start_goal_config = config.get("start_goal", {})
+        self.dynamic_obstacle_config = config.get("dynamic_obstacles", {})
+
+        # Integration timestep. The original env had none: it advanced positions by the
+        # raw per-step velocity, so the agent crossed the 10-unit arena in ~5 steps and
+        # every recorded episode in results/e*/ lasted 4-6 steps. dt scales the agent and
+        # the obstacles by the SAME factor, so their speed ratio, the radii and the arena
+        # are all preserved and only the temporal resolution changes. dt = 1.0 reproduces
+        # the original environment exactly.
+        self.dt = float(config.get("dt", 1.0))
 
         # Environment parameters
         self.WORLD_SIZE = environment_config["world_size"]
@@ -126,11 +147,38 @@ class RobotNavEnv(gym.Env):
         # Number of nearest obstacle velocities to include in observation
         self.N_OBSTACLE_VELOCITIES = 3
 
+        # Week 5. "legacy" is the original block of N_OBSTACLE_VELOCITIES velocities with
+        # NO positions attached -- the agent was told how fast the nearest obstacles were
+        # moving but never where they were, and had to bind a velocity to a bearing
+        # through a distance ranking that reorders discontinuously whenever two obstacles
+        # swap places. "paired" gives each slot its own (relative position, velocity), so
+        # a slot is self-describing. The ranking is still by distance and can still
+        # permute; carrying the position is what makes the permutation survivable rather
+        # than destroying the binding.
+        observation_config = config.get("observation", {})
+        self.obstacle_observation_mode = observation_config.get("obstacle_mode", "legacy")
+        if self.obstacle_observation_mode not in ("legacy", "paired"):
+            raise ValueError(
+                f"observation.obstacle_mode must be 'legacy' or 'paired', "
+                f"got {self.obstacle_observation_mode!r}")
+        self.N_OBSTACLE_SLOTS = int(observation_config.get("n_obstacle_slots", 6))
+
+        # Week 5. Terminal penalty applied when an episode ends by hitting the step limit.
+        # Defaults to 0.0, which leaves every reward identical to Week 4 -- it exists so
+        # that stalling can be priced without a code change if raising gamma proves
+        # insufficient. See MD_files/week5/.
+        self.TIMEOUT_PENALTY = float(config.get("termination", {}).get("timeout_penalty", 0.0))
+
         self.render_mode = render_mode
         self.use_reward_shaping = use_reward_shaping
 
-        # Observation space: [dx, dy, vx, vy] + N_LIDAR_RAYS + N_OBSTACLE_VELOCITIES * 2
-        observation_size = 4 + self.N_LIDAR_RAYS + self.N_OBSTACLE_VELOCITIES * 2
+        # Observation space: [dx, dy, vx, vy] + N_LIDAR_RAYS + the obstacle block, whose
+        # width depends on the mode selected above.
+        if self.obstacle_observation_mode == "paired":
+            obstacle_block = self.N_OBSTACLE_SLOTS * 4      # (rel_x, rel_y, vx, vy) each
+        else:
+            obstacle_block = self.N_OBSTACLE_VELOCITIES * 2
+        observation_size = 4 + self.N_LIDAR_RAYS + obstacle_block
         self.observation_space = spaces.Box(low = -1.0, high = 1.0, shape = (observation_size,), dtype = np.float32)
 
         # Action space
@@ -148,7 +196,43 @@ class RobotNavEnv(gym.Env):
         self._episode_speed = self.obstacle_speed  # updated each reset when using range
         self.renderer = None
 
-    def reset(self, seed = None):
+        # Week 4. Which obstacle motion model this env runs. Deterministic is the original
+        # behaviour and is what Experiment 1 uses; the stochastic model is Experiments 2/3.
+        if randomize_dynamic_obstacles is None:
+            self.randomize_dynamic_obstacles = bool(
+                self.dynamic_obstacle_config.get("randomize", False))
+        else:
+            self.randomize_dynamic_obstacles = bool(randomize_dynamic_obstacles)
+        self.motion_model = build_motion_model(
+            self.dynamic_obstacle_config,
+            randomize=self.randomize_dynamic_obstacles,
+            world_size=self.WORLD_SIZE,
+            obstacle_radius=self.OBSTACLE_RADIUS,
+        )
+
+        # Week 4. Start/goal sampling. "uniform" deliberately leaves `self.start_goal_sampler`
+        # as None and keeps reset() on its original `_random_free_position` calls, so the
+        # legacy path stays bit-identical rather than merely equivalent.
+        self.wall_margin = max(self.AGENT_RADIUS * 2, 0.5)
+        if self.start_goal_config.get("sampling", "uniform") == "stratified":
+            self.start_goal_sampler = StartGoalSampler(
+                self.WORLD_SIZE,
+                self.wall_margin,
+                self.static_obstacles,
+                region_grid=self.start_goal_config.get("region_grid", 4),
+                region_free_threshold=self.start_goal_config.get("region_free_threshold", 0.25),
+                distance_bins=self.start_goal_config.get("distance_bins"),
+                min_separation=self.start_goal_config.get("min_separation", 4.0),
+                max_attempts=self.start_goal_config.get("max_attempts", 200),
+            )
+        else:
+            self.start_goal_sampler = None
+
+        #: Straight-line start-goal distance for the current episode. Recorded so the
+        #: evaluator can report every metric stratified by distance band and compute SPL.
+        self.initial_distance = None
+
+    def reset(self, seed = None, options = None):
         """
         Reset the environment to a new random initial state. Places the agent, target and all dynamic obstacles at random positions.
         Each dynamic obstacle gets a random initial velocity direction.
@@ -176,9 +260,14 @@ class RobotNavEnv(gym.Env):
         else:
             self._episode_speed = self.obstacle_speed
 
-        # Place agent and target at random position
-        self.agent_position = self._random_free_position()
-        self.target_position = self._random_free_position(exclude=[self.agent_position], min_dist=2.0)
+        # Place agent and target. The stratified sampler spreads pairs over map regions
+        # and over distance bands; the uniform branch is the original code untouched.
+        if self.start_goal_sampler is not None:
+            self.agent_position, self.target_position = self.start_goal_sampler.sample(
+                self.np_random)
+        else:
+            self.agent_position = self._random_free_position()
+            self.target_position = self._random_free_position(exclude=[self.agent_position], min_dist=2.0)
         self.agent_velocity = np.zeros(2, dtype=np.float32)
 
         excluded = [self.agent_position, self.target_position]
@@ -188,15 +277,13 @@ class RobotNavEnv(gym.Env):
 
         self.obstacle_positions = np.array(obstacle_list, dtype=np.float32).reshape(-1, 2)
 
-        # Assign random initial directions to dynamic obstacles using episode speed
-        random_angles = self.np_random.uniform(0, 2 * np.pi, self.n_dynamic_obstacles)
-        velocity_x = np.cos(random_angles) * self._episode_speed
-        velocity_y = np.sin(random_angles) * self._episode_speed
-        if self.n_dynamic_obstacles > 0:
-            self.obstacle_velocities = np.column_stack([velocity_x, velocity_y]).astype(np.float32)
-        else:
-            self.obstacle_velocities = np.zeros((0, 2), dtype=np.float32)
-            
+        # Initial obstacle velocities come from the motion model. For the deterministic
+        # model this is the original uniform-heading draw, unchanged.
+        self.obstacle_velocities = self.motion_model.reset(
+            self.np_random, self.obstacle_positions, self._episode_speed)
+
+        self.initial_distance = float(
+            np.linalg.norm(self.target_position - self.agent_position))
         self.step_count = 0
         self.previous_distance  = np.linalg.norm(self.target_position - self.agent_position)
         self.previous_action = np.zeros(2, dtype=np.float32)
@@ -232,7 +319,7 @@ class RobotNavEnv(gym.Env):
 
         action = np.clip(action, -1.0, 1.0).astype(np.float32)
         self.agent_velocity = action * self.MAX_SPEED
-        new_position = self.agent_position + self.agent_velocity
+        new_position = self.agent_position + self.agent_velocity * self.dt
 
         # Check wall collision before clamping
         wall_collision = (
@@ -248,9 +335,11 @@ class RobotNavEnv(gym.Env):
             self.WORLD_SIZE - self.AGENT_RADIUS
         )
 
-        # Move dynamic obstacles and bounce them off walls
-        self.obstacle_positions += self.obstacle_velocities
-        self._bounce_obstacles()
+        # Move dynamic obstacles. The deterministic model reproduces the original
+        # constant-velocity bounce; the stochastic one steers smoothly (see
+        # robot_env/dynamic_obstacles.py). Collision mechanics below are unchanged either way.
+        self.obstacle_positions, self.obstacle_velocities = self.motion_model.step(
+            self.np_random, self.obstacle_positions, self.obstacle_velocities, self.dt)
 
         # Reward 
         reward = self.REWARD_STEP
@@ -279,20 +368,42 @@ class RobotNavEnv(gym.Env):
 
         goal_reached = current_distance <self.TARGET_RADIUS
 
+        # Which kind of collision fired. The TEST and the PENALTY are unchanged -- this
+        # only records information the env already computed but previously discarded, so
+        # that Week 4 can report wall / static / dynamic collisions separately. The
+        # research question is about dynamic obstacles specifically, and the committed
+        # results could not distinguish them.
+        collision_type = None
+        if wall_collision:
+            collision_type = "wall"
+        else:
+            collision_type = self._check_collision_type()
+
         if goal_reached:
             reward += self.REWARD_GOAL
             terminated = True
-        elif wall_collision or self._check_collision():
+        elif collision_type is not None:
             reward += self.REWARD_COLLISION
             terminated = True
 
         truncated = self.step_count >= self.MAX_STEPS
 
+        # Week 5 guard, inert while TIMEOUT_PENALTY is 0.0. Running out of steps is a
+        # failure to arrive, and while gamma alone should make stalling unattractive this
+        # prices it directly if it does not. Applied only when the episode did not already
+        # end for a real reason, so it can never stack with the goal or collision terms.
+        if truncated and not terminated and self.TIMEOUT_PENALTY:
+            reward += self.TIMEOUT_PENALTY
+
         info = {
             "distance_to_target": float(current_distance),
             "step": self.step_count,
             "success": goal_reached,
-            "is_success": goal_reached
+            "is_success": goal_reached,
+            "collision": bool(collision_type is not None and not goal_reached),
+            "collision_type": None if goal_reached else collision_type,
+            "agent_position": self.agent_position.copy(),
+            "initial_distance": self.initial_distance,
         }
 
         if self.render_mode == "human":
@@ -313,9 +424,12 @@ class RobotNavEnv(gym.Env):
 
         Returns:
         observation: np.ndarray
-            Normalized observation vector:
+            Normalized observation vector. In the legacy obstacle mode:
             [dx, dy, vx, vy, l1...l24, ovx1, ovy1, ovx2, ovy2, ovx3, ovy3]
-            Total size: 4 + N_LIDAR_RAYS + N_OBSTACLE_VELOCITIES * 2
+            Total size: 4 + N_LIDAR_RAYS + N_OBSTACLE_VELOCITIES * 2 = 34
+            In the paired mode (see _paired_obstacle_block):
+            [dx, dy, vx, vy, l1...l24, odx1, ody1, ovx1, ovy1, odx2, ...]
+            Total size: 4 + N_LIDAR_RAYS + N_OBSTACLE_SLOTS * 4 = 52
         """
         relative_target = (self.target_position - self.agent_position) / self.WORLD_SIZE
         normalized_velocity = self.agent_velocity / self.MAX_SPEED
@@ -323,52 +437,98 @@ class RobotNavEnv(gym.Env):
         
         # Velocities of the N_OBSTACLE_VELOCITIES nearest dynamic obstacles. Normalised by self.obstacle_speed (range midpoint or 
         # fixed speed) so the scale is stable across episodes. Zero-padded when fewer obstacles are present.
-        obstacle_velocity_flatten = np.zeros(self.N_OBSTACLE_VELOCITIES * 2, dtype=np.float32)
-        if self.n_dynamic_obstacles > 0 and self.obstacle_speed > 0:
-            distances = np.linalg.norm(self.obstacle_positions - self.agent_position, axis=1)
-            n_nearest = min(self.N_OBSTACLE_VELOCITIES, self.n_dynamic_obstacles)
-            nearest_idx = np.argsort(distances)[:n_nearest]
-            nearest_velocities = self.obstacle_velocities[nearest_idx] / self.obstacle_speed
-            obstacle_velocity_flatten[:n_nearest * 2] = nearest_velocities.flatten()
+        if self.obstacle_observation_mode == "paired":
+            obstacle_block = self._paired_obstacle_block()
+        else:
+            obstacle_block = np.zeros(self.N_OBSTACLE_VELOCITIES * 2, dtype=np.float32)
+            if self.n_dynamic_obstacles > 0 and self.obstacle_speed > 0:
+                distances = np.linalg.norm(self.obstacle_positions - self.agent_position, axis=1)
+                n_nearest = min(self.N_OBSTACLE_VELOCITIES, self.n_dynamic_obstacles)
+                nearest_idx = np.argsort(distances)[:n_nearest]
+                nearest_velocities = self.obstacle_velocities[nearest_idx] / self.obstacle_speed
+                obstacle_block[:n_nearest * 2] = nearest_velocities.flatten()
 
-        observation = np.concatenate([relative_target, normalized_velocity, normalized_lidar_readings, obstacle_velocity_flatten]).astype(np.float32)
+        observation = np.concatenate([relative_target, normalized_velocity, normalized_lidar_readings, obstacle_block]).astype(np.float32)
 
         return np.clip(observation, -1.0, 1.0)
 
-    def _cast_lidar_rays(self):
-        """
-        Cast N_LIDAR_RAYS rays from the agent and return the distance to the nearest obstacle or wall in each direction.
+    def _paired_obstacle_block(self):
+        """Per obstacle slot: relative position then velocity, nearest obstacle first.
 
-        Parameters
-        None
+        Layout is [dx_1, dy_1, vx_1, vy_1, dx_2, ...], length N_OBSTACLE_SLOTS * 4, zero
+        padded when there are fewer obstacles than slots. Positions are normalised by
+        WORLD_SIZE and velocities by self.obstacle_speed, matching how the target offset
+        and the legacy velocity block are already scaled, so the whole vector stays in
+        [-1, 1] and no term dominates the input scale.
+
+        WHY POSITION AND VELOCITY TRAVEL TOGETHER
+        -----------------------------------------
+        A velocity on its own is close to useless for avoidance: "something nearby is
+        moving left" does not say whether it is moving into the agent's path or away from
+        it. The pairing is the whole point of this block, so the two are written into
+        adjacent columns of the same slot rather than into two separate blocks that the
+        network would have to learn to align.
+        """
+        block = np.zeros(self.N_OBSTACLE_SLOTS * 4, dtype=np.float32)
+        if self.n_dynamic_obstacles <= 0:
+            return block
+
+        offsets = self.obstacle_positions - self.agent_position          # (N, 2)
+        distances = np.linalg.norm(offsets, axis=1)
+        n_used = min(self.N_OBSTACLE_SLOTS, self.n_dynamic_obstacles)
+        nearest_idx = np.argsort(distances)[:n_used]
+
+        normalized_offsets = offsets[nearest_idx] / self.WORLD_SIZE
+        if self.obstacle_speed > 0:
+            normalized_velocities = self.obstacle_velocities[nearest_idx] / self.obstacle_speed
+        else:
+            # Stationary obstacles: the velocity columns are genuinely zero, which is
+            # different from "unknown" and is exactly what the agent should see.
+            normalized_velocities = np.zeros_like(normalized_offsets)
+
+        slots = np.concatenate([normalized_offsets, normalized_velocities], axis=1)  # (n, 4)
+        block[:n_used * 4] = slots.reshape(-1)
+        return block
+
+    def _cast_lidar_rays(self):
+        """Distance to the nearest obstacle or wall along each of N_LIDAR_RAYS directions.
+
+        VECTORIZED, AND WHY THAT MATTERED
+        ---------------------------------
+        The original implementation looped in Python over rays x obstacles, calling
+        `_ray_vs_rect` and `_ray_vs_circle` once per pair. Profiling the Week 4 environment
+        showed this single method accounting for **82% of all step time** (13.8s of 16.9s
+        over 4000 steps), at 1.07 million scalar helper calls. Week 4 needs twelve training
+        runs of a few million steps each, so that overhead was the difference between
+        roughly 17 hours and roughly 5.
+
+        This computes all rays against all obstacles at once with numpy. The scalar helpers
+        below are KEPT: they are the readable reference this was derived from, and
+        `tests/test_week4_env.py::test_vectorized_lidar_matches_the_scalar_reference`
+        asserts the two agree exactly, so the optimization cannot silently drift from the
+        definition. The legacy bit-identity test against `main` covers the same ground from
+        the other direction.
 
         Returns
-        readings: np.ndarray (N_LIDAR_RAYS,)
-            Array of distances to the nearest obstacle in each ray direction. Values are in [0, LIDAR_RANGE]
+        readings: np.ndarray (N_LIDAR_RAYS,) float32
+            Distance along each ray, in [0, LIDAR_RANGE].
         """
-        readings = np.full(self.N_LIDAR_RAYS, self.LIDAR_RANGE, dtype=np.float32)
-        ray_angles = np.linspace(0, 2 * np.pi, self.N_LIDAR_RAYS, endpoint=False)
-
-        for ray_index, angle in enumerate(ray_angles):
-            ray_direction = np.array([np.cos(angle), np.sin(angle)])
-
-            # Check distance to world boundary walls
-            wall_distance = self._ray_vs_walls(self.agent_position, ray_direction)
-            if wall_distance < readings[ray_index]:
-                readings[ray_index] = wall_distance
-
-            # Check distance to each static rectangular obstacle
-            for static_obstacle in self.static_obstacles:
-                rect_distance = self._ray_vs_rect(self.agent_position, ray_direction, static_obstacle)
-                if rect_distance < readings[ray_index]:
-                    readings[ray_index] = rect_distance
-
-            # Check distance to each dynamic circular obstacle
-            for obstacle_position in self.obstacle_positions:
-                circle_distance = self._ray_vs_circle(self.agent_position, ray_direction, obstacle_position, self.OBSTACLE_RADIUS)
-                if circle_distance < readings[ray_index]:
-                    readings[ray_index] = circle_distance
-        return readings
+        # The body of this method now lives in `robot_env/lidar_core.py` so that
+        # Experiment 4's Point Maze can cast the SAME rays rather than growing a second
+        # implementation. Pure extraction -- no arithmetic changed, no operation reordered.
+        # `test_vectorized_lidar_matches_the_scalar_reference` and
+        # `test_legacy_path_is_bit_identical_to_main` both still pass, from opposite
+        # directions, which is what makes that claim checkable rather than asserted.
+        return cast_rays(
+            self.agent_position,
+            n_rays=self.N_LIDAR_RAYS,
+            lidar_range=self.LIDAR_RANGE,
+            world_size=self.WORLD_SIZE,
+            agent_radius=self.AGENT_RADIUS,
+            rects=self.static_obstacles,
+            circles=self.obstacle_positions,
+            circle_radius=self.OBSTACLE_RADIUS,
+        )
 
     def _ray_vs_walls(self, ray_origin, ray_direction):
         """
@@ -506,6 +666,35 @@ class RobotNavEnv(gym.Env):
         else:
             return self.LIDAR_RANGE
 
+    def _check_collision_type(self):
+        """Which kind of obstacle the agent is touching, or None.
+
+        Exactly the geometry `_check_collision` has always used -- the circles are tested
+        before the rectangles and the same radii and margins apply -- but it reports WHICH
+        family matched instead of collapsing both to a bool. `_check_collision` is kept
+        below as a wrapper over this so no existing caller changes behaviour.
+
+        Returns
+        str or None
+            "dynamic" for a moving circular obstacle, "static" for a rectangle, None for
+            no contact.
+        """
+        combined_radius = self.AGENT_RADIUS + self.OBSTACLE_RADIUS
+        for obstacle_position in self.obstacle_positions:
+            distance = np.linalg.norm(self.agent_position - obstacle_position)
+            if distance < combined_radius:
+                return "dynamic"
+
+        for center_x, center_y, half_width, half_height in self.static_obstacles:
+            closest_x = np.clip(self.agent_position[0], center_x - half_width, center_x + half_width)
+            closest_y = np.clip(self.agent_position[1], center_y - half_height, center_y + half_height)
+            closest_point = np.array([closest_x, closest_y])
+            distance = np.linalg.norm(self.agent_position - closest_point)
+            if distance < self.AGENT_RADIUS:
+                return "static"
+
+        return None
+
     def _check_collision(self):
         """
         Check whether the agent is currently colliding with anything. Tests collision against world boundary walls, all dynamic circular
@@ -518,45 +707,7 @@ class RobotNavEnv(gym.Env):
         bool
             True if a collision is detected, False otherwise.
         """
-        # Check collision with each dynamic circular obstacle
-        combined_radius = self.AGENT_RADIUS + self.OBSTACLE_RADIUS
-        for obstacle_position in self.obstacle_positions:
-            distance = np.linalg.norm(self.agent_position - obstacle_position)
-            if distance < combined_radius:
-                return True
-
-        # Check collision with each static rectangular obstacle
-        for center_x, center_y, half_width, half_height in self.static_obstacles:
-            # Find the closest point on the rectangle to the agent
-            closest_x = np.clip(self.agent_position[0], center_x - half_width, center_x + half_width)
-            closest_y = np.clip(self.agent_position[1], center_y - half_height, center_y + half_height)
-            closest_point = np.array([closest_x, closest_y])
-            distance = np.linalg.norm(self.agent_position - closest_point)
-            if distance < self.AGENT_RADIUS:
-                return True
-
-        return False
-
-    def _bounce_obstacles(self):
-        """
-        Reflect dynamic obstacle velocities when they hit world boundaries.
-        For each obstacle, if it has crossed a wall boundary, its position is clamped back to the boundary and the velocity in that 
-        dimension is reversed (elastic bounce).
-
-        Parameters
-        None
-        """
-        low_boundary = self.OBSTACLE_RADIUS
-        high_boundary = self.WORLD_SIZE - self.OBSTACLE_RADIUS
-
-        for obstacle_index in range(self.n_dynamic_obstacles):
-            for dimension in range(2):
-                if self.obstacle_positions[obstacle_index, dimension] < low_boundary:
-                    self.obstacle_positions[obstacle_index, dimension] = low_boundary
-                    self.obstacle_velocities[obstacle_index, dimension] *= -1
-                elif self.obstacle_positions[obstacle_index, dimension] > high_boundary:
-                    self.obstacle_positions[obstacle_index, dimension] = high_boundary
-                    self.obstacle_velocities[obstacle_index, dimension] *= -1
+        return self._check_collision_type() is not None
 
     def _random_free_position(self, exclude=None, min_dist=1.0):
         """

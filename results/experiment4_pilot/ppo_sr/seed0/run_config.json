@@ -1,0 +1,62 @@
+{
+  "arm": "ppo_sr",
+  "seed": 0,
+  "sr": true,
+  "lidar": false,
+  "git_commit": "9e307cfcfd6a718c102a74c7e541e61b88d2a0af",
+  "total_timesteps": 3000000,
+  "tag": "_pilot",
+  "environment": {
+    "_comment": "10x10 maze of 1x1 cells (Trott et al. supplement). max_step sized from the measured route: 22 moves over a 50-step horizon needs 0.44 units/step, so 1.0 leaves 2.3x slack. goal_radius 0.5 is half a cell.",
+    "max_step": 1.0,
+    "max_steps": 50,
+    "goal_radius": 0.5,
+    "n_lidar_rays": 24,
+    "lidar_range": 5.0,
+    "start_goal_mode": "sampled",
+    "cell_margin": 0.15
+  },
+  "reward": {
+    "_comment": "Paper Eq. 2: +1 on reaching, -d(s_T,g) otherwise. The goal bonus is deliberately SMALL against a distance term reaching 12.73 - that asymmetry is what creates the local optima SR exists to escape. collision -0.1 per contact: 10 collisions costs exactly one goal bonus, and the 50-collision worst case (-5.0) stays inside the navigation range.",
+    "goal": 1.0,
+    "collision": -0.1
+  },
+  "ppo": {
+    "_comment": "PPO settings carried over from the Week 5 validation (batch 256, target_kl 0.02, linear LR decay, threads pinned). gamma 0.999 because the reward is TERMINAL and the horizon is 50: 0.999^50 = 0.951 keeps the payout essentially undiscounted at t=0, matching the paper's undiscounted end-of-episode rewards, while staying bounded. There is no per-step survival cost here, so the Week 5 suicide criterion S/(1-gamma) < C does not bind.",
+    "total_timesteps": 3000000,
+    "n_envs": 8,
+    "learning_rate": 0.0003,
+    "lr_schedule": "linear",
+    "n_steps": 2048,
+    "batch_size": 256,
+    "n_epochs": 10,
+    "gamma": 0.999,
+    "gae_lambda": 0.95,
+    "target_kl": 0.02,
+    "ent_coef": 0.01,
+    "torch_threads": 1,
+    "policy": "MlpPolicy",
+    "policy_kwargs": {
+      "net_arch": [
+        256,
+        256
+      ]
+    }
+  },
+  "ppo_effective": {
+    "batch_size": 256,
+    "n_steps": 2048,
+    "gamma": 0.999,
+    "gae_lambda": 0.95,
+    "target_kl": 0.02,
+    "observation_dim": 6,
+    "torch_threads": 1
+  },
+  "sr_hyperparameters": {
+    "epsilon": 2.2991213992552746,
+    "delta": 0.5,
+    "terminal_mode": "replace"
+  },
+  "model_dir": "models/experiment4/ppo_sr_seed0_pilot",
+  "log_dir": "logs/experiment4/ppo_sr_seed0_pilot"
+}
