@@ -2359,6 +2359,141 @@ scan trace.
 
 **Stage 5 is NOT implemented and NOT run under this amendment. It awaits explicit approval.**
 
+## 11.10 AMENDMENT 7 — Stage 5 outcome: a pre-registered branch termination (dated 2026-09-08)
+
+**Linked to:** Stage 5 validation result `9431f07`, its implementation `c867f59`, the `n = 1`
+derivation correction `3b3a629` and its pre-registration `9d38008`. Chain preserved:
+`aa66cd7` → `0073790` → `91bb969` → `9d38008` → `3b3a629` → `c867f59` → `9431f07` → this
+amendment. V0 remains frozen; **no earlier stage is rewritten and no prior result is
+overwritten.**
+
+### 11.10.1 Stage 5 verdict, recorded exactly
+
+* **The A4 / E1 admission gate FAILED.**
+* **The 200-episode final run was therefore correctly NOT authorised**, per §11.9.13-D2.
+* **E1 does not receive an acceptance claim.** §11.9.13-B is not satisfied and is not invoked.
+* **IMM / CT escalation is NOT triggered**, because §11.9.13-E requires an **ACCEPTED E1** as an
+  explicit prerequisite, and the pre-registered rule is that the branch **terminates rather than
+  escalates**.
+* **`EVAL_SEED_BASE` remains untouched.** No Stage-5 quantity was measured on it.
+* **V0, T1 `v_cap = 0.96`, the `u = 0` fallback and the Stage-4 LADDER remain unchanged.**
+* **`dr_control/uncertainty.py` remains untouched and reserved** for Stage 6, which is not
+  started.
+
+This is a **pre-registered branch termination**, not a failed experiment in need of repair. The
+gate was written before the data existed and was applied as written.
+
+### 11.10.2 Interpretation — open-loop evidence and the closed-loop gate are kept apart
+
+**Open-loop, identical-input diagnosis: E1 improves estimation.** One trajectory driven by the
+frozen A0 policy, with the identical `(p_ego, ranges)` stream fed to both trackers, so the
+estimator is isolated from the trajectory:
+
+* mean velocity error **0.376 → 0.325** (fixed) and **0.336 → 0.297** (randomized);
+* optimistic-tail frequency **0.529 → 0.511** and **0.542 → 0.518**;
+* estimated/true speed ratio moves **toward 1** (0.9901 → 1.0048; 0.9593 → 0.9907);
+* the improvement **concentrates on 1-point returns**, exactly where the geometry-derived
+  covariance was designed to act.
+
+**Therefore the geometry-derived covariance intervention works as an estimator modification on
+identical scan streams.** That is established.
+
+**The pre-registered closed-loop validation did not establish the required endpoint
+improvement:**
+
+| condition | endpoint | A0 → A1 | 95 % CI |
+|---|---|---|---|
+| fixed | `P(e>0\|TTC<1s)` | 0.4178 → 0.4076 | [−0.045, +0.026] |
+| fixed | super-physical | 0.0781 → 0.0847 | [−0.002, +0.016] |
+| randomized | `P(e>0\|TTC<1s)` | 0.4719 → 0.4812 | [−0.035, +0.051] |
+| randomized | super-physical | 0.0535 → 0.0561 | [−0.005, +0.010] |
+
+**All four CIs span zero, and A4 therefore fails the directional gate.**
+
+**The conclusion, stated precisely and to be quoted in this form wherever Stage 5 is cited:**
+
+> **"E1 improves the estimator under identical-input/open-loop evaluation, but the pre-registered
+> closed-loop validation does not demonstrate that this improvement transfers to the
+> navigation-relevant endpoints. The estimator branch therefore terminates without escalation."**
+
+**E1 is NOT described as harmful.** The data do not establish harm; they establish a **failure to
+demonstrate the required closed-loop benefit**. The collision differences were not significant
+(p = 1.0000 fixed, 0.6250 randomized) and are recorded as *failed to detect harm at n = 50* —
+which is equally not evidence of safety.
+
+The pre-registered **sluggish-filter** failure mode of §11.9.8 is **CONTRADICTED**: speeds moved
+toward the true value and errors fell, so the filter became less biased, not more sluggish. What
+failed is the **transfer** from estimator accuracy to the closed-loop endpoint.
+
+### 11.10.3 Code and data corrections, preserved
+
+1. **The initial fixed-condition run used the wrong obstacle speed** (`obstacle_speed = 1.0`) and
+   is **discarded from inference**. It was non-comparable to Stages 3–4 and placed the 0.675
+   super-physical threshold below the true obstacle speed.
+2. **The corrected fixed rerun used the Stage-3/4 environment speed of 0.675**, via
+   `make_env(rnd)`, identical to Stages 3 and 4 in both conditions.
+3. **The randomized condition was already correct** and was **reproduced exactly** on the
+   diagnosis re-run, which doubles as a reproducibility check.
+4. **The admission-signature pairing bug** — `admission_a4` paired fixed-A0 against
+   randomized-A0 instead of fixed-A0 against fixed-A1 — **was corrected before the final
+   verdict**.
+
+**Invalid artefacts are preserved and marked, never deleted and never used in inference:**
+`stage5_validation_fixed_INVALID_env_mismatch.json`,
+`stage5_validation_diagnosis_INVALID_env_mismatch.json`,
+`stage5_validation_a4_gate_INVALID_pairing_bug.json`. Both invalid computations also returned
+FAIL, for different and wrong reasons; **the verdict rests only on the corrected data.**
+
+### 11.10.4 The Phase-7 evidence chain as it now stands
+
+No earlier stage is rewritten. The chain, in full:
+
+**Stage 2**
+* M1 is **associated** with estimator-induced super-physical closing rates (risk ratios 15.1× /
+  29.8×, against a controlled base rate).
+* M2 is a **distinct** residual multi-constraint infeasibility.
+
+**Stage 3**
+* T1 **eliminates M1 / singleton infeasibility** exactly (405 → 0, 298 → 0).
+* It **does not improve measured navigation safety** (p = 1.000 in both conditions).
+* It **does not justify estimator escalation by itself**.
+
+**Stage 4**
+* M2 is **recoverable** through R2 / LADDER (100 % of infeasible steps return an action).
+* Recovery **significantly reduces collisions** in both conditions.
+* **Much of the empirical benefit comes from replacing the `u = 0` fallback** (collisions after
+  an infeasible step 22 → 4 and 39 → 12).
+* **Recovered actions mostly sacrifice the original DR guarantee**: no T0; 77–97 % T2 with
+  `m < 0`.
+
+**Stage 5**
+* E1 **improves estimator behaviour open-loop**.
+* That improvement **does not pass the pre-registered closed-loop gate**.
+* **Estimator escalation is terminated.**
+* **No claim is made that velocity estimation is irrelevant in general** — only that **this E1
+  intervention did not establish the required closed-loop benefit**.
+
+**Therefore the strongest currently established intervention remains the Stage-4 recovery
+ladder, with its explicit safety / guarantee trade-off** — empirically fewer collisions, at the
+cost of the DR forward-invariance guarantee on the recovered steps, which is never described as
+safe.
+
+### 11.10.5 Stop condition
+
+Recorded as binding:
+
+* **No further estimator is designed or implemented.**
+* **Stage 6 is not started.** IMM, constant-turn, covariance propagation and uncertainty margins
+  remain gated and unwritten; `dr_control/uncertainty.py` stays reserved.
+* **The Stage-4 recovery mechanism is not modified.**
+* **No new parameter sweep is introduced.** The pre-registered `v_cap` sensitivity arms remain
+  not run.
+* **The A4 gate is not amended and Stage 5 is not rerun.** The observation that all four deltas
+  had CIs spanning zero is recorded in §11.10.2 as a property of the data, **not** as grounds to
+  revisit the gate.
+
+Any further Phase-7 work requires explicit approval.
+
 ## 12. Review record
 
 Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
@@ -2383,6 +2518,7 @@ Reviewed and approved 2026-09-06 with eleven clarifications, all applied above:
 | A4 | **Amendment 4 (2026-09-07)**: M1/M2 mechanisms separated; stages reordered to velocity intervention → residual recovery → advanced estimator; Stage 3 designed with `v_cap = 0.96` derived and a safety veto | §11.7 |
 | A5 | **Amendment 5 (2026-09-07)**: Stage 3 outcome recorded; T1 accepted and T2 rejected; singleton→fallback→collision conjecture weakened; estimator work gated on Stage 4; Stage 4 designed against M2 only | §11.8 |
 | A6 | **Amendment 6 (2026-09-08)**: Stage 4 outcome recorded — P1/P2/P4 confirmed, P3 CONTRADICTED for R2/LADDER/R1.5; the `u = 0` fallback established as a collision pathway while the singleton claim stays weakened; recovered actions never called safe; Stage 5 designed as a 2×2 estimator × fallback factorial (A0–A3 + D-oracle diagnostic) around **one** minimal, parameter-free, geometry-derived estimator change (E1 = D3b reconstruction covariance); primary claim is guarantee preservation (T0), not collisions; safety veto, admission/acceptance/escalation/termination gates and a stopping decision tree pre-registered; IMM/CT and `Σ_v` margins remain gated | §11.9 |
+| A7 | **Amendment 7 (2026-09-08)**: Stage 5 outcome recorded as a PRE-REGISTERED BRANCH TERMINATION — the A4 gate failed, the 200-episode final run was correctly not authorised, E1 receives no acceptance claim, and IMM/CT escalation is not triggered because an accepted E1 was an explicit prerequisite. Open-loop estimator improvement and the closed-loop gate are kept apart; E1 is not described as harmful. `EVAL_SEED_BASE` untouched; V0, `v_cap = 0.96`, the `u = 0` fallback and the Stage-4 LADDER unchanged; `uncertainty.py` reserved. Stage-4 recovery remains the strongest established intervention, with its guarantee trade-off | §11.10 |
 
 ## 13. Open questions to settle before Stage 1 begins
 

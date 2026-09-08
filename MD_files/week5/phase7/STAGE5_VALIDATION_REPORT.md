@@ -181,3 +181,46 @@ remains untested — M2 is unmoved here, but at n = 50 that is uninformative.
 **§11.9.13-D2 terminates the estimator branch. Escalation to IMM/CT (§11.9.13-E) is expressly
 NOT triggered by this failure** — E requires an ACCEPTED E1, and "the branch terminates, it does
 not escalate" is the pre-registered rule. Any further Stage-5 work requires explicit approval.
+
+---
+
+## 7. Stage-5 conclusion — recorded as a pre-registered branch termination
+
+Accepted as final and recorded in `PHASE7_PLAN.md` §11.10 (Amendment 7).
+
+**Verdict.** The A4 / E1 admission gate **FAILED**; the 200-episode final run was therefore
+**correctly not authorised**; **E1 receives no acceptance claim**; **IMM / CT escalation is NOT
+triggered**, because §11.9.13-E names an *accepted* E1 as an explicit prerequisite and the
+pre-registered rule is that the branch terminates rather than escalates. `EVAL_SEED_BASE` remains
+untouched. V0, T1 `v_cap = 0.96`, the `u = 0` fallback and the Stage-4 LADDER remain unchanged.
+`dr_control/uncertainty.py` remains untouched and reserved.
+
+**The conclusion, in the form to be quoted wherever Stage 5 is cited:**
+
+> **"E1 improves the estimator under identical-input/open-loop evaluation, but the pre-registered
+> closed-loop validation does not demonstrate that this improvement transfers to the
+> navigation-relevant endpoints. The estimator branch therefore terminates without escalation."**
+
+**E1 is not described as harmful.** The data do not establish harm; they establish a failure to
+demonstrate the required closed-loop benefit.
+
+**Where Phase 7 now stands** (no earlier stage is rewritten):
+
+* **Stage 2** — M1 is *associated* with estimator-induced super-physical closing rates; M2 is a
+  distinct residual multi-constraint class.
+* **Stage 3** — T1 eliminates M1 exactly; it does not improve measured navigation safety; it does
+  not justify estimator escalation by itself.
+* **Stage 4** — M2 is recoverable via R2 / LADDER; recovery significantly reduces collisions;
+  much of the benefit comes from replacing the `u = 0` fallback; recovered actions mostly
+  sacrifice the DR guarantee.
+* **Stage 5** — E1 improves estimator behaviour open-loop; that improvement does not pass the
+  pre-registered closed-loop gate; estimator escalation is terminated. **No claim that velocity
+  estimation is irrelevant in general** — only that this intervention did not establish the
+  required closed-loop benefit.
+
+**The strongest currently established intervention remains the Stage-4 recovery ladder, with its
+explicit safety / guarantee trade-off.**
+
+**Stop condition, binding.** No further estimator is designed or implemented; Stage 6 is not
+started; the Stage-4 recovery mechanism is not modified; no new parameter sweep is introduced;
+the A4 gate is not amended and Stage 5 is not rerun.
