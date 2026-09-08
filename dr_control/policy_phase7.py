@@ -1,4 +1,5 @@
-"""Week5-Phase7 / Stage 3: DRCBFPolicy with a swappable barrier source. NEW `[extension]`.
+"""Week5-Phase7 / Stage 3 (+ Stage 5 arm): DRCBFPolicy with a swappable barrier source.
+NEW `[extension]`.
 
 `dr_control/policy.py` is FROZEN and is not edited. This subclass changes exactly one thing --
 which barrier source `reset()` builds -- and inherits `predict()` unchanged, so the control
@@ -13,9 +14,14 @@ from dr_control.capped_velocity import (OracleVelocitySource, ProjectionCappedSo
                                         V_CAP_DERIVED, VectorCappedSource)
 from dr_control.estimated_cbf import EstimatedLidarBarrierSource
 from dr_control.policy import DRCBFPolicy
+from dr_control.tracking2 import GeometricLidarVelocityTracker
 from dr_control.velocity_tracker import LidarVelocityTracker
 
-ARMS = ("C0_frozen", "T1_projection_cap", "T2_vector_cap", "D_oracle")
+#: Stage 5 (11.9.9) adds ONE arm: E1_geometric_R = T1 + the geometry-derived measurement
+#: covariance. It is T1 in every other respect -- same v_cap, same source class, same frozen
+#: u = 0 fallback -- so A0 ("T1_projection_cap") and A1 ("E1_geometric_R") differ by exactly
+#: the tracker's R. Existing arms are untouched and keep the frozen tracker.
+ARMS = ("C0_frozen", "T1_projection_cap", "T2_vector_cap", "D_oracle", "E1_geometric_R")
 
 
 class Phase7Policy(DRCBFPolicy):
@@ -32,11 +38,13 @@ class Phase7Policy(DRCBFPolicy):
         out = super().reset(obs, ego_pose)            # frozen: plans, builds the frozen source
         if self.arm == "C0_frozen":
             return out
-        tracker = LidarVelocityTracker(r_nominal=self.r_nominal, dt=self.dt,
-                                       n_rays=self.n_rays, lidar_range=self.lidar_range)
+        tk = (GeometricLidarVelocityTracker if self.arm == "E1_geometric_R"
+              else LidarVelocityTracker)
+        tracker = tk(r_nominal=self.r_nominal, dt=self.dt,
+                     n_rays=self.n_rays, lidar_range=self.lidar_range)
         common = dict(r_robot=self.agent_radius, k_scans=5, n_rays=self.n_rays,
                       lidar_range=self.lidar_range, tracker=tracker)
-        if self.arm == "T1_projection_cap":
+        if self.arm in ("T1_projection_cap", "E1_geometric_R"):
             self.src = ProjectionCappedSource(v_cap=self.v_cap, **common)
         elif self.arm == "T2_vector_cap":
             self.src = VectorCappedSource(v_cap=self.v_cap, **common)

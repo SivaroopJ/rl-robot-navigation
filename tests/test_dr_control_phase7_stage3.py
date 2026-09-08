@@ -157,4 +157,10 @@ def test_treatment_arms_read_no_obstacle_ground_truth():
 
 
 def test_arms_are_exactly_the_preregistered_four():
-    assert ARMS == ("C0_frozen", "T1_projection_cap", "T2_vector_cap", "D_oracle")
+    """Stage 3's four arms are unchanged, in order, and none was added between them.
+
+    Stage 5 appends ONE arm (E1_geometric_R) per PHASE7_PLAN.md 11.9.17, which is why this is a
+    prefix check rather than an equality check. The Stage-3 arms themselves are still pinned
+    exactly, and tests/test_dr_control_phase7_stage5.py pins the full Stage-5 tuple.
+    """
+    assert ARMS[:4] == ("C0_frozen", "T1_projection_cap", "T2_vector_cap", "D_oracle")
