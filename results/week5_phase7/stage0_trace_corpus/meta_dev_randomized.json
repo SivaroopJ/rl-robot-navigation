@@ -1,0 +1,501 @@
+{
+ "label": "Week5-Phase7 / Stage 0 / trace corpus :: dev/randomized",
+ "tier": "dev",
+ "condition": "randomized",
+ "seed_base": 20000,
+ "episodes": 20,
+ "steps": 1861,
+ "controller_params": {
+  "clf_rate": 1.0,
+  "cbf_rate": 0.4,
+  "wasserstein_r": 0.004,
+  "epsilon": 0.1,
+  "max_v": 1.0,
+  "k_v": 0.05,
+  "p0": 3.0,
+  "n_keep": 5,
+  "solver": "SCS",
+  "dt": 0.1,
+  "n_rays": 24,
+  "lidar_range": 5.0,
+  "agent_radius": 0.3,
+  "tau": 0.04
+ },
+ "status_table": {
+  "0": "optimal",
+  "1": "infeasible",
+  "2": "infeasible_inaccurate"
+ },
+ "status_counts": {
+  "optimal": 1777,
+  "infeasible": 83,
+  "infeasible_inaccurate": 1
+ },
+ "n_infeasible_steps": 84,
+ "replay_verification": {
+  "checked": 300,
+  "mismatches": 0,
+  "worst": 0.0,
+  "bit_identical": true
+ },
+ "geometry_recompute_mismatch": 0,
+ "outcomes": {
+  "success": 11,
+  "collision": 9,
+  "timeout": 0
+ },
+ "min_cbc_solved": 0.03990586618185492,
+ "mean_total_time_ms": 29.259535312114114,
+ "mean_solver_time_ms": 1.3139621026329928,
+ "mean_canon_time_ms": 27.94557320948112,
+ "wall_seconds": 93.20815777778625,
+ "episodes_detail": [
+  {
+   "ep_index": 0,
+   "seed": 20000,
+   "outcome": "collision",
+   "steps": 166,
+   "collision_type": "dynamic",
+   "start": [
+    0.6731900572776794,
+    9.345685005187988
+   ],
+   "goal": [
+    5.600722789764404,
+    0.9574370384216309
+   ],
+   "path_length": 10.62371826171875,
+   "shortest_path": 12.509188309203683,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 1,
+   "seed": 20001,
+   "outcome": "success",
+   "steps": 110,
+   "collision_type": null,
+   "start": [
+    1.8511149883270264,
+    9.253374099731445
+   ],
+   "goal": [
+    9.033502578735352,
+    7.073947429656982
+   ],
+   "path_length": 8.231485366821289,
+   "shortest_path": 8.647056274847722,
+   "spl": 1.0,
+   "planner_failed": 0,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 2,
+   "seed": 20002,
+   "outcome": "collision",
+   "steps": 58,
+   "collision_type": "dynamic",
+   "start": [
+    4.525547981262207,
+    0.7931435108184814
+   ],
+   "goal": [
+    6.216193675994873,
+    6.9200029373168945
+   ],
+   "path_length": 3.15043306350708,
+   "shortest_path": 6.85416305603426,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 3,
+   "seed": 20003,
+   "outcome": "success",
+   "steps": 82,
+   "collision_type": null,
+   "start": [
+    9.101969718933105,
+    4.115387916564941
+   ],
+   "goal": [
+    2.6268084049224854,
+    4.506744861602783
+   ],
+   "path_length": 6.9447712898254395,
+   "shortest_path": 6.665685424949238,
+   "spl": 0.9598135268637168,
+   "planner_failed": 0,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 4,
+   "seed": 20004,
+   "outcome": "collision",
+   "steps": 79,
+   "collision_type": "dynamic",
+   "start": [
+    6.36182975769043,
+    6.292135238647461
+   ],
+   "goal": [
+    0.8147680163383484,
+    4.553382396697998
+   ],
+   "path_length": 5.292171001434326,
+   "shortest_path": 6.254163056034259,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 5,
+   "seed": 20005,
+   "outcome": "success",
+   "steps": 54,
+   "collision_type": null,
+   "start": [
+    4.813579082489014,
+    4.320883274078369
+   ],
+   "goal": [
+    0.7351353764533997,
+    5.6565842628479
+   ],
+   "path_length": 3.827092409133911,
+   "shortest_path": 4.659188309203675,
+   "spl": 1.0,
+   "planner_failed": 0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 6,
+   "seed": 20006,
+   "outcome": "success",
+   "steps": 78,
+   "collision_type": null,
+   "start": [
+    5.307610034942627,
+    2.570812940597534
+   ],
+   "goal": [
+    1.2593632936477661,
+    6.399031162261963
+   ],
+   "path_length": 5.6646246910095215,
+   "shortest_path": 5.624011537017755,
+   "spl": 0.9928303892654663,
+   "planner_failed": 0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 7,
+   "seed": 20007,
+   "outcome": "success",
+   "steps": 109,
+   "collision_type": null,
+   "start": [
+    2.7685492038726807,
+    4.622300624847412
+   ],
+   "goal": [
+    8.975973129272461,
+    6.978212356567383
+   ],
+   "path_length": 8.255390167236328,
+   "shortest_path": 7.817766952966373,
+   "spl": 0.9469893965754911,
+   "planner_failed": 0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 8,
+   "seed": 20008,
+   "outcome": "success",
+   "steps": 77,
+   "collision_type": null,
+   "start": [
+    6.058606147766113,
+    6.237932205200195
+   ],
+   "goal": [
+    9.23073959350586,
+    1.6905770301818848
+   ],
+   "path_length": 5.808521270751953,
+   "shortest_path": 5.9719300090006255,
+   "spl": 1.0,
+   "planner_failed": 0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 9,
+   "seed": 20009,
+   "outcome": "collision",
+   "steps": 108,
+   "collision_type": "dynamic",
+   "start": [
+    5.188022136688232,
+    3.4443695545196533
+   ],
+   "goal": [
+    6.139980316162109,
+    7.669747352600098
+   ],
+   "path_length": 6.558661460876465,
+   "shortest_path": 4.6435028842544375,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 10,
+   "seed": 20010,
+   "outcome": "collision",
+   "steps": 97,
+   "collision_type": "dynamic",
+   "start": [
+    5.468438625335693,
+    9.35754680633545
+   ],
+   "goal": [
+    8.603961944580078,
+    1.4179257154464722
+   ],
+   "path_length": 5.253023147583008,
+   "shortest_path": 9.37193000900063,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 9,
+   "n_solver_fail": 9,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 11,
+   "seed": 20011,
+   "outcome": "success",
+   "steps": 112,
+   "collision_type": null,
+   "start": [
+    3.5118486881256104,
+    4.211171627044678
+   ],
+   "goal": [
+    9.385479927062988,
+    3.8129806518554688
+   ],
+   "path_length": 7.342923164367676,
+   "shortest_path": 6.015685424949237,
+   "spl": 0.8192494038533588,
+   "planner_failed": 0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 12,
+   "seed": 20012,
+   "outcome": "success",
+   "steps": 136,
+   "collision_type": null,
+   "start": [
+    2.419931650161743,
+    4.698850631713867
+   ],
+   "goal": [
+    9.090733528137207,
+    8.109414100646973
+   ],
+   "path_length": 9.232976913452148,
+   "shortest_path": 9.338477631085032,
+   "spl": 1.0,
+   "planner_failed": 0,
+   "n_infeasible": 9,
+   "n_solver_fail": 9,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 13,
+   "seed": 20013,
+   "outcome": "collision",
+   "steps": 94,
+   "collision_type": "dynamic",
+   "start": [
+    1.6776461601257324,
+    8.645454406738281
+   ],
+   "goal": [
+    6.806336402893066,
+    4.867107391357422
+   ],
+   "path_length": 7.096688747406006,
+   "shortest_path": 7.816295090390229,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 9,
+   "n_solver_fail": 9,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 14,
+   "seed": 20014,
+   "outcome": "collision",
+   "steps": 61,
+   "collision_type": "dynamic",
+   "start": [
+    7.73529052734375,
+    4.488181114196777
+   ],
+   "goal": [
+    1.529241919517517,
+    8.779459953308105
+   ],
+   "path_length": 3.6443262100219727,
+   "shortest_path": 8.97695526217005,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 15,
+   "seed": 20015,
+   "outcome": "success",
+   "steps": 82,
+   "collision_type": null,
+   "start": [
+    4.634960174560547,
+    9.190489768981934
+   ],
+   "goal": [
+    9.31937313079834,
+    6.443058490753174
+   ],
+   "path_length": 6.22246789932251,
+   "shortest_path": 6.629898987322331,
+   "spl": 1.0,
+   "planner_failed": 0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 16,
+   "seed": 20016,
+   "outcome": "collision",
+   "steps": 51,
+   "collision_type": "dynamic",
+   "start": [
+    4.561985015869141,
+    2.594092845916748
+   ],
+   "goal": [
+    3.419828414916992,
+    8.761017799377441
+   ],
+   "path_length": 3.3441362380981445,
+   "shortest_path": 8.117766952966372,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 17,
+   "seed": 20017,
+   "outcome": "success",
+   "steps": 140,
+   "collision_type": null,
+   "start": [
+    8.640401840209961,
+    5.933582305908203
+   ],
+   "goal": [
+    2.5102295875549316,
+    5.65590238571167
+   ],
+   "path_length": 8.330875396728516,
+   "shortest_path": 6.852081528017132,
+   "spl": 0.8224923794572541,
+   "planner_failed": 0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 18,
+   "seed": 20018,
+   "outcome": "collision",
+   "steps": 55,
+   "collision_type": "dynamic",
+   "start": [
+    8.908472061157227,
+    3.4883923530578613
+   ],
+   "goal": [
+    4.644752025604248,
+    3.6475040912628174
+   ],
+   "path_length": 3.1217570304870605,
+   "shortest_path": 4.527817459305202,
+   "spl": 0.0,
+   "planner_failed": 0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "geometry_recompute_mismatch": 0
+  },
+  {
+   "ep_index": 19,
+   "seed": 20019,
+   "outcome": "success",
+   "steps": 112,
+   "collision_type": null,
+   "start": [
+    5.153250694274902,
+    4.392841815948486
+   ],
+   "goal": [
+    3.1144754886627197,
+    8.910652160644531
+   ],
+   "path_length": 7.3467302322387695,
+   "shortest_path": 6.4313708498984745,
+   "spl": 0.8754058807925825,
+   "planner_failed": 0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "geometry_recompute_mismatch": 0
+  }
+ ],
+ "npz": "trace_dev_randomized.npz",
+ "npz_sha256": "fa5a1376a3bb7d96b2a689b1398f6b4adfb4b281ce45f9c9a2953ce0b763b9ea",
+ "n_solved_steps": 1777,
+ "n_non_optimal_non_infeasible": 0,
+ "min_cbc_all_steps": -2.4442714818249214,
+ "tau": 0.04,
+ "min_cbc_solved_minus_tau": -9.413381814508265e-05
+}

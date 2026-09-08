@@ -1,0 +1,205 @@
+{
+ "label": "Week5-Phase7 / Stage 1 RERUN under Amendment 1",
+ "amendment": "PHASE7_PLAN.md 11.4 (2026-09-06)",
+ "original_run": "998eeaa (FAILED, preserved)",
+ "candidate": "RED-OSQP",
+ "J_tol": 1e-09,
+ "ci_margin": 0.03,
+ "P3": {
+  "u_bar_inf_min": 1.0,
+  "u_bar_inf_max": 1.0,
+  "tau_constant": true,
+  "tau": 0.04,
+  "tau_candidate": 0.04,
+  "tau_match": true,
+  "eps_times_n_keep": 0.5,
+  "precondition_cvar": true,
+  "precondition_box": true,
+  "max_v": 1.0,
+  "alpha": 0.4,
+  "p0": 3.0,
+  "pass": true
+ },
+ "P2": {
+  "steps": 17492,
+  "kept_mismatches": 0,
+  "sort_violations": 0,
+  "weight_mismatches": 0,
+  "pass": true
+ },
+ "P1": {
+  "steps": 248,
+  "probes": 516088,
+  "disagreements": 0,
+  "includes_all_first_run_failure_steps": true,
+  "detail": [],
+  "pass": true
+ },
+ "P4": {
+  "sampled_solved_steps": 573,
+  "u_V1_in_V0_feasible_set": 573,
+  "feasibility_rate": 1.0,
+  "gap_median": -2.220446049250313e-16,
+  "gap_p95": 6.083621606478561e-10,
+  "gap_p99": 3.031899851180221e-09,
+  "gap_max": 8.932371287073693e-09,
+  "gap_min": -1.4430609485138746e-08,
+  "J_tol": 1e-09,
+  "n_gap_exceeding": 17,
+  "pass": false
+ },
+ "secondary": {
+  "E0_median": 5.840068598439441e-07,
+  "E0_p95": 2.0445635746473008e-05,
+  "E0_p99": 5.555339121549595e-05,
+  "E0_max": 0.0009158096145422956,
+  "E1_median": 1.2659567838468888e-11,
+  "E1_p95": 5.310925255130877e-10,
+  "E1_p99": 2.171134489137287e-09,
+  "E1_max": 3.198904252599277e-08,
+  "n": 573,
+  "fraction_E1_more_accurate": 0.9982547993019197,
+  "original_failed_thresholds": {
+   "L2_vs_V0_1e-6": "FAILED in the first run, preserved",
+   "L2_vs_arbiter_1e-8": "FAILED in the first run, preserved",
+   "L3_objective_1e-8": "FAILED in the first run, preserved"
+  }
+ },
+ "L4": {
+  "solved_steps": 14612,
+  "regressions": 1384,
+  "improvements": 3991,
+  "tier_transitions": {
+   "T0->T0": 4851,
+   "T1->T0": 3991,
+   "T1->T1": 4386,
+   "T0->T1": 1384
+  },
+  "pass": false
+ },
+ "status_matrix": {
+  "V0=optimal | V1=optimal": 14612,
+  "V0=infeasible | V1=infeasible": 541,
+  "V0=infeasible_inaccurate | V1=infeasible": 2
+ },
+ "closed_loop": {
+  "reduced_osqp/fixed": {
+   "episodes": 200,
+   "outcome_agreement": 0.99,
+   "divergent_episodes": [
+    {
+     "seed": 1000010,
+     "V0": "collision",
+     "V1": "success"
+    },
+    {
+     "seed": 1000165,
+     "V0": "collision",
+     "V1": "success"
+    }
+   ],
+   "success": {
+    "rate_V0": 0.855,
+    "rate_V1": 0.865,
+    "diff": 0.010000000000000009,
+    "n01": 2,
+    "n10": 0,
+    "mcnemar_p": 0.5,
+    "ci95": [
+     0.0,
+     0.025
+    ],
+    "pass": true
+   },
+   "collision": {
+    "rate_V0": 0.14,
+    "rate_V1": 0.13,
+    "diff": -0.010000000000000009,
+    "n01": 0,
+    "n10": 2,
+    "mcnemar_p": 0.5,
+    "ci95": [
+     -0.025,
+     0.0
+    ],
+    "pass": true
+   },
+   "timeout": {
+    "rate_V0": 0.005,
+    "rate_V1": 0.005,
+    "diff": 0.0,
+    "n01": 0,
+    "n10": 0,
+    "mcnemar_p": 1.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "pass": true
+   },
+   "pass": true
+  },
+  "reduced_osqp/randomized": {
+   "episodes": 200,
+   "outcome_agreement": 0.99,
+   "divergent_episodes": [
+    {
+     "seed": 1000118,
+     "V0": "collision",
+     "V1": "success"
+    },
+    {
+     "seed": 1000127,
+     "V0": "success",
+     "V1": "collision"
+    }
+   ],
+   "success": {
+    "rate_V0": 0.725,
+    "rate_V1": 0.725,
+    "diff": 0.0,
+    "n01": 1,
+    "n10": 1,
+    "mcnemar_p": 1.0,
+    "ci95": [
+     -0.015,
+     0.015
+    ],
+    "pass": true
+   },
+   "collision": {
+    "rate_V0": 0.275,
+    "rate_V1": 0.275,
+    "diff": 0.0,
+    "n01": 1,
+    "n10": 1,
+    "mcnemar_p": 1.0,
+    "ci95": [
+     -0.015,
+     0.015
+    ],
+    "pass": true
+   },
+   "timeout": {
+    "rate_V0": 0.0,
+    "rate_V1": 0.0,
+    "diff": 0.0,
+    "n01": 0,
+    "n10": 0,
+    "mcnemar_p": 1.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "pass": true
+   },
+   "pass": true
+  }
+ },
+ "gate": {
+  "primary": false,
+  "safety_L4": false,
+  "closed_loop": true,
+  "overall": false
+ }
+}
