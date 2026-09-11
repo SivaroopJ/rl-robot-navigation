@@ -1,0 +1,4299 @@
+{
+ "label": "Week6 / Generalization Suite / screen",
+ "id": "F10d_at_waypoint",
+ "family": "F10",
+ "level": 2,
+ "classification": "interface",
+ "difficulty": "ood",
+ "stress": false,
+ "motion_model": "stochastic",
+ "episodes": 50,
+ "seed_base": 8000000,
+ "meta": {
+  "trigger": [
+   3.0,
+   5.0
+  ],
+  "trigger_radius": 0.5,
+  "rect": [
+   5.0,
+   5.0,
+   0.5,
+   1.0
+  ],
+  "replanning": "none, both arms"
+ },
+ "seconds": 634.5491070747375,
+ "A": {
+  "episodes": 50,
+  "steps": 8076,
+  "success": 0.06,
+  "collision": 0.94,
+  "timeout": 0.0,
+  "dynamic": 47,
+  "static": 0,
+  "wall": 0,
+  "spl": 0.049853441122555735,
+  "path_length": 5.105012412071228,
+  "min_clearance": -0.0351359598636627,
+  "min_clearance_worst": -0.09222272634506223,
+  "frac_infeasible": 0.01696384348687469,
+  "n_infeasible": 137,
+  "n_recovered": 0,
+  "coll_after_infeasible": 26,
+  "coll_while_feasible": 21,
+  "planner_failures": 0,
+  "n_solver_fail": 137,
+  "mean_u_dev": 0.7949504885726192,
+  "min_cbc_solved": 0.03996150436145898,
+  "mean_step_time_ms": 33.89913613391622,
+  "rungs": {},
+  "tiers": {},
+  "m_median_of_episode_medians": NaN
+ },
+ "B": {
+  "episodes": 50,
+  "steps": 9486,
+  "success": 0.12,
+  "collision": 0.88,
+  "timeout": 0.0,
+  "dynamic": 44,
+  "static": 0,
+  "wall": 0,
+  "spl": 0.09299422499110424,
+  "path_length": 6.069959559440613,
+  "min_clearance": -0.0248357729911804,
+  "min_clearance_worst": -0.09222272634506223,
+  "frac_infeasible": 0.019502424625764285,
+  "n_infeasible": 185,
+  "n_recovered": 185,
+  "coll_after_infeasible": 9,
+  "coll_while_feasible": 35,
+  "planner_failures": 0,
+  "n_solver_fail": 185,
+  "mean_u_dev": 0.8198435478760586,
+  "min_cbc_solved": 0.039957760623422454,
+  "mean_step_time_ms": 34.96549300881594,
+  "rungs": {
+   "R2": 143,
+   "R2_lp": 6,
+   "R1": 36
+  },
+  "tiers": {
+   "2": 182,
+   "1": 3
+  },
+  "m_median_of_episode_medians": -0.11589737389835408
+ },
+ "episodes_A": [
+  {
+   "seed": 8000000,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 259,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.03455682992935183,
+   "path_length": 10.082842826843262,
+   "spl": 0.8330983775366331,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.011583011583011582,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7647096027975817,
+   "min_cbc_solved": 0.039930289178752014,
+   "mean_step_time": 0.033973103265536944,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 141,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000001,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 62,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0029604792594909446,
+   "path_length": 4.097775936126709,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.016129032258064516,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7255894240769546,
+   "min_cbc_solved": 0.039974504467146676,
+   "mean_step_time": 0.03369934532994164,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 61,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000002,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 145,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.08971748352050779,
+   "path_length": 6.485780715942383,
+   "spl": 0.0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.027586206896551724,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.812557944189951,
+   "min_cbc_solved": 0.03996404549582683,
+   "mean_step_time": 0.03457978292416524,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 49,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9946112632751465
+    }
+   ]
+  },
+  {
+   "seed": 8000003,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 223,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.027399218082427956,
+   "path_length": 6.468116760253906,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.008968609865470852,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9192408809589737,
+   "min_cbc_solved": 0.039958652859883426,
+   "mean_step_time": 0.03303869853877867,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 220,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9665460586547852
+    }
+   ]
+  },
+  {
+   "seed": 8000004,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 116,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.013029313087463357,
+   "path_length": 4.366354465484619,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.008620689655172414,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7585967437832531,
+   "min_cbc_solved": 0.03995230035840727,
+   "mean_step_time": 0.03434537954684668,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 115,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000005,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 130,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.05306134223937986,
+   "path_length": 3.283956527709961,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.007692307692307693,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7473880051630404,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.03258090527513279,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 129,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000006,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 145,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06729290485382078,
+   "path_length": 3.2984704971313477,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7732386824138832,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.0324538565810834,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000007,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 162,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0364652633666992,
+   "path_length": 4.894371509552002,
+   "spl": 0.0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.024691358024691357,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.81316099138254,
+   "min_cbc_solved": 0.03995973865866743,
+   "mean_step_time": 0.03373434290614692,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 103,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000008,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 121,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0021407365798949973,
+   "path_length": 6.453378677368164,
+   "spl": 0.0,
+   "n_infeasible": 9,
+   "n_solver_fail": 9,
+   "frac_infeasible": 0.0743801652892562,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.749781982040783,
+   "min_cbc_solved": 0.03996322515673559,
+   "mean_step_time": 0.035377216061638773,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 40,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 21,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.979370355606079
+    }
+   ]
+  },
+  {
+   "seed": 8000009,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 204,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.017759060859680154,
+   "path_length": 4.733274459838867,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.029411764705882353,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8505392902735177,
+   "min_cbc_solved": 0.03994624940230664,
+   "mean_step_time": 0.03461365138212511,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 27,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000010,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 318,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.03843513727188108,
+   "path_length": 4.865904331207275,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9026738275721686,
+   "min_cbc_solved": 0.039948780253629586,
+   "mean_step_time": 0.034492892870656065,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000011,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 114,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.02207837104797361,
+   "path_length": 3.8444457054138184,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.017543859649122806,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7471728401753444,
+   "min_cbc_solved": 0.03996478020226096,
+   "mean_step_time": 0.03465218061842678,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 112,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 25,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9435837268829346
+    }
+   ]
+  },
+  {
+   "seed": 8000012,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 212,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.08868578672409055,
+   "path_length": 5.968302249908447,
+   "spl": 0.0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.0330188679245283,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8667208126469997,
+   "min_cbc_solved": 0.03994208041281505,
+   "mean_step_time": 0.03461624525667537,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000013,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 99,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06485477685928343,
+   "path_length": 3.2472012042999268,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6721860546806918,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.0325078028830408,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000014,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 189,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.07505748271942136,
+   "path_length": 5.097995758056641,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8442918775611393,
+   "min_cbc_solved": 0.039957569575655105,
+   "mean_step_time": 0.034301561937253505,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000015,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 107,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06158957481384275,
+   "path_length": 5.2566914558410645,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7291844477963197,
+   "min_cbc_solved": 0.03992565701877454,
+   "mean_step_time": 0.034200029097340795,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000016,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 153,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06848422288894651,
+   "path_length": 4.349818706512451,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8003770545121548,
+   "min_cbc_solved": 0.039941719293693646,
+   "mean_step_time": 0.03316654788871947,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000017,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 135,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0737458825111389,
+   "path_length": 5.699589729309082,
+   "spl": 0.0,
+   "n_infeasible": 11,
+   "n_solver_fail": 11,
+   "frac_infeasible": 0.08148148148148149,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8196951300164168,
+   "min_cbc_solved": 0.039964154314236826,
+   "mean_step_time": 0.03424898675401453,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 32,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000018,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 39,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06402430534362791,
+   "path_length": 2.5162391662597656,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.15384615384615385,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 1.0398305719316547,
+   "min_cbc_solved": 0.03999255434977189,
+   "mean_step_time": 0.033881838681200184,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 24,
+   "wall_events": []
+  },
+  {
+   "seed": 8000019,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 139,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06437650918960569,
+   "path_length": 5.782380104064941,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.014388489208633094,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.805207620096834,
+   "min_cbc_solved": 0.03996938653537134,
+   "mean_step_time": 0.033499451949622935,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 137,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000020,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 83,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06123474836349485,
+   "path_length": 3.7711613178253174,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.629168504340655,
+   "min_cbc_solved": 0.039962973236369465,
+   "mean_step_time": 0.033600549606314624,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000021,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 192,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.058579540252685525,
+   "path_length": 4.990368843078613,
+   "spl": 0.0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.036458333333333336,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8357572811100497,
+   "min_cbc_solved": 0.03995986500056126,
+   "mean_step_time": 0.03352627049025614,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 16,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 52,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.8937938213348389
+    }
+   ]
+  },
+  {
+   "seed": 8000022,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 182,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00043157339096067115,
+   "path_length": 4.099841117858887,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.01098901098901099,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8326864914787968,
+   "min_cbc_solved": 0.03994558572941859,
+   "mean_step_time": 0.03395231116107655,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 180,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000023,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 162,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.02275983095169065,
+   "path_length": 5.174960136413574,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.006172839506172839,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8551955334472623,
+   "min_cbc_solved": 0.039964054131871735,
+   "mean_step_time": 0.034489598276128096,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 161,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 37,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.6769442558288574
+    }
+   ]
+  },
+  {
+   "seed": 8000024,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 146,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.07163033485412595,
+   "path_length": 9.580156326293945,
+   "spl": 0.0,
+   "n_infeasible": 16,
+   "n_solver_fail": 16,
+   "frac_infeasible": 0.1095890410958904,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9390317920955881,
+   "min_cbc_solved": 0.039937599448294434,
+   "mean_step_time": 0.03497387787760937,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 18,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 62,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.5953996181488037
+    }
+   ]
+  },
+  {
+   "seed": 8000025,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 95,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.02466539144515989,
+   "path_length": 3.2302589416503906,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.021052631578947368,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6599727896943589,
+   "min_cbc_solved": 0.039982048123619315,
+   "mean_step_time": 0.03324014198917307,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 93,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000026,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 127,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.009145236015319802,
+   "path_length": 6.613551616668701,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.015748031496062992,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7645565247850047,
+   "min_cbc_solved": 0.03996591853575071,
+   "mean_step_time": 0.03355766062837417,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 53,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000027,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 114,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.09222272634506223,
+   "path_length": 3.558669090270996,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7431426198583423,
+   "min_cbc_solved": 0.03995642583668779,
+   "mean_step_time": 0.03411155293711968,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 25,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.8456790447235107
+    }
+   ]
+  },
+  {
+   "seed": 8000028,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 184,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.04672975540161134,
+   "path_length": 10.162837982177734,
+   "spl": 0.8265407767722786,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.005434782608695652,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.710622682033116,
+   "min_cbc_solved": 0.03993167065585696,
+   "mean_step_time": 0.03498536758706905,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 53,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000029,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 272,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06794712543487547,
+   "path_length": 6.147109508514404,
+   "spl": 0.0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.014705882352941176,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9113342865674674,
+   "min_cbc_solved": 0.039910711330597204,
+   "mean_step_time": 0.03392631659217466,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 54,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000030,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 124,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.04597160816192625,
+   "path_length": 3.2795052528381348,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.008064516129032258,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7355238665612445,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.03333330060723388,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 123,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000031,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 146,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.018533980846405007,
+   "path_length": 5.139516353607178,
+   "spl": 0.0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.04794520547945205,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7957933402724156,
+   "min_cbc_solved": 0.03996505228693375,
+   "mean_step_time": 0.033816500326892845,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 9,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 40,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.963094711303711
+    }
+   ]
+  },
+  {
+   "seed": 8000032,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 283,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.032399094104766823,
+   "path_length": 8.836349487304688,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.912834469969675,
+   "min_cbc_solved": 0.039945261033813274,
+   "mean_step_time": 0.03495085818196117,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 35,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9550073146820068
+    }
+   ]
+  },
+  {
+   "seed": 8000033,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 200,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.05565712451934812,
+   "path_length": 3.299077033996582,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.005,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8350461451794422,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.0333460198843386,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 199,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000034,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 304,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.005682742595672585,
+   "path_length": 3.3014140129089355,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8914481771433643,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.03368297628070362,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000035,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 203,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.056251263618469216,
+   "path_length": 7.730908393859863,
+   "spl": 0.0,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.014778325123152709,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8737092965572876,
+   "min_cbc_solved": 0.03996427708368601,
+   "mean_step_time": 0.03382706499241035,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 39,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000036,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 130,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0367139935493469,
+   "path_length": 6.4180755615234375,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.038461538461538464,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8101038757149407,
+   "min_cbc_solved": 0.039965212567944525,
+   "mean_step_time": 0.03426790930366574,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 77,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000037,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 176,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.035536444187164284,
+   "path_length": 3.4588944911956787,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8180854670042657,
+   "min_cbc_solved": 0.039962946729094354,
+   "mean_step_time": 0.034614120408977295,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000038,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 121,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00016901493072507545,
+   "path_length": 3.281402349472046,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.72912343476693,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.032876706258817154,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000039,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 47,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.038649237155914284,
+   "path_length": 3.4780712127685547,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.1276595744680851,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.739352574608607,
+   "min_cbc_solved": 0.0399883949553847,
+   "mean_step_time": 0.03273785961643258,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 37,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000040,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 172,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.0428858518600464,
+   "path_length": 10.083635330200195,
+   "spl": 0.8330329018188752,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.03488372093023256,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6820159256900208,
+   "min_cbc_solved": 0.039934629059595585,
+   "mean_step_time": 0.033618799902818186,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 63,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000041,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 206,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.07901439666748045,
+   "path_length": 3.8073010444641113,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8425050094153175,
+   "min_cbc_solved": 0.03994724266523505,
+   "mean_step_time": 0.03414649255596355,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000042,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 144,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0013707041740417258,
+   "path_length": 7.666116237640381,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.013888888888888888,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8502898227764004,
+   "min_cbc_solved": 0.03996450883641786,
+   "mean_step_time": 0.034324491208988346,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 33,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000043,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 449,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.023675715923309304,
+   "path_length": 5.092008590698242,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.0022271714922048997,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9305813633808964,
+   "min_cbc_solved": 0.03994492651337932,
+   "mean_step_time": 0.03449567567161958,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 448,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9665629863739014
+    }
+   ]
+  },
+  {
+   "seed": 8000044,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 58,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00980643033981321,
+   "path_length": 3.105319023132324,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4747291029014572,
+   "min_cbc_solved": 0.039962012445499906,
+   "mean_step_time": 0.03552155050344701,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 21,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.907209873199463
+    }
+   ]
+  },
+  {
+   "seed": 8000045,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 51,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.047314143180847146,
+   "path_length": 3.3431150913238525,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.09803921568627451,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6806636825038015,
+   "min_cbc_solved": 0.03999108585670222,
+   "mean_step_time": 0.033761204407532136,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 45,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000046,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 249,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.04562399387359617,
+   "path_length": 5.113655090332031,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.024096385542168676,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8974839084314288,
+   "min_cbc_solved": 0.03996616407287823,
+   "mean_step_time": 0.034011510724433695,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 28,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 56,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.646176815032959
+    }
+   ]
+  },
+  {
+   "seed": 8000047,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 92,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.000830864906311013,
+   "path_length": 3.300626516342163,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6604861414466537,
+   "min_cbc_solved": 0.039979226492035336,
+   "mean_step_time": 0.03300471641199218,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 22,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.960228443145752
+    }
+   ]
+  },
+  {
+   "seed": 8000048,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 176,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0006165862083434837,
+   "path_length": 4.120759963989258,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8462677781190554,
+   "min_cbc_solved": 0.03996536974540042,
+   "mean_step_time": 0.03389476614525351,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9937679767608643
+    }
+   ]
+  },
+  {
+   "seed": 8000049,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 116,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00737873315811155,
+   "path_length": 3.273063898086548,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7178687567069161,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.032396816408687176,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  }
+ ],
+ "episodes_B": [
+  {
+   "seed": 8000000,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 235,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.03455682992935183,
+   "path_length": 9.990495681762695,
+   "spl": 0.8407991222431446,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7388739378410595,
+   "min_cbc_solved": 0.03997459919974654,
+   "mean_step_time": 0.03376807973204934,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000001,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 62,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0029093384742736594,
+   "path_length": 4.20507287979126,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.016129032258064516,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7367561469622405,
+   "min_cbc_solved": 0.03996093485115737,
+   "mean_step_time": 0.03413160380929889,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.748980430845864,
+   "m_min": -0.748980430845864,
+   "first_infeasible_step": 61,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000002,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 146,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.02039293050765989,
+   "path_length": 6.692605018615723,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.03424657534246575,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8156180601928531,
+   "min_cbc_solved": 0.03995725520383844,
+   "mean_step_time": 0.036858529144298435,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 4,
+    "R2_lp": 1
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -0.34839220829515494,
+   "m_min": -0.42968832350945396,
+   "first_infeasible_step": 49,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9946112632751465
+    }
+   ]
+  },
+  {
+   "seed": 8000003,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 366,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.03755530118942263,
+   "path_length": 13.603021621704102,
+   "spl": 0.6175098616764311,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.01639344262295082,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9053214795135964,
+   "min_cbc_solved": 0.03991981787713646,
+   "mean_step_time": 0.033876869893032305,
+   "n_recovered": 6,
+   "rungs": {
+    "R1": 2,
+    "R2": 4
+   },
+   "tiers": {
+    "1": 1,
+    "2": 5
+   },
+   "m_median": -0.017003568171635196,
+   "m_min": -0.1254662974943922,
+   "first_infeasible_step": 220,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9665460586547852
+    }
+   ]
+  },
+  {
+   "seed": 8000004,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 212,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.05873737335205076,
+   "path_length": 6.543087005615234,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.009433962264150943,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8651646727561229,
+   "min_cbc_solved": 0.039950579953931024,
+   "mean_step_time": 0.03543080716011694,
+   "n_recovered": 2,
+   "rungs": {
+    "R2": 2
+   },
+   "tiers": {
+    "2": 2
+   },
+   "m_median": -0.18304394105561492,
+   "m_min": -0.30642987412367834,
+   "first_infeasible_step": 115,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000005,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 131,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0020647406578063743,
+   "path_length": 3.4934751987457275,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.015267175572519083,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7532433218625412,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.033372602004287696,
+   "n_recovered": 2,
+   "rungs": {
+    "R2": 2
+   },
+   "tiers": {
+    "2": 2
+   },
+   "m_median": -0.28286943231393225,
+   "m_min": -0.32391063658796115,
+   "first_infeasible_step": 129,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000006,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 145,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06729290485382078,
+   "path_length": 3.2984704971313477,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7732386824138832,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.032369032799234164,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000007,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 196,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.02338244915008547,
+   "path_length": 9.732795715332031,
+   "spl": 0.8630613695885465,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.03571428571428571,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7206426164169427,
+   "min_cbc_solved": 0.03995709903775091,
+   "mean_step_time": 0.03560061258803198,
+   "n_recovered": 7,
+   "rungs": {
+    "R1": 3,
+    "R2": 4
+   },
+   "tiers": {
+    "2": 7
+   },
+   "m_median": -0.12898191604737694,
+   "m_min": -0.312165227969414,
+   "first_infeasible_step": 103,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000008,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 126,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.03883359432220457,
+   "path_length": 8.147088050842285,
+   "spl": 0.0,
+   "n_infeasible": 17,
+   "n_solver_fail": 17,
+   "frac_infeasible": 0.1349206349206349,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8082016084451238,
+   "min_cbc_solved": 0.0399644152672467,
+   "mean_step_time": 0.04213661001348454,
+   "n_recovered": 17,
+   "rungs": {
+    "R2": 14,
+    "R2_lp": 2,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 17
+   },
+   "m_median": -0.15665113963055727,
+   "m_min": -0.3417917445591479,
+   "first_infeasible_step": 40,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 21,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.979370355606079
+    }
+   ]
+  },
+  {
+   "seed": 8000009,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 204,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.01669577360153196,
+   "path_length": 5.548540115356445,
+   "spl": 0.0,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.00980392156862745,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8560313829860671,
+   "min_cbc_solved": 0.039929297309442585,
+   "mean_step_time": 0.03533835893818725,
+   "n_recovered": 2,
+   "rungs": {
+    "R2_lp": 1,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 2
+   },
+   "m_median": -0.032969718720219324,
+   "m_min": -0.06593942918279516,
+   "first_infeasible_step": 31,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000010,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 318,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.03843513727188108,
+   "path_length": 4.865904331207275,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9026738275721686,
+   "min_cbc_solved": 0.039948780253629586,
+   "mean_step_time": 0.035024040337994625,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000011,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 116,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0030501842498779075,
+   "path_length": 4.057910442352295,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.008620689655172414,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7557755620481601,
+   "min_cbc_solved": 0.03996478020226096,
+   "mean_step_time": 0.03514693569741212,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.1197283665536459,
+   "m_min": -0.1197283665536459,
+   "first_infeasible_step": 112,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 25,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9435837268829346
+    }
+   ]
+  },
+  {
+   "seed": 8000012,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 212,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.08655974864959715,
+   "path_length": 6.5644683837890625,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.02358490566037736,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8736093391249674,
+   "min_cbc_solved": 0.03996051735049902,
+   "mean_step_time": 0.03555919247666233,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 5
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -0.13433715163950882,
+   "m_min": -0.24561028439045535,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000013,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 99,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06485477685928343,
+   "path_length": 3.2472012042999268,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6721860546806918,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.032245096514199045,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000014,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 189,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.07505748271942136,
+   "path_length": 5.097995758056641,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8442918775611393,
+   "min_cbc_solved": 0.039957569575655105,
+   "mean_step_time": 0.03402071025483704,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000015,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 107,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06158957481384275,
+   "path_length": 5.2566914558410645,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7291844477963197,
+   "min_cbc_solved": 0.03992565701877454,
+   "mean_step_time": 0.03337423392967539,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000016,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 153,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06848422288894651,
+   "path_length": 4.349818706512451,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8003770545121548,
+   "min_cbc_solved": 0.039941719293693646,
+   "mean_step_time": 0.03379718415831745,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000017,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 161,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.04280755519866941,
+   "path_length": 8.70091438293457,
+   "spl": 0.0,
+   "n_infeasible": 15,
+   "n_solver_fail": 15,
+   "frac_infeasible": 0.09316770186335403,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8357827675408881,
+   "min_cbc_solved": 0.03996294031915093,
+   "mean_step_time": 0.0363081844475826,
+   "n_recovered": 15,
+   "rungs": {
+    "R1": 9,
+    "R2": 6
+   },
+   "tiers": {
+    "2": 15
+   },
+   "m_median": -3.501985768039617e-07,
+   "m_min": -0.15531007235038152,
+   "first_infeasible_step": 32,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000018,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 154,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.04329105615615847,
+   "path_length": 12.992817878723145,
+   "spl": 0.6465110246604566,
+   "n_infeasible": 12,
+   "n_solver_fail": 12,
+   "frac_infeasible": 0.07792207792207792,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6975103563878813,
+   "min_cbc_solved": 0.03995603229242861,
+   "mean_step_time": 0.038375572658252796,
+   "n_recovered": 12,
+   "rungs": {
+    "R2": 12
+   },
+   "tiers": {
+    "2": 12
+   },
+   "m_median": -0.10065084125415502,
+   "m_min": -0.24108203577915832,
+   "first_infeasible_step": 24,
+   "wall_events": []
+  },
+  {
+   "seed": 8000019,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 493,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.03672060966491697,
+   "path_length": 7.975669860839844,
+   "spl": 0.0,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.008113590263691683,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9502916553308518,
+   "min_cbc_solved": 0.039946209907810455,
+   "mean_step_time": 0.03432669363982983,
+   "n_recovered": 4,
+   "rungs": {
+    "R2": 2,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 4
+   },
+   "m_median": -0.039146846643665634,
+   "m_min": -0.13493797072392044,
+   "first_infeasible_step": 137,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000020,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 83,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06123474836349485,
+   "path_length": 3.7711613178253174,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.629168504340655,
+   "min_cbc_solved": 0.039962973236369465,
+   "mean_step_time": 0.0333983730118026,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000021,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 192,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.05880925655364988,
+   "path_length": 5.160370826721191,
+   "spl": 0.0,
+   "n_infeasible": 12,
+   "n_solver_fail": 12,
+   "frac_infeasible": 0.0625,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8371936549217649,
+   "min_cbc_solved": 0.03996690264196365,
+   "mean_step_time": 0.03748974357586121,
+   "n_recovered": 12,
+   "rungs": {
+    "R2": 10,
+    "R2_lp": 1,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 12
+   },
+   "m_median": -0.12585366295470704,
+   "m_min": -0.20345477005124446,
+   "first_infeasible_step": 17,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 50,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.8852272033691406
+    }
+   ]
+  },
+  {
+   "seed": 8000022,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 181,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.05008760690689085,
+   "path_length": 4.196652889251709,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.0055248618784530384,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8326607616407857,
+   "min_cbc_solved": 0.03994558572941859,
+   "mean_step_time": 0.03382612661283607,
+   "n_recovered": 1,
+   "rungs": {
+    "R1": 1
+   },
+   "tiers": {
+    "1": 1
+   },
+   "m_median": 1.47730949695557e-08,
+   "m_min": 1.47730949695557e-08,
+   "first_infeasible_step": 180,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000023,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 162,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.011155223846435525,
+   "path_length": 5.275132656097412,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.006172839506172839,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8575073015571919,
+   "min_cbc_solved": 0.039964054131871735,
+   "mean_step_time": 0.03450828307469226,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.014220737302125697,
+   "m_min": -0.014220737302125697,
+   "first_infeasible_step": 161,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 37,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.6769442558288574
+    }
+   ]
+  },
+  {
+   "seed": 8000024,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 44,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.003667926788330056,
+   "path_length": 3.2500033378601074,
+   "spl": 0.0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.1590909090909091,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 1.1879282725737383,
+   "min_cbc_solved": 0.039980876399792864,
+   "mean_step_time": 0.039271604685134,
+   "n_recovered": 7,
+   "rungs": {
+    "R2": 7
+   },
+   "tiers": {
+    "2": 7
+   },
+   "m_median": -0.2591380001917172,
+   "m_min": -0.422749379034564,
+   "first_infeasible_step": 18,
+   "wall_events": []
+  },
+  {
+   "seed": 8000025,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 236,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00711778402328489,
+   "path_length": 6.651108741760254,
+   "spl": 0.0,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.03389830508474576,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8849567869356137,
+   "min_cbc_solved": 0.03996676922986016,
+   "mean_step_time": 0.035808340238872916,
+   "n_recovered": 8,
+   "rungs": {
+    "R2": 8
+   },
+   "tiers": {
+    "2": 8
+   },
+   "m_median": -0.2675445885180218,
+   "m_min": -0.41670398575122924,
+   "first_infeasible_step": 93,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000026,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 128,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.023672497272491433,
+   "path_length": 7.127439022064209,
+   "spl": 0.0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.0546875,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7960758280789902,
+   "min_cbc_solved": 0.03995910099268596,
+   "mean_step_time": 0.036187562133818574,
+   "n_recovered": 7,
+   "rungs": {
+    "R2": 5,
+    "R2_lp": 1,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 7
+   },
+   "m_median": -0.15123303183978606,
+   "m_min": -0.18006357129052666,
+   "first_infeasible_step": 53,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000027,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 114,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.09222272634506223,
+   "path_length": 3.558669090270996,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7431426198583423,
+   "min_cbc_solved": 0.03995642583668779,
+   "mean_step_time": 0.03420641338207612,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 25,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.8456790447235107
+    }
+   ]
+  },
+  {
+   "seed": 8000028,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 152,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.043386054039001476,
+   "path_length": 9.678459167480469,
+   "spl": 0.8679067457580356,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.006578947368421052,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6563141209867022,
+   "min_cbc_solved": 0.03992295567534665,
+   "mean_step_time": 0.034259750388293084,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.006884950666250549,
+   "m_min": -0.006884950666250549,
+   "first_infeasible_step": 110,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000029,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 374,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06854501962661741,
+   "path_length": 7.726059913635254,
+   "spl": 0.0,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.008021390374331552,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.944447375098369,
+   "min_cbc_solved": 0.039944032051406966,
+   "mean_step_time": 0.03488645517798938,
+   "n_recovered": 3,
+   "rungs": {
+    "R2": 3
+   },
+   "tiers": {
+    "2": 3
+   },
+   "m_median": -0.1342488695643384,
+   "m_min": -0.3026371252244896,
+   "first_infeasible_step": 54,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000030,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 132,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00025168657302854225,
+   "path_length": 3.972015857696533,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.03787878787878788,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7798939322502287,
+   "min_cbc_solved": 0.03994376958414356,
+   "mean_step_time": 0.03446375770638979,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 3,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -0.11920209700173778,
+   "m_min": -0.21260363859901266,
+   "first_infeasible_step": 123,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000031,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 208,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.013060128688812234,
+   "path_length": 6.057228088378906,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.028846153846153848,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8706871440704185,
+   "min_cbc_solved": 0.03995091456280743,
+   "mean_step_time": 0.0349818458590352,
+   "n_recovered": 6,
+   "rungs": {
+    "R2": 3,
+    "R1": 3
+   },
+   "tiers": {
+    "2": 5,
+    "1": 1
+   },
+   "m_median": -0.007669879820181108,
+   "m_min": -0.117647437556885,
+   "first_infeasible_step": 9,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 37,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.897261619567871
+    }
+   ]
+  },
+  {
+   "seed": 8000032,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 283,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.032451188564300515,
+   "path_length": 8.804632186889648,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.912929966997758,
+   "min_cbc_solved": 0.03994997059105901,
+   "mean_step_time": 0.034836671876642106,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 35,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9550073146820068
+    }
+   ]
+  },
+  {
+   "seed": 8000033,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 279,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.04862526655197141,
+   "path_length": 4.774431228637695,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.0035842293906810036,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8890550391984695,
+   "min_cbc_solved": 0.03993447873117778,
+   "mean_step_time": 0.03372298911969949,
+   "n_recovered": 1,
+   "rungs": {
+    "R1": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -2.38729459484735e-05,
+   "m_min": -2.38729459484735e-05,
+   "first_infeasible_step": 199,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000034,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 304,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.005682742595672585,
+   "path_length": 3.3014140129089355,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8914481771433643,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.033264779045758155,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000035,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 72,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.006473994255065896,
+   "path_length": 5.974465370178223,
+   "spl": 0.0,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.1111111111111111,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 1.0920554906034923,
+   "min_cbc_solved": 0.03997940961621288,
+   "mean_step_time": 0.0384660077915113,
+   "n_recovered": 8,
+   "rungs": {
+    "R2": 6,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 8
+   },
+   "m_median": -0.11033688741994305,
+   "m_min": -0.19459253291406703,
+   "first_infeasible_step": 39,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000036,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 135,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.049810504913330056,
+   "path_length": 7.108325958251953,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.044444444444444446,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8372894480326488,
+   "min_cbc_solved": 0.03996793110185018,
+   "mean_step_time": 0.03668259605161708,
+   "n_recovered": 6,
+   "rungs": {
+    "R2": 6
+   },
+   "tiers": {
+    "2": 6
+   },
+   "m_median": -0.07553737192360765,
+   "m_min": -0.13884493170514667,
+   "first_infeasible_step": 127,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000037,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 176,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.035536444187164284,
+   "path_length": 3.4588944911956787,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8180854670042657,
+   "min_cbc_solved": 0.039962946729094354,
+   "mean_step_time": 0.03374136596672046,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000038,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 121,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00016901493072507545,
+   "path_length": 3.281402349472046,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.72912343476693,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.032748972793102016,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000039,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 102,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.054173505306243874,
+   "path_length": 7.43959903717041,
+   "spl": 0.0,
+   "n_infeasible": 15,
+   "n_solver_fail": 15,
+   "frac_infeasible": 0.14705882352941177,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9149020069241417,
+   "min_cbc_solved": 0.03998260838236978,
+   "mean_step_time": 0.03933482094069797,
+   "n_recovered": 15,
+   "rungs": {
+    "R2": 12,
+    "R1": 3
+   },
+   "tiers": {
+    "2": 15
+   },
+   "m_median": -0.11589737389835408,
+   "m_min": -0.3109663990263926,
+   "first_infeasible_step": 38,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000040,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 166,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.044844698905944835,
+   "path_length": 10.320384979248047,
+   "spl": 0.8139231256285977,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6880237450043324,
+   "min_cbc_solved": 0.03990773134876341,
+   "mean_step_time": 0.03375812379519893,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000041,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 206,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.07901439666748045,
+   "path_length": 3.8073010444641113,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8425050094153175,
+   "min_cbc_solved": 0.03994724266523505,
+   "mean_step_time": 0.03408166838389396,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000042,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 281,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.017069792747497536,
+   "path_length": 11.330398559570312,
+   "spl": 0.0,
+   "n_infeasible": 11,
+   "n_solver_fail": 11,
+   "frac_infeasible": 0.03914590747330961,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9346803489703676,
+   "min_cbc_solved": 0.03995729955895009,
+   "mean_step_time": 0.03622320577008418,
+   "n_recovered": 11,
+   "rungs": {
+    "R2": 7,
+    "R1": 4
+   },
+   "tiers": {
+    "2": 11
+   },
+   "m_median": -0.030002555677973497,
+   "m_min": -0.3838148185959764,
+   "first_infeasible_step": 40,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000043,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 453,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0011886715888976829,
+   "path_length": 5.59298038482666,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.011037527593818985,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9367412175046693,
+   "min_cbc_solved": 0.03994492651337932,
+   "mean_step_time": 0.03485240610691597,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 5
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -0.0837565197059194,
+   "m_min": -0.08858880079743249,
+   "first_infeasible_step": 448,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9665629863739014
+    }
+   ]
+  },
+  {
+   "seed": 8000044,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 58,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00980643033981321,
+   "path_length": 3.105319023132324,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4747291029014572,
+   "min_cbc_solved": 0.039962012445499906,
+   "mean_step_time": 0.03464121855434094,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 21,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.907209873199463
+    }
+   ]
+  },
+  {
+   "seed": 8000045,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 145,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.01546136140823362,
+   "path_length": 7.141136169433594,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.006896551724137931,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8005021457632168,
+   "min_cbc_solved": 0.039963260586545424,
+   "mean_step_time": 0.034206234000559,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.05516977495594993,
+   "m_min": -0.05516977495594993,
+   "first_infeasible_step": 54,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  },
+  {
+   "seed": 8000046,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 490,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.030232226848602273,
+   "path_length": 6.689144611358643,
+   "spl": 0.0,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.0163265306122449,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9527045634778558,
+   "min_cbc_solved": 0.03994842175446925,
+   "mean_step_time": 0.03526212062558387,
+   "n_recovered": 8,
+   "rungs": {
+    "R2": 8
+   },
+   "tiers": {
+    "2": 8
+   },
+   "m_median": -0.2108326404229855,
+   "m_min": -0.3030365699771035,
+   "first_infeasible_step": 28,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 55,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.7075977325439453
+    }
+   ]
+  },
+  {
+   "seed": 8000047,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 92,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.000830864906311013,
+   "path_length": 3.300626516342163,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6604861414466537,
+   "min_cbc_solved": 0.039979226492035336,
+   "mean_step_time": 0.03222681978671892,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 22,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.960228443145752
+    }
+   ]
+  },
+  {
+   "seed": 8000048,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 176,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0005893468856811301,
+   "path_length": 4.006113052368164,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8442961776826312,
+   "min_cbc_solved": 0.039965723543483114,
+   "mean_step_time": 0.03355189086737069,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.9937679767608643
+    }
+   ]
+  },
+  {
+   "seed": 8000049,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 116,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.00737873315811155,
+   "path_length": 3.273063898086548,
+   "spl": 0.0,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7178687567069161,
+   "min_cbc_solved": 0.03998204602074834,
+   "mean_step_time": 0.03232355292079617,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10d_at_waypoint",
+     "step": 20,
+     "rect": [
+      5.0,
+      5.0,
+      0.5,
+      1.0
+     ],
+     "distance_at_activation": 1.966545820236206
+    }
+   ]
+  }
+ ]
+}
