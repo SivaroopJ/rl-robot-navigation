@@ -1,0 +1,2223 @@
+{
+ "label": "Hunter variants / smoke / P-Random / hunter 1",
+ "map": "M0 (config.json: 5 rects, 6 stochastic dyn obstacles @0.675 m/s)",
+ "pursuit_config": {
+  "condition": "P-Random",
+  "capture_delta": 0.05,
+  "hunter_max_speed": 1.0,
+  "hunter_radius": 0.3,
+  "hunter_start_min_dist": 3.0,
+  "info_model": "known_state",
+  "update_mode": "simultaneous",
+  "motion": "randomized",
+  "max_steps": 500,
+  "capture_distance@r0.3": 0.65,
+  "contact_distance@r0.3": 0.6,
+  "outcome_priority": [
+   "protagonist_collision",
+   "capture",
+   "goal",
+   "timeout"
+  ]
+ },
+ "variants": {
+  "B1": {
+   "name": "B1",
+   "policy": "direct",
+   "lidar_mode": "remove",
+   "prediction_horizon": 0.5,
+   "goal_accel": 1.0,
+   "filter_margin": 0.05
+  },
+  "B1.5": {
+   "name": "B1.5",
+   "policy": "direct",
+   "lidar_mode": "filter",
+   "prediction_horizon": 0.5,
+   "goal_accel": 1.0,
+   "filter_margin": 0.05
+  },
+  "P2": {
+   "name": "P2",
+   "policy": "predictive",
+   "lidar_mode": "remove",
+   "prediction_horizon": 0.5,
+   "goal_accel": 1.0,
+   "filter_margin": 0.05
+  },
+  "P2.5": {
+   "name": "P2.5",
+   "policy": "predictive",
+   "lidar_mode": "filter",
+   "prediction_horizon": 0.5,
+   "goal_accel": 1.0,
+   "filter_margin": 0.05
+  }
+ },
+ "tuned": {
+  "alpha": 0.8,
+  "clf_rate": 1.0,
+  "wasserstein_r": 0.012,
+  "epsilon": 0.1,
+  "k_v": 0.1,
+  "k_scans": 5,
+  "tau_eff": 0.12,
+  "regime": "collapsed",
+  "eps_n": 0.5
+ },
+ "random": {
+  "K": 16,
+  "H": 1,
+  "speeds": [
+   0.8,
+   1.0
+  ],
+  "accept_m": 0.0,
+  "name": "R3_K16_H1_esc0.8"
+ },
+ "seed_block": "HV_smoke",
+ "seeds": [
+  14000000,
+  14000004
+ ],
+ "episodes_per_variant": 5,
+ "summary": {
+  "B1": {
+   "arm": "B1",
+   "episodes": 5,
+   "goal_rate": 0.4,
+   "goal_ci95": [
+    0.1176182311592533,
+    0.769280067791163
+   ],
+   "captured_rate": 0.4,
+   "captured_ci95": [
+    0.1176182311592533,
+    0.769280067791163
+   ],
+   "protagonist_collision_rate": 0.2,
+   "protagonist_collision_ci95": [
+    0.03622316096978745,
+    0.6244717358814613
+   ],
+   "hunter_collision_rate": 0.2,
+   "hunter_collision_ci95": [
+    0.03622316096978745,
+    0.6244717358814613
+   ],
+   "timeout_rate": 0.0,
+   "timeout_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "agent_contact_rate": 0.0,
+   "agent_contact_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "prot_static_collision_rate": 0.0,
+   "hunter_static_collision_rate": 0.0,
+   "prot_dynamic_collision_rate": 0.2,
+   "hunter_dynamic_collision_rate": 0.2,
+   "prot_wall_collision_rate": 0.0,
+   "hunter_wall_collision_rate": 0.0,
+   "time_to_goal_s": 23.1,
+   "time_to_capture_s": 8.850000000000001,
+   "min_hunter_distance": 0.7382243596609812,
+   "min_clearance": 0.09094053983688356,
+   "spl": 0.16245714992412463,
+   "path_length": 11.016931056976318,
+   "prot_frac_infeasible": 0.1087344537116591,
+   "prot_recovery_fraction": 0.1087344537116591,
+   "hunter_frac_infeasible": 0.03195260926968244,
+   "hunter_frac_nominal_unsafe": 0.6335976437765816,
+   "hunter_frac_materially_filtered": 0.8515971787923007,
+   "hunter_mean_u_dev": 0.490114662174153,
+   "prot_mean_u_dev": 0.8852927759215247,
+   "prot_ms_mean": 37.92477654288291,
+   "prot_ms_p95": 42.68470728304237,
+   "hunter_ms_mean": 35.5891734324553,
+   "hunter_ms_p95": 41.83773186756298,
+   "episode_time_s": 11.568978487001733,
+   "steps": 149.2,
+   "time_to_goal_ci95": [
+    21.6,
+    24.6
+   ],
+   "time_to_capture_ci95": [
+    6.0,
+    11.700000000000001
+   ],
+   "min_hunter_distance_ci95": [
+    0.654402033327347,
+    0.8573019294797675
+   ],
+   "prot_recovery_events_total": 66,
+   "hunter_fallback_total": 65,
+   "prot_ms_p95_worst": 44.150283792987466,
+   "hunter_ms_p95_worst": 45.78226845478639,
+   "capture_distance_mean": 0.6422270470833662,
+   "hunter_solver_fail_rate": 0.0871313672922252,
+   "hunter_infeasible_step_rate_pooled": 0.02680965147453083,
+   "prot_infeasible_step_rate_pooled": 0.08847184986595175,
+   "hunter_no_barrier_rows_total": 0
+  },
+  "B1.5": {
+   "arm": "B1.5",
+   "episodes": 5,
+   "goal_rate": 0.2,
+   "goal_ci95": [
+    0.03622316096978745,
+    0.6244717358814613
+   ],
+   "captured_rate": 0.4,
+   "captured_ci95": [
+    0.1176182311592533,
+    0.769280067791163
+   ],
+   "protagonist_collision_rate": 0.4,
+   "protagonist_collision_ci95": [
+    0.1176182311592533,
+    0.769280067791163
+   ],
+   "hunter_collision_rate": 0.4,
+   "hunter_collision_ci95": [
+    0.1176182311592533,
+    0.769280067791163
+   ],
+   "timeout_rate": 0.0,
+   "timeout_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "agent_contact_rate": 0.0,
+   "agent_contact_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "prot_static_collision_rate": 0.0,
+   "hunter_static_collision_rate": 0.0,
+   "prot_dynamic_collision_rate": 0.4,
+   "hunter_dynamic_collision_rate": 0.4,
+   "prot_wall_collision_rate": 0.0,
+   "hunter_wall_collision_rate": 0.0,
+   "time_to_goal_s": 24.6,
+   "time_to_capture_s": 14.700000000000001,
+   "min_hunter_distance": 0.7459083734887478,
+   "min_clearance": 0.07114469289779665,
+   "spl": 0.05976069899539567,
+   "path_length": 10.739957904815673,
+   "prot_frac_infeasible": 0.09911676964192022,
+   "prot_recovery_fraction": 0.09911676964192022,
+   "hunter_frac_infeasible": 0.04037243056621607,
+   "hunter_frac_nominal_unsafe": 0.6625149330363366,
+   "hunter_frac_materially_filtered": 0.8739351279110718,
+   "hunter_mean_u_dev": 0.5101429139986894,
+   "prot_mean_u_dev": 0.9981833885045643,
+   "prot_ms_mean": 37.675656071466975,
+   "prot_ms_p95": 42.51015436835587,
+   "hunter_ms_mean": 36.39281602073985,
+   "hunter_ms_p95": 43.60060988692567,
+   "episode_time_s": 12.34166196794249,
+   "steps": 158.6,
+   "time_to_goal_ci95": [
+    24.6,
+    24.6
+   ],
+   "time_to_capture_ci95": [
+    14.600000000000001,
+    14.8
+   ],
+   "min_hunter_distance_ci95": [
+    0.6493795953064306,
+    0.8642467919585428
+   ],
+   "prot_recovery_events_total": 72,
+   "hunter_fallback_total": 92,
+   "prot_ms_p95_worst": 45.68095072172581,
+   "hunter_ms_p95_worst": 46.58924828981981,
+   "capture_distance_mean": 0.6283238149024091,
+   "hunter_solver_fail_rate": 0.11601513240857503,
+   "hunter_infeasible_step_rate_pooled": 0.03783102143757881,
+   "prot_infeasible_step_rate_pooled": 0.09079445145018916,
+   "hunter_no_barrier_rows_total": 0,
+   "filter_stats_total": {
+    "points_total": 17083,
+    "filtered_protag": 1390,
+    "filtered_env_false_positive": 0,
+    "leaked_protag": 0,
+    "scans_with_env_filtered": 0,
+    "scans_emptied_by_filter": 0
+   },
+   "episodes_with_env_false_positive": 0
+  },
+  "P2": {
+   "arm": "P2",
+   "episodes": 5,
+   "goal_rate": 0.0,
+   "goal_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "captured_rate": 0.6,
+   "captured_ci95": [
+    0.23071993220883708,
+    0.8823817688407467
+   ],
+   "protagonist_collision_rate": 0.4,
+   "protagonist_collision_ci95": [
+    0.1176182311592533,
+    0.769280067791163
+   ],
+   "hunter_collision_rate": 0.0,
+   "hunter_collision_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "timeout_rate": 0.0,
+   "timeout_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "agent_contact_rate": 0.0,
+   "agent_contact_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "prot_static_collision_rate": 0.0,
+   "hunter_static_collision_rate": 0.0,
+   "prot_dynamic_collision_rate": 0.4,
+   "hunter_dynamic_collision_rate": 0.0,
+   "prot_wall_collision_rate": 0.0,
+   "hunter_wall_collision_rate": 0.0,
+   "time_to_goal_s": NaN,
+   "time_to_capture_s": 10.633333333333335,
+   "min_hunter_distance": 0.9612481772131609,
+   "min_clearance": 0.09685708045959474,
+   "spl": 0.0,
+   "path_length": 8.296299266815186,
+   "prot_frac_infeasible": 0.13982117863250892,
+   "prot_recovery_fraction": 0.13982117863250892,
+   "hunter_frac_infeasible": 0.015968793454143485,
+   "hunter_frac_nominal_unsafe": 0.6156166973699209,
+   "hunter_frac_materially_filtered": 0.7774519944880904,
+   "hunter_mean_u_dev": 0.5099206831467058,
+   "prot_mean_u_dev": 0.9748291940310685,
+   "prot_ms_mean": 37.18481055080609,
+   "prot_ms_p95": 42.571524791419506,
+   "hunter_ms_mean": 38.017987658850835,
+   "hunter_ms_p95": 43.41171348001808,
+   "episode_time_s": 9.067879440123216,
+   "steps": 115.2,
+   "time_to_goal_ci95": [
+    NaN,
+    NaN
+   ],
+   "time_to_capture_ci95": [
+    5.1000000000000005,
+    17.3
+   ],
+   "min_hunter_distance_ci95": [
+    0.6262294663658646,
+    1.5113571710373943
+   ],
+   "prot_recovery_events_total": 52,
+   "hunter_fallback_total": 11,
+   "prot_ms_p95_worst": 45.82548579201102,
+   "hunter_ms_p95_worst": 46.63744650315493,
+   "capture_distance_mean": 0.6292900513806375,
+   "hunter_solver_fail_rate": 0.019097222222222224,
+   "hunter_infeasible_step_rate_pooled": 0.019097222222222224,
+   "prot_infeasible_step_rate_pooled": 0.09027777777777778,
+   "hunter_no_barrier_rows_total": 0,
+   "prediction_error_mean_of_episode_means": 0.16682861308632863,
+   "prediction_error_ci95": [
+    0.1363405011687407,
+    0.19014926622882322
+   ],
+   "prediction_error_median_of_medians": 0.12640268688944778,
+   "prediction_fallback_total": 0
+  },
+  "P2.5": {
+   "arm": "P2.5",
+   "episodes": 5,
+   "goal_rate": 0.0,
+   "goal_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "captured_rate": 0.6,
+   "captured_ci95": [
+    0.23071993220883708,
+    0.8823817688407467
+   ],
+   "protagonist_collision_rate": 0.4,
+   "protagonist_collision_ci95": [
+    0.1176182311592533,
+    0.769280067791163
+   ],
+   "hunter_collision_rate": 0.0,
+   "hunter_collision_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "timeout_rate": 0.0,
+   "timeout_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "agent_contact_rate": 0.0,
+   "agent_contact_ci95": [
+    0.0,
+    0.43449149475208104
+   ],
+   "prot_static_collision_rate": 0.0,
+   "hunter_static_collision_rate": 0.0,
+   "prot_dynamic_collision_rate": 0.4,
+   "hunter_dynamic_collision_rate": 0.0,
+   "prot_wall_collision_rate": 0.0,
+   "hunter_wall_collision_rate": 0.0,
+   "time_to_goal_s": NaN,
+   "time_to_capture_s": 10.633333333333335,
+   "min_hunter_distance": 0.9641422085570962,
+   "min_clearance": 0.09690571784973145,
+   "spl": 0.0,
+   "path_length": 8.29627866744995,
+   "prot_frac_infeasible": 0.13982117863250892,
+   "prot_recovery_fraction": 0.13982117863250892,
+   "hunter_frac_infeasible": 0.015968793454143485,
+   "hunter_frac_nominal_unsafe": 0.6234598346248228,
+   "hunter_frac_materially_filtered": 0.7774519944880904,
+   "hunter_mean_u_dev": 0.5107637854718853,
+   "prot_mean_u_dev": 0.9747959989327729,
+   "prot_ms_mean": 37.304473450924334,
+   "prot_ms_p95": 42.61052587768063,
+   "hunter_ms_mean": 39.54690082437496,
+   "hunter_ms_p95": 46.11133141675964,
+   "episode_time_s": 9.213059775950388,
+   "steps": 115.2,
+   "time_to_goal_ci95": [
+    NaN,
+    NaN
+   ],
+   "time_to_capture_ci95": [
+    5.1000000000000005,
+    17.3
+   ],
+   "min_hunter_distance_ci95": [
+    0.6320175290537352,
+    1.5142512023813297
+   ],
+   "prot_recovery_events_total": 52,
+   "hunter_fallback_total": 11,
+   "prot_ms_p95_worst": 45.59317270759493,
+   "hunter_ms_p95_worst": 46.948013943620026,
+   "capture_distance_mean": 0.634113436953863,
+   "hunter_solver_fail_rate": 0.019097222222222224,
+   "hunter_infeasible_step_rate_pooled": 0.019097222222222224,
+   "prot_infeasible_step_rate_pooled": 0.09027777777777778,
+   "hunter_no_barrier_rows_total": 0,
+   "prediction_error_mean_of_episode_means": 0.16683446601836832,
+   "prediction_error_ci95": [
+    0.1363405011687407,
+    0.1901668250249423
+   ],
+   "prediction_error_median_of_medians": 0.12640268688944778,
+   "prediction_fallback_total": 0,
+   "filter_stats_total": {
+    "points_total": 12335,
+    "filtered_protag": 749,
+    "filtered_env_false_positive": 0,
+    "leaked_protag": 0,
+    "scans_with_env_filtered": 0,
+    "scans_emptied_by_filter": 0
+   },
+   "episodes_with_env_false_positive": 0
+  }
+ },
+ "paired": {
+  "B1.5_vs_B1": {
+   "goal": {
+    "only_a": 0,
+    "only_b": 1,
+    "p": 1.0,
+    "diff": -0.2,
+    "ci95": [
+     -0.6,
+     0.0
+    ]
+   },
+   "captured": {
+    "only_a": 1,
+    "only_b": 1,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     -0.6,
+     0.6
+    ]
+   },
+   "protagonist_collision": {
+    "only_a": 1,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.2,
+    "ci95": [
+     0.0,
+     0.6
+    ]
+   },
+   "hunter_collision": {
+    "only_a": 1,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.2,
+    "ci95": [
+     0.0,
+     0.6
+    ]
+   },
+   "timeout": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "min_hunter_distance": {
+    "diff": 0.007684013827766689,
+    "ci95": [
+     -0.053077555491004305,
+     0.07652948906092702
+    ]
+   },
+   "steps": {
+    "diff": 9.4,
+    "ci95": [
+     -35.8,
+     53.0
+    ]
+   },
+   "hunter_frac_infeasible": {
+    "diff": 0.008419821296533625,
+    "ci95": [
+     0.0016996448503297818,
+     0.015139997742737468
+    ]
+   }
+  },
+  "P2_vs_B1": {
+   "goal": {
+    "only_a": 0,
+    "only_b": 2,
+    "p": 0.5,
+    "diff": -0.4,
+    "ci95": [
+     -0.8,
+     0.0
+    ]
+   },
+   "captured": {
+    "only_a": 2,
+    "only_b": 1,
+    "p": 1.0,
+    "diff": 0.2,
+    "ci95": [
+     -0.4,
+     0.8
+    ]
+   },
+   "protagonist_collision": {
+    "only_a": 1,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.2,
+    "ci95": [
+     0.0,
+     0.6
+    ]
+   },
+   "hunter_collision": {
+    "only_a": 0,
+    "only_b": 1,
+    "p": 1.0,
+    "diff": -0.2,
+    "ci95": [
+     -0.6,
+     0.0
+    ]
+   },
+   "timeout": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "min_hunter_distance": {
+    "diff": 0.22302381755217962,
+    "ci95": [
+     -0.0792180393307789,
+     0.799738889466288
+    ]
+   },
+   "steps": {
+    "diff": -34.0,
+    "ci95": [
+     -89.0,
+     28.0
+    ]
+   },
+   "hunter_frac_infeasible": {
+    "diff": -0.015983815815538958,
+    "ci95": [
+     -0.04181227585452531,
+     0.002160054568804485
+    ]
+   }
+  },
+  "P2.5_vs_B1.5": {
+   "goal": {
+    "only_a": 0,
+    "only_b": 1,
+    "p": 1.0,
+    "diff": -0.2,
+    "ci95": [
+     -0.6,
+     0.0
+    ]
+   },
+   "captured": {
+    "only_a": 2,
+    "only_b": 1,
+    "p": 1.0,
+    "diff": 0.2,
+    "ci95": [
+     -0.4,
+     0.8
+    ]
+   },
+   "protagonist_collision": {
+    "only_a": 1,
+    "only_b": 1,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     -0.6,
+     0.6
+    ]
+   },
+   "hunter_collision": {
+    "only_a": 0,
+    "only_b": 2,
+    "p": 0.5,
+    "diff": -0.4,
+    "ci95": [
+     -0.8,
+     0.0
+    ]
+   },
+   "timeout": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "min_hunter_distance": {
+    "diff": 0.2182338350683483,
+    "ci95": [
+     -0.1113743212166276,
+     0.8004803680067812
+    ]
+   },
+   "steps": {
+    "diff": -43.4,
+    "ci95": [
+     -77.4,
+     3.0
+    ]
+   },
+   "hunter_frac_infeasible": {
+    "diff": -0.024403637112072583,
+    "ci95": [
+     -0.05474249796282961,
+     0.0004604097184747035
+    ]
+   }
+  },
+  "P2.5_vs_P2": {
+   "goal": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "captured": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "protagonist_collision": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "hunter_collision": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "timeout": {
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0,
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "min_hunter_distance": {
+    "diff": 0.0028940313439353104,
+    "ci95": [
+     0.0,
+     0.00868209403180593
+    ]
+   },
+   "steps": {
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   },
+   "hunter_frac_infeasible": {
+    "diff": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ]
+   }
+  }
+ },
+ "wall_s_this_invocation": 31.929073095321655,
+ "records": {
+  "B1": [
+   {
+    "seed": 14000000,
+    "condition": "P-Random",
+    "outcome": "protagonist_collision",
+    "steps": 107,
+    "goal": 0,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": "dynamic",
+    "protagonist_collision": 1,
+    "hunter_collision_type": "dynamic",
+    "hunter_collision": 1,
+    "hunter_collision_step": 33,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": null,
+    "path_length": 7.233241558074951,
+    "shortest_path": 10.773401871576779,
+    "spl": 0.0,
+    "min_hunter_distance": 0.9699665134545216,
+    "min_clearance": -0.05573425292968748,
+    "start": [
+     8.891461372375488,
+     5.305008888244629
+    ],
+    "goal_xy": [
+     0.7615557312965393,
+     9.076485633850098
+    ],
+    "hunter_start": [
+     6.1530656814575195,
+     7.412421703338623
+    ],
+    "hunter_start_distance": 3.4554304700370535,
+    "prot_n_infeasible": 8,
+    "prot_n_solver_fail": 8,
+    "prot_frac_infeasible": 0.07476635514018691,
+    "prot_mean_u_dev": 0.8413260281746033,
+    "prot_n_recovery_events": 8,
+    "prot_recovery_fraction": 0.07476635514018691,
+    "prot_hunter_rows": 107,
+    "hunter_n_infeasible": 0,
+    "hunter_n_fallback": 45,
+    "hunter_frac_infeasible": 0.0,
+    "hunter_n_nominal_unsafe": 87,
+    "hunter_frac_nominal_unsafe": 0.8130841121495327,
+    "hunter_n_materially_filtered": 107,
+    "hunter_frac_materially_filtered": 1.0,
+    "hunter_mean_u_dev": 0.7961058056415165,
+    "prot_ms_mean": 38.63259842923938,
+    "prot_ms_p95": 42.872593249194324,
+    "hunter_ms_mean": 24.6540662684591,
+    "hunter_ms_p95": 37.48199539259076,
+    "episode_time_s": 7.18520447704941,
+    "hunter_variant": {
+     "name": "B1",
+     "policy": "direct",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 45
+   },
+   {
+    "seed": 14000001,
+    "condition": "P-Random",
+    "outcome": "goal",
+    "steps": 246,
+    "goal": 1,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": 24.6,
+    "time_to_capture_s": null,
+    "path_length": 17.39752197265625,
+    "shortest_path": 5.198528137423856,
+    "spl": 0.2988085398365584,
+    "min_hunter_distance": 0.7335992123803818,
+    "min_clearance": 0.1713714122772217,
+    "start": [
+     0.6231670379638672,
+     4.357570171356201
+    ],
+    "goal_xy": [
+     5.595944404602051,
+     4.964000701904297
+    ],
+    "hunter_start": [
+     8.112154006958008,
+     9.212177276611328
+    ],
+    "hunter_start_distance": 8.924804533890791,
+    "prot_n_infeasible": 6,
+    "prot_n_solver_fail": 6,
+    "prot_frac_infeasible": 0.024390243902439025,
+    "prot_mean_u_dev": 0.9131886695502376,
+    "prot_n_recovery_events": 6,
+    "prot_recovery_fraction": 0.024390243902439025,
+    "prot_hunter_rows": 246,
+    "hunter_n_infeasible": 1,
+    "hunter_n_fallback": 1,
+    "hunter_frac_infeasible": 0.0040650406504065045,
+    "hunter_n_nominal_unsafe": 203,
+    "hunter_frac_nominal_unsafe": 0.8252032520325203,
+    "hunter_n_materially_filtered": 234,
+    "hunter_frac_materially_filtered": 0.9512195121951219,
+    "hunter_mean_u_dev": 0.5463018982303601,
+    "prot_ms_mean": 37.403261748983,
+    "prot_ms_p95": 44.018156942911446,
+    "hunter_ms_mean": 37.59952076820551,
+    "hunter_ms_p95": 44.685659813694656,
+    "episode_time_s": 18.912791464012116,
+    "hunter_variant": {
+     "name": "B1",
+     "policy": "direct",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 1
+   },
+   {
+    "seed": 14000002,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 60,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 6.0,
+    "path_length": 5.203186988830566,
+    "shortest_path": 7.202081528017132,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6414431995118415,
+    "min_clearance": 0.06307907104492189,
+    "start": [
+     3.154123306274414,
+     5.6280694007873535
+    ],
+    "goal_xy": [
+     8.664139747619629,
+     6.908048629760742
+    ],
+    "hunter_start": [
+     4.782186985015869,
+     1.0351617336273193
+    ],
+    "hunter_start_distance": 4.872924397227458,
+    "prot_n_infeasible": 14,
+    "prot_n_solver_fail": 14,
+    "prot_frac_infeasible": 0.23333333333333334,
+    "prot_mean_u_dev": 0.610111940445957,
+    "prot_n_recovery_events": 14,
+    "prot_recovery_fraction": 0.23333333333333334,
+    "prot_hunter_rows": 60,
+    "hunter_n_infeasible": 4,
+    "hunter_n_fallback": 4,
+    "hunter_frac_infeasible": 0.06666666666666667,
+    "hunter_n_nominal_unsafe": 8,
+    "hunter_frac_nominal_unsafe": 0.13333333333333333,
+    "hunter_n_materially_filtered": 28,
+    "hunter_frac_materially_filtered": 0.4666666666666667,
+    "hunter_mean_u_dev": 0.16280981180830825,
+    "prot_ms_mean": 38.03736837192749,
+    "prot_ms_p95": 43.05487780366093,
+    "hunter_ms_mean": 38.21208500691379,
+    "hunter_ms_p95": 40.415024175308645,
+    "episode_time_s": 4.822290105046704,
+    "hunter_variant": {
+     "name": "B1",
+     "policy": "direct",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6414431995118415,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 4
+   },
+   {
+    "seed": 14000003,
+    "condition": "P-Random",
+    "outcome": "goal",
+    "steps": 216,
+    "goal": 1,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": 21.6,
+    "time_to_capture_s": null,
+    "path_length": 18.21323585510254,
+    "shortest_path": 9.352081528017136,
+    "spl": 0.5134772097840647,
+    "min_hunter_distance": 0.7031019783032703,
+    "min_clearance": 0.053152287006378196,
+    "start": [
+     8.630043983459473,
+     7.41741418838501
+    ],
+    "goal_xy": [
+     0.6828582286834717,
+     9.3063325881958
+    ],
+    "hunter_start": [
+     5.526782989501953,
+     9.187397003173828
+    ],
+    "hunter_start_distance": 3.572543626222913,
+    "prot_n_infeasible": 29,
+    "prot_n_solver_fail": 29,
+    "prot_frac_infeasible": 0.13425925925925927,
+    "prot_mean_u_dev": 0.8827837864461338,
+    "prot_n_recovery_events": 29,
+    "prot_recovery_fraction": 0.13425925925925927,
+    "prot_hunter_rows": 216,
+    "hunter_n_infeasible": 10,
+    "hunter_n_fallback": 10,
+    "hunter_frac_infeasible": 0.046296296296296294,
+    "hunter_n_nominal_unsafe": 141,
+    "hunter_frac_nominal_unsafe": 0.6527777777777778,
+    "hunter_n_materially_filtered": 187,
+    "hunter_frac_materially_filtered": 0.8657407407407407,
+    "hunter_mean_u_dev": 0.5290311108066149,
+    "prot_ms_mean": 39.85244513670396,
+    "prot_ms_p95": 44.150283792987466,
+    "hunter_ms_mean": 40.446015730224275,
+    "hunter_ms_p95": 45.78226845478639,
+    "episode_time_s": 17.82114293379709,
+    "hunter_variant": {
+     "name": "B1",
+     "policy": "direct",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 10
+   },
+   {
+    "seed": 14000004,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 117,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 11.700000000000001,
+    "path_length": 7.037468910217285,
+    "shortest_path": 11.193502884254446,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6430108946548909,
+    "min_clearance": 0.2228341817855835,
+    "start": [
+     5.8102264404296875,
+     0.9392915964126587
+    ],
+    "goal_xy": [
+     1.8943212032318115,
+     8.745095252990723
+    ],
+    "hunter_start": [
+     0.8921428918838501,
+     5.3909592628479
+    ],
+    "hunter_start_distance": 6.633618228603618,
+    "prot_n_infeasible": 9,
+    "prot_n_solver_fail": 9,
+    "prot_frac_infeasible": 0.07692307692307693,
+    "prot_mean_u_dev": 1.1790534549906913,
+    "prot_n_recovery_events": 9,
+    "prot_recovery_fraction": 0.07692307692307693,
+    "prot_hunter_rows": 117,
+    "hunter_n_infeasible": 5,
+    "hunter_n_fallback": 5,
+    "hunter_frac_infeasible": 0.042735042735042736,
+    "hunter_n_nominal_unsafe": 87,
+    "hunter_frac_nominal_unsafe": 0.7435897435897436,
+    "hunter_n_materially_filtered": 114,
+    "hunter_frac_materially_filtered": 0.9743589743589743,
+    "hunter_mean_u_dev": 0.4163246843839654,
+    "prot_ms_mean": 35.69820902756073,
+    "prot_ms_p95": 39.327624626457684,
+    "hunter_ms_mean": 37.03417938847382,
+    "hunter_ms_p95": 40.82371150143444,
+    "episode_time_s": 9.103463455103338,
+    "hunter_variant": {
+     "name": "B1",
+     "policy": "direct",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6430108946548909,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 5
+   }
+  ],
+  "B1.5": [
+   {
+    "seed": 14000000,
+    "condition": "P-Random",
+    "outcome": "protagonist_collision",
+    "steps": 107,
+    "goal": 0,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": "dynamic",
+    "protagonist_collision": 1,
+    "hunter_collision_type": "dynamic",
+    "hunter_collision": 1,
+    "hunter_collision_step": 33,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": null,
+    "path_length": 7.233241558074951,
+    "shortest_path": 10.773401871576779,
+    "spl": 0.0,
+    "min_hunter_distance": 0.9699665134545216,
+    "min_clearance": -0.05573425292968748,
+    "start": [
+     8.891461372375488,
+     5.305008888244629
+    ],
+    "goal_xy": [
+     0.7615557312965393,
+     9.076485633850098
+    ],
+    "hunter_start": [
+     6.1530656814575195,
+     7.412421703338623
+    ],
+    "hunter_start_distance": 3.4554304700370535,
+    "prot_n_infeasible": 8,
+    "prot_n_solver_fail": 8,
+    "prot_frac_infeasible": 0.07476635514018691,
+    "prot_mean_u_dev": 0.8413260281746033,
+    "prot_n_recovery_events": 8,
+    "prot_recovery_fraction": 0.07476635514018691,
+    "prot_hunter_rows": 107,
+    "hunter_n_infeasible": 0,
+    "hunter_n_fallback": 46,
+    "hunter_frac_infeasible": 0.0,
+    "hunter_n_nominal_unsafe": 87,
+    "hunter_frac_nominal_unsafe": 0.8130841121495327,
+    "hunter_n_materially_filtered": 107,
+    "hunter_frac_materially_filtered": 1.0,
+    "hunter_mean_u_dev": 0.7955506253306966,
+    "prot_ms_mean": 38.90350534989734,
+    "prot_ms_p95": 45.68095072172581,
+    "hunter_ms_mean": 25.263681378929274,
+    "hunter_ms_p95": 39.168246206827455,
+    "episode_time_s": 7.280594840878621,
+    "hunter_variant": {
+     "name": "B1.5",
+     "policy": "direct",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 46,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 2438,
+     "filtered_protag": 48,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000001,
+    "condition": "P-Random",
+    "outcome": "goal",
+    "steps": 246,
+    "goal": 1,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": 24.6,
+    "time_to_capture_s": null,
+    "path_length": 17.397815704345703,
+    "shortest_path": 5.198528137423856,
+    "spl": 0.29880349497697833,
+    "min_hunter_distance": 0.7336027169225168,
+    "min_clearance": 0.1713714122772217,
+    "start": [
+     0.6231670379638672,
+     4.357570171356201
+    ],
+    "goal_xy": [
+     5.595944404602051,
+     4.964000701904297
+    ],
+    "hunter_start": [
+     8.112154006958008,
+     9.212177276611328
+    ],
+    "hunter_start_distance": 8.924804533890791,
+    "prot_n_infeasible": 6,
+    "prot_n_solver_fail": 6,
+    "prot_frac_infeasible": 0.024390243902439025,
+    "prot_mean_u_dev": 0.9131961743176683,
+    "prot_n_recovery_events": 6,
+    "prot_recovery_fraction": 0.024390243902439025,
+    "prot_hunter_rows": 246,
+    "hunter_n_infeasible": 1,
+    "hunter_n_fallback": 1,
+    "hunter_frac_infeasible": 0.0040650406504065045,
+    "hunter_n_nominal_unsafe": 203,
+    "hunter_frac_nominal_unsafe": 0.8252032520325203,
+    "hunter_n_materially_filtered": 234,
+    "hunter_frac_materially_filtered": 0.9512195121951219,
+    "hunter_mean_u_dev": 0.5462912953680729,
+    "prot_ms_mean": 37.57842862883931,
+    "prot_ms_p95": 43.42038935283199,
+    "hunter_ms_mean": 39.507711770929156,
+    "hunter_ms_p95": 46.58924828981981,
+    "episode_time_s": 19.431814257986844,
+    "hunter_variant": {
+     "name": "B1.5",
+     "policy": "direct",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 1,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 5201,
+     "filtered_protag": 442,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000002,
+    "condition": "P-Random",
+    "outcome": "protagonist_collision",
+    "steps": 146,
+    "goal": 0,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": "dynamic",
+    "protagonist_collision": 1,
+    "hunter_collision_type": "dynamic",
+    "hunter_collision": 1,
+    "hunter_collision_step": 65,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": null,
+    "path_length": 8.226286888122559,
+    "shortest_path": 7.202081528017132,
+    "spl": 0.0,
+    "min_hunter_distance": 0.7693250072618829,
+    "min_clearance": -0.008039283752441395,
+    "start": [
+     3.154123306274414,
+     5.6280694007873535
+    ],
+    "goal_xy": [
+     8.664139747619629,
+     6.908048629760742
+    ],
+    "hunter_start": [
+     4.782186985015869,
+     1.0351617336273193
+    ],
+    "hunter_start_distance": 4.872924397227458,
+    "prot_n_infeasible": 20,
+    "prot_n_solver_fail": 20,
+    "prot_frac_infeasible": 0.136986301369863,
+    "prot_mean_u_dev": 0.9310020424487577,
+    "prot_n_recovery_events": 20,
+    "prot_recovery_fraction": 0.136986301369863,
+    "prot_hunter_rows": 146,
+    "hunter_n_infeasible": 12,
+    "hunter_n_fallback": 28,
+    "hunter_frac_infeasible": 0.0821917808219178,
+    "hunter_n_nominal_unsafe": 56,
+    "hunter_frac_nominal_unsafe": 0.3835616438356164,
+    "hunter_n_materially_filtered": 99,
+    "hunter_frac_materially_filtered": 0.678082191780822,
+    "hunter_mean_u_dev": 0.3868043250386821,
+    "prot_ms_mean": 37.57819367177172,
+    "prot_ms_p95": 41.82712151668966,
+    "hunter_ms_mean": 37.28832368585855,
+    "hunter_ms_p95": 44.5406844955869,
+    "episode_time_s": 11.2981426268816,
+    "hunter_variant": {
+     "name": "B1.5",
+     "policy": "direct",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 28,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 2947,
+     "filtered_protag": 299,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000003,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 146,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 14.600000000000001,
+    "path_length": 11.815195083618164,
+    "shortest_path": 9.352081528017136,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6146382176375514,
+    "min_clearance": 0.04262145757675173,
+    "start": [
+     8.630043983459473,
+     7.41741418838501
+    ],
+    "goal_xy": [
+     0.6828582286834717,
+     9.3063325881958
+    ],
+    "hunter_start": [
+     5.526782989501953,
+     9.187397003173828
+    ],
+    "hunter_start_distance": 3.572543626222913,
+    "prot_n_infeasible": 29,
+    "prot_n_solver_fail": 29,
+    "prot_frac_infeasible": 0.19863013698630136,
+    "prot_mean_u_dev": 1.1917821967469706,
+    "prot_n_recovery_events": 29,
+    "prot_recovery_fraction": 0.19863013698630136,
+    "prot_hunter_rows": 146,
+    "hunter_n_infeasible": 8,
+    "hunter_n_fallback": 8,
+    "hunter_frac_infeasible": 0.0547945205479452,
+    "hunter_n_nominal_unsafe": 75,
+    "hunter_frac_nominal_unsafe": 0.5136986301369864,
+    "hunter_n_materially_filtered": 115,
+    "hunter_frac_materially_filtered": 0.7876712328767124,
+    "hunter_mean_u_dev": 0.3842537147586939,
+    "prot_ms_mean": 38.51769462846577,
+    "prot_ms_p95": 42.2869500471279,
+    "hunter_ms_mean": 41.23910475356428,
+    "hunter_ms_p95": 46.25269677489996,
+    "episode_time_s": 11.993531677871943,
+    "hunter_variant": {
+     "name": "B1.5",
+     "policy": "direct",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6146382176375514,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 8,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 3275,
+     "filtered_protag": 336,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000004,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 148,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 14.8,
+    "path_length": 9.027250289916992,
+    "shortest_path": 11.193502884254446,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6420094121672668,
+    "min_clearance": 0.20550413131713868,
+    "start": [
+     5.8102264404296875,
+     0.9392915964126587
+    ],
+    "goal_xy": [
+     1.8943212032318115,
+     8.745095252990723
+    ],
+    "hunter_start": [
+     0.8921428918838501,
+     5.3909592628479
+    ],
+    "hunter_start_distance": 6.633618228603618,
+    "prot_n_infeasible": 9,
+    "prot_n_solver_fail": 9,
+    "prot_frac_infeasible": 0.060810810810810814,
+    "prot_mean_u_dev": 1.1136105008348223,
+    "prot_n_recovery_events": 9,
+    "prot_recovery_fraction": 0.060810810810810814,
+    "prot_hunter_rows": 148,
+    "hunter_n_infeasible": 9,
+    "hunter_n_fallback": 9,
+    "hunter_frac_infeasible": 0.060810810810810814,
+    "hunter_n_nominal_unsafe": 115,
+    "hunter_frac_nominal_unsafe": 0.777027027027027,
+    "hunter_n_materially_filtered": 141,
+    "hunter_frac_materially_filtered": 0.9527027027027027,
+    "hunter_mean_u_dev": 0.4378146094973015,
+    "prot_ms_mean": 35.80045807836074,
+    "prot_ms_p95": 39.33536020340398,
+    "hunter_ms_mean": 38.66525851441799,
+    "hunter_ms_p95": 41.45217366749421,
+    "episode_time_s": 11.70422643609345,
+    "hunter_variant": {
+     "name": "B1.5",
+     "policy": "direct",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6420094121672668,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 9,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 3222,
+     "filtered_protag": 265,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   }
+  ],
+  "P2": [
+   {
+    "seed": 14000000,
+    "condition": "P-Random",
+    "outcome": "protagonist_collision",
+    "steps": 66,
+    "goal": 0,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": "dynamic",
+    "protagonist_collision": 1,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": null,
+    "path_length": 4.093102931976318,
+    "shortest_path": 10.773401871576779,
+    "spl": 0.0,
+    "min_hunter_distance": 0.903455686926009,
+    "min_clearance": -0.02094480991363523,
+    "start": [
+     8.891461372375488,
+     5.305008888244629
+    ],
+    "goal_xy": [
+     0.7615557312965393,
+     9.076485633850098
+    ],
+    "hunter_start": [
+     6.1530656814575195,
+     7.412421703338623
+    ],
+    "hunter_start_distance": 3.4554304700370535,
+    "prot_n_infeasible": 5,
+    "prot_n_solver_fail": 5,
+    "prot_frac_infeasible": 0.07575757575757576,
+    "prot_mean_u_dev": 0.908892207173504,
+    "prot_n_recovery_events": 5,
+    "prot_recovery_fraction": 0.07575757575757576,
+    "prot_hunter_rows": 66,
+    "hunter_n_infeasible": 0,
+    "hunter_n_fallback": 0,
+    "hunter_frac_infeasible": 0.0,
+    "hunter_n_nominal_unsafe": 64,
+    "hunter_frac_nominal_unsafe": 0.9696969696969697,
+    "hunter_n_materially_filtered": 66,
+    "hunter_frac_materially_filtered": 1.0,
+    "hunter_mean_u_dev": 0.8063493930589881,
+    "prot_ms_mean": 36.69322253853986,
+    "prot_ms_p95": 41.10379866324365,
+    "hunter_ms_mean": 36.98987365968412,
+    "hunter_ms_p95": 42.63279924634844,
+    "episode_time_s": 5.222795848036185,
+    "hunter_variant": {
+     "name": "P2",
+     "policy": "predictive",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 0,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 62,
+    "prediction_error_mean": 0.1794957197786075,
+    "prediction_error_median": 0.14047334001271397,
+    "prediction_error_p90": 0.3649525262986144,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 24
+   },
+   {
+    "seed": 14000001,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 173,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 17.3,
+    "path_length": 13.6619291305542,
+    "shortest_path": 5.198528137423856,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6346921444200974,
+    "min_clearance": 0.23877760171890255,
+    "start": [
+     0.6231670379638672,
+     4.357570171356201
+    ],
+    "goal_xy": [
+     5.595944404602051,
+     4.964000701904297
+    ],
+    "hunter_start": [
+     8.112154006958008,
+     9.212177276611328
+    ],
+    "hunter_start_distance": 8.924804533890791,
+    "prot_n_infeasible": 4,
+    "prot_n_solver_fail": 4,
+    "prot_frac_infeasible": 0.023121387283236993,
+    "prot_mean_u_dev": 1.0143782855882948,
+    "prot_n_recovery_events": 4,
+    "prot_recovery_fraction": 0.023121387283236993,
+    "prot_hunter_rows": 173,
+    "hunter_n_infeasible": 2,
+    "hunter_n_fallback": 2,
+    "hunter_frac_infeasible": 0.011560693641618497,
+    "hunter_n_nominal_unsafe": 109,
+    "hunter_frac_nominal_unsafe": 0.630057803468208,
+    "hunter_n_materially_filtered": 134,
+    "hunter_frac_materially_filtered": 0.7745664739884393,
+    "hunter_mean_u_dev": 0.40680056935408976,
+    "prot_ms_mean": 37.813341060674865,
+    "prot_ms_p95": 43.581128073856235,
+    "hunter_ms_mean": 37.671101338773795,
+    "hunter_ms_p95": 43.697398668155074,
+    "episode_time_s": 13.40696628484875,
+    "hunter_variant": {
+     "name": "P2",
+     "policy": "predictive",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6346921444200974,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 2,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 169,
+    "prediction_error_mean": 0.11150095790438967,
+    "prediction_error_median": 0.08739554758861592,
+    "prediction_error_p90": 0.2453675918836742,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 82
+   },
+   {
+    "seed": 14000002,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 51,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 5.1000000000000005,
+    "path_length": 4.49719762802124,
+    "shortest_path": 7.202081528017132,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6085850332673131,
+    "min_clearance": 0.051306629180908225,
+    "start": [
+     3.154123306274414,
+     5.6280694007873535
+    ],
+    "goal_xy": [
+     8.664139747619629,
+     6.908048629760742
+    ],
+    "hunter_start": [
+     4.782186985015869,
+     1.0351617336273193
+    ],
+    "hunter_start_distance": 4.872924397227458,
+    "prot_n_infeasible": 18,
+    "prot_n_solver_fail": 18,
+    "prot_frac_infeasible": 0.35294117647058826,
+    "prot_mean_u_dev": 0.7124950353411563,
+    "prot_n_recovery_events": 18,
+    "prot_recovery_fraction": 0.35294117647058826,
+    "prot_hunter_rows": 51,
+    "hunter_n_infeasible": 0,
+    "hunter_n_fallback": 0,
+    "hunter_frac_infeasible": 0.0,
+    "hunter_n_nominal_unsafe": 8,
+    "hunter_frac_nominal_unsafe": 0.1568627450980392,
+    "hunter_n_materially_filtered": 24,
+    "hunter_frac_materially_filtered": 0.47058823529411764,
+    "hunter_mean_u_dev": 0.0905308139309806,
+    "prot_ms_mean": 36.74900759577605,
+    "prot_ms_p95": 42.060525389388204,
+    "hunter_ms_mean": 38.44052323541951,
+    "hunter_ms_p95": 41.11910052597523,
+    "episode_time_s": 4.066814178833738,
+    "hunter_variant": {
+     "name": "P2",
+     "policy": "predictive",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6085850332673131,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 0,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 47,
+    "prediction_error_mean": 0.20379997169773512,
+    "prediction_error_median": 0.11496955827074141,
+    "prediction_error_p90": 0.44524388186136454,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 33
+   },
+   {
+    "seed": 14000003,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 95,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 9.5,
+    "path_length": 7.800375461578369,
+    "shortest_path": 9.352081528017136,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6445929764545019,
+    "min_clearance": 0.2273774266242981,
+    "start": [
+     8.630043983459473,
+     7.41741418838501
+    ],
+    "goal_xy": [
+     0.6828582286834717,
+     9.3063325881958
+    ],
+    "hunter_start": [
+     5.526782989501953,
+     9.187397003173828
+    ],
+    "hunter_start_distance": 3.572543626222913,
+    "prot_n_infeasible": 22,
+    "prot_n_solver_fail": 22,
+    "prot_frac_infeasible": 0.23157894736842105,
+    "prot_mean_u_dev": 1.4425617619787958,
+    "prot_n_recovery_events": 22,
+    "prot_recovery_fraction": 0.23157894736842105,
+    "prot_hunter_rows": 95,
+    "hunter_n_infeasible": 4,
+    "hunter_n_fallback": 4,
+    "hunter_frac_infeasible": 0.042105263157894736,
+    "hunter_n_nominal_unsafe": 38,
+    "hunter_frac_nominal_unsafe": 0.4,
+    "hunter_n_materially_filtered": 61,
+    "hunter_frac_materially_filtered": 0.6421052631578947,
+    "hunter_mean_u_dev": 0.25394227363957844,
+    "prot_ms_mean": 37.79039591746895,
+    "prot_ms_p95": 45.82548579201102,
+    "hunter_ms_mean": 37.41003056301882,
+    "hunter_ms_p95": 42.97182245645672,
+    "episode_time_s": 7.406758289784193,
+    "hunter_variant": {
+     "name": "P2",
+     "policy": "predictive",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6445929764545019,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 4,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 91,
+    "prediction_error_mean": 0.16770391235192691,
+    "prediction_error_median": 0.12640268688944778,
+    "prediction_error_p90": 0.28655103944984994,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 1
+   },
+   {
+    "seed": 14000004,
+    "condition": "P-Random",
+    "outcome": "protagonist_collision",
+    "steps": 191,
+    "goal": 0,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": "dynamic",
+    "protagonist_collision": 1,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": null,
+    "path_length": 11.4288911819458,
+    "shortest_path": 11.193502884254446,
+    "spl": 0.0,
+    "min_hunter_distance": 2.014915044997883,
+    "min_clearance": -0.012231445312499978,
+    "start": [
+     5.8102264404296875,
+     0.9392915964126587
+    ],
+    "goal_xy": [
+     1.8943212032318115,
+     8.745095252990723
+    ],
+    "hunter_start": [
+     0.8921428918838501,
+     5.3909592628479
+    ],
+    "hunter_start_distance": 6.633618228603618,
+    "prot_n_infeasible": 3,
+    "prot_n_solver_fail": 3,
+    "prot_frac_infeasible": 0.015706806282722512,
+    "prot_mean_u_dev": 0.7958186800735908,
+    "prot_n_recovery_events": 3,
+    "prot_recovery_fraction": 0.015706806282722512,
+    "prot_hunter_rows": 191,
+    "hunter_n_infeasible": 5,
+    "hunter_n_fallback": 5,
+    "hunter_frac_infeasible": 0.02617801047120419,
+    "hunter_n_nominal_unsafe": 176,
+    "hunter_frac_nominal_unsafe": 0.9214659685863874,
+    "hunter_n_materially_filtered": 191,
+    "hunter_frac_materially_filtered": 1.0,
+    "hunter_mean_u_dev": 0.9919803657498918,
+    "prot_ms_mean": 36.87808564157074,
+    "prot_ms_p95": 40.28668603859842,
+    "hunter_ms_mean": 39.578409497357946,
+    "hunter_ms_p95": 46.63744650315493,
+    "episode_time_s": 15.236062599113211,
+    "hunter_variant": {
+     "name": "P2",
+     "policy": "predictive",
+     "lidar_mode": "remove",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 5,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 187,
+    "prediction_error_mean": 0.17164250369898384,
+    "prediction_error_median": 0.13297825808343613,
+    "prediction_error_p90": 0.3346349112013229,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 57
+   }
+  ],
+  "P2.5": [
+   {
+    "seed": 14000000,
+    "condition": "P-Random",
+    "outcome": "protagonist_collision",
+    "steps": 66,
+    "goal": 0,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": "dynamic",
+    "protagonist_collision": 1,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": null,
+    "path_length": 4.093102931976318,
+    "shortest_path": 10.773401871576779,
+    "spl": 0.0,
+    "min_hunter_distance": 0.903455686926009,
+    "min_clearance": -0.02094480991363523,
+    "start": [
+     8.891461372375488,
+     5.305008888244629
+    ],
+    "goal_xy": [
+     0.7615557312965393,
+     9.076485633850098
+    ],
+    "hunter_start": [
+     6.1530656814575195,
+     7.412421703338623
+    ],
+    "hunter_start_distance": 3.4554304700370535,
+    "prot_n_infeasible": 5,
+    "prot_n_solver_fail": 5,
+    "prot_frac_infeasible": 0.07575757575757576,
+    "prot_mean_u_dev": 0.908892207173504,
+    "prot_n_recovery_events": 5,
+    "prot_recovery_fraction": 0.07575757575757576,
+    "prot_hunter_rows": 66,
+    "hunter_n_infeasible": 0,
+    "hunter_n_fallback": 0,
+    "hunter_frac_infeasible": 0.0,
+    "hunter_n_nominal_unsafe": 64,
+    "hunter_frac_nominal_unsafe": 0.9696969696969697,
+    "hunter_n_materially_filtered": 66,
+    "hunter_frac_materially_filtered": 1.0,
+    "hunter_mean_u_dev": 0.8063493930589881,
+    "prot_ms_mean": 37.455957643969946,
+    "prot_ms_p95": 41.84087220346555,
+    "hunter_ms_mean": 37.70154894851713,
+    "hunter_ms_p95": 46.119003265630454,
+    "episode_time_s": 5.321139060892165,
+    "hunter_variant": {
+     "name": "P2.5",
+     "policy": "predictive",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 0,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 62,
+    "prediction_error_mean": 0.1794957197786075,
+    "prediction_error_median": 0.14047334001271397,
+    "prediction_error_p90": 0.3649525262986144,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 24,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 1370,
+     "filtered_protag": 40,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000001,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 173,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 17.3,
+    "path_length": 13.6619291305542,
+    "shortest_path": 5.198528137423856,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6346921444200974,
+    "min_clearance": 0.23877760171890255,
+    "start": [
+     0.6231670379638672,
+     4.357570171356201
+    ],
+    "goal_xy": [
+     5.595944404602051,
+     4.964000701904297
+    ],
+    "hunter_start": [
+     8.112154006958008,
+     9.212177276611328
+    ],
+    "hunter_start_distance": 8.924804533890791,
+    "prot_n_infeasible": 4,
+    "prot_n_solver_fail": 4,
+    "prot_frac_infeasible": 0.023121387283236993,
+    "prot_mean_u_dev": 1.0143782855882948,
+    "prot_n_recovery_events": 4,
+    "prot_recovery_fraction": 0.023121387283236993,
+    "prot_hunter_rows": 173,
+    "hunter_n_infeasible": 2,
+    "hunter_n_fallback": 2,
+    "hunter_frac_infeasible": 0.011560693641618497,
+    "hunter_n_nominal_unsafe": 109,
+    "hunter_frac_nominal_unsafe": 0.630057803468208,
+    "hunter_n_materially_filtered": 134,
+    "hunter_frac_materially_filtered": 0.7745664739884393,
+    "hunter_mean_u_dev": 0.40680056935408976,
+    "prot_ms_mean": 37.388001187742184,
+    "prot_ms_p95": 43.050424102693796,
+    "hunter_ms_mean": 39.61779407327833,
+    "hunter_ms_p95": 45.9952880628407,
+    "episode_time_s": 13.664332129992545,
+    "hunter_variant": {
+     "name": "P2.5",
+     "policy": "predictive",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6346921444200974,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 2,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 169,
+    "prediction_error_mean": 0.11150095790438967,
+    "prediction_error_median": 0.08739554758861592,
+    "prediction_error_p90": 0.2453675918836742,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 82,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 3698,
+     "filtered_protag": 331,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000002,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 51,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 5.1000000000000005,
+    "path_length": 4.497094631195068,
+    "shortest_path": 7.202081528017132,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6230551899869896,
+    "min_clearance": 0.05154981613159182,
+    "start": [
+     3.154123306274414,
+     5.6280694007873535
+    ],
+    "goal_xy": [
+     8.664139747619629,
+     6.908048629760742
+    ],
+    "hunter_start": [
+     4.782186985015869,
+     1.0351617336273193
+    ],
+    "hunter_start_distance": 4.872924397227458,
+    "prot_n_infeasible": 18,
+    "prot_n_solver_fail": 18,
+    "prot_frac_infeasible": 0.35294117647058826,
+    "prot_mean_u_dev": 0.7123290598496785,
+    "prot_n_recovery_events": 18,
+    "prot_recovery_fraction": 0.35294117647058826,
+    "prot_hunter_rows": 51,
+    "hunter_n_infeasible": 0,
+    "hunter_n_fallback": 0,
+    "hunter_frac_infeasible": 0.0,
+    "hunter_n_nominal_unsafe": 10,
+    "hunter_frac_nominal_unsafe": 0.19607843137254902,
+    "hunter_n_materially_filtered": 24,
+    "hunter_frac_materially_filtered": 0.47058823529411764,
+    "hunter_mean_u_dev": 0.09474632555687831,
+    "prot_ms_mean": 37.26878502479225,
+    "prot_ms_p95": 42.09075798280537,
+    "hunter_ms_mean": 40.709704452869936,
+    "hunter_ms_p95": 46.948013943620026,
+    "episode_time_s": 4.210028308909386,
+    "hunter_variant": {
+     "name": "P2.5",
+     "policy": "predictive",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6230551899869896,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 0,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 47,
+    "prediction_error_mean": 0.20382923635793357,
+    "prediction_error_median": 0.11496955827074141,
+    "prediction_error_p90": 0.44523477056454525,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 33,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 1048,
+     "filtered_protag": 85,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000003,
+    "condition": "P-Random",
+    "outcome": "capture",
+    "steps": 95,
+    "goal": 0,
+    "captured": 1,
+    "agent_contact": 0,
+    "protagonist_collision_type": null,
+    "protagonist_collision": 0,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": 9.5,
+    "path_length": 7.800375461578369,
+    "shortest_path": 9.352081528017136,
+    "spl": 0.0,
+    "min_hunter_distance": 0.6445929764545019,
+    "min_clearance": 0.2273774266242981,
+    "start": [
+     8.630043983459473,
+     7.41741418838501
+    ],
+    "goal_xy": [
+     0.6828582286834717,
+     9.3063325881958
+    ],
+    "hunter_start": [
+     5.526782989501953,
+     9.187397003173828
+    ],
+    "hunter_start_distance": 3.572543626222913,
+    "prot_n_infeasible": 22,
+    "prot_n_solver_fail": 22,
+    "prot_frac_infeasible": 0.23157894736842105,
+    "prot_mean_u_dev": 1.4425617619787958,
+    "prot_n_recovery_events": 22,
+    "prot_recovery_fraction": 0.23157894736842105,
+    "prot_hunter_rows": 95,
+    "hunter_n_infeasible": 4,
+    "hunter_n_fallback": 4,
+    "hunter_frac_infeasible": 0.042105263157894736,
+    "hunter_n_nominal_unsafe": 38,
+    "hunter_frac_nominal_unsafe": 0.4,
+    "hunter_n_materially_filtered": 61,
+    "hunter_frac_materially_filtered": 0.6421052631578947,
+    "hunter_mean_u_dev": 0.25394227363957844,
+    "prot_ms_mean": 37.984099354300845,
+    "prot_ms_p95": 45.59317270759493,
+    "hunter_ms_mean": 39.70933402643392,
+    "hunter_ms_p95": 45.38385134655982,
+    "episode_time_s": 7.644146416103467,
+    "hunter_variant": {
+     "name": "P2.5",
+     "policy": "predictive",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": 0.6445929764545019,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 4,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 91,
+    "prediction_error_mean": 0.16770391235192691,
+    "prediction_error_median": 0.12640268688944778,
+    "prediction_error_p90": 0.28655103944984994,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 1,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 2123,
+     "filtered_protag": 204,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   },
+   {
+    "seed": 14000004,
+    "condition": "P-Random",
+    "outcome": "protagonist_collision",
+    "steps": 191,
+    "goal": 0,
+    "captured": 0,
+    "agent_contact": 0,
+    "protagonist_collision_type": "dynamic",
+    "protagonist_collision": 1,
+    "hunter_collision_type": null,
+    "hunter_collision": 0,
+    "hunter_collision_step": null,
+    "timeout": 0,
+    "time_to_goal_s": null,
+    "time_to_capture_s": null,
+    "path_length": 11.4288911819458,
+    "shortest_path": 11.193502884254446,
+    "spl": 0.0,
+    "min_hunter_distance": 2.014915044997883,
+    "min_clearance": -0.012231445312499978,
+    "start": [
+     5.8102264404296875,
+     0.9392915964126587
+    ],
+    "goal_xy": [
+     1.8943212032318115,
+     8.745095252990723
+    ],
+    "hunter_start": [
+     0.8921428918838501,
+     5.3909592628479
+    ],
+    "hunter_start_distance": 6.633618228603618,
+    "prot_n_infeasible": 3,
+    "prot_n_solver_fail": 3,
+    "prot_frac_infeasible": 0.015706806282722512,
+    "prot_mean_u_dev": 0.7958186800735908,
+    "prot_n_recovery_events": 3,
+    "prot_recovery_fraction": 0.015706806282722512,
+    "prot_hunter_rows": 191,
+    "hunter_n_infeasible": 5,
+    "hunter_n_fallback": 5,
+    "hunter_frac_infeasible": 0.02617801047120419,
+    "hunter_n_nominal_unsafe": 176,
+    "hunter_frac_nominal_unsafe": 0.9214659685863874,
+    "hunter_n_materially_filtered": 191,
+    "hunter_frac_materially_filtered": 1.0,
+    "hunter_mean_u_dev": 0.9919803657498918,
+    "prot_ms_mean": 36.425524043816466,
+    "prot_ms_p95": 40.4774023918435,
+    "hunter_ms_mean": 39.996122620775516,
+    "hunter_ms_p95": 46.1105004651472,
+    "episode_time_s": 15.225652963854373,
+    "hunter_variant": {
+     "name": "P2.5",
+     "policy": "predictive",
+     "lidar_mode": "filter",
+     "prediction_horizon": 0.5,
+     "goal_accel": 1.0,
+     "filter_margin": 0.05
+    },
+    "capture_distance_at_capture": null,
+    "hunter_n_no_barrier_rows": 0,
+    "hunter_n_solver_fail": 5,
+    "prediction_horizon_steps": 5,
+    "prediction_n_evaluable": 187,
+    "prediction_error_mean": 0.17164250369898384,
+    "prediction_error_median": 0.13297825808343613,
+    "prediction_error_p90": 0.3346349112013229,
+    "prediction_n_fallback": 0,
+    "prediction_n_speed_clipped": 57,
+    "filter_radius": 0.35,
+    "filter_stats": {
+     "points_total": 4096,
+     "filtered_protag": 89,
+     "filtered_env_false_positive": 0,
+     "leaked_protag": 0,
+     "scans_with_env_filtered": 0,
+     "scans_emptied_by_filter": 0
+    }
+   }
+  ]
+ }
+}
