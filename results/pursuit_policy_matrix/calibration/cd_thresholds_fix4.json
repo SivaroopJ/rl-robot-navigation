@@ -1,0 +1,87 @@
+{
+ "detector": {
+  "c1": -0.05,
+  "c2": -0.05,
+  "crit_margin": -0.05,
+  "crit_clear": -0.05,
+  "hysteresis": 0.0,
+  "hold_steps": 3
+ },
+ "selected_by": "targets met on the select half; highest precision",
+ "select_half": {
+  "c1": -0.05,
+  "c2": -0.05,
+  "crit_margin": -0.05,
+  "crit_clear": -0.05,
+  "hysteresis": 0.0,
+  "hold_steps": 3,
+  "coverage": 0.8012048192771084,
+  "warning_fraction": 0.20211951484869242,
+  "precision": 0.4267161410018553
+ },
+ "held_out": {
+  "coverage": 0.8275862068965517,
+  "warning_fraction": 0.20431460674157303,
+  "onsets": 319,
+  "missed": 55,
+  "warning_onsets": 475,
+  "true_alarms": 224,
+  "precision": 0.47157894736842104,
+  "per_agent": {
+   "protag": {
+    "onsets": 234,
+    "missed": 29,
+    "coverage": 0.8760683760683761,
+    "warning_fraction": 0.26685191825026894,
+    "precision": 0.6195652173913043
+   },
+   "hunter": {
+    "onsets": 85,
+    "missed": 26,
+    "coverage": 0.6941176470588235,
+    "warning_fraction": 0.14142779881016765,
+    "precision": 0.2663316582914573
+   }
+  }
+ },
+ "targets_met_held_out": true,
+ "source_run": "results/pursuit_policy_matrix/dev_B_fixall",
+ "cd_options": {
+  "mode": "shadow",
+  "lookahead_s": [
+   0.0,
+   0.25,
+   0.5
+  ],
+  "grid_n": 9,
+  "speed_scale": [
+   1.0,
+   0.6,
+   0.3
+  ],
+  "angle_offsets_deg": [
+   0.0,
+   15.0,
+   -15.0,
+   30.0,
+   -30.0
+  ],
+  "gap_pass_distance": 1.0,
+  "track_radius": 2.0,
+  "recent_recovery_window": 10,
+  "exclude_radius": 0.35,
+  "clearance_source": "rows",
+  "lookahead_velocity": "executed",
+  "track_gate": "strict",
+  "detector": {
+   "c1": 0.15,
+   "c2": 0.3,
+   "crit_margin": 0.0,
+   "crit_clear": 0.05,
+   "hysteresis": 0.05,
+   "hold_steps": 3
+  }
+ },
+ "exploratory": true,
+ "grid_size": 1296
+}

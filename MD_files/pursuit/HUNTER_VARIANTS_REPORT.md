@@ -224,3 +224,84 @@ Reading:
    investigated here.
 5. Across runs (indicative only, hunter start unpaired): removing obstacles raised B1 Protag goal 0.49 → 0.52 and lowered
    Protag collisions 0.20 → 0.14, and raised terminal capture most for the predictive hunters (P2 0.265 → 0.400).
+
+## 12. Side-by-side summary: with vs without moving obstacles
+
+Both 200-seed runs (§9 moving obstacles, §11 static only), P-Random protagonist, hunter 1.0 m/s, terminal outcomes.
+Each run is fully paired across variants; between runs only Protag start/goal are paired (hunter start differs), so
+moving-vs-static differences are indicative only.
+
+### 12.1 Terminal outcomes and metrics
+
+| outcome / metric | obstacles | B1 | B1.5 | P2 | P2.5 |
+|---|---|---|---|---|---|
+| capture | moving | 0.310 | 0.275 | 0.265 | 0.255 |
+| | static | 0.340 | 0.355 | 0.400 | 0.390 |
+| Protag goal | moving | 0.490 | 0.490 | 0.495 | 0.480 |
+| | static | 0.520 | 0.515 | 0.425 | 0.440 |
+| Protag collision | moving | 0.200 | 0.235 | 0.235 | 0.245 |
+| | static | 0.140 | 0.130 | 0.175 | 0.170 |
+| timeout | moving | 0 | 0 | 0.005 | 0.020 |
+| | static | 0 | 0 | 0 | 0 |
+| mean time to capture, s | moving | 12.9 | 12.4 | 11.5 | 12.1 |
+| | static | 11.3 | 11.1 | 12.2 | 11.8 |
+| Protag collision: static / dynamic | moving | 0.065 / 0.135 | 0.080 / 0.155 | 0.075 / 0.160 | 0.075 / 0.170 |
+| | static | 0.140 / — | 0.130 / — | 0.175 / — | 0.170 / — |
+| hunter infeasible-step rate | moving | 0.019 | 0.019 | 0.019 | 0.019 |
+| | static | 0.024 | 0.024 | 0.021 | 0.021 |
+| Protag infeasible-step rate | moving | 0.070 | 0.069 | 0.068 | 0.067 |
+| | static | 0.096 | 0.098 | 0.102 | 0.096 |
+| mean distance at capture, m | moving | 0.636 | 0.637 | 0.636 | 0.638 |
+| | static | 0.640 | 0.639 | 0.637 | 0.637 |
+| prediction error τ=0.5 s, m | moving | — | — | 0.158 | 0.158 |
+| | static | — | — | 0.160 | 0.160 |
+
+### 12.2 Protag did not escape: terminal capture + terminal Protag collision
+
+Terminal outcomes are exclusive, so this is 1 − goal − timeout.
+
+| variant | moving obstacles | static only |
+|---|---|---|
+| B1 | 0.310 + 0.200 = **0.510** (102/200) [0.44, 0.58] | 0.340 + 0.140 = **0.480** (96/200) [0.41, 0.55] |
+| B1.5 | 0.275 + 0.235 = **0.510** (102/200) [0.44, 0.58] | 0.355 + 0.130 = **0.485** (97/200) [0.42, 0.55] |
+| P2 | 0.265 + 0.235 = **0.500** (100/200) [0.43, 0.57] | 0.400 + 0.175 = **0.575** (115/200) [0.51, 0.64] |
+| P2.5 | 0.255 + 0.245 = **0.500** (100/200) [0.43, 0.57] | 0.390 + 0.170 = **0.560** (112/200) [0.49, 0.63] |
+
+Paired (diff = first − second, bootstrap 95% CI, discordant counts, exact McNemar):
+
+| pair | moving obstacles | static only |
+|---|---|---|
+| B1.5 − B1 | 0.000 [−0.030,+0.030], 4 vs 4, p=1.0 | +0.005 [−0.025,+0.040], 6 vs 5, p=1.0 |
+| P2 − B1 | −0.010 [−0.065,+0.045], 14 vs 16, p=0.86 | **+0.095 [+0.045,+0.145], 23 vs 4, p=0.0003** |
+| P2.5 − B1.5 | −0.010 [−0.065,+0.045], 16 vs 18, p=0.86 | **+0.075 [+0.030,+0.125], 20 vs 5, p=0.004** |
+| P2.5 − P2 | 0.000 [−0.025,+0.030], 4 vs 4, p=1.0 | −0.015 [−0.050,+0.020], 5 vs 8, p=0.58 |
+
+With moving obstacles all four variants deny escape equally (50–51%); only the capture/collision split moves. On the
+static map predictive pursuit raises it by 7.5–9.5 pp (P2 − B1 survives Bonferroni over 16 tests; P2.5 − B1.5 just misses);
+with no timeouts there, these mirror the goal-rate differences in §11.
+
+### 12.3 Hunter collision rate
+
+Event flag, not a terminal outcome: a crashed hunter is disabled in place and the episode continues, so this overlaps
+with the terminal outcomes above.
+
+| variant | moving obstacles | static only |
+|---|---|---|
+| B1 | **0.200** (40/200) [0.15, 0.26] | 0 (0/200) |
+| B1.5 | **0.210** (42/200) [0.16, 0.27] | 0 (0/200) |
+| P2 | **0.205** (41/200) [0.15, 0.27] | 0 (0/200) |
+| P2.5 | **0.210** (42/200) [0.16, 0.27] | 0 (0/200) |
+
+All hunter collisions were with moving obstacles; none with rectangles or walls in either run.
+
+Paired, moving obstacles (static has no events):
+
+| pair | diff | discordant | p |
+|---|---|---|---|
+| B1.5 − B1 | +0.010 | 2 vs 0 | 0.50 |
+| P2 − B1 | +0.005 | 11 vs 10 | 1.0 |
+| P2.5 − B1.5 | 0.000 | 12 vs 12 | 1.0 |
+| P2.5 − P2 | +0.005 | 2 vs 1 | 1.0 |
+
+Neither the pursuit policy nor the LiDAR handling changes how often the hunter crashes; direct and predictive hunters
+crash in different episodes (10–12 each way) at the same overall rate.
