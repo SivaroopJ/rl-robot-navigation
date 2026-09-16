@@ -76,14 +76,17 @@ class HunterController:
         self.n_no_barrier_rows = 0
         return self
 
-    def act(self, p_hunter, ranges, p_target, *, filter_reference=None):
+    def act(self, p_hunter, ranges, p_target, *, filter_reference=None, nominal=None):
         """(u, record) in m/s. All inputs come from the shared pre-step state.
 
         `filter_reference`: Protag's CURRENT true position, used only by a filtering hunter to
         drop Protag's returns from the barrier rows. It is never the pursuit target.
+        `nominal`: optional callable (p, src) -> (gamma, u_nom, info), called AFTER this step's
+        scan is pushed (MPC pursuit, policies 3/3.5). None keeps the audited behaviour:
+        gamma = p_target, u_nom = nominal_action(p, gamma, max_speed). The QP runs either way.
         """
         p = np.asarray(p_hunter, dtype=float).reshape(2)
-        gamma = np.asarray(p_target, dtype=float).reshape(2)
+        gamma = None if p_target is None else np.asarray(p_target, dtype=float).reshape(2)
         ranges = np.asarray(ranges, dtype=float).reshape(-1)
         if self.filtering:
             if filter_reference is None:
@@ -105,9 +108,18 @@ class HunterController:
                                  "u_dev": 0.0}
         h, g, dd = self.src.samples(p)
         xi = build_xi(h, g, dd)
-        u_nom = nominal_action(p, gamma, self.max_speed)      # pursuit objective
+        nom_info = None
+        if nominal is None:
+            u_nom = nominal_action(p, gamma, self.max_speed)  # pursuit objective
+        else:
+            gamma, u_nom, nom_info = nominal(p, self.src)
+            gamma = np.asarray(gamma, dtype=float).reshape(2)
+            u_nom = np.asarray(u_nom, dtype=float).reshape(2)
         info = {}
         u = self.ctrl.generate_controller(p, gamma, xi, u_nom=u_nom, record=info)
+        info["gamma"] = gamma
+        if nom_info is not None:
+            info["nominal_info"] = nom_info
 
         self.n_steps += 1
         status = str(info.get("status"))

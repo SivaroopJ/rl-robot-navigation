@@ -51,7 +51,7 @@ import numpy as np
 from dr_control.estimated_cbf import EstimatedLidarBarrierSource
 from dr_control.lidar_cbf import surface_points
 
-POLICIES = ("direct", "predictive")
+POLICIES = ("direct", "predictive", "mpc")   # "mpc": continuation/pursuit/mpc.py (policies 3/3.5)
 LIDAR_MODES = ("remove", "filter")
 MAX_PREDICTION_HORIZON = 2.0     # s; hard bound, the plan forbids arbitrarily long horizons
 
@@ -60,6 +60,10 @@ MAX_PREDICTION_HORIZON = 2.0     # s; hard bound, the plan forbids arbitrarily l
 VARIANT_BLOCKS = {
     "HV_smoke": (14_000_000, 5),
     "HV_main": (14_100_000, 200),
+    #: Development block for congestion-threshold calibration ONLY (decision 11). Never evaluated.
+    "HV_dev": (14_300_000, 50),
+    #: Fresh block for the 3.5-vs-3 replication check (diagnostic, disjoint from every other block).
+    "HV_check": (14_400_000, 100),
 }
 
 
@@ -120,6 +124,26 @@ VARIANTS = {
     "P2": HunterVariant("P2", policy="predictive", lidar_mode="remove"),
     "P2.5": HunterVariant("P2.5", policy="predictive", lidar_mode="filter"),
 }
+
+#: Policy identifiers used by the policy matrix (configs, logs, tables). 1-2.5 are the variants
+#: above with identical parameters; only `name` differs. 3 / 3.5 are MPC pursuit.
+POLICY_IDS = {
+    "1": HunterVariant("1", policy="direct", lidar_mode="remove"),
+    "1.5": HunterVariant("1.5", policy="direct", lidar_mode="filter"),
+    "2": HunterVariant("2", policy="predictive", lidar_mode="remove"),
+    "2.5": HunterVariant("2.5", policy="predictive", lidar_mode="filter"),
+    "3": HunterVariant("3", policy="mpc", lidar_mode="remove"),
+    "3.5": HunterVariant("3.5", policy="mpc", lidar_mode="filter"),
+}
+#: Historical names (results/pursuit_hunter_variants) -> policy id.
+ALIASES = {"B1": "1", "B1.5": "1.5", "P2": "2", "P2.5": "2.5"}
+
+
+def policy_by_id(pid):
+    pid = ALIASES.get(str(pid), str(pid))
+    if pid not in POLICY_IDS:
+        raise KeyError(f"unknown policy id {pid!r}; expected one of {list(POLICY_IDS)}")
+    return POLICY_IDS[pid]
 
 
 # --------------------------------------------------------------------------- pursuit targets
