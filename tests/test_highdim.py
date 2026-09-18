@@ -11,6 +11,7 @@ import shutil
 import numpy as np
 import pytest
 
+from continuation import harness as CH
 from continuation import seeds as CS
 from dr_control.drccp_controller import ClfCbfDrccpController
 from experiments.exp6_ppo_comparison import make_env
@@ -233,3 +234,80 @@ def test_floor_arm_uses_the_frozen_tuned_and_random_parameters():
     assert rec["params"]["tau_eff"] == pytest.approx(0.12)
     assert rec["random_spec"] == {"K": 16, "H": 1, "speeds": [0.8, 1.0], "accept_m": 0.0,
                                   "name": "Random-CLF-DR-CBF"}
+
+
+# =========================================================================== ticket 03
+# Ceiling arm: frozen A* + carrot + Random-CLF-DR-CBF (the F-D arm), through the same harness.
+
+VALID_SEEDS = CS.seed_block("RANDOM_EXP_R3_VALID")[:5]
+#: Keys that legitimately differ between the two harnesses: labels and the HD-only additions.
+HARNESS_ONLY = {"arm", "kind", "condition", "controller", "params", "random_spec", "trace",
+                "trajectory"}
+
+
+def _continuation_fd(condition, seed, max_steps=SHORT):
+    """The Week 6 F-D arm through the frozen Continuation harness, plus its trajectory.
+
+    The frozen harness does not return positions, so env.step is wrapped on this env instance
+    (measurement only) to record the agent position after every step.
+    """
+    tuned, spec = HP.frozen_params()
+    env = make_env(condition == "randomized")
+    env.MAX_STEPS = max_steps
+    traj = []
+    step = env.step
+
+    def recording_step(action):
+        out = step(action)
+        traj.append([float(x) for x in env.agent_position])
+        return out
+    env.step = recording_step
+    arm = CH.ArmSpec("F-D_Random", "random", params=tuned, random=spec)
+    rec = CH.run_episode(arm, condition, seed, env=env)
+    return rec, [rec["start"]] + traj
+
+
+@pytest.mark.parametrize("condition", ["fixed", "randomized"])
+@pytest.mark.parametrize("seed", VALID_SEEDS)
+def test_ceiling_arm_is_bit_identical_to_the_continuation_random_arm(seed, condition):
+    ref, ref_traj = _continuation_fd(condition, seed)
+    got = _episode("astar_random", condition, seed)
+    assert got["trajectory"] == ref_traj                      # every position, exactly
+    shared = (set(ref) & set(got)) - TIMING - HARNESS_ONLY
+    assert {"outcome", "steps", "path_length", "min_clearance", "n_recovery_events",
+            "cbf_min_margin", "mean_u_dev", "events"} <= shared
+    assert _canon({k: ref[k] for k in shared}) == _canon({k: got[k] for k in shared})
+
+
+def test_ceiling_arm_follows_the_astar_carrot_not_the_goal():
+    rec = _episode("astar_random", "fixed", HS.seed_block("HD_DEV")[3])
+    goal = np.asarray(rec["goal"])
+    assert any(not np.allclose(s["gamma"], goal, atol=1e-5) for s in rec["trace"])
+
+
+def test_same_seed_reproduces_the_same_ceiling_episode():
+    seed = HS.seed_block("HD_DEV")[EVENT_SEED_INDEX]
+    assert _canon(_episode("astar_random", "randomized", seed)) == \
+        _canon(_episode("astar_random", "randomized", seed))
+
+
+def test_paired_runs_share_seed_start_and_goal():
+    seed = HS.seed_block("HD_DEV")[EVENT_SEED_INDEX]
+    recs = H.run_paired(("goal_random", "astar_random"), "fixed", seed, max_steps=SHORT)
+    assert set(recs) == {"goal_random", "astar_random"}
+    assert recs["goal_random"]["start"] == recs["astar_random"]["start"]
+    assert recs["goal_random"]["goal"] == recs["astar_random"]["goal"]
+
+
+def test_paired_runs_reject_a_start_goal_mismatch(monkeypatch):
+    real = H.run_episode
+
+    def shifted(kind, condition, seed, **kw):
+        rec = real(kind, condition, seed, **kw)
+        if kind == "astar_random":
+            rec["goal"] = [g + 1.0 for g in rec["goal"]]
+        return rec
+    monkeypatch.setattr(H, "run_episode", shifted)
+    with pytest.raises(RuntimeError):
+        H.run_paired(("goal_random", "astar_random"), "fixed", HS.seed_block("HD_DEV")[0],
+                     max_steps=SHORT)

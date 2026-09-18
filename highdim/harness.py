@@ -102,9 +102,12 @@ def run_episode(kind, condition, seed, *, env=None, oracle=None):
     outcome = ("success" if info.get("success") else
                "collision" if info.get("collision") else "timeout")
     extra = {"clearances": clear, "step_times": times,
+             "planner_failed": int(pol.planner_failed),
              "n_infeasible": pol.n_infeasible, "n_solver_fail": pol.n_solver_fail,
              "collided_after_infeasible": int(outcome == "collision" and infeasible_before_end),
-             "mean_u_dev": float(np.mean(pol.u_dev)) if pol.u_dev else float("nan")}
+             "mean_u_dev": float(np.mean(pol.u_dev)) if pol.u_dev else float("nan"),
+             "min_cbc_solved": (float(pol.min_cbc_solved)
+                                if np.isfinite(pol.min_cbc_solved) else float("nan"))}
     rec = episode_record(env, seed, oracle, outcome, steps, traj, start, goal, info, extra=extra)
     metrics_arm = ArmSpec(kind, "random", params=params, random=spec)
     rec.update(continuation_metrics(metrics_arm, recd.steps, wrap, outcome, steps, times, ep_time))
@@ -114,3 +117,29 @@ def run_episode(kind, condition, seed, *, env=None, oracle=None):
                 "trace": trace.steps,
                 "trajectory": [[float(x) for x in q] for q in traj]})
     return rec
+
+
+def run_paired(kinds, condition, seed, *, max_steps=None):
+    """Run each arm on the same (condition, seed), each in a fresh env; assert pairing.
+
+    The obstacle motion model reads only env.np_random and obstacle state, never the agent, so
+    arms sharing a seed face the same start, goal, spawn and obstacle trajectory. Seed, start and
+    goal equality are checked here, as continuation.harness.run_block does; a mismatch raises
+    RuntimeError (not `assert`, which `python -O` would strip).
+    """
+    recs = {}
+    for kind in kinds:
+        env = make_env(condition == "randomized")
+        try:
+            if max_steps is not None:
+                env.MAX_STEPS = int(max_steps)
+            recs[kind] = run_episode(kind, condition, seed, env=env)
+        finally:
+            env.close()
+    first = recs[kinds[0]]
+    for kind in kinds[1:]:
+        r = recs[kind]
+        if not (r["seed"] == first["seed"] == seed and r["start"] == first["start"]
+                and r["goal"] == first["goal"]):
+            raise RuntimeError(f"pairing broken for seed {seed}: {kind} vs {kinds[0]}")
+    return recs
