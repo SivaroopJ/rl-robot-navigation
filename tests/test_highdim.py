@@ -722,3 +722,196 @@ def test_hd1_smoke_decides_and_reports_on_hd_dev_only(tmp_path, monkeypatch):
                  "frozen SCS", "(2 seeds × 2 conditions)", "three attempts; stopping rule applied",
                  "ε·n_keep = 0.5 < 1", "optimal vs infeasible"):
         assert must in text, must
+
+
+# =========================================================================== ticket 06
+# PPO-subgoal + Random (arm 3) and the filter-bypass diagnostic (arm 4), driven by an untrained
+# PPO checkpoint through seam 1.
+
+#: HD_DEV[8]: the untrained seed-0 model has Random events inside SHORT steps in both conditions
+PPO_EVENT_SEED_INDEX = 8
+
+
+@pytest.fixture(scope="module")
+def ppo_model():
+    from highdim import ppo as HPPO
+    return HPPO.new_model(seed=0)
+
+
+def _ppo_episode(model, kind="ppo_random", condition="fixed", seed=None, max_steps=SHORT):
+    seed = HS.seed_block("HD_DEV")[PPO_EVENT_SEED_INDEX] if seed is None else seed
+    env = make_env(condition == "randomized")
+    env.MAX_STEPS = max_steps
+    return H.run_episode(kind, condition, seed, env=env, model=model)
+
+
+def test_ppo_arm_controller_receives_the_subgoal_reference(ppo_model, monkeypatch):
+    got = []
+    real = ClfCbfDrccpController.generate_controller
+
+    def spy(self, p, gamma, xi, *, u_nom=None, record=None):
+        got.append((np.array(p, float), np.array(gamma, float)))
+        return real(self, p, gamma, xi, u_nom=u_nom, record=record)
+    monkeypatch.setattr(ClfCbfDrccpController, "generate_controller", spy)
+    rec = _ppo_episode(ppo_model)
+    goal = np.asarray(rec["goal"])
+    assert len(got) == rec["steps"] == len(rec["trace"])
+    for (p, gamma), s in zip(got, rec["trace"]):
+        a = np.asarray(s["a_disc"])
+        raw = np.asarray(s["a_raw"])
+        assert np.all(np.abs(raw) <= 1.0) and np.linalg.norm(a) <= 1.0 + 1e-12
+        assert np.allclose(a, raw / max(1.0, np.linalg.norm(raw)), atol=0, rtol=0)
+        if np.linalg.norm(goal - p) < 1.0:
+            assert np.allclose(gamma, goal, atol=1e-5)    # the policy's goal, from obs[0:2]
+        else:
+            assert np.array_equal(gamma, p + 1.0 * a)
+        assert np.allclose(s["gamma"], gamma, atol=0)
+
+
+def test_ppo_arm_clf_value_is_the_frozen_formula_towards_the_subgoal(ppo_model):
+    rec = _ppo_episode(ppo_model)
+    traj = np.asarray(rec["trajectory"])
+    checked = 0
+    for t, s in enumerate(rec["trace"]):
+        if s["V"] is None:
+            continue
+        e = traj[t] - np.asarray(s["gamma"])
+        assert s["V"] == pytest.approx(0.5 * 0.10 * float(e @ e), rel=1e-9, abs=1e-12)
+        checked += 1
+    assert checked > 0
+
+
+def test_ppo_arm_parameters_hash_match_the_frozen_files(ppo_model):
+    from experiments.week6_continuation.common import RESULTS as FROZEN
+    rec = _ppo_episode(ppo_model)
+    for stem, key, got in (("H2/tuned_frozen.json", "params", rec["params"]),
+                           ("R3/random_frozen.json", "spec", rec["random_spec"])):
+        f = FROZEN / stem
+        assert PM._sha(f) == f.with_suffix(".sha256").read_text().split()[0]
+        want = json.loads(f.read_text())[key]
+        shared = [k for k in want if k in got and k != "name"]     # name: a label only
+        assert len(shared) >= 4 and {k: got[k] for k in shared} == {k: want[k] for k in shared}
+    assert rec["params"]["alpha"] == 0.8 and rec["random_spec"]["K"] == 16
+
+
+def test_forced_infeasible_samples_trigger_random_recovery_in_the_ppo_arm(ppo_model, monkeypatch):
+    from dr_control.estimated_cbf import EstimatedLidarBarrierSource
+    real = EstimatedLidarBarrierSource.samples
+    calls = {"n": 0}
+    FORCED = 3
+
+    def samples(self, p):
+        calls["n"] += 1
+        if calls["n"] != FORCED + 1:
+            return real(self, p)
+        # two opposing barriers closing at 5 m/s: no |u|_inf <= 1 keeps min CBC >= tau
+        h = np.array([0.05, 0.05])
+        g = np.array([[1.0, 0.0], [-1.0, 0.0]])
+        return h, g, np.array([-5.0, -5.0])
+    monkeypatch.setattr(EstimatedLidarBarrierSource, "samples", samples)
+    rec = _ppo_episode(ppo_model, seed=HS.seed_block("HD_DEV")[0])
+    s = rec["trace"][FORCED]
+    assert "infeasible" in s["qp_status"] and s["random_event"]
+    assert FORCED in [e["t"] for e in rec["events"]]
+
+
+def test_bypass_arm_never_calls_the_qp_or_random_and_executes_the_nominal_velocity(
+        ppo_model, monkeypatch):
+    from continuation.random_recovery import RandomRecovery
+    from dr_control.drccp_controller import nominal_action
+
+    def boom(*a, **k):
+        raise AssertionError("QP or Random called by the bypass arm")
+    monkeypatch.setattr(ClfCbfDrccpController, "generate_controller", boom)
+    monkeypatch.setattr(RandomRecovery, "__init__", boom)
+    env = make_env(False)
+    env.MAX_STEPS = SHORT
+    executed = []
+    step = env.step
+    env.step = lambda a: executed.append(np.array(a, float)) or step(a)
+    rec = H.run_episode("ppo_unfiltered", "fixed", HS.seed_block("HD_DEV")[PPO_EVENT_SEED_INDEX],
+                        env=env, model=ppo_model)
+    traj = np.asarray(rec["trajectory"])
+    max_v = env.MAX_SPEED
+    assert rec["controller"] == "bypass" and rec["random_spec"] is None
+    assert len(executed) == rec["steps"] == len(rec["trace"])
+    for t, (s, a) in enumerate(zip(rec["trace"], executed)):
+        want = nominal_action(traj[t], np.asarray(s["gamma"]), max_v) / max_v
+        assert s["qp_status"] == "bypassed" and not s["random_event"]
+        assert np.allclose(a, want.astype(np.float32), atol=0, rtol=0)
+
+
+def test_bypass_arm_reuses_the_checkpoint_and_subgoal_of_the_ppo_arm(ppo_model):
+    a = _ppo_episode(ppo_model, "ppo_random")
+    b = _ppo_episode(ppo_model, "ppo_unfiltered")
+    assert a["start"] == b["start"] and a["goal"] == b["goal"]
+    # the first decision sees the same observation, so the same action and gamma
+    assert a["trace"][0]["a_raw"] == b["trace"][0]["a_raw"]
+    assert a["trace"][0]["gamma"] == b["trace"][0]["gamma"]
+
+
+def test_ppo_arms_require_a_model_and_the_baselines_refuse_one(ppo_model):
+    with pytest.raises(ValueError):
+        _ppo_episode(None, "ppo_random")
+    with pytest.raises(ValueError):
+        _ppo_episode(ppo_model, "goal_random")
+
+
+@pytest.mark.parametrize("kind", ["ppo_random", "ppo_unfiltered"])
+def test_ppo_arm_actions_do_not_depend_on_the_static_map(ppo_model, monkeypatch, kind):
+    a = _ppo_episode(ppo_model, kind)
+    monkeypatch.setattr(HP, "POLICY_MAP", tuple(make_env(False).static_obstacles))
+    b = _ppo_episode(ppo_model, kind)
+    assert _canon(a) == _canon(b)
+
+
+def _perturbed_env(condition):
+    """Adds noise to the ground-truth obstacle block obs[28:52] of every observation."""
+    env = make_env(condition == "randomized")
+    env.MAX_STEPS = SHORT
+    rng = np.random.default_rng(7)
+    reset, step = env.reset, env.step
+
+    def noisy(obs):
+        obs = np.array(obs, copy=True)
+        obs[28:] = rng.uniform(-1, 1, size=obs[28:].shape).astype(obs.dtype)
+        return obs
+
+    env.reset = lambda **k: (lambda o, i: (noisy(o), i))(*reset(**k))
+    env.step = lambda a: (lambda o, *r: (noisy(o), *r))(*step(a))
+    return env
+
+
+@pytest.mark.parametrize("kind", ["ppo_random", "ppo_unfiltered"])
+def test_ppo_arm_ignores_the_ground_truth_obstacle_block(ppo_model, kind):
+    seed = HS.seed_block("HD_DEV")[PPO_EVENT_SEED_INDEX]
+    a = _ppo_episode(ppo_model, kind, "randomized", seed)
+    b = H.run_episode(kind, "randomized", seed, env=_perturbed_env("randomized"),
+                      model=ppo_model)
+    assert _canon(a) == _canon(b)
+
+
+@pytest.mark.parametrize("kind", ["ppo_random", "ppo_unfiltered"])
+def test_same_seed_and_checkpoint_reproduce_the_same_ppo_episode(ppo_model, tmp_path, kind):
+    from stable_baselines3 import PPO
+    ppo_model.save(tmp_path / "ckpt.zip")
+    seed = HS.seed_block("HD_DEV")[PPO_EVENT_SEED_INDEX]
+    a = _ppo_episode(PPO.load(tmp_path / "ckpt.zip", device="cpu"), kind, "randomized", seed)
+    b = _ppo_episode(PPO.load(tmp_path / "ckpt.zip", device="cpu"), kind, "randomized", seed)
+    c = _ppo_episode(ppo_model, kind, "randomized", seed)
+    assert _canon(a) == _canon(b) == _canon(c)
+    if kind == "ppo_random":
+        assert a["n_recovery_events"] > 0                 # the Random RNG is actually drawn
+
+
+def test_subgoal_rule_on_worked_examples():
+    from highdim.subgoal import SubgoalSource
+    src = SubgoalSource([5.0, 5.0])
+    src.set_action([3.0, 4.0])                   # box-clipped to (1, 1), then onto the disc
+    assert np.allclose(src.a_raw, [1.0, 1.0]) and np.allclose(src.a_disc, [0.5 ** 0.5] * 2)
+    assert np.allclose(src.reference([1.0, 1.0]), [1.0 + 0.5 ** 0.5, 1.0 + 0.5 ** 0.5])
+    src.set_action([0.3, -0.4])                  # inside the disc: unchanged, distance 0.5 m
+    assert np.allclose(src.reference([1.0, 1.0]), [1.3, 0.6])
+    assert np.array_equal(src.reference([4.5, 5.0]), [5.0, 5.0])     # 0.5 m from the goal
+    assert np.allclose(src.reference([4.0, 5.0]), [4.3, 4.6])        # exactly L: not "< L"
+    assert np.allclose(src.goal, [5.0, 5.0])

@@ -6,6 +6,12 @@ with the policy built by `highdim.policy`.
 
 EVALUATION IS FROZEN SCS ONLY. `run_episode` raises TypeError if the controller is anything but
 the frozen ClfCbfDrccpController (HD_DESIGN.md section 8: the fast solver is for training only).
+The one exception is arm 4 (ppo_unfiltered), whose controller is the BypassController and which
+runs no QP and no recovery at all.
+
+PPO ARMS (ppo_random, ppo_unfiltered) are driven by `model`, anything with an SB3-shaped
+predict(obs[0:28], deterministic=True); each step its action is handed to the subgoal source
+before the frozen predict. The trace adds the raw (box-clipped) and disc actions.
 `run_check_episode` is the training-suitability check's path (section 8), the only one here that
 may run the fast solver; its records are never evaluation results.
 
@@ -25,6 +31,7 @@ from dr_control.fast_drccp import FastClfCbfDrccpController
 from evaluation.shortest_path import ShortestPathOracle
 from experiments.exp6_ppo_comparison import episode_record, make_env, true_clearance
 from highdim import policy as HP
+from highdim.subgoal import policy_obs
 from highdim.gates import DU_TOL
 
 #: Phase 5's stuck definition, reproduced exactly (experiments/exp5_astar_waypoint.py, the loop
@@ -156,9 +163,11 @@ class ShadowSolver:
                 "du_max": max(du) if du else float("nan"), "du_hist": hist}
 
 
-def run_episode(kind, condition, seed, *, env=None, oracle=None):
-    """One evaluation episode: frozen SCS, always."""
-    return _episode(kind, condition, seed, env=env, oracle=oracle, solver="frozen")
+def run_episode(kind, condition, seed, *, env=None, oracle=None, model=None):
+    """One evaluation episode: frozen SCS (arm 4: no solver). The PPO arms need `model`, which
+    is queried with the mean action."""
+    return _episode(kind, condition, seed, env=env, oracle=oracle, solver="frozen",
+                    model=model)
 
 
 def run_check_episode(kind, condition, seed, *, env=None, oracle=None, solver="frozen",
@@ -174,7 +183,11 @@ def run_check_episode(kind, condition, seed, *, env=None, oracle=None, solver="f
                     shadow=shadow)
 
 
-def _require_solver(ctrl, solver):
+def _require_solver(ctrl, solver, kind):
+    if kind == "ppo_unfiltered":
+        if type(ctrl) is not HP.BypassController:
+            raise TypeError(f"the bypass arm requires BypassController, got {type(ctrl)}")
+        return
     if solver == "frozen" and type(ctrl) is not ClfCbfDrccpController:
         raise TypeError(f"evaluation requires the frozen SCS controller, got {type(ctrl)}")
     if solver == "fast" and not (type(ctrl) is FastClfCbfDrccpController
@@ -182,9 +195,11 @@ def _require_solver(ctrl, solver):
         raise TypeError(f"the fast check requires the {HP.FAST_VARIANT} solver, got {type(ctrl)}")
 
 
-def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False):
+def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False, model=None):
     if condition not in ("fixed", "randomized"):
         raise ValueError(condition)
+    if (kind in HP.PPO_KINDS) != (model is not None):
+        raise ValueError(f"arm {kind!r}: a model is required for the PPO arms and only for them")
     own_env = env is None
     env = env if env is not None else make_env(condition == "randomized")
     if env.randomize_dynamic_obstacles != (condition == "randomized"):
@@ -195,10 +210,12 @@ def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False):
     obs, _ = env.reset(seed=seed)
     start, goal = env.agent_position.copy(), env.target_position.copy()
     pol = HP.build_hd_arm(kind, env, params=params, solver=solver)
-    _require_solver(pol.ctrl, solver)
+    _require_solver(pol.ctrl, solver, kind)
     pol.reset(obs, env.agent_position)
+    subgoal = HP.attach_subgoal(pol) if model is not None else None
     shade = ShadowSolver(pol.ctrl, HP.fast_controller(pol.ctrl)) if shadow else None
-    wrap = HP.attach_hd_recovery(pol, seed, params=params, spec=spec)
+    wrap = (HP.attach_hd_recovery(pol, seed, params=params, spec=spec)
+            if HP.has_filter(kind) else None)
     recd = StepRecorder(pol.ctrl, pol.ctrl.rateh)
     trace = TraceRecorder(pol.ctrl)
 
@@ -207,8 +224,14 @@ def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False):
     info = {}
     steps = 0
     infeasible_before_end = False
+    actions = []
     while not (term or trunc):
         t0 = time.perf_counter()
+        if subgoal is not None:
+            a_env, _ = model.predict(policy_obs(obs), deterministic=True)
+            subgoal.set_action(a_env)
+            actions.append({"a_raw": [float(x) for x in subgoal.a_raw],
+                            "a_disc": [float(x) for x in subgoal.a_disc]})
         action, _ = pol.predict(obs, env.agent_position, deterministic=True)
         times.append(time.perf_counter() - t0)
         infeasible_before_end = pol.last_step_infeasible
@@ -219,7 +242,8 @@ def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False):
     ep_time = time.perf_counter() - t_ep
     trace.detach()
     recd.detach()
-    wrap.detach()
+    if wrap is not None:
+        wrap.detach()
     if shade is not None:
         shade.detach()
     if own_env:
@@ -229,6 +253,9 @@ def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False):
     if shade is not None:
         for s, r in zip(trace.steps, shade.steps, strict=True):
             s["shadow"] = r
+    if subgoal is not None:
+        for s, a in zip(trace.steps, actions, strict=True):
+            s.update(a)
 
     outcome = ("success" if info.get("success") else
                "collision" if info.get("collision") else "timeout")
@@ -241,12 +268,14 @@ def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False):
                                 if np.isfinite(pol.min_cbc_solved) else float("nan")),
              "stuck": int(stuck(traj, outcome))}
     rec = episode_record(env, seed, oracle, outcome, steps, traj, start, goal, info, extra=extra)
-    metrics_arm = ArmSpec(kind, "random", params=params, random=spec)
+    metrics_arm = (ArmSpec(kind, "tuned", params=params) if wrap is None else
+                   ArmSpec(kind, "random", params=params, random=spec))
     rec.update(continuation_metrics(metrics_arm, recd.steps, wrap, outcome, steps, times, ep_time))
     rec.update({"arm": kind, "condition": condition, "controller": pol.ctrl.name,
                 "solver": solver,
                 "start": [float(x) for x in start], "goal": [float(x) for x in goal],
-                "params": params.as_dict(), "random_spec": spec.as_dict(),
+                "params": params.as_dict(),
+                "random_spec": spec.as_dict() if wrap is not None else None,
                 "trace": trace.steps,
                 **({"shadow": shade.summary()} if shade is not None else {}),
                 "trajectory": [[float(x) for x in q] for q in traj]})
