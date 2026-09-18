@@ -23,6 +23,25 @@ from evaluation.shortest_path import ShortestPathOracle
 from experiments.exp6_ppo_comparison import episode_record, make_env, true_clearance
 from highdim import policy as HP
 
+#: Phase 5's stuck definition, reproduced exactly (experiments/exp5_astar_waypoint.py, the loop
+#: `for t: ... traj.append(p); if collision/success: break; if t >= 50 and
+#: |p - traj[t - 50]| < 0.25: stuck = True`). With traj[0] the start, the position after step t
+#: is traj[t + 1], so each check spans 51 steps, and the final step of an episode that ends in
+#: success or collision is never checked.
+STUCK_WINDOW, STUCK_DIST = 50, 0.25
+
+
+def stuck(traj, outcome="timeout"):
+    """True if some checked step t >= STUCK_WINDOW has |traj[t+1] - traj[t-STUCK_WINDOW]| < DIST."""
+    if outcome not in ("timeout", "success", "collision"):
+        raise ValueError(f"unknown outcome {outcome!r}")
+    p = np.asarray(traj, float).reshape(-1, 2)
+    last = len(p) - 1 if outcome == "timeout" else len(p) - 2     # last checked index t + 1
+    for k in range(STUCK_WINDOW + 1, last + 1):
+        if float(np.linalg.norm(p[k] - p[k - STUCK_WINDOW - 1])) < STUCK_DIST:
+            return True
+    return False
+
 
 class TraceRecorder:
     """Outermost, metrics-only wrapper around the controller. Never changes the action.
@@ -107,7 +126,8 @@ def run_episode(kind, condition, seed, *, env=None, oracle=None):
              "collided_after_infeasible": int(outcome == "collision" and infeasible_before_end),
              "mean_u_dev": float(np.mean(pol.u_dev)) if pol.u_dev else float("nan"),
              "min_cbc_solved": (float(pol.min_cbc_solved)
-                                if np.isfinite(pol.min_cbc_solved) else float("nan"))}
+                                if np.isfinite(pol.min_cbc_solved) else float("nan")),
+             "stuck": int(stuck(traj, outcome))}
     rec = episode_record(env, seed, oracle, outcome, steps, traj, start, goal, info, extra=extra)
     metrics_arm = ArmSpec(kind, "random", params=params, random=spec)
     rec.update(continuation_metrics(metrics_arm, recd.steps, wrap, outcome, steps, times, ep_time))
