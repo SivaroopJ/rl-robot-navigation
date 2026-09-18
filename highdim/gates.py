@@ -1,14 +1,22 @@
 """Pre-registered decision rules of HD Experiment 1 (HD_DESIGN.md sections 7-9), as pure functions.
 
-Each takes per-episode records (dicts with at least `seed` and `success`) and returns a verdict dict.
-Rates are compared in exact rational arithmetic so a rule never flips on floating-point rounding
-at its threshold.
+The stop check takes per-episode records (dicts with at least `seed` and `success`); the section 8
+rules take shadow summaries (highdim.harness.ShadowSolver.summary), paired records, or verdicts.
+Rates of counts are compared in exact rational arithmetic so a rule never flips on floating-point
+rounding at its threshold. The McNemar p-value and the bootstrap CI are floats by nature and are
+compared as floats.
 """
 from __future__ import annotations
 
 from fractions import Fraction
 
 STOP_THRESHOLD = Fraction(5, 100)       # section 7: S_ceiling - S_floor < 0.05 -> STOP
+
+# Section 8, fast-solver training suitability.
+DU_TOL = 1e-3                           # E-a: |u_fast - u_frozen|_inf <= 1e-3 ...
+DU_SHARE = Fraction(99, 100)            # ... on >= 99 % of the steps where both are optimal
+MCNEMAR_P = 0.05                        # E-b: McNemar p > 0.05 on success, and
+CI_BOUND = 0.03                         # the 95 % CI of the success difference inside +-0.03
 
 
 def _paired_successes(floor, ceiling):
@@ -26,3 +34,54 @@ def stop_check(floor, ceiling):
     gap = Fraction(k_ceiling - k_floor, n)
     return {"S_floor": k_floor / n, "S_ceiling": k_ceiling / n, "gap": float(gap), "n": n,
             "threshold": float(STOP_THRESHOLD), "stop": gap < STOP_THRESHOLD}
+
+
+def shadow_verdict(summaries):
+    """Section 8 E-a over the pooled corpus of per-episode shadow summaries: the feasibility
+    category agrees on 100 % of steps, and |du|_inf <= DU_TOL on >= 99 % of both-optimal steps."""
+    steps = sum(s["steps"] for s in summaries)
+    agree = sum(s["agree"] for s in summaries)
+    both = sum(s["both_optimal"] for s in summaries)
+    within = sum(s["du_le_tol"] for s in summaries)
+    if steps == 0 or both == 0:
+        raise ValueError("no steps, or no step where both solvers are optimal")
+    cross, hist = {}, {}
+    for s in summaries:
+        for src, dst in ((s["crosstab"], cross), (s["du_hist"], hist)):
+            for k, v in src.items():
+                dst[k] = dst.get(k, 0) + v
+    du_max = max(s["du_max"] for s in summaries if s["both_optimal"])
+    pass_cat = agree == steps
+    pass_du = Fraction(within, both) >= DU_SHARE
+    return {"steps": steps, "agree": agree, "agreement": agree / steps, "crosstab": cross,
+            "delegated": sum(s.get("delegated", 0) for s in summaries),
+            "both_optimal": both, "du_le_tol": within, "du_share": within / both,
+            "du_max": du_max, "du_hist": hist, "du_tol": DU_TOL,
+            "du_share_required": float(DU_SHARE), "pass_category": pass_cat,
+            "pass_du": pass_du, "pass": pass_cat and pass_du}
+
+
+def closed_loop_verdict(frozen, fast):
+    """Section 8 E-b for one arm, pooled over conditions: fast vs frozen paired by (condition,
+    seed). Pass: exact McNemar p > 0.05 on success AND the paired-bootstrap 95 % CI of
+    S_fast - S_frozen inside [-0.03, +0.03]."""
+    from continuation.stats import paired_binary
+    key = [(r["condition"], r["seed"]) for r in frozen]
+    if not key or key != [(r["condition"], r["seed"]) for r in fast]:
+        raise ValueError("fast and frozen records are not paired by (condition, seed)")
+    t = paired_binary(fast, frozen, "success")
+    lo, hi = t["ci95"]
+    return {"n": len(key), "S_frozen": sum(int(r["success"]) for r in frozen) / len(key),
+            "S_fast": sum(int(r["success"]) for r in fast) / len(key),
+            "only_fast": t["only_a"], "only_frozen": t["only_b"], "p": t["p"],
+            "diff": t["diff"], "ci95": [lo, hi],
+            "pass_mcnemar": t["p"] > MCNEMAR_P,
+            "pass_ci": -CI_BOUND <= lo and hi <= CI_BOUND,
+            "pass": t["p"] > MCNEMAR_P and -CI_BOUND <= lo and hi <= CI_BOUND}
+
+
+def training_solver(ea, eb):
+    """Section 8 decision: "fast" only when E-a and E-b (every arm) pass, otherwise "frozen"."""
+    ok = ea["pass"] and all(v["pass"] for v in eb.values())
+    return {"pass": ok, "solver": "fast" if ok else "frozen",
+            "E-a": ea["pass"], "E-b": {k: v["pass"] for k, v in eb.items()}}

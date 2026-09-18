@@ -6,6 +6,8 @@ with the policy built by `highdim.policy`.
 
 EVALUATION IS FROZEN SCS ONLY. `run_episode` raises TypeError if the controller is anything but
 the frozen ClfCbfDrccpController (HD_DESIGN.md section 8: the fast solver is for training only).
+`run_check_episode` is the training-suitability check's path (section 8), the only one here that
+may run the fast solver; its records are never evaluation results.
 
 The record adds a per-step `trace` (gamma, V, u_nom, u_exec, QP status, Random activation,
 min CBC of the executed action) and the `trajectory` the controller saw. Ground truth enters
@@ -19,9 +21,11 @@ import numpy as np
 
 from continuation.harness import ArmSpec, StepRecorder, continuation_metrics
 from dr_control.drccp_controller import ClfCbfDrccpController
+from dr_control.fast_drccp import FastClfCbfDrccpController
 from evaluation.shortest_path import ShortestPathOracle
 from experiments.exp6_ppo_comparison import episode_record, make_env, true_clearance
 from highdim import policy as HP
+from highdim.gates import DU_TOL
 
 #: Phase 5's stuck definition, reproduced exactly (experiments/exp5_astar_waypoint.py, the loop
 #: `for t: ... traj.append(p); if collision/success: break; if t >= 50 and
@@ -75,7 +79,110 @@ class TraceRecorder:
         return u
 
 
+def feasibility_category(status):
+    """What the policy does with a QP status: "optimal" -> the action is used, "infeasible" ->
+    Random recovery (its trigger is `"infeasible" in status`), anything else -> the frozen u = 0.
+    The E-a agreement is over these three categories."""
+    status = str(status)
+    if status == "optimal":
+        return "optimal"
+    return "infeasible" if "infeasible" in status else "other"
+
+
+#: Decade bins of |u_fast - u_frozen|_inf, for the reported distribution (upper edges; the last
+#: bin is everything above 1e-1).
+DU_BINS = [10.0 ** -k for k in range(12, 0, -1)]
+
+
+def _du_bin(du):
+    for edge in DU_BINS:
+        if du <= edge:
+            return f"<={edge:.0e}"
+    return f">{DU_BINS[-1]:.0e}"
+
+
+class ShadowSolver:
+    """E-a: innermost, metrics-only. The fast solver solves the frozen solver's inputs in shadow.
+
+    Installed on the frozen controller BEFORE Random recovery, so it sees exactly the frozen
+    call: (p, gamma, xi, u_nom) and ctrl.prev_u at call time, which Random may have overwritten
+    with the previously executed action. The fast solver is given that prev_u before every solve
+    and its output is never used; the frozen call and its return value pass through untouched.
+    """
+
+    def __init__(self, ctrl, fast):
+        self.ctrl = ctrl
+        self.fast = fast
+        self.steps = []
+        self._inner = ctrl.generate_controller
+        ctrl.generate_controller = self._wrapped
+
+    def detach(self):
+        self.ctrl.generate_controller = self._inner
+
+    def _wrapped(self, p, gamma, xi, *, u_nom=None, record=None):
+        rec = {} if record is None else record
+        u_prev = np.array(self.ctrl.prev_u, dtype=float)
+        u = self._inner(p, gamma, xi, u_nom=u_nom, record=rec)
+        self.fast.prev_u = u_prev.copy()
+        frec = {}
+        uf = self.fast.generate_controller(p, gamma, xi, u_nom=u_nom, record=frec)
+        u0 = [float(x) for x in np.asarray(u, float).reshape(2)]
+        u1 = [float(x) for x in np.asarray(uf, float).reshape(2)]
+        row = {"status_frozen": str(rec.get("status")), "status_fast": str(frec.get("status")),
+               "u_frozen": u0, "u_fast": u1}
+        row["cat_frozen"] = feasibility_category(row["status_frozen"])
+        row["cat_fast"] = feasibility_category(row["status_fast"])
+        both = row["cat_frozen"] == row["cat_fast"] == "optimal"
+        row["du_inf"] = max(abs(a - b) for a, b in zip(u1, u0)) if both else None
+        row["delegated"] = bool(frec.get("delegated", False))     # h_crit < 0: frozen inside
+        self.steps.append(row)
+        return u
+
+    def summary(self):
+        cross, hist = {}, {}
+        du = [s["du_inf"] for s in self.steps if s["du_inf"] is not None]
+        for s in self.steps:
+            if s["cat_frozen"] != s["cat_fast"]:
+                k = f"{s['cat_frozen']}->{s['cat_fast']}"
+                cross[k] = cross.get(k, 0) + 1
+        for d in du:
+            hist[_du_bin(d)] = hist.get(_du_bin(d), 0) + 1
+        return {"steps": len(self.steps),
+                "agree": sum(s["cat_frozen"] == s["cat_fast"] for s in self.steps),
+                "delegated": sum(s["delegated"] for s in self.steps),
+                "crosstab": cross, "both_optimal": len(du),
+                "du_le_tol": sum(d <= DU_TOL for d in du),
+                "du_max": max(du) if du else float("nan"), "du_hist": hist}
+
+
 def run_episode(kind, condition, seed, *, env=None, oracle=None):
+    """One evaluation episode: frozen SCS, always."""
+    return _episode(kind, condition, seed, env=env, oracle=oracle, solver="frozen")
+
+
+def run_check_episode(kind, condition, seed, *, env=None, oracle=None, solver="frozen",
+                      shadow=False):
+    """One episode of the fast-solver training-suitability check (HD_DESIGN.md section 8).
+
+    solver="frozen", shadow=True: E-a (the frozen episode, with the fast solver in shadow).
+    solver="fast": E-b's fast side (the fast solver drives the closed loop).
+    """
+    if shadow and solver != "frozen":
+        raise ValueError("the shadow compares against the frozen solver driving the loop")
+    return _episode(kind, condition, seed, env=env, oracle=oracle, solver=solver,
+                    shadow=shadow)
+
+
+def _require_solver(ctrl, solver):
+    if solver == "frozen" and type(ctrl) is not ClfCbfDrccpController:
+        raise TypeError(f"evaluation requires the frozen SCS controller, got {type(ctrl)}")
+    if solver == "fast" and not (type(ctrl) is FastClfCbfDrccpController
+                                 and ctrl.variant == HP.FAST_VARIANT):
+        raise TypeError(f"the fast check requires the {HP.FAST_VARIANT} solver, got {type(ctrl)}")
+
+
+def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False):
     if condition not in ("fixed", "randomized"):
         raise ValueError(condition)
     own_env = env is None
@@ -87,10 +194,10 @@ def run_episode(kind, condition, seed, *, env=None, oracle=None):
     t_ep = time.perf_counter()
     obs, _ = env.reset(seed=seed)
     start, goal = env.agent_position.copy(), env.target_position.copy()
-    pol = HP.build_hd_arm(kind, env, params=params)
-    if type(pol.ctrl) is not ClfCbfDrccpController:
-        raise TypeError(f"evaluation requires the frozen SCS controller, got {type(pol.ctrl)}")
+    pol = HP.build_hd_arm(kind, env, params=params, solver=solver)
+    _require_solver(pol.ctrl, solver)
     pol.reset(obs, env.agent_position)
+    shade = ShadowSolver(pol.ctrl, HP.fast_controller(pol.ctrl)) if shadow else None
     wrap = HP.attach_hd_recovery(pol, seed, params=params, spec=spec)
     recd = StepRecorder(pol.ctrl, pol.ctrl.rateh)
     trace = TraceRecorder(pol.ctrl)
@@ -113,10 +220,15 @@ def run_episode(kind, condition, seed, *, env=None, oracle=None):
     trace.detach()
     recd.detach()
     wrap.detach()
+    if shade is not None:
+        shade.detach()
     if own_env:
         env.close()
     for s, r in zip(trace.steps, recd.steps, strict=True):
         s["min_cbc"] = r["m"]                  # min_i CBC_i of the executed action
+    if shade is not None:
+        for s, r in zip(trace.steps, shade.steps, strict=True):
+            s["shadow"] = r
 
     outcome = ("success" if info.get("success") else
                "collision" if info.get("collision") else "timeout")
@@ -132,9 +244,11 @@ def run_episode(kind, condition, seed, *, env=None, oracle=None):
     metrics_arm = ArmSpec(kind, "random", params=params, random=spec)
     rec.update(continuation_metrics(metrics_arm, recd.steps, wrap, outcome, steps, times, ep_time))
     rec.update({"arm": kind, "condition": condition, "controller": pol.ctrl.name,
+                "solver": solver,
                 "start": [float(x) for x in start], "goal": [float(x) for x in goal],
                 "params": params.as_dict(), "random_spec": spec.as_dict(),
                 "trace": trace.steps,
+                **({"shadow": shade.summary()} if shade is not None else {}),
                 "trajectory": [[float(x) for x in q] for q in traj]})
     return rec
 

@@ -455,7 +455,8 @@ def test_worker_env_cache_does_not_leak_a_step_limit(monkeypatch):
     monkeypatch.setattr(HB, "run_episode", lambda kind, cond, seed, env, oracle: env.MAX_STEPS)
     monkeypatch.setattr(HB, "_W", {})
     seed = HS.seed_block("HD_DEV")[0]
-    limits = [HB._worker(("goal_random", "fixed", seed, m))[2] for m in (5, None, 7, None)]
+    limits = [HB._worker(("goal_random", "fixed", seed, m, None))[2]
+              for m in (5, None, 7, None)]
     assert limits == [5, 500, 7, 500]
 
 
@@ -492,3 +493,232 @@ def test_hd0_smoke_analyses_and_reports_without_opening_hd_final(tmp_path, monke
     text = HD0.report(analysis, HD0.provenance(), {"x.traces.jsonl.gz": "0" * 64})
     assert "## Stop check" in text and "| success |" in text and "| stuck |" in text
     assert "tuned α 0.8" in text and "K 16" in text and "(2 seeds × 2 conditions)" in text
+
+
+# =========================================================================== ticket 05
+# Fast-solver training-suitability check (HD_DESIGN.md section 8). Not an evaluation: the check
+# episode is the only harness path that may run the fast solver.
+
+def _check_episode(kind="goal_random", condition="fixed", seed=None, max_steps=SHORT, **kw):
+    seed = HS.seed_block("HD_DEV")[3] if seed is None else seed
+    env = make_env(condition == "randomized")
+    env.MAX_STEPS = max_steps
+    return H.run_check_episode(kind, condition, seed, env=env, **kw)
+
+
+@pytest.mark.parametrize("kind", ["goal_random", "astar_random"])
+def test_fast_check_episode_runs_the_unmodified_reduced_osqp_at_the_frozen_parameters(kind):
+    from dr_control.fast_drccp import FastClfCbfDrccpController
+    seen = []
+    real = FastClfCbfDrccpController.generate_controller
+
+    def spy(self, *a, **k):
+        seen.append(self)
+        return real(self, *a, **k)
+    FastClfCbfDrccpController.generate_controller = spy
+    try:
+        rec = _check_episode(kind, solver="fast")
+    finally:
+        FastClfCbfDrccpController.generate_controller = real
+    assert rec["controller"] == "drccp_fast" and rec["solver"] == "fast"
+    c = seen[0]
+    assert len(seen) == rec["steps"] and all(s is c for s in seen)
+    assert c.variant == "reduced_osqp"
+    assert (c.rateh, c.rateV, c.wasserstein_r, c.epsilon, c.k_v, c.n_keep, c.max_v) == \
+        (0.8, 1.0, 0.012, 0.1, 0.1, 5, 1.0)
+    assert c.tau == pytest.approx(0.12)
+    assert rec["random_spec"]["K"] == 16 and rec["random_spec"]["speeds"] == [0.8, 1.0]
+
+
+def _without_shadow(rec):
+    out = {k: v for k, v in rec.items() if k not in ("shadow", "solver")}
+    out["trace"] = [{k: v for k, v in s.items() if k != "shadow"} for s in rec["trace"]]
+    return _canon(out)
+
+
+@pytest.mark.parametrize("kind", ["goal_random", "astar_random"])
+def test_shadow_leaves_the_frozen_episode_bit_identical(kind):
+    seed = HS.seed_block("HD_DEV")[EVENT_SEED_INDEX]
+    ref = _episode(kind, "randomized", seed)
+    got = _check_episode(kind, "randomized", seed, shadow=True)
+    assert got["solver"] == "frozen" and got["controller"] == "drccp"
+    assert ref["n_recovery_events"] > 0 or kind == "astar_random"
+    assert _without_shadow(got) == _without_shadow(ref)
+
+
+def test_shadow_solves_the_identical_inputs_the_frozen_solver_saw(monkeypatch):
+    from dr_control.fast_drccp import FastClfCbfDrccpController
+    calls = {"frozen": [], "fast": []}
+
+    def spy(label, real):
+        def f(self, p, gamma, xi, *, u_nom=None, record=None):
+            if label == "frozen" and calls["frozen"] and self is not calls["frozen"][0][0]:
+                return real(self, p, gamma, xi, u_nom=u_nom, record=record)   # not the policy's
+            calls[label].append((self, np.array(p, float), np.array(gamma, float),
+                                 np.array(xi, float), u_nom, np.array(self.prev_u, float)))
+            return real(self, p, gamma, xi, u_nom=u_nom, record=record)
+        return f
+    monkeypatch.setattr(ClfCbfDrccpController, "generate_controller",
+                        spy("frozen", ClfCbfDrccpController.generate_controller))
+    monkeypatch.setattr(FastClfCbfDrccpController, "generate_controller",
+                        spy("fast", FastClfCbfDrccpController.generate_controller))
+    rec = _check_episode(seed=HS.seed_block("HD_DEV")[EVENT_SEED_INDEX], shadow=True)
+    assert rec["n_recovery_events"] > 0          # Random has overwritten prev_u at least once
+    assert len(calls["frozen"]) == len(calls["fast"]) == rec["steps"]
+    for fr, fa in zip(calls["frozen"], calls["fast"]):
+        for a, b in zip(fr[1:], fa[1:]):
+            assert (a is None and b is None) or np.array_equal(a, b)
+
+
+@pytest.mark.parametrize("status,cat", [
+    ("optimal", "optimal"), ("infeasible", "infeasible"),
+    ("infeasible_inaccurate", "infeasible"), ("optimal_inaccurate", "other"),
+    ("DCPError", "other"), ("solver_error", "other"), ("None", "other")])
+def test_feasibility_category_follows_what_the_policy_does_with_the_status(status, cat):
+    # optimal -> action used; infeasible -> Random recovery; anything else -> frozen u = 0
+    assert H.feasibility_category(status) == cat
+
+
+def test_shadow_record_summarises_the_per_step_comparison():
+    rec = _check_episode(seed=HS.seed_block("HD_DEV")[EVENT_SEED_INDEX], shadow=True)
+    sh, steps = rec["shadow"], [s["shadow"] for s in rec["trace"]]
+    assert sh["steps"] == rec["steps"] == len(steps)
+    both = [s for s in steps if s["cat_frozen"] == s["cat_fast"] == "optimal"]
+    assert sh["both_optimal"] == len(both) > 0
+    assert sh["agree"] == sum(s["cat_frozen"] == s["cat_fast"] for s in steps)
+    assert sh["delegated"] == sum(s["delegated"] for s in steps)
+    assert sum(sh["du_hist"].values()) == len(both)
+    for s in both:
+        assert s["du_inf"] == max(abs(a - b) for a, b in zip(s["u_fast"], s["u_frozen"]))
+    assert sh["du_max"] == max(s["du_inf"] for s in both)
+    assert sh["du_le_tol"] == sum(s["du_inf"] <= 1e-3 for s in both)
+    # the frozen QP output is what executed wherever Random did not step in
+    for t, s in zip(rec["trace"], steps):
+        if s["cat_frozen"] == "optimal" and not t["random_event"]:
+            assert t["u_exec"] == s["u_frozen"]
+
+
+def test_shadow_counts_a_feasibility_disagreement(monkeypatch):
+    from dr_control.fast_drccp import FastClfCbfDrccpController
+    real = FastClfCbfDrccpController.generate_controller
+    n = {"k": 0}
+
+    def flip_third(self, p, gamma, xi, *, u_nom=None, record=None):
+        u = real(self, p, gamma, xi, u_nom=u_nom, record=record)
+        n["k"] += 1
+        if n["k"] == 3:
+            record["status"] = "infeasible"
+        return u
+    monkeypatch.setattr(FastClfCbfDrccpController, "generate_controller", flip_third)
+    rec = _check_episode(shadow=True)
+    sh = rec["shadow"]
+    assert rec["trace"][2]["shadow"]["cat_frozen"] == "optimal"
+    assert sh["agree"] == sh["steps"] - 1 and sh["crosstab"] == {"optimal->infeasible": 1}
+
+
+def test_shadow_requires_the_frozen_solver_in_the_loop():
+    with pytest.raises(ValueError):
+        _check_episode(solver="fast", shadow=True)
+
+
+def _sh(steps=1000, agree=1000, both=1000, le=1000, du_max=1e-4):
+    return {"steps": steps, "agree": agree, "crosstab": {}, "both_optimal": both,
+            "du_le_tol": le, "du_max": du_max, "du_hist": {"<=1e-04": both}}
+
+
+def test_shadow_rule_needs_full_category_agreement_and_99_percent_within_tolerance():
+    assert HG.shadow_verdict([_sh(le=990)])["pass"]                  # exactly 99 %
+    assert not HG.shadow_verdict([_sh(le=989)])["pass"]
+    assert not HG.shadow_verdict([_sh(agree=999, le=1000)])["pass"]  # one category flip
+    v = HG.shadow_verdict([_sh(le=495, du_max=0.2), _sh(le=500, du_max=0.3)])   # pooled
+    assert (v["both_optimal"], v["du_le_tol"], v["du_max"]) == (2000, 995, 0.3)
+    assert not v["pass"] and v["pass_category"] and not v["pass_du"]
+
+
+def test_shadow_rule_refuses_an_empty_corpus():
+    with pytest.raises(ValueError):
+        HG.shadow_verdict([])
+    with pytest.raises(ValueError):
+        HG.shadow_verdict([_sh(both=0, le=0)])
+
+
+def _cl(success, cond="fixed"):
+    return [{"condition": cond, "seed": i, "success": s} for i, s in enumerate(success)]
+
+
+def test_closed_loop_rule_passes_matching_arms():
+    frozen = _cl([1] * 150 + [0] * 50)
+    fast = _cl([1] * 149 + [0] + [1] + [0] * 49)                  # one discordant pair each way
+    v = HG.closed_loop_verdict(frozen, fast)
+    assert v["p"] == 1.0 and v["diff"] == 0.0 and v["pass"]
+
+
+def test_closed_loop_rule_fails_on_mcnemar_or_on_a_wide_interval():
+    frozen = _cl([0] * 200)
+    v6 = HG.closed_loop_verdict(frozen, _cl([1] * 6 + [0] * 194))   # p = 2/64
+    assert v6["p"] == pytest.approx(0.03125) and not v6["pass"]
+    v5 = HG.closed_loop_verdict(frozen, _cl([1] * 5 + [0] * 195))   # p = 0.0625, CI > 0.03
+    assert v5["p"] == pytest.approx(0.0625) and v5["ci95"][1] > 0.03 and not v5["pass"]
+
+
+def test_closed_loop_rule_requires_pairing_by_condition_and_seed():
+    with pytest.raises(ValueError):
+        HG.closed_loop_verdict(_cl([1, 0], "fixed"), _cl([1, 0], "randomized"))
+
+
+def test_training_solver_is_fast_only_when_every_test_passes():
+    assert HG.training_solver({"pass": True}, {"floor": {"pass": True},
+                                               "ceiling": {"pass": True}})["solver"] == "fast"
+    for ea, eb in [(False, (True, True)), (True, (True, False)), (True, (False, True))]:
+        v = HG.training_solver({"pass": ea}, {"floor": {"pass": eb[0]},
+                                              "ceiling": {"pass": eb[1]}})
+        assert v["solver"] == "frozen" and not v["pass"]
+
+
+def test_check_block_keeps_the_shadow_summary_light_and_the_steps_in_the_traces(tmp_path):
+    seeds = HS.seed_block("HD_DEV")[:2]
+    res = HB.run_block("goal_random", seeds, conditions=("fixed",), workers=2,
+                       checkpoint=tmp_path / "c.jsonl", traces=tmp_path / "c.traces.jsonl.gz",
+                       max_steps=SHORT, check=("frozen", True))
+    recs = res["fixed"]
+    assert all(r["solver"] == "frozen" and r["shadow"]["steps"] == r["steps"] for r in recs)
+    with gzip.open(tmp_path / "c.traces.jsonl.gz", "rt") as f:
+        rows = [json.loads(line) for line in f]
+    assert all("cat_fast" in s["shadow"] for r in rows for s in r["trace"])
+    fast = HB.run_block("goal_random", seeds, conditions=("fixed",), workers=1,
+                        checkpoint=tmp_path / "f.jsonl", traces=tmp_path / "f.traces.jsonl.gz",
+                        max_steps=SHORT, check=("fast", False))
+    assert all(r["solver"] == "fast" and "shadow" not in r for r in fast["fixed"])
+
+
+def test_check_block_refuses_an_evaluation_checkpoint(tmp_path):
+    kw = dict(conditions=("fixed",), workers=1, checkpoint=tmp_path / "c.jsonl",
+              traces=tmp_path / "c.traces.jsonl.gz", max_steps=SHORT)
+    seeds = HS.seed_block("HD_DEV")[:1]
+    HB.run_block("goal_random", seeds, **kw)
+    with pytest.raises(SystemExit):
+        HB.run_block("goal_random", seeds, check=("fast", False), **kw)
+
+
+def test_hd1_smoke_decides_and_reports_on_hd_dev_only(tmp_path, monkeypatch):
+    from experiments.highdim import hd1_solver_check as HD1
+    opened = []
+    real = HD1.seed_block
+    monkeypatch.setattr(HD1, "seed_block",
+                        lambda name, *a, **k: opened.append(name) or real(name, *a, **k))
+    res = HD1.run(tmp_path, workers=1, n=2, max_steps=SHORT, progress=0)
+    assert set(opened) == {"HD_DEV"}
+    assert set(res) == {(k, s) for k in ("goal_random", "astar_random")
+                        for s in ("frozen_shadow", "fast")}
+    analysis = HD1.analyse(res)
+    d = analysis["decision"]
+    assert d["solver"] in ("fast", "frozen") and set(d["E-b"]) == {"floor", "ceiling"}
+    assert analysis["E-a"]["steps"] == sum(r["steps"] for c in res[("goal_random",
+                                           "frozen_shadow")].values() for r in c) + \
+        sum(r["steps"] for c in res[("astar_random", "frozen_shadow")].values() for r in c)
+    text = HD1.report(analysis, HD1.provenance(), {"x.traces.jsonl.gz": "0" * 64})
+    for must in ("## Verdict", "E-a", "E-b", "Stage 1", "not reopened",
+                 "acceleration mechanism, not a formally equivalent replacement",
+                 "frozen SCS", "(2 seeds × 2 conditions)", "three attempts; stopping rule applied",
+                 "ε·n_keep = 0.5 < 1", "optimal vs infeasible"):
+        assert must in text, must
