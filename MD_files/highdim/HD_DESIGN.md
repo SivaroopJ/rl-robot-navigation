@@ -238,3 +238,23 @@ The existing manifests were verified on the same date:
 - SAC, TD3 and hierarchical RL.
 - Intervention penalties. At most a later, separately labelled ablation.
 - Any change to the CLF, the CBF/DR formulation, Random recovery, dynamics, reward or fast solver.
+
+## 13. Clarifications recorded before any PPO training
+
+Each clarification fills a gap in the rules above. It was recorded before the first PPO training run, and none changes a rule.
+
+- **2026-09-19: training obstacle motion** (gap in §9 Setup).
+  - §9 did not say which obstacle-motion condition the 8 training environments use. One checkpoint per seed is evaluated on both conditions, pooled 50/50.
+  - Environments 0–3 use **fixed** motion and environments 4–7 use **randomized** motion.
+  - Each environment's first reset uses its HD_TRAIN seed `14 500 000 + 1000·run + index`; after that it auto-resets from its own generator.
+  - Decided by the researcher.
+- **2026-09-19: the hold-k fallback** (gap in §9.1, which fixes hold 5 only as the pilot fallback). One PPO decision spans k control steps.
+  - γ = p_decision + L·a is frozen in world coordinates, and the goal switch is still checked every step. The QP runs every step.
+  - The PPO transition's reward is the sum of the k environment rewards, and the discount applies per decision.
+  - The episode ends inside the hold if the environment terminates or truncates.
+  - Budgets and checkpoint marks (1M, 250k, …) are counted in **control steps** in every case, so a hold-5 run makes 1/5 as many PPO decisions for the same compute. The exact control-step count is recorded.
+- **2026-09-19: checkpoint marks** (gap in §9 Checkpoints).
+  - SB3 updates the policy once per rollout of 8 × 2048 = 16 384 steps, which does not divide 250k.
+  - So the checkpoint for mark m is saved at the first rollout boundary at or after m (m = 250 000 → 262 144 steps). It is always a freshly updated policy. Its metadata records both the mark and the exact step count.
+  - The final model is saved when `learn` returns, at the first rollout boundary at or after the budget.
+  - The windows in §9.2 refer to the marks.

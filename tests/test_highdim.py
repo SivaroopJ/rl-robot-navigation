@@ -9,6 +9,7 @@ import gzip
 import json
 import shutil
 
+import gymnasium as gym
 import numpy as np
 import pytest
 
@@ -915,3 +916,299 @@ def test_subgoal_rule_on_worked_examples():
     assert np.array_equal(src.reference([4.5, 5.0]), [5.0, 5.0])     # 0.5 m from the goal
     assert np.allclose(src.reference([4.0, 5.0]), [4.3, 4.6])        # exactly L: not "< L"
     assert np.allclose(src.goal, [5.0, 5.0])
+
+
+# =========================================================================== ticket 07
+# PPO environment wrapper (seam 2), the subgoal hold, and the trainer.
+
+def test_subgoal_hold_freezes_gamma_in_world_coordinates():
+    from highdim.subgoal import SubgoalSource
+    src = SubgoalSource([9.0, 9.0])
+    src.set_action([1.0, 0.0], p=[1.0, 1.0])     # a decision at p = (1, 1)
+    for p in ([1.0, 1.0], [1.4, 1.2], [3.0, 3.0]):
+        assert np.array_equal(src.reference(p), [2.0, 1.0])
+    assert np.array_equal(src.reference([8.5, 9.0]), [9.0, 9.0])     # the goal switch still wins
+    src.set_action([0.0, 1.0])                    # a decision without p: gamma follows p again
+    assert np.allclose(src.reference([3.0, 3.0]), [3.0, 4.0])
+
+
+def test_harness_hold_queries_the_model_every_k_steps_and_freezes_gamma(ppo_model):
+    calls = []
+
+    class Counting:
+        def predict(self, obs, deterministic=True):
+            calls.append(np.array(obs))
+            return ppo_model.predict(obs, deterministic=deterministic)
+    env = make_env(False)
+    env.MAX_STEPS = 23
+    rec = H.run_episode("ppo_random", "fixed", HS.seed_block("HD_DEV")[PPO_EVENT_SEED_INDEX],
+                        env=env, model=Counting(), hold=5)
+    assert rec["steps"] == 23 and len(calls) == 5 and rec["hold"] == 5
+    traj = np.asarray(rec["trajectory"])
+    goal = np.asarray(rec["goal"])
+    for t, s in enumerate(rec["trace"]):
+        d = t - t % 5                              # the decision step
+        want = traj[d] + np.asarray(rec["trace"][d]["a_disc"])
+        if np.linalg.norm(goal - traj[t]) >= 1.0:
+            assert np.allclose(s["gamma"], want, atol=1e-12)
+        assert s["a_disc"] == rec["trace"][d]["a_disc"]
+
+
+DIAG_KEYS = {"p", "gamma", "V", "u_nom", "u_exec", "u_dev", "qp_status", "random_event",
+             "min_cbc", "a_raw", "a_disc"}
+
+
+def _wrapper(condition="fixed", seed=None, **kw):
+    from highdim.wrapper import HDSubgoalEnv
+    seed = HS.train_env_seed(run=99, env_index=0) if seed is None else seed
+    return HDSubgoalEnv(condition, seed=seed, **kw)
+
+
+def _roll(env, actions):
+    obs, _ = env.reset()
+    out = [obs]
+    diags = []
+    for a in actions:
+        obs, r, term, trunc, info = env.step(np.asarray(a, np.float32))
+        out.append(obs)
+        diags += info["diagnostics"]
+        if term or trunc:
+            break
+    return out, diags
+
+
+def test_wrapper_exposes_the_28d_observation_and_2d_action_box():
+    env = _wrapper()
+    obs, info = env.reset()
+    assert env.observation_space.shape == (28,) and env.action_space.shape == (2,)
+    assert obs.shape == (28,) and env.observation_space.contains(obs)
+    assert np.all(env.action_space.low == -1) and np.all(env.action_space.high == 1)
+
+
+def test_wrapper_ignores_the_ground_truth_obstacle_block():
+    acts = np.random.default_rng(3).uniform(-1.5, 1.5, size=(40, 2))
+    a = _wrapper("randomized")
+    b = _wrapper("randomized")
+    rng = np.random.default_rng(11)
+    inner_reset, inner_step = b.env.reset, b.env.step
+
+    def noisy(o):
+        o = np.array(o, copy=True)
+        o[28:] = rng.uniform(-1, 1, size=o[28:].shape).astype(o.dtype)
+        return o
+    b.env.reset = lambda **k: (lambda o, i: (noisy(o), i))(*inner_reset(**k))
+    b.env.step = lambda x: (lambda o, *r: (noisy(o), *r))(*inner_step(x))
+    oa, da = _roll(a, acts)
+    ob, db = _roll(b, acts)
+    assert len(oa) == len(ob) and all(np.array_equal(x, y) for x, y in zip(oa, ob))
+    for x, y in zip(da, db, strict=True):
+        assert x["gamma"] == y["gamma"] and x["u_exec"] == y["u_exec"]
+
+
+def test_wrapper_diagnostics_carry_every_key_and_the_gamma_rule():
+    from highdim.subgoal import L
+    env = _wrapper()
+    obs, _ = env.reset()
+    goal = env.policy.goal
+    diags, near = [], 0
+    for _ in range(120):                          # head for the goal to cross the L boundary
+        p = env.env.agent_position.copy()
+        d = goal - p
+        obs, _, term, trunc, info = env.step((d / max(np.abs(d).max(), 1e-9)).astype(np.float32))
+        assert len(info["diagnostics"]) == 1
+        diags += info["diagnostics"]
+        if term or trunc:
+            break
+    for s in diags:
+        assert set(s) >= DIAG_KEYS
+        p, a = np.asarray(s["p"]), np.asarray(s["a_disc"])
+        assert np.linalg.norm(a) <= 1.0 + 1e-12
+        if np.linalg.norm(goal - p) < L:
+            near += 1
+            assert np.array_equal(s["gamma"], list(goal))
+        else:
+            assert np.array_equal(np.asarray(s["gamma"]), p + L * a)
+        if s["u_nom"] is not None:
+            assert s["u_dev"] == pytest.approx(
+                float(np.linalg.norm(np.subtract(s["u_exec"], s["u_nom"]))), abs=1e-12)
+    assert near > 0 and diags[0]["p"] != diags[-1]["p"]
+
+
+def test_wrapper_reward_and_termination_are_the_env_s_own_on_the_executed_velocity():
+    a = _wrapper()
+    a.reset()
+    ref = make_env(False)
+    ref.reset(seed=HS.train_env_seed(run=99, env_index=0))
+    for x in np.random.default_rng(5).uniform(-1, 1, size=(25, 2)):
+        _, r, term, trunc, info = a.step(x.astype(np.float32))
+        u = np.asarray(info["diagnostics"][0]["u_exec"])
+        executed = np.clip(u / ref.MAX_SPEED, -1.0, 1.0).astype(np.float32)   # as predict()
+        _, r_ref, term_ref, trunc_ref, _ = ref.step(executed)
+        assert (r, term, trunc) == (r_ref, term_ref, trunc_ref)
+        if term or trunc:
+            break
+
+
+def test_wrapper_draws_the_controller_rng_from_its_own_generator():
+    a, b = _wrapper(), _wrapper()
+    a.reset(), b.reset()
+    ra, rb = a.recovery.rng.uniform(size=3), b.recovery.rng.uniform(size=3)
+    assert np.array_equal(ra, rb)                       # same wrapper seed -> same draws
+    c = _wrapper(seed=HS.train_env_seed(run=99, env_index=1))
+    c.reset()
+    assert not np.array_equal(ra, c.recovery.rng.uniform(size=3))
+    a.reset()                                           # a fresh policy and recovery per reset
+    assert a.recovery is not None and not np.array_equal(a.recovery.rng.uniform(size=3), ra)
+
+
+def test_wrapper_hold_repeats_the_decision_and_sums_the_reward():
+    env = _wrapper(hold=5)
+    env.reset()
+    _, r, term, trunc, info = env.step(np.array([0.3, -0.2], np.float32))
+    d = info["diagnostics"]
+    assert len(d) == 5 or term or trunc
+    assert all(s["a_raw"] == d[0]["a_raw"] for s in d)
+    assert r == pytest.approx(sum(s["reward"] for s in d))
+
+
+def test_wrapper_first_reset_uses_its_train_seed_then_auto_resets():
+    a, b = _wrapper(), _wrapper()
+    o1, _ = a.reset()
+    o2, _ = b.reset()
+    assert np.array_equal(o1, o2)
+    o3, _ = a.reset()
+    assert not np.array_equal(o1, o3)
+
+
+class _Logging(gym.Wrapper):
+    """Test-only: remembers each step's diagnostics (DummyVecEnv drops infos after the step)."""
+
+    def __init__(self, env):
+        super().__init__(env)
+        self.log = []
+
+    def step(self, action):
+        out = self.env.step(action)
+        self.log.append(out[4]["diagnostics"][0])
+        return out
+
+
+def test_sb3_rollout_stores_the_subgoal_action_and_its_log_probability_only():
+    import torch
+    from stable_baselines3 import PPO
+    from stable_baselines3.common.vec_env import DummyVecEnv
+    env = _Logging(_wrapper())
+    vec = DummyVecEnv([lambda: env])
+    model = PPO("MlpPolicy", vec, n_steps=16, batch_size=16, seed=0, device="cpu",
+                policy_kwargs={"net_arch": [256, 256]}, verbose=0)
+    _, cb = model._setup_learn(16, callback=None)
+    cb.on_training_start(locals(), globals())
+    assert model.collect_rollouts(vec, cb, model.rollout_buffer, n_rollout_steps=16)
+    buf = model.rollout_buffer
+    obs = torch.as_tensor(buf.observations.reshape(16, 28))
+    act = torch.as_tensor(buf.actions.reshape(16, 2))
+    with torch.no_grad():
+        _, logp, _ = model.policy.evaluate_actions(obs, act)
+    assert np.allclose(logp.numpy(), buf.log_probs.reshape(16), atol=1e-5)
+    clipped = np.clip(buf.actions.reshape(16, 2), -1, 1)
+    raw = np.asarray([s["a_raw"] for s in env.log])
+    assert np.allclose(clipped, raw, atol=1e-6)
+    u_exec = np.asarray([s["u_exec"] for s in env.log])
+    env_action = np.clip(u_exec / env.unwrapped.env.MAX_SPEED, -1, 1)
+    differ = np.abs(raw - u_exec).max(axis=1) > 1e-3
+    assert differ.sum() >= 8                    # a swap, even a partial one, would show here
+    for name in ("observations", "actions", "rewards", "returns", "episode_starts", "values",
+                 "log_probs", "advantages"):
+        arr = np.asarray(getattr(buf, name)).reshape(16, -1)
+        for col in range(arr.shape[1] - 1):     # any two adjacent columns, any row
+            pair = arr[:, col:col + 2]
+            for leak in (u_exec, env_action):
+                assert not np.any(np.all(np.abs(pair - leak)[differ] < 1e-6, axis=1)), name
+    assert buf.observations.shape[-1] == 28
+
+
+def test_training_envs_are_four_fixed_and_four_randomized_on_hd_train_seeds():
+    from highdim import train as HT
+    specs = HT.env_specs(run=3)
+    assert [c for c, _ in specs] == ["fixed"] * 4 + ["randomized"] * 4
+    assert [s for _, s in specs] == [HS.train_env_seed(run=3, env_index=i) for i in range(8)]
+
+
+def test_training_solver_follows_the_fast_solver_check(tmp_path, monkeypatch):
+    from highdim import train as HT
+    assert HT.training_solver() == "frozen"              # ticket 05 failed (4a2ec26)
+    f = tmp_path / "analysis.json"
+    f.write_text(json.dumps({"decision": {"solver": "fast", "pass": True}}))
+    monkeypatch.setattr(HT, "SOLVER_DECISION", f)
+    assert HT.training_solver() == "fast"
+    f.write_text(json.dumps({"decision": {"solver": "fast", "pass": False}}))
+    with pytest.raises(RuntimeError):
+        HT.training_solver()
+
+
+def test_model_uses_the_config_hyperparameters_and_no_observation_normalisation():
+    from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
+    from highdim import train as HT
+    model = HT.build_model(DummyVecEnv([lambda: _wrapper()]), seed=0)
+    assert (model.n_steps, model.batch_size, model.n_epochs, model.gamma, model.gae_lambda,
+            model.ent_coef, model.target_kl) == (2048, 256, 10, 0.99, 0.95, 0.01, 0.02)
+    assert model.learning_rate(1.0) == pytest.approx(3e-4)
+    assert model.learning_rate(0.5) == pytest.approx(1.5e-4)          # linear
+    assert model.policy.net_arch == [256, 256]
+    assert not isinstance(model.get_env(), VecNormalize)
+    assert str(model.device) == "cpu"
+
+
+def test_block_runner_drives_a_saved_checkpoint_like_the_harness(ppo_model, tmp_path):
+    path = tmp_path / "ckpt.zip"
+    ppo_model.save(path)
+    seeds = HS.seed_block("HD_DEV")[PPO_EVENT_SEED_INDEX:PPO_EVENT_SEED_INDEX + 1]
+    res = HB.run_block("ppo_random", seeds, conditions=("fixed",), workers=1,
+                       checkpoint=tmp_path / "b.jsonl", traces=tmp_path / "b.traces.jsonl.gz",
+                       max_steps=SHORT, model=str(path))
+    direct = _ppo_episode(ppo_model, seed=seeds[0])
+    got = res["fixed"][0]
+    assert got["outcome"] == direct["outcome"] and got["steps"] == direct["steps"]
+    assert got["path_length"] == direct["path_length"]
+    assert HB.fingerprint("ppo_random", seeds, ("fixed",), SHORT, "", model=str(path)) != \
+        HB.fingerprint("ppo_random", seeds, ("fixed",), SHORT, "")
+
+
+def test_short_training_writes_checkpoints_metadata_and_dev_evaluations(tmp_path):
+    from stable_baselines3 import PPO
+    from highdim import train as HT
+    out = tmp_path / "run"
+    HT.train(run=99, seed=0, total_timesteps=64, out_dir=out, n_envs=2, every=32,
+             eval_seeds=1, eval_workers=1, eval_max_steps=20,
+             overrides={"n_steps": 16, "batch_size": 16}, vec="dummy")
+    for name in ("ckpt_32", "ckpt_64", "final"):
+        assert (out / f"{name}.zip").exists()
+        meta = json.loads((out / f"{name}.json").read_text())
+        assert meta["solver"] == "frozen" and meta["L"] == 1.0 and meta["hold"] == 1
+        assert meta["seed"] == 0 and meta["run"] == 99
+        assert meta["steps"] == (64 if name == "final" else int(name[5:]))
+        assert len(meta["commit"]) == 40 and len(meta["frozen_params_sha256"]) == 2
+        assert meta["env_conditions"] == ["fixed", "randomized"]
+    evals = [json.loads(x) for x in (out / "evals.jsonl").read_text().splitlines()]
+    assert [e["steps"] for e in evals] == [32, 64]
+    assert all(e["seeds"] == HS.seed_block("HD_DEV", 1) and e["n"] == 2 for e in evals)
+    model = PPO.load(out / "final.zip", device="cpu")
+    env = make_env(True)
+    env.MAX_STEPS = 10
+    rec = H.run_episode("ppo_random", "randomized", HS.seed_block("HD_DEV")[0], env=env,
+                        model=model)
+    assert rec["steps"] == 10 and rec["solver"] == "frozen"
+
+
+def test_sb3_training_resets_each_env_on_its_hd_train_seed():
+    # PPO(seed=...) re-seeds the vec env with seed + i; the trainer must restore HD_TRAIN seeds
+    from highdim import train as HT
+    run = 7
+    venv = HT.make_vec_env(run, solver="frozen", n_envs=2, vec="dummy")
+    model = HT.build_model(venv, seed=1, run=run, overrides={"n_steps": 8, "batch_size": 8})
+    model._setup_learn(16, callback=None)              # what learn() does before the first rollout
+    got = model._last_obs
+    for i, (cond, s) in enumerate(HT.env_specs(run, 2)):
+        want, _ = _wrapper(cond, seed=s).reset()
+        assert np.array_equal(got[i], want), (i, s)
+    venv.close()

@@ -19,6 +19,8 @@ TRAIN_BASE = 14_500_000
 #: Implementation cap, not a pre-registered rule: 100 runs x 1000 envs keeps every training seed
 #: inside [14 500 000, 14 600 000), clear of the dev and final blocks.
 TRAIN_RUNS, TRAIN_ENVS = 100, 1000
+#: The last HD_TRAIN run index is reserved for plumbing smoke runs and tests, never for results.
+SMOKE_RUN = TRAIN_RUNS - 1
 
 #: Earlier reservations the HD blocks must avoid, beyond continuation.seeds.
 OTHER_RESERVED = [(11_000_000, 12_000_000),     # pursuit (continuation.pursuit.config)

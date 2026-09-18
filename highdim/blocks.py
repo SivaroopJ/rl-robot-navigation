@@ -17,6 +17,8 @@ Seeds are passed in, never block names: only the entry points open HD_FINAL (hig
 
 `check=(solver, shadow)` runs the fast-solver suitability check's episodes
 (highdim.harness.run_check_episode) instead of evaluation episodes; it is part of the fingerprint.
+`model=<checkpoint path>` (with `hold`) drives the PPO arms; each worker loads the checkpoint
+once, and the fingerprint carries the checkpoint's sha256 and the hold length.
 """
 from __future__ import annotations
 
@@ -35,10 +37,19 @@ from highdim.harness import run_check_episode, run_episode
 
 HEAVY = ("trace", "trajectory")
 _W = {}          # per-process cache: condition -> (env, oracle, env default MAX_STEPS)
+_MODELS = {}     # per-process cache: checkpoint path -> loaded PPO model
+
+
+def _load(path):
+    if path not in _MODELS:
+        from stable_baselines3 import PPO
+        _MODELS[path] = PPO.load(path, device="cpu")
+    return _MODELS[path]
 
 
 def _worker(job):
-    kind, cond, seed, max_steps, check = job
+    kind, cond, seed, max_steps, check, *drive = job
+    model, hold = drive[0] if drive and drive[0] is not None else (None, 1)
     if cond not in _W:
         env = make_env(cond == "randomized")
         _W[cond] = (env, ShortestPathOracle(env.WORLD_SIZE, env.AGENT_RADIUS,
@@ -46,17 +57,23 @@ def _worker(job):
     env, oracle, default_steps = _W[cond]
     env.MAX_STEPS = default_steps if max_steps is None else int(max_steps)
     if check is None:
+        if model is not None:
+            return cond, seed, run_episode(kind, cond, seed, env=env, oracle=oracle,
+                                           model=_load(model), hold=hold)
         return cond, seed, run_episode(kind, cond, seed, env=env, oracle=oracle)
     solver, shadow = check
     return cond, seed, run_check_episode(kind, cond, seed, env=env, oracle=oracle,
                                          solver=solver, shadow=shadow)
 
 
-def fingerprint(kind, seeds, conditions, max_steps, tag, check=None):
+def fingerprint(kind, seeds, conditions, max_steps, tag, check=None, model=None, hold=1):
     d = {"kind": kind, "seeds": list(seeds), "conditions": list(conditions),
          "max_steps": max_steps, "tag": tag}
     if check is not None:                  # evaluation fingerprints are unchanged by `check`
         d["check"] = list(check)
+    if model is not None:                  # ... and by `model` when there is none
+        d["model_sha256"] = hashlib.sha256(Path(model).read_bytes()).hexdigest()
+        d["hold"] = int(hold)
     blob = json.dumps(d, sort_keys=True)
     return hashlib.sha256(blob.encode()).hexdigest()
 
@@ -102,17 +119,22 @@ def _finalise_traces(traces, rows):
 
 
 def run_block(kind, seeds, *, conditions=("fixed", "randomized"), workers=8, checkpoint,
-              traces, tag="", progress=None, max_steps=None, maxtasksperchild=40, check=None):
+              traces, tag="", progress=None, max_steps=None, maxtasksperchild=40, check=None,
+              model=None, hold=1):
     """{condition: [light records sorted by seed]} for one arm.
 
-    A rerun with the IDENTICAL (kind, seeds, conditions, max_steps, tag) fingerprint resumes,
+    A rerun with the IDENTICAL fingerprint (kind, seeds, conditions, max_steps, tag, plus
+    `check`, and the checkpoint sha256 and hold when `model` is given) resumes,
     skipping finished episodes; any other definition refuses the checkpoint with SystemExit.
     `tag` is the code identity (the entry point passes the git commit), so a resume after a code
     change is refused rather than mixing two versions in one block.
     """
     checkpoint, traces = Path(checkpoint), Path(traces)
     checkpoint.parent.mkdir(parents=True, exist_ok=True)
-    fp = fingerprint(kind, seeds, conditions, max_steps, tag, check)
+    if model is not None and check is not None:
+        raise ValueError("the fast-solver check runs no PPO model")
+    fp = fingerprint(kind, seeds, conditions, max_steps, tag, check, model, hold)
+    drive = None if model is None else (str(model), int(hold))
     rows = _read_jsonl(checkpoint)
     if rows:
         if rows[0].get("fingerprint") != fp:
@@ -128,7 +150,7 @@ def run_block(kind, seeds, *, conditions=("fixed", "randomized"), workers=8, che
         print(f"  resuming: {sum(len(v) for v in out.values())} episodes already in "
               f"{checkpoint}", flush=True)
 
-    jobs = [(kind, c, s, max_steps, check) for c in conditions for s in seeds if s not in out[c]]
+    jobs = [(kind, c, s, max_steps, check, drive) for c in conditions for s in seeds if s not in out[c]]
     t0 = time.time()
     pool = None
     if workers <= 1:

@@ -31,7 +31,7 @@ from dr_control.fast_drccp import FastClfCbfDrccpController
 from evaluation.shortest_path import ShortestPathOracle
 from experiments.exp6_ppo_comparison import episode_record, make_env, true_clearance
 from highdim import policy as HP
-from highdim.subgoal import policy_obs
+from highdim.subgoal import check_hold, policy_obs
 from highdim.gates import DU_TOL
 
 #: Phase 5's stuck definition, reproduced exactly (experiments/exp5_astar_waypoint.py, the loop
@@ -163,11 +163,11 @@ class ShadowSolver:
                 "du_max": max(du) if du else float("nan"), "du_hist": hist}
 
 
-def run_episode(kind, condition, seed, *, env=None, oracle=None, model=None):
+def run_episode(kind, condition, seed, *, env=None, oracle=None, model=None, hold=1):
     """One evaluation episode: frozen SCS (arm 4: no solver). The PPO arms need `model`, which
-    is queried with the mean action."""
+    is queried with the mean action every `hold` steps (gamma frozen in between, hold > 1)."""
     return _episode(kind, condition, seed, env=env, oracle=oracle, solver="frozen",
-                    model=model)
+                    model=model, hold=hold)
 
 
 def run_check_episode(kind, condition, seed, *, env=None, oracle=None, solver="frozen",
@@ -195,11 +195,13 @@ def _require_solver(ctrl, solver, kind):
         raise TypeError(f"the fast check requires the {HP.FAST_VARIANT} solver, got {type(ctrl)}")
 
 
-def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False, model=None):
+def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False, model=None, hold=1):
     if condition not in ("fixed", "randomized"):
         raise ValueError(condition)
     if (kind in HP.PPO_KINDS) != (model is not None):
         raise ValueError(f"arm {kind!r}: a model is required for the PPO arms and only for them")
+    if check_hold(hold) != 1 and model is None:
+        raise ValueError(f"hold > 1 applies only to PPO arms: {hold}")
     own_env = env is None
     env = env if env is not None else make_env(condition == "randomized")
     if env.randomize_dynamic_obstacles != (condition == "randomized"):
@@ -228,8 +230,9 @@ def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False, model=
     while not (term or trunc):
         t0 = time.perf_counter()
         if subgoal is not None:
-            a_env, _ = model.predict(policy_obs(obs), deterministic=True)
-            subgoal.set_action(a_env)
+            if steps % hold == 0:
+                a_env, _ = model.predict(policy_obs(obs), deterministic=True)
+                subgoal.decide(a_env, env.agent_position, hold)
             actions.append({"a_raw": [float(x) for x in subgoal.a_raw],
                             "a_disc": [float(x) for x in subgoal.a_disc]})
         action, _ = pol.predict(obs, env.agent_position, deterministic=True)
@@ -272,7 +275,7 @@ def _episode(kind, condition, seed, *, env, oracle, solver, shadow=False, model=
                    ArmSpec(kind, "random", params=params, random=spec))
     rec.update(continuation_metrics(metrics_arm, recd.steps, wrap, outcome, steps, times, ep_time))
     rec.update({"arm": kind, "condition": condition, "controller": pol.ctrl.name,
-                "solver": solver,
+                "solver": solver, "hold": int(hold),
                 "start": [float(x) for x in start], "goal": [float(x) for x in goal],
                 "params": params.as_dict(),
                 "random_spec": spec.as_dict() if wrap is not None else None,

@@ -122,6 +122,11 @@ def has_filter(kind):
     return kind != "ppo_unfiltered"
 
 
+def attach_random(pol, *, params, spec, rng):
+    """The frozen Random recovery on pol.ctrl, drawing from `rng`."""
+    return attach_recovery("random", pol, params=params, random_spec=spec, rng=rng)
+
+
 def attach_hd_recovery(pol, episode_seed, *, params, spec):
-    return attach_recovery("random", pol, params=params, random_spec=spec,
-                           rng=controller_rng(episode_seed))
+    """Evaluation: the controller RNG is the one derived from the episode seed."""
+    return attach_random(pol, params=params, spec=spec, rng=controller_rng(episode_seed))
