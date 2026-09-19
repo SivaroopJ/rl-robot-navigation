@@ -309,6 +309,7 @@ TIMING = {"step_time_ms_mean", "step_time_ms_median", "step_time_ms_p95", "step_
           "step_times", "random_eval_ms_mean"}
 #: RS-only labels and additions, absent from the HD record.
 RS_ONLY = {"cell", "family", "obstacles", "motion", "spec", "scenario_events",
+           "final_obstacle_positions",
            "generator_version", "trigger_fired", "trigger_step"}
 
 
@@ -1495,3 +1496,227 @@ def test_the_map_validation_entry_point_runs_no_episode(tmp_path, monkeypatch):
         assert (tmp_path / fig).is_file()
         assert f"]({fig})" in report                     # embedded, relative to the report
     assert "m0" in stats["anchor"]["family"]
+
+
+# =========================================================================== ticket 09
+# The baseline diagnostic (RS_DESIGN 6 phase 2, 10). robustsuite.diagnostic is pure: it reads
+# light records plus their trace-sidecar rows (trace, trajectory, spec) and never runs anything.
+from robustsuite import diagnostic as RD
+
+
+def _trace(statuses, events=()):
+    return [{"qp_status": s, "random_event": i in events} for i, s in enumerate(statuses)]
+
+
+def _spec_dict(obstacles="dynamic", n_peds=2, block=(5.0, 5.0, 0.2, 1.0),
+               trigger=(3.0, 5.0)):
+    return {"obstacles": obstacles, "pedestrians": [{}] * n_peds,
+            "block": {"rect": list(block)}, "spawn": {"start": [3.0, 7.0]},
+            "trigger": {"centre": list(trigger), "radius": 0.5}}
+
+
+def _ep(outcome="timeout", *, steps=None, statuses=None, traj=None, ctype=None, stuck=0,
+        fired_at=None, obstacles="dynamic", peds=(), spec=None, events=()):
+    statuses = statuses or ["optimal"] * (steps or 50)
+    steps = len(statuses)
+    traj = traj or [[1.0 + 0.05 * t, 1.0] for t in range(steps + 1)]
+    rec = {"outcome": outcome, "steps": steps, "success": int(outcome == "success"),
+           "collision": int(outcome == "collision"), "timeout": int(outcome == "timeout"),
+           "collision_type": ctype, "stuck": stuck, "obstacles": obstacles,
+           "trigger_fired": fired_at is not None, "trigger_step": fired_at,
+           "final_obstacle_positions": [list(p) for p in peds]}
+    row = {"trace": _trace(statuses, events), "trajectory": traj,
+           "spec": spec if spec is not None else (None if obstacles == "anchor"
+                                                  else _spec_dict(obstacles))}
+    return rec, row
+
+
+def test_dcp_runs_are_the_maximal_runs_of_dcperror_steps():
+    t = _trace(["DCPError"] * 3 + ["optimal"] + ["DCPError"] * 2 + ["infeasible", "DCPError"])
+    assert RD.dcp_runs(t) == [(0, 3), (4, 2), (7, 1)]
+    assert RD.dcp_runs(_trace(["optimal"] * 4)) == []
+
+
+def test_freezes_are_split_into_at_the_start_and_mid_route():
+    F = RD.FREEZE_STEPS
+    at_start = RD.freeze_profile(_trace(["DCPError"] * F + ["optimal"] * 5))
+    assert at_start["freeze_start"] and not at_start["freeze_midroute"]
+    assert at_start["dcp_at_start"] and at_start["dcp_steps"] == F
+    assert not at_start["terminal_freeze"]
+    mid = RD.freeze_profile(_trace(["optimal"] * 5 + ["DCPError"] * F))
+    assert mid["freeze_midroute"] and not mid["freeze_start"] and mid["terminal_freeze"]
+    short = RD.freeze_profile(_trace(["optimal"] + ["DCPError"] * (F - 1) + ["optimal"]))
+    assert not (short["freeze_start"] or short["freeze_midroute"] or short["terminal_freeze"])
+    assert short["dcp_steps"] == F - 1
+
+
+def test_a_success_has_no_failure_mode():
+    assert RD.episode_view(*_ep("success"))["mode"] is None
+
+
+def test_collisions_are_classified_by_what_was_hit():
+    wall = RD.episode_view(*_ep("collision", ctype="wall"))
+    assert wall["mode"] == "collision_wall"
+    # static: the layout, unless the robot touches the fired block
+    static = RD.episode_view(*_ep("collision", ctype="static", obstacles="trigger_block",
+                                  fired_at=10))
+    assert static["mode"] == "collision_static"
+    at_block = [[1.0, 1.0]] * 50 + [[4.75, 5.0]]              # 0.05 m from the block's face
+    blk = RD.episode_view(*_ep("collision", ctype="static", obstacles="trigger_block",
+                               fired_at=10, traj=at_block))
+    assert blk["mode"] == "collision_block"
+    # dynamic: the nearest pedestrian; the spawned one is the slot after the regular ones
+    end = [[1.0, 1.0]] * 50 + [[4.0, 4.0]]
+    peds = [(4.5, 4.0), (8.0, 8.0), (1.0, 9.0)]
+    reg = RD.episode_view(*_ep("collision", ctype="dynamic", traj=end, peds=peds,
+                               obstacles="trigger_spawn", fired_at=10))
+    assert reg["mode"] == "collision_dynamic" and reg["hit_slot"] == 0
+    spawned = RD.episode_view(*_ep("collision", ctype="dynamic", traj=end,
+                                   peds=[(8.0, 8.0), (1.0, 9.0), (4.5, 4.0)],
+                                   obstacles="trigger_spawn", fired_at=10))
+    assert spawned["mode"] == "collision_spawned" and spawned["hit_slot"] == 2
+    anchor = RD.episode_view(*_ep("collision", ctype="dynamic", traj=end, peds=peds,
+                                  obstacles="anchor"))
+    assert anchor["mode"] == "collision_dynamic"
+
+
+def test_timeouts_are_classified_in_priority_order():
+    F = RD.FREEZE_STEPS
+    still = [[1.0, 1.0]] * 61
+    # frozen from the first step and never left the start
+    v = RD.episode_view(*_ep(statuses=["DCPError"] * 60, traj=still, stuck=1))
+    assert v["mode"] == "timeout_freeze_start" and not v["left_start"]
+    # moved, then frozen until the end
+    moved = [[1.0 + 0.05 * t, 1.0] for t in range(40)] + [[2.95, 1.0]] * 21
+    v = RD.episode_view(*_ep(statuses=["optimal"] * 40 + ["DCPError"] * 20, traj=moved,
+                             stuck=1))
+    assert v["mode"] == "timeout_freeze_midroute" and v["left_start"]
+    # a fired block within BLOCK_NEAR of the final position wins over a terminal freeze
+    near_block = [[1.0 + 0.05 * t, 1.0] for t in range(40)] + [[4.3, 5.0]] * 21
+    v = RD.episode_view(*_ep(statuses=["optimal"] * 40 + ["DCPError"] * 20,
+                             traj=near_block, stuck=1, obstacles="trigger_block",
+                             fired_at=30))
+    assert v["mode"] == "timeout_at_block" and v["terminal_freeze"]
+    # the same end in trigger_spawn is not "at block": the block never appears there
+    v = RD.episode_view(*_ep(statuses=["optimal"] * 40 + ["DCPError"] * 20,
+                             traj=near_block, stuck=1, obstacles="trigger_spawn",
+                             fired_at=30))
+    assert v["mode"] == "timeout_freeze_midroute"
+    assert RD.episode_view(*_ep(stuck=1))["mode"] == "timeout_stuck"
+    assert RD.episode_view(*_ep())["mode"] == "timeout_slow"
+    # a mid-route freeze that ended before the timeout is not terminal
+    v = RD.episode_view(*_ep(statuses=["optimal"] * 5 + ["DCPError"] * F + ["optimal"] * 5))
+    assert v["mode"] == "timeout_slow" and v["freeze_midroute"] and not v["terminal_freeze"]
+
+
+def test_random_near_the_end_is_flagged():
+    n = 30
+    v = RD.episode_view(*_ep("collision", ctype="wall", steps=n, events=(n - 2,)))
+    assert v["random_near_end"]
+    v = RD.episode_view(*_ep("collision", ctype="wall", steps=n, events=(0,)))
+    assert not v["random_near_end"]
+
+
+def test_the_outcome_is_timed_and_located_relative_to_the_trigger():
+    traj = [[1.0, 1.0]] * 40 + [[4.0, 5.0]]
+    v = RD.episode_view(*_ep("collision", ctype="static", steps=40, traj=traj,
+                             obstacles="trigger_block", fired_at=25))
+    ev = v["event"]
+    assert ev["fired"] and ev["steps_after_fire"] == 40 - 25
+    assert ev["dist_trigger"] == pytest.approx(1.0)
+    assert ev["dist_block"] == pytest.approx(0.8)             # to the rectangle's face
+    before = RD.episode_view(*_ep("collision", ctype="wall", steps=40,
+                                  obstacles="trigger_spawn"))["event"]
+    assert not before["fired"] and before["steps_after_fire"] is None
+    assert before["dist_spawn_start"] == pytest.approx(6.0)     # ends at (3, 1)
+    assert before["dist_block"] is None
+    assert RD.episode_view(*_ep("success", obstacles="dynamic"))["event"] is None
+
+
+def _cell_eps(n_success, n_coll, n_timeout, **kw):
+    return ([_ep("success", **kw)] * n_success
+            + [_ep("collision", ctype="wall", **kw)] * n_coll + [_ep(**kw)] * n_timeout)
+
+
+def test_the_cell_summary_counts_outcomes_modes_and_freezes():
+    eps = _cell_eps(6, 1, 1) + [_ep(statuses=["DCPError"] * 30, traj=[[1.0, 1.0]] * 31)]
+    s = RD.cell_summary([r for r, _ in eps], [RD.episode_view(*e) for e in eps])
+    assert s["episodes"] == 9
+    assert s["success_rate"] == pytest.approx(6 / 9)
+    assert s["modes"] == {"collision_wall": 1, "timeout_slow": 1, "timeout_freeze_start": 1}
+    assert s["freeze_start_episodes"] == 1 and s["dcp_episodes"] == 1
+    assert s["dcp_at_start_episodes"] == 1
+    assert s["most_common_mode"] in ("collision_wall", "timeout_slow", "timeout_freeze_start")
+
+
+def test_the_most_common_mode_breaks_ties_by_the_fixed_mode_order():
+    eps = _cell_eps(0, 1, 1)
+    s = RD.cell_summary([r for r, _ in eps], [RD.episode_view(*e) for e in eps])
+    assert s["most_common_mode"] == min(("collision_wall", "timeout_slow"),
+                                        key=RD.MODES.index)
+    eps = _cell_eps(3, 0, 0)
+    assert RD.cell_summary([r for r, _ in eps],
+                           [RD.episode_view(*e) for e in eps])["most_common_mode"] is None
+
+
+def test_pooled_rates_weight_every_cell_equally():
+    a = {"success_rate": 1.0, "collision_rate": 0.0, "episodes": 10}
+    b = {"success_rate": 0.0, "collision_rate": 0.5, "episodes": 90}
+    p = RD.pooled([a, b], keys=("success_rate", "collision_rate"))
+    assert p["success_rate"] == pytest.approx(0.5)
+    assert p["collision_rate"] == pytest.approx(0.25)
+    assert p["episodes"] == 100
+    q = RD.pooled([{"m": float("nan"), "episodes": 1}, {"m": 0.2, "episodes": 1}], keys=("m",))
+    assert q["m"] == pytest.approx(0.2)
+
+
+def test_the_anchor_check_is_fishers_exact_test_against_the_reference_counts():
+    same = RD.anchor_check(90, 100, 361, 400)
+    assert same["consistent"] and same["p"] > 0.05
+    worse = RD.anchor_check(70, 100, 361, 400)
+    assert not worse["consistent"] and worse["p"] < 0.05
+    from scipy.stats import fisher_exact
+    assert worse["p"] == pytest.approx(fisher_exact([[70, 30], [361, 39]])[1])
+    lo, hi = same["ci95"]
+    assert lo < 0.9 < hi and hi - lo < 0.15
+
+
+def test_the_record_carries_the_final_pedestrian_positions():
+    rec = _rs(RS.Cell("rooms", "dynamic"), "fixed", DIAG[3], max_steps=10)
+    assert len(rec["final_obstacle_positions"]) == SC.FAMILIES["rooms"].pedestrians
+    assert _rs(OPEN_STATIC, "fixed", DIAG[3], max_steps=5)["final_obstacle_positions"] == []
+
+
+def test_block_records_leave_the_spec_to_the_trace_sidecar(tmp_path):
+    recs = _block(tmp_path, DIAG[:1])["fixed"]
+    assert "spec" not in recs[0]
+    with gzip.open(tmp_path / "b.traces.jsonl.gz", "rt") as f:
+        row = json.loads(f.readline())
+    assert row["spec"] == SC.generate(OPEN_STATIC, "fixed", DIAG[0]).as_dict()
+
+
+def test_the_diagnostic_entry_point_runs_and_writes_its_report(tmp_path):
+    from experiments.robustsuite import rs2_diagnostic as D
+    cells = [RS.Cell("rooms", "trigger_block"), RS.ANCHOR]
+    out = D.main(["--smoke", "--out", str(tmp_path), "--workers", "1",
+                  "--cells", "rooms/trigger_block", "m0/anchor"])
+    report = (tmp_path / "RS2_BASELINE_DIAGNOSTIC_REPORT.md").read_text()
+    analysis = json.loads((tmp_path / "analysis.json").read_text())
+    assert out["episodes"] == len(cells) * len(RS.MOTIONS) * D.SMOKE_SEEDS
+    assert analysis["provenance"]["generator_version"] == SC.GENERATOR_VERSION
+    assert "rooms / trigger_block" in report and "M0 anchor" in report
+    for fig in analysis["figures"]:
+        assert (tmp_path / fig).is_file() and f"]({fig})" in report
+
+
+def test_the_event_summary_splits_failures_at_the_firing_step():
+    traj = [[1.0, 1.0]] * 40 + [[4.0, 5.0]]
+    eps = [_ep("collision", ctype="static", steps=40, traj=traj, obstacles="trigger_block",
+               fired_at=25),
+           _ep("collision", ctype="wall", steps=40, obstacles="trigger_block"),
+           _ep("success", obstacles="trigger_block", fired_at=10)]
+    s = RD.event_summary([r for r, _ in eps], [RD.episode_view(*e) for e in eps])
+    assert s["fired"] == 2 and s["fired_rate"] == pytest.approx(2 / 3)
+    assert s["failures_before_fire"] == 1 and s["failures_after_fire"] == 1
+    assert s["collision_steps_after_fire"]["median"] == 15
+    assert s["collision_dist_block"]["median"] == pytest.approx(0.8)

@@ -31,7 +31,9 @@ from robustsuite import seeds as RS
 from robustsuite.harness import check_cell, run_episode
 from robustsuite.scenario_env import RSScenarioEnv
 
-HEAVY = ("trace", "trajectory")
+#: Kept out of the checkpoint rows and written to the trace sidecar. The spec is regenerable
+#: from (cell, seed) and is the bulk of a record.
+HEAVY = ("trace", "trajectory", "spec")
 _W = {}          # per-process cache: motion -> (env, env default MAX_STEPS)
 _M0_ORACLE = []  # per-process cache: the anchor's SPL oracle (M0's map never changes)
 

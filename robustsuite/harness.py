@@ -14,8 +14,10 @@ anchor) before reset. The M0 anchor through this path is bit-identical to highdi
 EVALUATION IS FROZEN SCS ONLY: `run_episode` raises TypeError for any other controller.
 
 The record adds to highdim's: the cell, the motion condition, the spec (None for the anchor), the
-generator version, the scenario-event log, and whether and on which step the trigger fired
-(`trigger_fired`, `trigger_step`; False and None when it never fired). Step times are
+generator version, the scenario-event log, whether and on which step the trigger fired
+(`trigger_fired`, `trigger_step`; False and None when it never fired), and the dynamic obstacles'
+positions after the last step (`final_obstacle_positions`, in slot order: a spawned pedestrian is
+the slot after the regular ones), so the diagnostic can tell which one a dynamic collision hit. Step times are
 summarised by continuation_metrics (mean, median, p95, max), as in highdim. Ground truth enters
 only through true_clearance and the env's outcome flags, both measurement.
 """
@@ -134,6 +136,8 @@ def _episode(arm, cell, motion, seed, env, oracle):
                 "scenario_events": list(env.scenario_events),
                 "trigger_fired": env.trigger_step is not None,
                 "trigger_step": env.trigger_step,
+                "final_obstacle_positions": [[float(x) for x in q]
+                                             for q in env.obstacle_positions],
                 "trace": trace.steps,
                 "trajectory": [[float(x) for x in q] for q in traj]})
     return rec
