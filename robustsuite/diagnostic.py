@@ -17,9 +17,12 @@ A failed episode gets exactly one failure mode, the first in MODES that matches:
     timeout_stuck            the Phase 5 stuck flag (highdim.harness.stuck)
     timeout_slow             any other timeout
 
-A DCPError step is one whose QP status is "DCPError": h < 0 (an obstacle within 0.6 m of the
-robot's centre) makes the reference objective non-convex, CVXPY raises, and the frozen policy
-executes u = 0 without calling Random (RS_DESIGN 14.1 item 1). A freeze is a run of at least
+A DCPError step is one whose QP status is "DCPError": h < 0 makes the reference objective
+non-convex, CVXPY raises, and the frozen policy executes u = 0 without calling Random (RS_DESIGN
+14.1 item 1). h is the distance from the robot's centre to the nearest LiDAR surface point minus
+0.3 m. The env's LiDAR reads rectangles and pedestrians at their true distance but the outer
+wall 0.3 m short, so h < 0 within 0.6 m of the outer wall and, elsewhere, only on contact
+(measured in ticket 09). A freeze is a run of at least
 FREEZE_STEPS consecutive DCPError steps; it is "at the start" if the run starts on step 0 and
 "terminal" if it lasts to the episode's end.
 """
@@ -40,6 +43,8 @@ BLOCK_NEAR = 1.0
 LEFT_START = 0.3
 #: Random "near the end": a Random event within this many steps of the last one.
 NEAR_END = 10
+#: "Still at the end": the robot moved less than STILL_DIST in its last STILL_STEPS steps.
+STILL_STEPS, STILL_DIST = 50, 0.1
 #: The obstacle conditions with an event.
 TRIGGERED = ("trigger_block", "trigger_spawn")
 
@@ -96,6 +101,8 @@ def episode_view(rec, row):
     view.update({
         "left_start": bool(np.max(np.linalg.norm(traj - traj[0], axis=1)) > LEFT_START),
         "random_near_end": any(s["random_event"] for s in trace[-NEAR_END:]),
+        "still_at_end": bool(len(traj) > STILL_STEPS
+                             and np.linalg.norm(end - traj[-1 - STILL_STEPS]) < STILL_DIST),
         "hit_slot": None})
 
     mode = None
@@ -165,7 +172,7 @@ def cell_summary(recs, views):
     }
 
 
-def _order_stats(values):
+def order_stats(values):
     """n, min, quartiles and max of the non-None values; None if there are none."""
     v = np.asarray([x for x in values if x is not None], float)
     if not len(v):
@@ -185,12 +192,14 @@ def event_summary(recs, views):
         "fired_rate": _rate(sum(v["event"]["fired"] for v in views), len(views)),
         "failures_before_fire": len(fails) - len(after),
         "failures_after_fire": len(after),
-        "steps_after_fire": _order_stats(v["event"]["steps_after_fire"] for _, v in after),
-        "collision_steps_after_fire": _order_stats(v["event"]["steps_after_fire"] for v in coll),
-        "collision_dist_trigger": _order_stats(v["event"]["dist_trigger"] for v in coll),
-        "collision_dist_block": _order_stats(v["event"]["dist_block"] for v in coll),
-        "collision_dist_spawn_start": _order_stats(v["event"]["dist_spawn_start"] for v in coll),
+        "steps_after_fire": order_stats(v["event"]["steps_after_fire"] for _, v in after),
+        "collision_steps_after_fire": order_stats(v["event"]["steps_after_fire"] for v in coll),
+        "collision_dist_trigger": order_stats(v["event"]["dist_trigger"] for v in coll),
+        "collision_dist_block": order_stats(v["event"]["dist_block"] for v in coll),
+        "collision_dist_spawn_start": order_stats(v["event"]["dist_spawn_start"] for v in coll),
         "spawned_hits": sum(v["mode"] == "collision_spawned" for v in views),
+        "collisions_near_block": sum(v["event"]["dist_block"] is not None
+                                     and v["event"]["dist_block"] <= BLOCK_NEAR for v in coll),
     }
 
 

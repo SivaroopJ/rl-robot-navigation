@@ -63,33 +63,79 @@ POOL_KEYS = ("success_rate", "collision_rate", "dynamic_collision_rate",
              "random_margin_nonneg", "random_margin_median", "step_time_ms_mean_ep",
              "step_time_ms_p95_ep")
 
-#: The likely mechanism of each failure mode. Written from the frozen code (RS_DESIGN 2, 14.1)
-#: and checked against the evidence columns the report prints next to it.
+#: The likely mechanism of each failure mode. Written after the run, against the evidence
+#: columns the report prints next to them (section 2) and the measurements in READING.
 MECHANISM = {
-    "collision_dynamic": "A pedestrian closes on the robot faster than the collapsed DR-CBF "
-                         "can brake or sidestep it. Pedestrians ignore the robot, and Random "
-                         "seldom finds a direction with a margin ≥ 0.",
-    "collision_spawned": "The spawned pedestrian comes out from behind an occluder 2–3 m away, "
-                         "so LiDAR sees it late and the robot has little time to react.",
-    "collision_static": "The robot touches a layout rectangle. The barrier sees rectangles only "
-                        "through the 24 LiDAR rays, so a corner between two rays is invisible.",
-    "collision_block": "The robot touches the fired block. The carrot keeps pulling through "
-                       "it, because A* never replans.",
-    "collision_wall": "The robot touches the outer wall, which the barrier sees only through "
-                      "LiDAR.",
-    "timeout_at_block": "A* never replans, so the carrot keeps pointing through the block and "
-                        "the robot stays in front of it. Within 0.6 m of the block this is a "
-                        "DCPError freeze; see the freeze column.",
-    "timeout_freeze_start": "An obstacle within 0.6 m of the start makes h < 0, so the QP "
-                            "raises DCPError. u = 0 is executed and Random never runs. In a "
-                            "static scene nothing changes, so the freeze never ends.",
-    "timeout_freeze_midroute": "The same DCPError freeze, entered mid-route: the robot came "
-                               "within 0.6 m of an obstacle (A* plans at 0.3 m clearance) and "
-                               "froze there.",
-    "timeout_stuck": "The robot oscillates or stalls in one place without a lasting DCPError "
-                     "freeze: a CLF–CBF deadlock or repeated Random recoveries.",
+    "collision_dynamic": "A pedestrian walks into the robot: pedestrians ignore it, and in a "
+                         "passage the robot has no room to step aside. Random ran in the last "
+                         "second of 44% of these episodes, and it rarely finds a direction that "
+                         "satisfies every constraint (15% of events pooled, section 7). About "
+                         "half of these collisions are in trigger_block cells, where the robot "
+                         "is waiting in front of the block (section 6).",
+    "collision_spawned": "The spawned pedestrian comes out from behind an occluder 2–3 m from "
+                         "the trigger and LiDAR sees it late. It is rare: 11 of 500 "
+                         "trigger_spawn episodes.",
+    "collision_static": "The robot touches a layout rectangle, almost always in trigger_block "
+                        "cells and with Random running just before (the 'Random near end' "
+                        "column): the robot is being pushed around in a tight spot next to "
+                        "the block.",
+    "collision_block": "The robot touches the fired block itself, with Random running just "
+                       "before (every case).",
+    "collision_wall": "The robot touches the outer wall.",
+    "timeout_at_block": "A* never replans, so the carrot stays on the far side of the block. "
+                        "The CLF pulls the robot into the block and the CBF stops it about "
+                        "0.45 m from the block's face (0.15 m clearance). The QP stays "
+                        "feasible, with no Random and no DCPError, so the robot stands still "
+                        "until the timeout: a CLF–CBF standstill.",
+    "timeout_freeze_start": "h < 0 at the start, so the QP raises DCPError, u = 0 is "
+                            "executed and Random never runs.",
+    "timeout_freeze_midroute": "The same DCPError freeze, entered mid-route: in practice "
+                               "within 0.6 m of the outer wall, which LiDAR reads 0.3 m short.",
+    "timeout_stuck": "The same CLF–CBF standstill without a block: the robot drifts off its "
+                     "route and wedges between obstacles, with the carrot on the far side "
+                     "(rooms / static and dense_clutter / static, renders in section 9). The "
+                     "failing static layouts fail in both motions.",
     "timeout_slow": "The robot kept moving but did not reach the goal within 500 steps.",
 }
+
+#: What the diagnostic shows, written after the run from this report's own tables. Printed as
+#: section 0 of the report.
+READING = """\
+Written after the run, from the tables below. The ranking of candidates is for ticket 10 and is
+not decided here.
+
+1. **The triggered block is the dominant failure.** The trigger_block cells succeed 0.04–0.31
+   (dynamic cells 0.78–0.99). `timeout_at_block` alone is 321 of 2000 episodes (16%), and every
+   family has it. At the end of these episodes the robot stands 0.41–0.48 m (5th–95th
+   percentile) from the block's face, and 92% of them have not moved in the last 5 s. The QP is
+   feasible:
+   there is no Random and no DCPError. A* never replans, so the carrot stays past the block.
+   Dense clutter suffers least (0.31), which fits its many short-detour blocks (14 / 50,
+   [[RS1_MAP_VALIDATION_REPORT]]).
+2. **Waiting at the block also causes collisions.** The trigger_block cells have 88 pedestrian
+   collisions against 43 in the dynamic cells on the same draws. Most collisions after firing
+   are within 1 m of the block (section 6), a median of 140–240 steps after firing. The robot
+   stands where the pedestrians walk past the block zone.
+3. **Pedestrian collisions are the second mode** (183 episodes, 9%). They grow with narrowness:
+   corridors 0.20 and dense clutter 0.12 in the dynamic cell, against 0.01 in open clutter.
+   Random's chosen direction satisfies every constraint in only 15% of events pooled, close to
+   the ~12% seen on M0.
+4. **The triggered spawn is a minor threat.** The spawned pedestrian caused 11 collisions in 500
+   episodes. The trigger_spawn cells succeed 2–8 pp below their dynamic cells. Their failures
+   split about evenly: 37 come before firing, where the episode is the dynamic cell's, and 34
+   after.
+5. **DCPError freezes are almost absent:** 2 of 2000 episodes, both mid-route and both ending
+   0.56 m from the outer wall. This corrects the ticket 08 expectation. The env's LiDAR reads
+   rectangles at their true distance and only the outer wall 0.3 m short, so h < 0 (DCPError)
+   happens within 0.6 m of the outer wall, not of every obstacle as [[RS_DESIGN]] §14.1 item 1
+   words it. The 0.6 m start clearance keeps starts out of that band. Random on DCPError steps
+   (the phase 3 idea) would therefore have almost nothing to act on.
+6. **The same standstill without a block.** The static cells lose only 4 episodes (`timeout_stuck`,
+   two layouts, each in both motions). The robot is wedged between obstacles off its route.
+7. **The M0 anchor matches the known F-D numbers** (0.87 against 0.9025, p 0.36; section 8).
+8. **Real time:** p95 step time is about 40–47 ms in every cell, well inside the 100 ms limit
+   that candidates must meet.
+"""
 
 
 # --------------------------------------------------------------------------- running
@@ -204,6 +250,10 @@ def mode_evidence(views_by_cell, n_episodes):
                      "terminal_freeze": sum(v["terminal_freeze"] for _, v in vs) / n,
                      "random_near_end": sum(v["random_near_end"] for _, v in vs) / n,
                      "left_start": sum(v["left_start"] for _, v in vs) / n,
+                     "still_at_end": sum(v["still_at_end"] for _, v in vs) / n,
+                     "end_dist_block": RD.order_stats(
+                         v["event"]["dist_block"] for _, v in vs
+                         if v["event"] and v["event"]["fired"]),
                      "by_family": {f: fam[f] for f in RS.FAMILIES},
                      "by_condition": {o: cond[o] for o in RS.OBSTACLE_CONDITIONS}})
     rows.sort(key=lambda r: (-r["count"], RD.MODES.index(r["mode"])))
@@ -401,6 +451,8 @@ def write_report(analysis, figs, prov, trace_sha, path, n_seeds):
         f"({n_seeds} seeds), both motion conditions, {prov['max_steps'] or 500} steps")
     add(f"- Arm `{ARM}` (frozen A* + Random-CLF-DR-CBF), frozen SCS controller in every episode")
     add(f"- Trace sidecars: SHA-256 in `traces.sha256` (combined `{trace_sha[:12]}`)\n")
+    add("## 0. Reading\n")
+    add(READING)
 
     if "pooled" in a:
         p = a["pooled"]
@@ -413,16 +465,20 @@ def write_report(analysis, figs, prov, trace_sha, path, n_seeds):
             "`robustsuite.diagnostic.MODES`. The evidence columns give the share of the mode's "
             f"episodes that end in a DCPError freeze (≥ {RD.FREEZE_STEPS} steps to the end), "
             f"that ran Random in their last {RD.NEAR_END} steps, and whose robot ever moved "
-            f"more than {RD.LEFT_START} m from its start.\n")
+            f"more than {RD.LEFT_START} m from its start, and that moved less than "
+            f"{RD.STILL_DIST} m in their last {RD.STILL_STEPS} steps. For episodes whose block "
+            "fired, the robot's final distance from the block's face is given too.\n")
         rows = []
         for i, m in enumerate(a["modes"], 1):
             rows.append([i, f"`{m['mode']}`", m["count"], _f(m["share_episodes"]),
                          _f(m["terminal_freeze"], 2), _f(m["random_near_end"], 2),
-                         _f(m["left_start"], 2),
+                         _f(m["left_start"], 2), _f(m["still_at_end"], 2),
+                         _quartiles(m["end_dist_block"], 2),
                          " / ".join(str(m["by_family"][f]) for f in RS.FAMILIES),
                          " / ".join(str(m["by_condition"][o]) for o in RS.OBSTACLE_CONDITIONS)])
         add(_table(["rank", "mode", "episodes", "share of all", "DCP freeze at end",
-                    "Random near end", "left start",
+                    "Random near end", "left start", "still at end",
+                    "m from block face at end (fired block)",
                     "by family (" + " / ".join(RS.FAMILIES) + ")",
                     "by condition (" + " / ".join(RS.OBSTACLE_CONDITIONS) + ")"], rows))
         add("**Likely mechanisms:**\n")
@@ -431,7 +487,7 @@ def write_report(analysis, figs, prov, trace_sha, path, n_seeds):
         add("")
 
         add("## 3. DCPError freezes per cell\n")
-        add(f"A freeze is a run of ≥ {RD.FREEZE_STEPS} consecutive DCPError steps (u = 0, "
+        add(f"A freeze is a run of ≥ {RD.FREEZE_STEPS} consecutive DCPError steps (h < 0: u = 0, "
             "Random not called). Counts are episodes out of each cell's "
             f"{2 * n_seeds}.\n")
         rows = []
@@ -492,12 +548,13 @@ def write_report(analysis, figs, prov, trace_sha, path, n_seeds):
                          _quartiles(e["collision_dist_block"], 2)
                          if c.obstacles == "trigger_block"
                          else _quartiles(e["collision_dist_spawn_start"], 2),
-                         e["spawned_hits"] if c.obstacles == "trigger_spawn" else "—"])
+                         e["spawned_hits"] if c.obstacles == "trigger_spawn"
+                         else f"{e['collisions_near_block']} within {RD.BLOCK_NEAR:g} m"])
         add(_table(["cell", "fired rate", "failures before firing", "failures after firing",
                     "failure: steps after firing", "collision: steps after firing",
                     "collision: m from trigger",
                     "collision: m from block face / from spawn start",
-                    "hit by the spawn"], rows))
+                    "hit by the spawn / collisions near the block"], rows))
 
         add("## 7. Safety layer: infeasibility, Random recovery, step time\n")
         add("Random's margin is the minimum CBC of the direction it selected; ≥ 0 means it "

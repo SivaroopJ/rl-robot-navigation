@@ -1617,6 +1617,12 @@ def test_random_near_the_end_is_flagged():
     assert not v["random_near_end"]
 
 
+def test_still_at_the_end_means_under_10_cm_in_the_last_5_s():
+    parked = [[1.0 + 0.05 * t, 1.0] for t in range(30)] + [[2.45, 1.0]] * 60
+    assert RD.episode_view(*_ep(traj=parked, steps=89))["still_at_end"]
+    assert not RD.episode_view(*_ep(steps=89))["still_at_end"]
+
+
 def test_the_outcome_is_timed_and_located_relative_to_the_trigger():
     traj = [[1.0, 1.0]] * 40 + [[4.0, 5.0]]
     v = RD.episode_view(*_ep("collision", ctype="static", steps=40, traj=traj,
@@ -1720,3 +1726,4 @@ def test_the_event_summary_splits_failures_at_the_firing_step():
     assert s["failures_before_fire"] == 1 and s["failures_after_fire"] == 1
     assert s["collision_steps_after_fire"]["median"] == 15
     assert s["collision_dist_block"]["median"] == pytest.approx(0.8)
+    assert s["collisions_near_block"] == 1                  # 0.8 m <= BLOCK_NEAR
