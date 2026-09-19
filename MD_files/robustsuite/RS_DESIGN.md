@@ -505,3 +505,61 @@ Section 14.1 item 1 says an obstacle within 0.6 m of the robot's centre gives h 
 - It reads the **outer wall** 0.3 m short. So h < 0, and with it DCPError, happens within 0.6 m of the outer wall.
 
 In the RS2 diagnostic, 2 of 2 000 episodes froze, both 0.56 m from the outer wall. The approved 0.6 m start and goal clearance is kept: it is M0's own margin, and it keeps starts out of the band next to the outer wall. No rule changes.
+
+## Revision of the candidate list (section 7.4), 2026-09-20: awaiting the researcher's approval
+
+The researcher asked, after approving the list above and before any candidate was built, that **A\* is never run again after reset**. There are three reasons: the ~0.2 s replan breaks the 10 Hz step, the global plan should stay exactly the baseline's (planning once is part of the stack under test), and simplicity. The researcher chose a local LiDAR detour that follows walls (Bug2-style) over a simpler gap detour. The deciding fact was the block's detour lengths ([[RS1_MAP_VALIDATION_REPORT]]): a median 1.5 / 2.3 m in dense / open clutter, but 6.2–6.9 m in rooms, aisles and corridors. There the way round is through another doorway or aisle, usually behind a wall.
+
+This revision **supersedes candidates 1 and 3** above. Candidate 2 (`yield`) is unchanged. The information rules, the frozen parts and the selection order are as above.
+
+### Candidate 1 (revised): `detour`: follow the walls round a new obstacle, then rejoin the plan
+
+- **Mechanism.** The reset-time A\* path and the frozen `CarrotFollower` stay exactly the baseline's. No planner is called after reset. A behaviour layer overrides γ during a detour.
+  - **The new-obstacle map.** Unchanged from candidate 1 above: a 0.1 m grid; a LiDAR hit is *unexplained* when it is farther than 0.15 m from the known map; a cell is a *new static obstacle* once unexplained hits land in it on ≥ **K** of the last 20 steps; cells are never cleared.
+  - **Trigger.** A detour starts on either of two triggers:
+    - (a) the original path, from the follower's progress to 2 m of arc ahead, passes within 0.45 m of a new cell;
+    - (b) *stall* (if enabled): the robot moved less than 0.1 m in the last 30 steps.
+  - **The rejoin point q.** It is 0.5 m of arc past the last point where the original path comes within 0.45 m of a new cell. For a stall with no new cell nearby, it is the path point 1.5 m of arc past the follower's progress. The layer records d0 = |p − q| when the detour starts.
+  - **The side.** The robot follows the obstacle keeping it on its left or right. It takes the side whose LiDAR rays 30–90° from the direction to q have the larger minimum range.
+  - **Wall following.** The "wall" is the nearest LiDAR hit that is explained by the known map or lies in a new cell, so pedestrians are ignored. With n the unit vector from that hit to the robot and t the tangent (n turned 90° towards the chosen side), γ = p + **L**·t + (d − 0.6)·(−n), where d is the distance to the hit. This keeps the robot's centre about 0.6 m from the wall surface. The frozen CBF still filters every step.
+  - **Leaving (the Bug2 rule).** The robot leaves the wall when both hold:
+    - the straight segment from p to q is clear of the known map and the new cells by 0.35 m, on the layer's own grid;
+    - |p − q| < d0.
+
+    γ is then q itself until the robot is within 1.0 m of q. Then γ returns to the follower. The follower's projection searches the whole path and its progress only moves forward, so it continues from q.
+  - **Limits.**
+    - If a detour has not left the wall after 200 steps (20 s), it flips to the other side once.
+    - After 400 steps it gives up and γ returns to the follower.
+    - Only one detour runs at a time. A new trigger may start another once one ends.
+- **Changed components:** 1. A behaviour layer around the policy (item 2). The planner / carrot follower is **not** changed.
+- **Targets:**
+  - `timeout_at_block` (321);
+  - the collisions while waiting at the block (about 45, an estimate);
+  - `timeout_stuck` (36), through the stall trigger;
+  - `collision_block` (4).
+- **Expected effect: +6 to +14 pp** pooled success.
+  - In the clutter families the way round is short and visible. If open_clutter and dense_clutter trigger_block reached their dynamic cells, pooled success would rise by about 6.9 pp ((0.99 − 0.16) + (0.86 − 0.31), divided by 20 cells).
+  - In rooms, aisles and corridors the most it could add is 12.5 pp, if every block were cleared. It is discounted because wall following may take the long side and is limited to 500 steps.
+- **Risks:**
+  - Long wall-following runs end in timeouts.
+  - Following walls near moving pedestrians.
+  - The stall trigger may start pointless detours in busy cells.
+- **Parameters and search (7.3, 8 configurations):** K ∈ {8, 14} × L ∈ {0.6, 1.0} m × stall ∈ {on, off}. **Default:** K = 14, L = 1.0 m, stall on.
+- **Compute:** a map update over 24 rays, a nearest-hit search and one line-of-sight check on a 0.1 m grid, well under 1 ms per step. No planner call after reset.
+
+### Candidate 3 (revised): `detour_yield`: the combination
+
+- **Mechanism:**
+  - `yield`'s layer overrides γ while a threat exists;
+  - otherwise `detour`'s layer does while a detour is active;
+  - otherwise the follower's γ is used.
+- **Changed components:** 1. Both parts are behaviour layers (item 2), and section 7.4 counts distinct items. So the tie-break against `detour` or `yield` falls to list order.
+- **Targets:** all the modes of `detour` and `yield`.
+- **Expected effect: +8 to +17 pp** pooled success.
+- **Parameters and search (2 configurations):**
+  - both defaults;
+  - the configurations chosen by the searches of `detour` and `yield`, taken together.
+  - It uses the same first 20 RS_DIAG seeds, a third use, disclosed as in 7.3.
+- **Compute:** the sum of the two, well under 1 ms per step.
+
+**Revised list, in selection order:** 1 `detour`, 2 `yield`, 3 `detour_yield`. **Tie-break counts:** 1, 1, 1.
