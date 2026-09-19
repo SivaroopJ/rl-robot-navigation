@@ -252,7 +252,7 @@ Each clarification fills a gap in the rules above. It was recorded before the fi
   - γ = p_decision + L·a is frozen in world coordinates, and the goal switch is still checked every step. The QP runs every step.
   - The PPO transition's reward is the sum of the k environment rewards, and the discount applies per decision.
   - The episode ends inside the hold if the environment terminates or truncates.
-  - Budgets and checkpoint marks (1M, 250k, …) are counted in **control steps** in every case, so a hold-5 run makes 1/5 as many PPO decisions for the same compute. The exact control-step count is recorded.
+  - Budgets and checkpoint marks (1M, 250k, …) are counted in **control steps** in every case, so a hold-5 run makes 1/5 as many PPO decisions for the same compute. The exact control-step count is recorded. Confirmed by the researcher on 2026-09-19.
 - **2026-09-19: checkpoint marks** (gap in §9 Checkpoints).
   - SB3 updates the policy once per rollout of 8 × 2048 = 16 384 steps, which does not divide 250k.
   - So the checkpoint for mark m is saved at the first rollout boundary at or after m (m = 250 000 → 262 144 steps). It is always a freshly updated policy. Its metadata records both the mark and the exact step count.
