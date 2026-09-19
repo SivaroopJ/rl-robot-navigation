@@ -59,6 +59,11 @@ def seed_block(name, n=None, *, allow_final=False):
     return [base + i for i in range(n)]
 
 
+def check_motion(motion):
+    if motion not in MOTIONS:
+        raise ValueError(f"unknown motion condition {motion!r}; expected one of {MOTIONS}")
+
+
 def generator_entropy(cell, seed):
     """SeedSequence entropy for the scenario generator: per (seed, family), never per obstacle or
     motion condition. The M0 anchor is not generated (it uses the canonical env's own sampler)."""
