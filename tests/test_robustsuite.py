@@ -1393,3 +1393,105 @@ def test_actions_before_firing_do_not_see_the_spawn_fields(motion, monkeypatch):
     assert other["trajectory"][:k + 1] == real["trajectory"][:k + 1]
     assert json.dumps(other["trace"][:k], default=float) == \
         json.dumps(real["trace"][:k], default=float)
+
+
+# =========================================================================== ticket 08
+# The map validation report (RS_DESIGN 4.8). Metrics are re-derived here where cheap; the entry
+# point is smoke-tested end to end and must never run an episode.
+
+def test_block_ends_are_classified_by_what_bounds_the_passage():
+    from robustsuite import validation as RV
+    box = (3.5, 5.0, 0.5, 0.5)                          # x in [3, 4]
+    # a block along x from the wall at 0 to the box face at 3, crossing y = 5
+    wall_to_box = (1.5, 5.0, 1.5 + 0.2, 0.2)
+    assert RV.block_ends(wall_to_box, 0, [box]) == ("wall", "obstacle")
+    box_to_box = (5.0, 5.0, 1.0 + 0.2, 0.2)             # between x = 4 and a box at x = 6
+    assert RV.block_ends(box_to_box, 0, [box, (6.5, 5.0, 0.5, 0.5)]) == ("obstacle", "obstacle")
+    assert RV.block_kind(("obstacle", "wall")) == "wall-obstacle"
+
+
+def test_the_summary_gives_the_order_statistics():
+    from robustsuite import validation as RV
+    got = RV.summary(list(range(101)))
+    assert got == {"n": 101, "min": 0.0, "p5": 5.0, "median": 50.0, "p95": 95.0, "max": 100.0,
+                   "mean": 50.0}
+    assert RV.summary([])["n"] == 0
+
+
+@pytest.fixture(scope="module")
+def validation_draws(family_specs):
+    from robustsuite import validation as RV
+    return {f: [RV.draw_metrics(sp) for sp in family_specs[f][:6]] for f in RS.FAMILIES}
+
+
+def test_draw_metrics_agree_with_independent_derivations(family_specs, validation_draws):
+    for fam in RS.FAMILIES:
+        for sp, m in zip(family_specs[fam], validation_draws[fam]):
+            assert m["family"] == fam and m["seed"] == sp.seed
+            assert m["route_length"] == sp.route_length
+            assert m["straight"] == pytest.approx(np.linalg.norm(np.subtract(sp.goal, sp.start)))
+            assert m["start_goal_clearance"] == pytest.approx(
+                float(_clear([sp.start, sp.goal], sp.layout).min()), abs=1e-9)
+            assert m["route_clearance"] == pytest.approx(_polyline_clearance(sp.route, sp.layout),
+                                                         abs=2e-3)
+            assert m["n_pedestrians"] == PED_COUNTS[fam]
+            assert m["trigger_fraction"] == sp.trigger.fraction
+            assert m["block_length"] == pytest.approx(sp.block.passage + 0.4)
+            assert m["spawn_distance"] == pytest.approx(
+                np.linalg.norm(np.subtract(sp.spawn.start, sp.trigger.centre)))
+            assert m["variant"] == sp.spawn.variant
+            assert m["layout_draws"] == sp.layout_draws
+
+
+def test_the_block_detour_is_the_oracle_path_difference(family_specs, validation_draws):
+    for fam in RS.FAMILIES:
+        sp, m = family_specs[fam][0], validation_draws[fam][0]
+        free = ShortestPathOracle(10.0, 0.45, sp.layout, resolution=200)
+        blocked = ShortestPathOracle(10.0, 0.45, sp.layout + (sp.block.rect,), resolution=200)
+        a = free.path_length(sp.trigger.centre, sp.goal)
+        b = blocked.path_length(sp.trigger.centre, sp.goal)
+        assert m["detour"] == pytest.approx(b - a, abs=1e-9) and m["detour"] >= 0.0
+
+
+def test_the_crossing_walk_is_the_scripted_part_after_the_target(family_specs, validation_draws):
+    for fam in RS.FAMILIES:
+        for sp, m in zip(family_specs[fam], validation_draws[fam]):
+            sw = sp.spawn
+            i = [tuple(q) for q in sw.scripted].index(tuple(sw.target))
+            walk = _arc(sw.scripted[i:])[-1] if len(sw.scripted) - i > 1 else 0.0
+            if sw.variant == "crossing":
+                assert m["crossing_walk"] == pytest.approx(walk, abs=1e-12)
+                assert m["crossing_zero"] is bool(walk == 0.0)
+            else:
+                assert m["crossing_walk"] is None and m["crossing_zero"] is None
+
+
+def test_the_rollout_keeps_every_pedestrian_clear_of_walls(family_specs):
+    from robustsuite import validation as RV
+    for fam in RS.FAMILIES:
+        sp = family_specs[fam][0]
+        for motion in RS.MOTIONS:
+            got = RV.rollout_metrics(sp, motion, steps=200)
+            floor = 0.45 if motion == "fixed" else 0.3
+            assert got["regular_min_clearance"] >= floor - 1e-5
+            assert got["spawn_min_clearance"] >= floor - 1e-5
+            assert got["max_step"] <= 0.0675 + 1e-5
+
+
+def test_the_map_validation_entry_point_runs_no_episode(tmp_path, monkeypatch):
+    from experiments.robustsuite import rs1_map_validation as V
+    monkeypatch.setattr(RH, "run_episode", lambda *a, **k: pytest.fail("ran an episode"))
+    monkeypatch.setattr(RH, "_episode", lambda *a, **k: pytest.fail("ran an episode"))
+    out = V.main(["--smoke", "--out", str(tmp_path), "--workers", "1"])
+    report = (tmp_path / "RS1_MAP_VALIDATION_REPORT.md").read_text()
+    stats = json.loads((tmp_path / "stats.json").read_text())
+    assert out["draws"] == 2 * len(RS.FAMILIES)
+    assert stats["generator_version"] == SC.GENERATOR_VERSION
+    assert stats["consistency"]["checked"] == len(RS.FAMILIES) * 4 * 2
+    assert stats["consistency"]["mismatches"] == 0
+    for cell in RS.CELLS:
+        assert f"{cell.family} / {cell.obstacles}" in report
+    for fig in stats["figures"]:
+        assert (tmp_path / fig).is_file()
+        assert f"]({fig})" in report                     # embedded, relative to the report
+    assert "m0" in stats["anchor"]["family"]
