@@ -404,7 +404,7 @@ The approval records two properties of the suite as known, not as defects. Neith
 
 The approval also accepts that the statistics are reported per family rather than per cell, since the four cells of a family are views of one draw (40 of 40 regenerated specs matched). Aisles give no start–goal pairs in the 8.5–10.5 m bin, a consequence of the family's geometry.
 
-## Candidate list (section 7.4), 2026-09-20: awaiting the researcher's approval
+## Candidate list (section 7.4), 2026-09-20 (approved; see below)
 
 Written in phase 3 from the baseline diagnostic (`MD_files/robustsuite/RS2_BASELINE_DIAGNOSTIC_REPORT.md`, run at `4c01512`) and the collision probe (`experiments/robustsuite/rs2_collision_probe.py`, `results/robustsuite/RS2/collision_probe.json`). No candidate has been built and no RS_TUNE seed has been opened. The list is in selection order (section 8's last tie-break).
 
@@ -491,3 +491,17 @@ All three candidates:
 - **Compute:** the sum of the two.
 
 **Tie-break counts (section 8):** `replan` 1, `yield` 1, `replan_yield` 2.
+
+## Approval: candidate list (phase 3 → 4), 2026-09-20
+
+The researcher approved the candidate list above (committed at `423de4b`), all three candidates as written: `replan`, `yield` and `replan_yield`, with their parameter grids and defaults. Phase 4, the candidate implementation, may start. Ticket 11 is replaced by one implementation ticket per candidate (11a, 11b, 11c).
+
+## Correction: where h < 0 happens (to section 14.1 item 1), 2026-09-20
+
+Recorded at the researcher's request. Section 14.1 is not edited.
+
+Section 14.1 item 1 says an obstacle within 0.6 m of the robot's centre gives h < 0. Measured in ticket 09 (`RS2_BASELINE_DIAGNOSTIC_REPORT`, reading item 5):
+- The environment's LiDAR reads static rectangles and pedestrians at their true distance from the robot's centre. So next to them, h = distance − 0.3 is negative only on contact.
+- It reads the **outer wall** 0.3 m short. So h < 0, and with it DCPError, happens within 0.6 m of the outer wall.
+
+In the RS2 diagnostic, 2 of 2 000 episodes froze, both 0.56 m from the outer wall. The approved 0.6 m start and goal clearance is kept: it is M0's own margin, and it keeps starts out of the band next to the outer wall. No rule changes.

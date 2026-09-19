@@ -4,13 +4,13 @@
 
 **Blocked by:** 09
 
-**Status:** ready-for-human (awaiting the researcher's approval)
+**Status:** done
 
 - [x] Each candidate is written down: mechanism, changed components, information used (onboard only), expected effect on the named failure modes, parameter-search budget, and an expected compute cost
 - [x] At most three candidates; a combination of mechanisms may be one of them
 - [x] No candidate changes the CBF/DR formulation or the dynamics, or uses ground-truth or trigger/spawn information
 - [x] The list is recorded in the design document before any tuning run
-- [ ] **The researcher approves the list.** Ticket 11 is then replaced by one implementation ticket per approved candidate
+- [x] **The researcher approves the list.** Ticket 11 is then replaced by one implementation ticket per approved candidate
 
 ## Comments
 
@@ -23,3 +23,5 @@
 The two-axis review caught that m = 0.15 in candidate 1's default would inflate the parked robot's own cell, so A* would never replan at the block. Fixed: the default is m = 0.0 and A* starts from the nearest free cell. It also sharpened the K argument, the known-map source (reset-time snapshot), read-only tracker access, and the probe wording.
 
 On approval: record the approval in RS_DESIGN and replace ticket 11 with one implementation ticket per approved candidate.
+
+**2026-09-20 — approved.** The researcher approved all three candidates as written. The approval is recorded in RS_DESIGN ("Approval: candidate list (phase 3 → 4)"). Ticket 11 is replaced by 11a `replan`, 11b `yield` and 11c `replan_yield`. At the researcher's request, a dated correction on where h < 0 happens was also appended to RS_DESIGN; §14.1 is not edited.

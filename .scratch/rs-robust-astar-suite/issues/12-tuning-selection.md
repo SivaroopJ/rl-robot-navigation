@@ -2,7 +2,7 @@
 
 **What to build:** The researcher gets the pre-registered selection outcome: a single winner, or "no improvement found", decided on the tuning block by the fixed rule.
 
-**Blocked by:** 11
+**Blocked by:** 11a, 11b, 11c
 
 **Status:** ready-for-agent
 
