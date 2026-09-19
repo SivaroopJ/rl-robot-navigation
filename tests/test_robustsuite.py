@@ -1727,3 +1727,31 @@ def test_the_event_summary_splits_failures_at_the_firing_step():
     assert s["collision_steps_after_fire"]["median"] == 15
     assert s["collision_dist_block"]["median"] == pytest.approx(0.8)
     assert s["collisions_near_block"] == 1                  # 0.8 m <= BLOCK_NEAR
+
+
+# =========================================================================== ticket 10
+# The collision probe behind the candidate list: approach measured over the last 0.5 s.
+def test_the_collision_probe_measures_a_head_on_approach_on_a_retreating_robot():
+    from experiments.robustsuite import rs2_collision_probe as CP
+    n = 60
+    traj = [[5.0 - 0.02 * t, 5.0] for t in range(n)]          # backing away along -x at 0.2 m/s
+    ped = [[9.0 - 0.0675 * t, 5.0] for t in range(n)]         # walking at it along -x
+    got = CP.measure(traj, ped, [{"qp_status": "optimal"}] * 8 + [{"qp_status": "infeasible"}])
+    assert got["robot_speed"] == pytest.approx(0.2)
+    assert got["robot_toward"] == pytest.approx(-0.2)
+    assert got["robot_cos_toward"] == pytest.approx(-1.0)
+    assert got["ped_toward"] == pytest.approx(0.675)
+    assert got["cos_head"] == pytest.approx(1.0)
+    gap = [p[0] - q[0] for p, q in zip(ped, traj)]            # 4 - 0.0475 t, below 2 m from t 43
+    before_contact = [g < CP.NEAR for g in gap[:-1]]
+    assert 0 < got["steps_within_2m"] == sum(before_contact) < n - 1
+    assert got["infeasible_last5"] == 1
+
+
+def test_the_collision_probe_uses_the_shorter_window_of_a_just_spawned_pedestrian():
+    from experiments.robustsuite import rs2_collision_probe as CP
+    traj = [[5.0, 5.0 + 0.03 * t] for t in range(4)]
+    ped = [[5.0, 6.2 - 0.0675 * t] for t in range(4)]         # 3 steps since it appeared
+    got = CP.measure(traj, ped, [{"qp_status": "optimal"}] * 3)
+    assert got["robot_speed"] == pytest.approx(0.3)
+    assert got["ped_toward"] == pytest.approx(0.675)

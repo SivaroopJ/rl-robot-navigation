@@ -403,3 +403,91 @@ The approval records two properties of the suite as known, not as defects. Neith
 2. **Some blocks leave a quick way round.** Blocks with a detour under 1 m: dense_clutter 14 / 50, open_clutter 5 / 50, 0–1 / 50 in the structured families. In those cells, trigger_block partly tests replanning around a nearby box rather than a shut passage.
 
 The approval also accepts that the statistics are reported per family rather than per cell, since the four cells of a family are views of one draw (40 of 40 regenerated specs matched). Aisles give no start–goal pairs in the 8.5–10.5 m bin, a consequence of the family's geometry.
+
+## Candidate list (section 7.4), 2026-09-20: awaiting the researcher's approval
+
+Written in phase 3 from the baseline diagnostic (`MD_files/robustsuite/RS2_BASELINE_DIAGNOSTIC_REPORT.md`, run at `4c01512`) and the collision probe (`experiments/robustsuite/rs2_collision_probe.py`, `results/robustsuite/RS2/collision_probe.json`). No candidate has been built and no RS_TUNE seed has been opened. The list is in selection order (section 8's last tie-break).
+
+**What the diagnostic says the candidates must address** (RS_DIAG, 2 000 episodes over the 20 cells):
+- `timeout_at_block`: 321 episodes (16%), the dominant mode. A* never replans. The carrot stays on the far side of the fired block, and the robot stands 0.41–0.48 m from the block's face (5th–95th percentile) with a feasible QP until the timeout. The trigger_block cells succeed 0.04–0.31, against 0.78–0.99 for the dynamic cells on the same draws.
+- Pedestrian collisions: 194 episodes (`collision_dynamic` 183, `collision_spawned` 11). 88 are in trigger_block cells, against 43 in the dynamic cells on the same draws. So about 45 come from waiting at the block; this is an estimate from the difference. The rest grow with narrowness (the corridors' dynamic cell 0.20). The collision probe (206 pedestrian collisions, anchor included) shows:
+  - the pedestrian walks straight at the robot: cos > 0.7 in 87% of collisions;
+  - the robot is backing away: its velocity points away from the pedestrian in 72% of collisions, within about 45° of straight away (cos < −0.7) in 47%. Those backing away move at a median 0.37 m/s, while the pedestrian closes at a median 0.63 m/s;
+  - the pedestrian was within 2 m (centres) for a median 2.8 s before contact;
+  - the QP was infeasible in the last 5 steps of only 33% of these collisions.
+- `timeout_stuck`: 36 episodes. The same standstill without a block: the robot is wedged off its route with the carrot on the far side.
+- DCPError freezes: 2 episodes, both at the outer wall. **Not targeted**: the phase 3 idea "Random on DCPError steps" has almost nothing to act on.
+
+All three candidates:
+- **Information:** onboard only.
+  - The LiDAR ranges `obs[4:28]`, the ego pose, and the known static map. That is the snapshot the policy's planner is built from at reset (`pol.planner`), before any trigger can fire. A candidate never reads `env.static_obstacles`, which gains the block when it fires.
+  - The frozen LiDAR velocity tracker's tracks. The frozen barrier source already computes them from LiDAR alone each step. They are read-only: a candidate reads a track's `position`, `velocity` and `confirmed`, and never calls anything that changes the tracker's state.
+  - The candidate's own history.
+  - Never `obs[28:]`, the spec's trigger, block or spawn fields, or the event log. The phase 4 tests perturb each of these.
+- **What stays frozen:** the CLF/DR-CBF QP, its parameters, Random recovery and the dynamics are untouched. A candidate changes only γ, the CLF reference that the frozen `predict` reads from `pol.follower`, and whatever it needs to compute γ.
+
+### Candidate 1: `replan`: a LiDAR map of new obstacles and A* replanning
+
+- **Mechanism.**
+  - **The new-obstacle map.** It is a 0.1 m grid. Each step, every LiDAR hit farther than 0.15 m from the known map (its rectangles and the outer wall) is *unexplained*. A cell becomes a *new static obstacle* once unexplained hits land in it on at least **K** of the last 20 steps. Cells are never cleared within an episode.
+    - A block's face, once in view, is hit on nearly every step.
+    - Hits on a pedestrian can stay in one cell for several steps: up to about 7 on its flank. A pedestrian that stays near the robot for a few seconds could therefore still leave phantom cells, so K is set high.
+    - How many phantom cells pedestrians leave is measured in phase 4, on pedestrian-only replays of RS_DIAG.
+  - **Triggers.** A replan happens on either of two triggers:
+    - (a) the remaining planned path, from the robot's projection onward, passes within 0.3 m + **m** of a new cell;
+    - (b) *stall* (if enabled): the robot moved less than 0.1 m in the last 30 steps.
+  - **Replan.** A* (the frozen `StaticMapPlanner` class) runs on the known map plus every new cell as a 0.1 m square grown by **m**, from the current pose to the goal. The frozen `CarrotFollower` (lookahead 1 m) then follows the new path.
+    - The planner inflates every obstacle by the robot's radius (0.3 m). A robot the CBF has stopped 0.45 m from the block therefore lies inside the inflated new cells whenever m > 0.1 (0.05 + m + 0.3 > 0.45). A* then starts from the free grid cell nearest the robot.
+    - If A* finds no path, the current follower is kept.
+    - Replans are at least 20 steps apart, at most 10 per episode.
+- **Changed components:** 1. The A\* planner / carrot follower (item 1 of the list in 7.4).
+- **Targets:**
+  - `timeout_at_block` (321);
+  - the collisions while waiting at the block (about 45);
+  - `timeout_stuck` (36), through the stall trigger;
+  - `collision_block` (4).
+- **Expected effect.** The fired block is always passable by construction (4.6), so a replan exists.
+  - If the trigger_block cells reach their dynamic cells' success, pooled success rises by about +19 pp (0.25 × (0.90 − 0.12)). The expected range is **+10 to +19 pp**, with pooled collisions down about 2 pp.
+  - Little change is expected in cells without an event.
+  - **Risk:** a lingering pedestrian could leave a phantom cell and cause a needless detour (lower SPL, more exposure to pedestrians).
+- **Parameters and search (7.3, 8 configurations):** K ∈ {8, 14} × m ∈ {0.0, 0.15} m × stall ∈ {on, off}. **Default:** K = 14, m = 0.0, stall on.
+- **Compute.**
+  - The per-step map update is 24 rays: under 1 ms.
+  - A replan with a freshly built frozen planner takes about 0.22 s (0.10 s to build the grid, 0.12 s for A*, measured on a rooms draw).
+  - The implementation builds the known-map planner once per episode and adds the new cells to a copy of its grid, so a replan should cost about the A* time.
+  - Replans are rare (event-driven, rate-limited), so the p95 step time should stay near the baseline's 40–47 ms. The individual replan steps will exceed 100 ms.
+  - The 7.2 rule is on the p95 of every control step, replan steps included. It is measured as the harness measures it, as the whole `predict` call. The report will also state the maximum.
+
+### Candidate 2: `yield`: step aside for an approaching pedestrian
+
+- **Mechanism.**
+  - **Threat.** A confirmed track of the frozen tracker, moving at ≥ 0.3 m/s, whose constant-velocity closest approach to the robot's current position within the next **H** s is under **D** (centre distance).
+  - **Response.** While a threat exists, γ is replaced by a side point p + **L**·n, where n is the unit vector perpendicular to the threat's velocity:
+    - the side is the one whose LiDAR rays within ±45° of n have the larger minimum range;
+    - if that side point is not free on the known static map at 0.3 m clearance, the other side is used;
+    - if neither is free, there is no yield and γ stays the follower's.
+    - With several threats, the one with the earliest closest approach decides.
+  - When no threat remains, the follower's γ returns.
+- **Changed components:** 1. A behaviour layer around the policy (item 2).
+- **Targets:** `collision_dynamic` (183) and `collision_spawned` (11). The probe shows head-on approaches with 2.8 s of warning, met by backing away along the pedestrian's line. A step of L = 1 m sideways at the robot's speed clears a 0.6 m contact diameter in about 1 s.
+- **Expected effect: +2 to +5 pp** pooled success, and pooled collisions down 2–5 pp.
+  - Less in corridors (1.5–2.0 m wide), where the side step is cut short.
+  - Nothing on the block modes.
+  - **Risk:** more timeouts and lower SPL from repeated yielding in busy cells. Stepping aside near walls stays guarded by the frozen CBF.
+- **Parameters and search (8 configurations):** H ∈ {2, 3} s × D ∈ {0.9, 1.2} m × L ∈ {0.6, 1.0} m. **Default:** H = 3 s, D = 1.2 m, L = 1.0 m.
+- **Compute:** a few tracks per step, well under 1 ms.
+
+### Candidate 3: `replan_yield`: the combination
+
+- **Mechanism:** candidate 1's follower with candidate 2's layer on top. Yield overrides γ while a threat exists; otherwise γ is the (re)planning follower's.
+- **Changed components:** 2 (items 1 and 2).
+- **Targets:** all the modes of candidates 1 and 2. They are largely disjoint, so their effects should roughly add up.
+- **Expected effect: +12 to +22 pp** pooled success.
+- **Parameters and search (2 configurations):**
+  - both defaults;
+  - the configurations chosen for candidates 1 and 2 by their own searches, taken together.
+  - The 7.3 rule picks between the two on the same first 20 RS_DIAG seeds. Nothing else is searched.
+  - Those seeds are then used a third time, after the searches of candidates 1 and 2. The cost of this is disclosed as in 7.3.
+- **Compute:** the sum of the two.
+
+**Tie-break counts (section 8):** `replan` 1, `yield` 1, `replan_yield` 2.
