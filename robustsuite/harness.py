@@ -14,9 +14,10 @@ anchor) before reset. The M0 anchor through this path is bit-identical to highdi
 EVALUATION IS FROZEN SCS ONLY: `run_episode` raises TypeError for any other controller.
 
 The record adds to highdim's: the cell, the motion condition, the spec (None for the anchor), the
-generator version and the scenario-event log. Step times are summarised by continuation_metrics
-(mean, median, p95, max), as in highdim. Ground truth enters only through true_clearance and the
-env's outcome flags, both measurement.
+generator version, the scenario-event log, and whether and on which step the trigger fired
+(`trigger_fired`, `trigger_step`; False and None when it never fired). Step times are
+summarised by continuation_metrics (mean, median, p95, max), as in highdim. Ground truth enters
+only through true_clearance and the env's outcome flags, both measurement.
 """
 from __future__ import annotations
 
@@ -131,6 +132,8 @@ def _episode(arm, cell, motion, seed, env, oracle):
                 "generator_version": None if spec is None else spec.generator_version,
                 "spec": None if spec is None else spec.as_dict(),
                 "scenario_events": list(env.scenario_events),
+                "trigger_fired": env.trigger_step is not None,
+                "trigger_step": env.trigger_step,
                 "trace": trace.steps,
                 "trajectory": [[float(x) for x in q] for q in traj]})
     return rec

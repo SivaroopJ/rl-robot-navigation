@@ -259,7 +259,9 @@ def test_a_clear_path_exists_at_the_clearance_radius(open_specs):
 def test_specs_record_feasibility_and_draw_counts(open_specs):
     for sp in open_specs:
         assert sp.layout_draws >= 1 and sp.bin_redraws >= 0
-        assert sp.layout_draws + sp.bin_redraws <= SC.RESAMPLE_CAP
+        assert sp.event_redraws >= 0 and sp.pedestrian_redraws >= 0
+        assert sp.layout_draws + sp.bin_redraws + sp.event_redraws + sp.pedestrian_redraws \
+            <= SC.RESAMPLE_CAP
         assert sp.generator_version == SC.GENERATOR_VERSION
 
 
@@ -291,9 +293,8 @@ def test_the_resample_cap_raises_rather_than_returning_an_infeasible_spec(monkey
 
 
 def test_unbuilt_cells_and_bad_arguments_are_refused():
-    for cond in ("trigger_block", "trigger_spawn"):
-        with pytest.raises(NotImplementedError):
-            SC.generate(RS.Cell("open_clutter", cond), "fixed", DIAG[0])
+    with pytest.raises(NotImplementedError):
+        SC.generate(RS.Cell("open_clutter", "trigger_spawn"), "fixed", DIAG[0])
     with pytest.raises(ValueError):
         SC.generate(OPEN_STATIC, "wobbly", DIAG[0])
     with pytest.raises(ValueError):
@@ -307,7 +308,7 @@ TIMING = {"step_time_ms_mean", "step_time_ms_median", "step_time_ms_p95", "step_
           "step_times", "random_eval_ms_mean"}
 #: RS-only labels and additions, absent from the HD record.
 RS_ONLY = {"cell", "family", "obstacles", "motion", "spec", "scenario_events",
-           "generator_version"}
+           "generator_version", "trigger_fired", "trigger_step"}
 
 
 def _canon(rec):
@@ -358,6 +359,7 @@ def test_the_record_carries_the_cell_the_spec_and_the_event_log():
     assert rec["cell"] == ["open_clutter", "static"] and rec["motion"] == "fixed"
     assert rec["generator_version"] == SC.GENERATOR_VERSION
     assert rec["scenario_events"] == []
+    assert rec["trigger_fired"] is False and rec["trigger_step"] is None
     assert len(rec["trace"]) == rec["steps"] == len(rec["trajectory"]) - 1
     assert "step_time_ms_p95" in rec
 
@@ -515,10 +517,15 @@ def test_every_family_is_deterministic_and_shared_by_motions_and_conditions(fami
         a = SC.generate(RS.Cell(family, "dynamic"), "fixed", seed)
         assert a == SC.generate(RS.Cell(family, "dynamic"), "randomized", seed)
         s = SC.generate(RS.Cell(family, "static"), "fixed", seed)
-        assert s.obstacles == "static" and a.obstacles == "dynamic"
-        assert {k: v for k, v in s.as_dict().items() if k != "obstacles"} == \
-            {k: v for k, v in a.as_dict().items() if k != "obstacles"}
+        t = SC.generate(RS.Cell(family, "trigger_block"), "randomized", seed)
+        assert (s.obstacles, a.obstacles, t.obstacles) == ("static", "dynamic", "trigger_block")
+        for other in (s, t):
+            assert {k: v for k, v in other.as_dict().items() if k != "obstacles"} == \
+                {k: v for k, v in a.as_dict().items() if k != "obstacles"}
         assert s.active_pedestrians == () and len(a.active_pedestrians) == PED_COUNTS[family]
+        assert t.active_pedestrians == a.active_pedestrians
+        assert s.active_block is None and a.active_block is None
+        assert t.active_block == t.block.rect
 
 
 @pytest.mark.parametrize("family", RS.FAMILIES)
@@ -742,13 +749,14 @@ def test_pedestrian_routes_follow_the_rules(family, family_specs):
             assert np.linalg.norm(np.subtract(r.start, sp.start)) >= 1.5
             assert np.linalg.norm(np.subtract(r.start, sp.goal)) >= 1.0
             assert len(r.waypoints) == 8
-            assert _clear([r.start, *r.waypoints], sp.layout).min() >= 0.45
+            # the block zone is reserved in every condition (4.4)
+            assert _clear([r.start, *r.waypoints], sp.pedestrian_layout).min() >= 0.45
             assert r.entry[0] == r.start and r.entry[-1] == r.waypoints[0]
             assert r.loop[0] == r.loop[-1] == r.waypoints[0]
             order = [r.loop.index(w) for w in r.waypoints]
             assert order == sorted(order)                        # the cycle, in order
-            assert _polyline_clearance(r.entry, sp.layout) >= 0.45 - 1e-9
-            assert _polyline_clearance(r.loop, sp.layout) >= 0.45 - 1e-9
+            assert _polyline_clearance(r.entry, sp.pedestrian_layout) >= 0.45 - 1e-9
+            assert _polyline_clearance(r.loop, sp.pedestrian_layout) >= 0.45 - 1e-9
 
 
 # ---------------------------------------------------------------- 05: pedestrian motion
@@ -759,7 +767,7 @@ ROLLOUT = 1500                      # 150 s: every pedestrian walks its loop at 
 @pytest.mark.parametrize("family", RS.FAMILIES)
 def test_pedestrians_never_enter_walls_or_exceed_their_speed(family, motion, family_specs):
     for sp in family_specs[family][:2]:
-        model = RP.PedestrianMotion(sp.pedestrians, sp.layout,
+        model = RP.PedestrianMotion(sp.pedestrians, sp.pedestrian_layout,
                                     randomized=motion == "randomized")
         rng = np.random.default_rng(sp.seed)
         pos = np.zeros((len(sp.pedestrians), 2), dtype=np.float32)
@@ -774,7 +782,7 @@ def test_pedestrians_never_enter_walls_or_exceed_their_speed(family, motion, fam
             walked += step
             assert step.max() <= 0.0675 + 1e-5
             assert np.linalg.norm(vel, axis=1).max() <= 0.675 + 1e-4
-            assert _clear(pos, sp.layout).min() >= floor - 1e-5
+            assert _clear(pos, sp.pedestrian_layout).min() >= floor - 1e-5
         assert walked.min() >= 0.5 * 0.0675 * ROLLOUT         # nobody parks
 
 
@@ -851,3 +859,292 @@ def test_same_seed_reproduces_a_dynamic_episode():
     a = _rs(cell, "randomized", DIAG[7], max_steps=40)
     b = _rs(cell, "randomized", DIAG[7], max_steps=40)
     assert _canon(a) == _canon(b)
+
+
+# =========================================================================== ticket 06
+# The triggered static block (RS_DESIGN 4.6). Every family draw carries the trigger and the block,
+# so `family_specs` (the dynamic cells) holds them too: the checks below re-derive each rule from
+# the rectangles and the route, independently of robustsuite.events.
+
+def _arc(poly):
+    return np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(np.asarray(poly), axis=0),
+                                                           axis=1))])
+
+
+def _at(poly, s):
+    cum, p = _arc(poly), np.asarray(poly, float)
+    return np.array([np.interp(s, cum, p[:, 0]), np.interp(s, cum, p[:, 1])])
+
+
+def _rect_dist(p, r):
+    return float(_clear_rects([p], [r])[0])
+
+
+def _clear_rects(points, layout):
+    """Distance to the nearest rectangle only (no outer wall)."""
+    p = np.atleast_2d(np.asarray(points, float))
+    out = np.full(len(p), np.inf)
+    for cx, cy, hw, hh in layout:
+        q = np.stack([np.clip(p[:, 0], cx - hw, cx + hw), np.clip(p[:, 1], cy - hh, cy + hh)], 1)
+        out = np.minimum(out, np.linalg.norm(p - q, axis=1))
+    return out
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_the_trigger_is_on_the_route_between_30_and_70_percent(family, family_specs):
+    for sp in family_specs[family]:
+        tr, length = sp.trigger, _arc(sp.route)[-1]
+        assert 0.3 <= tr.fraction <= 0.7 and tr.radius == 0.5
+        assert tr.arc == pytest.approx(tr.fraction * length, abs=1e-9)
+        assert np.allclose(tr.centre, _at(sp.route, tr.arc), atol=1e-9)
+        assert np.linalg.norm(np.subtract(sp.start, tr.centre)) > 0.5    # the robot must enter
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_the_block_spans_the_passage_ahead_with_the_preregistered_size(family, family_specs):
+    for sp in family_specs[family]:
+        b, tr = sp.block, sp.trigger
+        cx, cy, hw, hh = b.rect
+        assert 1.5 <= b.offset <= 2.5
+        p = _at(sp.route, tr.arc + b.offset)
+        ax, o = b.axis, 1 - b.axis
+        # the long axis is the world axis closest to the route's local perpendicular
+        t = _at(sp.route, tr.arc + b.offset + 0.5) - _at(sp.route, tr.arc + b.offset - 0.5)
+        assert abs(t[ax]) <= abs(t[o]) + 1e-12
+        # 0.4 m thick, centred on the route point, so it crosses the route there
+        assert (hw, hh)[o] == pytest.approx(0.2) and b.rect[o] == pytest.approx(p[o], abs=1e-9)
+        assert _polyline_clearance(sp.route, [b.rect]) == 0.0
+        # passage + 0.2 m into the wall on each side, at most 3.4 m long
+        half = (hw, hh)[ax]
+        assert 2 * half == pytest.approx(b.passage + 0.4) and b.passage <= 3.0
+        assert 2 * half <= 3.4 + 1e-9
+        # both passage edges touch a static obstacle or the outer wall; the passage is free
+        edges = [b.rect[ax] - half + 0.2, b.rect[ax] + half - 0.2]
+        for e in edges:
+            q = np.array(p, float)
+            q[ax] = e
+            assert _clear([q], sp.layout)[0] == pytest.approx(0.0, abs=1e-9)
+        inner = np.linspace(edges[0], edges[1], 60)[1:-1]
+        line = np.repeat([p], len(inner), axis=0)
+        line[:, ax] = inner
+        assert _clear(line, sp.layout).min() > 0.0
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_the_block_keeps_clear_of_start_goal_and_the_trigger_disc(family, family_specs):
+    for sp in family_specs[family]:
+        r = sp.block.rect
+        assert _rect_dist(sp.start, r) >= 0.45 and _rect_dist(sp.goal, r) >= 0.45
+        # robot centre inside the disc => its body never touches the block as it appears
+        assert _rect_dist(sp.trigger.centre, r) >= 0.5 + 0.3
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_a_clear_path_still_exists_with_the_block_added(family, family_specs):
+    # seam 2, on 50 draws per family: the frozen oracle rebuilt on the layout plus the block
+    for sp in family_specs[family]:
+        orc = ShortestPathOracle(10.0, 0.45, sp.layout + (sp.block.rect,), resolution=200)
+        assert orc.path_length(sp.trigger.centre, sp.goal) is not None
+        assert orc.path_length(sp.start, sp.goal) is not None
+
+
+def test_the_incremental_oracle_equals_the_oracle_rebuilt_with_the_block(family_specs):
+    from robustsuite.geometry import with_rect
+    for fam in RS.FAMILIES:
+        sp = family_specs[fam][0]
+        grown = with_rect(SC.oracle(sp.layout), sp.block.rect)
+        fresh = ShortestPathOracle(10.0, 0.45, sp.layout + (sp.block.rect,), resolution=200)
+        assert np.array_equal(grown.occupancy, fresh.occupancy)
+        assert grown.static_obstacles == fresh.static_obstacles
+
+
+def test_a_failed_event_draw_redraws_the_layout_and_counts(monkeypatch):
+    calls = {"n": 0}
+    real = SC.draw_trigger_block
+
+    def flaky(*a, **kw):
+        calls["n"] += 1
+        return None if calls["n"] == 1 else real(*a, **kw)
+    monkeypatch.setattr(SC, "draw_trigger_block", flaky)
+    sp = SC.generate(RS.Cell("open_clutter", "trigger_block"), "fixed", DIAG[0])
+    assert sp.event_redraws >= 1 and sp.layout_draws >= 2
+    monkeypatch.setattr(SC, "draw_trigger_block", lambda *a, **kw: None)
+    with pytest.raises(SC.FeasibilityError):
+        SC.generate(RS.Cell("open_clutter", "trigger_block"), "fixed", DIAG[0])
+
+
+# ---------------------------------------------------------------- seam 1: the env fires it
+BLOCK_CELL = RS.Cell("open_clutter", "trigger_block")
+
+
+def _drive_route(env, sp, until=None):
+    """Drive the robot exactly along the spec's route at 1 m/s, ignoring termination. Returns
+    the robot positions after each step."""
+    pts, out, k = np.asarray(sp.route, float), [], 1
+    while k < len(pts):
+        d = pts[k] - env.agent_position
+        dist = float(np.linalg.norm(d))
+        if dist < 1e-4:                                  # float32 positions
+            k += 1
+            continue
+        env.step(d / dist * min(1.0, dist / (env.MAX_SPEED * env.dt)))
+        out.append(env.agent_position.copy())
+        if until is not None and until(env):
+            break
+    return out
+
+
+@pytest.mark.parametrize("motion", RS.MOTIONS)
+@pytest.mark.parametrize("seed", DIAG[:3])
+def test_the_block_fires_exactly_when_the_robot_enters_the_trigger(seed, motion):
+    sp = SC.generate(BLOCK_CELL, motion, seed)
+    env = RSScenarioEnv(motion)
+    env.install(sp)
+    env.reset(seed=seed)
+    layout = [tuple(r) for r in sp.layout]
+    before = env.static_obstacles
+    path = _drive_route(env, sp)
+    inside = [i for i, q in enumerate(path)
+              if np.linalg.norm(q - np.asarray(sp.trigger.centre)) <= 0.5]
+    k = inside[0] + 1                                          # the step number
+    assert env.scenario_events == [
+        {"event": "trigger_fired", "step": k, "position": [float(v) for v in path[k - 1]]},
+        {"event": "block_added", "step": k, "block": list(sp.block.rect)}]   # once only
+    assert env.trigger_step == k
+    assert env.static_obstacles == layout + [tuple(sp.block.rect)]
+    assert before == layout                          # a new list: the old one never grew
+
+
+@pytest.mark.parametrize("cond", ("static", "dynamic"))
+def test_the_block_never_fires_outside_its_condition(cond):
+    sp = SC.generate(RS.Cell("open_clutter", cond), "fixed", DIAG[0])
+    env = RSScenarioEnv("fixed")
+    env.install(sp)
+    env.reset(seed=DIAG[0])
+    _drive_route(env, sp)
+    assert env.scenario_events == [] and env.trigger_step is None
+    assert env.static_obstacles == [tuple(r) for r in sp.layout]
+
+
+def _lidar(env, rects):
+    from robot_env.lidar_core import cast_rays
+    return cast_rays(env.agent_position, n_rays=env.N_LIDAR_RAYS, lidar_range=env.LIDAR_RANGE,
+                     world_size=env.WORLD_SIZE, agent_radius=env.AGENT_RADIUS, rects=rects,
+                     circles=env.obstacle_positions, circle_radius=env.OBSTACLE_RADIUS)
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_the_fired_block_is_in_lidar_and_collisions_from_the_firing_step(family):
+    seed = DIAG[1]
+    sp = SC.generate(RS.Cell(family, "trigger_block"), "fixed", seed)
+    layout, block = [tuple(r) for r in sp.layout], tuple(sp.block.rect)
+    on_block = _at(sp.route, sp.trigger.arc + sp.block.offset)     # a route point inside it
+    facing = _at(sp.route, sp.trigger.arc + sp.block.offset - 0.8)  # 0.6 m before its face
+    env = RSScenarioEnv("fixed")
+    env.install(sp)
+
+    # before firing: the robot can stand where the block will be, and LiDAR does not see it
+    env.reset(seed=seed)
+    env.agent_position = on_block.astype(np.float32)
+    obs, _, _, _, info = env.step(np.zeros(2))
+    assert info["collision_type"] != "static" and env.trigger_step is None
+    env.agent_position = facing.astype(np.float32)
+    obs, *_ = env.step(np.zeros(2))
+    assert np.array_equal(obs[4:28], np.clip(_lidar(env, layout) / env.LIDAR_RANGE, -1, 1))
+
+    # the firing step already sees it
+    env.reset(seed=seed)
+    env.agent_position = np.asarray(sp.trigger.centre, dtype=np.float32)
+    obs, _, _, _, info = env.step(np.zeros(2))
+    assert env.trigger_step == 1 and info["collision_type"] != "static"
+    assert np.array_equal(obs[4:28],
+                          np.clip(_lidar(env, layout + [block]) / env.LIDAR_RANGE, -1, 1))
+    env.agent_position = facing.astype(np.float32)
+    obs, *_ = env.step(np.zeros(2))
+    with_block = np.clip(_lidar(env, layout + [block]) / env.LIDAR_RANGE, -1, 1)
+    assert np.array_equal(obs[4:28], with_block)
+    assert not np.array_equal(with_block, np.clip(_lidar(env, layout) / env.LIDAR_RANGE, -1, 1))
+    env.agent_position = on_block.astype(np.float32)
+    _, _, term, _, info = env.step(np.zeros(2))
+    assert term and info["collision_type"] == "static"
+
+
+@pytest.mark.parametrize("motion", RS.MOTIONS)
+def test_the_block_zone_keeps_pedestrians_identical_across_conditions(motion):
+    # the block is the pedestrians' map in every condition, fired or not
+    seed = DIAG[2]
+    tracks = []
+    for cond in ("dynamic", "trigger_block"):
+        sp = SC.generate(RS.Cell("open_clutter", cond), motion, seed)
+        env = RSScenarioEnv(motion)
+        env.install(sp)
+        env.reset(seed=seed)
+        out = [env.obstacle_positions.copy()]
+        for _ in _drive_route(env, sp):
+            out.append(env.obstacle_positions.copy())
+        tracks.append(np.array(out))
+    assert env.trigger_step is not None
+    assert np.array_equal(*tracks)
+
+
+# ---------------------------------------------------------------- seam 1: the harness
+FIRES = (RS.Cell("open_clutter", "trigger_block"), DIAG[3])    # the baseline fires at step 16
+
+
+def _perturbed(sp, *, trigger=True, rect=True):
+    """The spec with its block fields changed (the rectangle moved and resized if `rect`), and
+    (if `trigger`) its trigger moved where the robot never goes."""
+    from dataclasses import replace
+    cx, cy, hw, hh = sp.block.rect
+    moved = (cx + 0.37, cy - 0.21, hw + 0.3, hh + 0.1) if rect else sp.block.rect
+    out = replace(sp, block=replace(sp.block, rect=moved, offset=sp.block.offset + 0.3,
+                                    passage=sp.block.passage + 0.5, axis=1 - sp.block.axis))
+    if trigger:
+        out = replace(out, trigger=replace(sp.trigger, centre=(-50.0, -50.0), fraction=0.5,
+                                           radius=0.1))
+    return out
+
+
+@pytest.mark.parametrize("motion", RS.MOTIONS)
+def test_actions_before_firing_do_not_see_the_trigger_or_block_fields(motion, monkeypatch):
+    # the information boundary: a policy acts on its observation and the layout only. The block
+    # rectangle is also the randomized pedestrians' reserved zone, so moving it changes their
+    # world; it is moved under fixed motion only, where pedestrians never read the layout.
+    cell, seed = FIRES
+    real = _rs(cell, motion, seed, max_steps=40)
+    k = real["trigger_step"]
+    assert real["trigger_fired"] and 1 <= k < 40
+    sp = SC.generate(cell, motion, seed)
+    for trig in (True, False):
+        monkeypatch.setattr(RH, "cell_spec", lambda *a, t=trig: _perturbed(
+            sp, trigger=t, rect=motion == "fixed"))
+        other = _rs(cell, motion, seed, max_steps=40)
+        # positions 0..k are the result of the actions chosen before the block appeared
+        assert other["trajectory"][:k + 1] == real["trajectory"][:k + 1]
+        assert json.dumps(other["trace"][:k], default=float) == \
+            json.dumps(real["trace"][:k], default=float)
+        assert other["trigger_fired"] is (not trig)
+
+
+def test_the_policy_map_never_contains_the_block_and_the_record_says_when_it_fired(monkeypatch):
+    cell, seed = FIRES
+    pols, seen = [], {}
+    real = RH.HP.build_hd_arm
+
+    def spy(arm, env, **kw):
+        seen["static"] = list(env.static_obstacles)
+        pols.append(real(arm, env, **kw))
+        return pols[-1]
+    monkeypatch.setattr(RH.HP, "build_hd_arm", spy)
+    rec = _rs(cell, "fixed", seed, max_steps=40)
+    sp = SC.generate(cell, "fixed", seed)
+    layout = [tuple(r) for r in sp.layout]
+    assert rec["trigger_fired"] is True and rec["trigger_step"] >= 1
+    fired = [e for e in rec["scenario_events"] if e["event"] == "trigger_fired"]
+    assert [e["step"] for e in fired] == [rec["trigger_step"]]
+    assert fired[0]["position"] == pytest.approx(rec["trajectory"][rec["trigger_step"]])
+    assert seen["static"] == layout
+    planner = pols[0].planner
+    assert planner.static_obstacles == layout
+    assert np.array_equal(planner.occupancy,
+                          ShortestPathOracle(10.0, 0.3, layout).occupancy)

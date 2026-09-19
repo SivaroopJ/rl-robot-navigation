@@ -16,3 +16,10 @@
 
 - **The env sizes the pedestrian arrays and `n_dynamic_obstacles` at reset.** A spawn needs a pre-allocated slot that stays out of LiDAR, collision checks and the observation until the trigger fires. `PedestrianMotion` has no inactive state yet.
 - **Per-route speed:** `Route.speed` drives each pedestrian.
+
+## Notes from ticket 06 (2026-09-19)
+
+- **The trigger disc is already in every spec** (`spec.trigger`), drawn in `robustsuite.events.draw_trigger_block`. The spawn has to share that disc. Each of the 50 draws of f must succeed for the block and the spawn together, so the spawn draw goes inside the f loop, and generator version `rs-gen-0.4` follows.
+- **The block zone is already reserved.** `spec.pedestrian_layout` is the layout plus the block, and the scenario env runs `PedestrianMotion` on it in every condition. The spawn's entry paths should use the same map.
+- **The firing hook exists.** `RSScenarioEnv._check_trigger` runs through the `_Triggered` wrapper on the pedestrian model, after the robot moves and before the pedestrians move. The spawn can activate its slot there, so the pedestrian moves from the firing step on. It stays one event per episode.
+- **The information-boundary test** (`test_actions_before_firing_do_not_see_the_trigger_or_block_fields`) perturbs the trigger and block fields. Extend it to the spawn fields.

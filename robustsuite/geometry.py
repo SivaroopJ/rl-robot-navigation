@@ -17,7 +17,10 @@ the segment's endpoints or one of the rectangle's corners.
 """
 from __future__ import annotations
 
+import copy
+
 import numpy as np
+from scipy import ndimage
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 
@@ -194,14 +197,42 @@ def free_rectangles_complement(strips, world=WORLD):
             for x0, x1, y0, y1 in sorted(rects, key=lambda r: (r[2], r[0]))]
 
 
+def cell_index(orc, p):
+    """The oracle's cell index of point p: (iy, ix)."""
+    return (min(int(p[1] / orc.cell), orc.resolution - 1),
+            min(int(p[0] / orc.cell), orc.resolution - 1))
+
+
+def with_rect(orc, rect):
+    """A copy of the ShortestPathOracle `orc` with `rect` added to its map. The occupancy is the
+    one the oracle itself builds on the extended layout (the same cell-centre test, vectorised;
+    tested equal), without the oracle's cell-by-cell rebuild."""
+    out = copy.copy(orc)
+    centres = (np.arange(orc.resolution) + 0.5) * orc.cell
+    cx, cy, hw, hh = (float(v) for v in rect)
+    xs = np.abs(centres - cx) < hw + orc.agent_radius
+    ys = np.abs(centres - cy) < hh + orc.agent_radius
+    out.occupancy = orc.occupancy | (ys[:, None] & xs[None, :])
+    out.static_obstacles = list(orc.static_obstacles) + [(cx, cy, hw, hh)]
+    return out
+
+
+def same_component(orc, points):
+    """True if every point's cell is free and all of them lie in one 8-connected free component
+    of the oracle's grid (the oracle's moves)."""
+    labels, _ = ndimage.label(~orc.occupancy, structure=np.ones((3, 3), dtype=int))
+    got = {int(labels[cell_index(orc, p)]) for p in points}
+    return 0 not in got and len(got) == 1
+
+
 class Grid:
     """Shortest paths on a ShortestPathOracle's occupancy grid, with the oracle's moves."""
 
     def __init__(self, oracle):
         self.cell = oracle.cell
-        self.res = oracle.resolution
+        self.resolution = oracle.resolution
         self.free = ~oracle.occupancy                         # [iy, ix]
-        n = self.res
+        n = self.resolution
         self.node = -np.ones((n, n), dtype=np.int64)
         self.node[self.free] = np.arange(int(self.free.sum()))
         rows, cols, w = [], [], []
@@ -222,7 +253,7 @@ class Grid:
 
     def index(self, p):
         """The oracle's cell index of point p: (iy, ix)."""
-        return (min(int(p[1] / self.cell), self.res - 1), min(int(p[0] / self.cell), self.res - 1))
+        return cell_index(self, p)
 
     def node_of(self, p):
         return int(self.node[self.index(p)])

@@ -357,3 +357,19 @@ Recorded after the suite was built and before any robot episode was run on it. T
    - The strips between the outermost rows and the outer wall follow from centring the rows. They are 0.4–2.7 m wide and are not held to the 1.4–2.0 m aisle range.
    - Start and goal never lie in those strips, because the structural rule needs an aisle between rows. Pedestrians may walk them.
 8. **Corridors turn rule (section 4.5).** "A change of direction ≥ 60° sustained over ≥ 1 m" is read as follows: at some vertex of the simplified start–goal route, the 1 m chord before the vertex and the 1 m chord after it differ in direction by at least 60°.
+
+### 14.2 Readings before any run (2026-09-19, ticket 06)
+
+These are readings of wording in section 4.6 that the design leaves open. They were recorded when the triggered block was built, before any robot episode was run on the suite. The researcher approved item 2, the only one that tightens a pre-registered number. They apply from generator version `rs-gen-0.3` on, which adds the trigger and the block to every family draw.
+
+1. **The route is the spec's route.** That is the simplified oracle path from start to goal at r_c, and the trigger fraction f is taken of its polyline arc length.
+2. **Block to trigger clearance is 0.8 m (researcher-approved).** 4.6 requires only that the block not overlap the trigger disc (0.5 m). But when the block appears, the robot's centre can be anywhere in the disc, so a block closer than disc radius + robot radius (0.5 + 0.3 = 0.8 m) could appear on top of the robot and force a collision. The block therefore keeps ≥ 0.8 m from the trigger centre.
+3. **The start lies outside the trigger disc,** so the robot has to enter it.
+4. **A clear path from the trigger centre to the goal** is checked as start, trigger centre and goal lying in one free component of the frozen oracle's grid at r_c, with the block added. This also covers start to trigger.
+5. **Attempts (4.7).** Each of the 50 attempts is one draw of f. Each f gets up to 5 draws of d before f is redrawn. After 50 failed draws of f, the family draw fails, counts one draw towards the resample cap of 200, and the layout is redrawn.
+6. **Route direction and passage.**
+   - The local route direction is the chord from 0.5 m of arc before the block centre to 0.5 m after it.
+   - The long axis is x when |direction_y| ≥ |direction_x|, and y otherwise.
+   - The free extent is measured along the long-axis line through the route point. A rectangle whose edge the line only grazes does not bound it.
+   - Against the outer wall, the 0.2 m overlap lies outside the world.
+7. **Firing time within a step.** The trigger is checked after the robot moves and before the pedestrians move, the collision check and the observation. So the collision check and LiDAR of the firing step already include the block.
