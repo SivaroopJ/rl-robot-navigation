@@ -84,6 +84,25 @@ def _segment_crosses(a, b, r):
     return True
 
 
+def segment_crosses(a, b, layout):
+    """True if segment ab meets any rectangle of `layout`."""
+    a, b = np.asarray(a, dtype=float), np.asarray(b, dtype=float)
+    return any(_segment_crosses(a, b, r) for r in layout)
+
+
+def route_slice(pts, s_from, s_to, cum=None):
+    """The polyline along `pts` from arc length s_from to s_to, walked backwards if s_to <
+    s_from: the two end points plus every vertex strictly between them."""
+    p = np.asarray(pts, dtype=float)
+    cum = arc_lengths(p) if cum is None else cum
+    lo, hi = sorted((s_from, s_to))
+    inner = [tuple(float(v) for v in q) for q, c in zip(p, cum) if lo < c < hi]
+    if s_to < s_from:
+        inner.reverse()
+    ends = points_at(p, [s_from, s_to], cum)
+    return [tuple(float(v) for v in ends[0])] + inner + [tuple(float(v) for v in ends[1])]
+
+
 def segment_clearance(a, b, layout, world=WORLD):
     """Exact smallest clearance along segment ab: to the outer walls (attained at an endpoint)
     and to every rectangle (0 if crossed, else attained at an endpoint or a corner)."""

@@ -16,3 +16,9 @@
 
 - **Open-clutter blocks.** A block can span from one box to the wall or to another box, so the robot detours round the box instead of through a doorway-like gap. The researcher asked for the report to show how often this happens: the rate per family, and rendered samples of such blocks.
 - Trigger placement statistics are in `spec.trigger` (fraction, arc) and `spec.block` (offset, axis, passage width), and each spec's `event_redraws` counts the failed event draws.
+
+## Notes from ticket 07 (2026-09-19)
+
+- **Spawn statistics:** `spec.spawn` has the start, variant, target, scripted entry and full route. Report the spawn distance and the variant split. The variant is a fair coin per seed (RS_DESIGN §14.3 item 3).
+- **Zero-length crossing walks:** a crossing spawn with no room past the route stops at its target, so it never crosses (§14.3 item 6 allows this). Report how often it happens per family.
+- **Render each spawn's scripted entry.** It ignores the block zone (§14.3 item 1), so in `trigger_spawn` renders the block should not be drawn.

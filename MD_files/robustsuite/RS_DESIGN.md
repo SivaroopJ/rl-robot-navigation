@@ -373,3 +373,22 @@ These are readings of wording in section 4.6 that the design leaves open. They w
    - The free extent is measured along the long-axis line through the route point. A rectangle whose edge the line only grazes does not bound it.
    - Against the outer wall, the 0.2 m overlap lies outside the world.
 7. **Firing time within a step.** The trigger is checked after the robot moves and before the pedestrians move, the collision check and the observation. So the collision check and LiDAR of the firing step already include the block.
+
+### 14.3 Researcher decisions and readings before any run (2026-09-19, ticket 07)
+
+These were recorded when the triggered spawn was built, before any robot episode was run on the suite. The researcher approved items 1 and 2. Items 3–8 are readings. All of them apply from generator version `rs-gen-0.4` on.
+
+1. **The spawn ignores the block zone (a departure from 4.6).** 4.6 reserves the block zone for the spawn's start and entry paths. But the block lies 1.5–2.5 m beyond the trigger, where the entries go. The head-on target (2.0 m beyond) was always within 0.3 m of the block (40 draws measured), so a head-on entry could never be drawn, and only about 20% of crossing targets cleared the zone. The spawned pedestrian exists only in `trigger_spawn`, where the block never appears. The zone keeps the *regular* pedestrians paired across conditions (4.4), and they keep it. So the spawn's start, entry paths, waypoint cycle and motion use the static layout only.
+2. **The spawned pedestrian's noise has its own stream (a departure from 4.4).** 4.4 draws pedestrian noise from the environment's RNG. The firing step depends on the robot, so extra draws from that RNG after firing would make the regular pedestrians' later noise depend on the robot. That breaks both arm pairing and the pairing of `trigger_spawn` with `dynamic`. The spawned pedestrian therefore draws from its own generator, seeded by (episode seed, 1). The environment's RNG and the regular pedestrians stay exactly those of the family's dynamic cell.
+3. **The variant is a fair coin per seed.** It is the generator's first draw for the seed and is kept through every redraw, so feasibility cannot bias which variant a seed gets.
+4. **Spawn start and occluder.**
+   - The start is uniform over the area of the 2.0–3.0 m annulus around the trigger centre.
+   - "Crosses a static obstacle" means the segment from the trigger centre to the start meets a rectangle of the layout; the outer wall does not count.
+5. **Attempts (4.7).** Each draw of f tries the block first (up to 5 draws of d), then up to 20 spawn starts. Each start has its own crossing offset. The block and the spawn must both succeed for the same f.
+6. **Crossing.**
+   - The arrival direction is the last segment of the oracle approach path.
+   - The walk goes along the world axis nearest the route's perpendicular (the chord over ±0.5 m of arc), in the sign of the arrival direction.
+   - Its length is min(2.0 m, the free distance along that line − 0.45 m), and 0 if there is no room.
+   - The whole walk must keep 0.45 m of exact clearance, or the start is redrawn.
+7. **Head-on.** The walk back follows the route polyline from 2.0 m beyond the trigger centre to 1.0 m before it.
+8. **After the entry.** The spawned pedestrian walks an oracle path from the end of its scripted entry into its own 8-waypoint cycle, drawn like any pedestrian's (on the static layout). In the environment it appears at its start on the firing step and takes its first step in that same step, as the last obstacle slot. Before firing it is in no array, so it is in no LiDAR ray, collision check or observation.

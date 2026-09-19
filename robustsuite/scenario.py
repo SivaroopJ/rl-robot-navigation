@@ -2,8 +2,9 @@
 
 One entry point, `generate`. It never runs an episode. Every rule it enforces is fixed in
 MD_files/robustsuite/RS_DESIGN.md section 4; the section numbers below point there. The families
-are in robustsuite.families, the trigger and block in robustsuite.events, the pedestrian routes
-in robustsuite.pedestrians, and the paths on the frozen oracle's grid in robustsuite.geometry.
+are in robustsuite.families, the trigger, block and spawn in robustsuite.events, the pedestrian
+routes in robustsuite.pedestrians, and the paths on the frozen oracle's grid in
+robustsuite.geometry.
 
 DETERMINISM AND PAIRING. The only randomness is a SeedSequence with entropy
 `robustsuite.seeds.generator_entropy(cell, seed)` = (seed, family index). ONE family draw serves
@@ -21,11 +22,12 @@ ShortestPathOracle's grid at the clearance radius R_C (4.1). Waypoints and pedes
 also have Euclidean clearance >= R_C, and the route and pedestrian legs are line segments that
 keep it.
 
-EVENTS (4.6). Every family draw carries the trigger and the block, whatever its condition, so the
-four conditions stay paired; `active_block` is the block only in `trigger_block`. The block is
-the pedestrians' reserved zone in EVERY condition: their routes are drawn, and their motion runs,
-on `pedestrian_layout` (the layout plus the block), so no pedestrian is ever inside or walking
-through a block that appears (4.4).
+EVENTS (4.6). Every family draw carries the trigger, the block and the spawn, whatever its
+condition, so the four conditions stay paired; `active_block` is the block only in
+`trigger_block`, and `active_spawn` the spawn only in `trigger_spawn`. The block is the regular
+pedestrians' reserved zone in EVERY condition: their routes are drawn, and their motion runs, on
+`pedestrian_layout` (the layout plus the block), so no pedestrian is ever inside or walking
+through a block that appears (4.4). The spawned pedestrian ignores it (RS_DESIGN 14.3).
 
 START AND GOAL (4.5). Candidate pairs are uniform in free space at clearance START_GOAL_CLEARANCE
 (0.6 m); a pair is accepted when its distance lies in the drawn bin, it is joined by a route, and
@@ -40,9 +42,11 @@ attempt is one draw of the 200; after BIN_REDRAWS_PER_LAYOUT failed bins the lay
 A failed pedestrian draw also counts one and redraws the layout (ticket 05), and so does a
 failed event draw (ticket 06).
 
-VERSIONS. rs-gen-0.3 (ticket 06) added the trigger and block to every family draw, which changed
-the accepted draws of every cell. Ticket 07's spawn will change them again and must bump
-GENERATOR_VERSION; no result made under one version is paired with another.
+VERSIONS. rs-gen-0.3 (ticket 06) added the trigger and block to every family draw, and rs-gen-0.4
+(ticket 07) the spawn; each changed the accepted draws of every cell. rs-gen-0.4 also changed the
+regular pedestrians' draws: a waypoint cycle from a start on a non-free grid cell now fails at
+once instead of after 20 doomed tries (the same outcome, a later RNG state). No result made under
+one version is paired with another.
 """
 from __future__ import annotations
 
@@ -53,19 +57,21 @@ from scipy import ndimage
 
 from evaluation.shortest_path import ShortestPathOracle
 from robustsuite import seeds as RS
-from robustsuite.events import Block, Trigger, draw_trigger_block
+from robustsuite.events import Block, Spawn, Trigger, draw_events, draw_variant
 from robustsuite.families import FAMILIES
 from robustsuite.geometry import WORLD, Grid, clearances
 from robustsuite.pedestrians import draw_route
 
 #: Bumped whenever a change alters any generated spec. Recorded in every result file.
-GENERATOR_VERSION = "rs-gen-0.3"
+GENERATOR_VERSION = "rs-gen-0.4"
 
 #: Clearance radius: robot radius 0.3 + margin 0.15 (4.1).
 R_C = 0.45
 #: Start and goal clearance: M0's wall margin (RS_DESIGN 14.1).
 START_GOAL_CLEARANCE = 0.6
 GRID = 200
+#: The environment's obstacle slots: every family's pedestrians plus the spawn fit (4.6).
+N_SLOTS = 6
 #: Layout draws, bin redraws, event redraws and pedestrian redraws, per family draw (4.7).
 RESAMPLE_CAP = 200
 #: M0's Euclidean start-goal distance bins (4.5).
@@ -80,8 +86,9 @@ BIN_REDRAWS_PER_LAYOUT = 4
 #: Candidate pairs per bin attempt that may be routed (each route is a grid search).
 ROUTED_PAIRS = 40
 
-#: Conditions built so far. The draw is shared by all four; the spawn arrives with ticket 07.
-BUILT_CONDITIONS = ("static", "dynamic", "trigger_block")
+
+if max(f.pedestrians for f in FAMILIES.values()) + 1 > N_SLOTS:
+    raise RuntimeError("a family's pedestrians plus the spawn exceed the obstacle slots")
 
 
 class FeasibilityError(RuntimeError):
@@ -104,6 +111,7 @@ class EpisodeSpec:
     route_length: float        # the oracle's grid length of that path
     trigger: Trigger           # carried in every condition (4.3)
     block: Block               # likewise; fired only in trigger_block
+    spawn: Spawn               # likewise; fired only in trigger_spawn
     pedestrians: tuple         # robustsuite.pedestrians.Route, carried in every condition
     layout_draws: int          # layout draws made, the accepted one included
     bin_redraws: int           # failed bin attempts across all layouts
@@ -122,8 +130,13 @@ class EpisodeSpec:
         return self.block.rect if self.obstacles == "trigger_block" else None
 
     @property
+    def active_spawn(self):
+        """The Spawn the environment fires in this spec's condition, or None."""
+        return self.spawn if self.obstacles == "trigger_spawn" else None
+
+    @property
     def pedestrian_layout(self):
-        """The layout plus the block: the pedestrians' map in every condition (4.4)."""
+        """The layout plus the block: the regular pedestrians' map in every condition (4.4)."""
         return self.layout + (self.block.rect,)
 
     def as_dict(self):
@@ -175,10 +188,11 @@ def generate(cell, motion, seed):
     """The validated EpisodeSpec for (cell, motion, seed). Raises FeasibilityError at the cap."""
     RS.check_motion(motion)
     entropy = RS.generator_entropy(cell, seed)        # ValueError for the M0 anchor
-    if cell.obstacles not in BUILT_CONDITIONS:
-        raise NotImplementedError(f"{cell} is not built yet")
+    if cell not in RS.CELLS:
+        raise ValueError(f"unknown cell {cell!r}")
     fam = FAMILIES[cell.family]
     rng = np.random.default_rng(np.random.SeedSequence(list(entropy)))
+    variant = draw_variant(rng)                       # the seed's spawn variant, before all else
 
     draws = layout_draws = bin_redraws = event_redraws = ped_redraws = 0
     while draws < RESAMPLE_CAP:
@@ -205,12 +219,12 @@ def generate(cell, motion, seed):
         if sg is None:
             continue
         start, goal, (rt, rt_len) = sg
-        events = draw_trigger_block(rng, rt, start, goal, orc)
+        events = draw_events(rng, variant, rt, start, goal, orc, grid)
         if events is None:
             event_redraws += 1
             draws += 1
             continue
-        trigger, block, blocked = events
+        trigger, block, spawn, blocked = events
         # the block zone is reserved: pedestrians are routed on the layout plus the block, the
         # map `blocked` (its oracle) was built on and the spec's `pedestrian_layout`
         ped_layout, ped_grid = tuple(blocked.static_obstacles), Grid(blocked)
@@ -226,6 +240,6 @@ def generate(cell, motion, seed):
             continue
         return EpisodeSpec(GENERATOR_VERSION, cell.family, cell.obstacles, int(seed),
                            tuple(tuple(float(v) for v in r) for r in layout), structure,
-                           start, goal, b, rt, float(rt_len), trigger, block, tuple(peds),
+                           start, goal, b, rt, float(rt_len), trigger, block, spawn, tuple(peds),
                            layout_draws, bin_redraws, event_redraws, ped_redraws)
     raise FeasibilityError(f"{cell} seed {seed}: no feasible draw in {RESAMPLE_CAP} draws")

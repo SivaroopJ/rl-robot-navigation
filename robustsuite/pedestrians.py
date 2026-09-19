@@ -81,14 +81,27 @@ def draw_route(rng, layout, grid, radius, robot_start, goal):
                         ((robot_start, START_FROM_ROBOT), (goal, START_FROM_GOAL)))
     if start is None:
         return None
+    return draw_cycle(rng, layout, grid, radius, start)
+
+
+def draw_cycle(rng, layout, grid, radius, start):
+    """A route from `start` into a new 8-waypoint cycle, or None if ROUTE_TRIES cycles fail.
+    None at once if `start` is not on a free cell of the grid: no cycle could leave it."""
+    if grid.node_of(start) < 0:
+        return None
     for _ in range(ROUTE_TRIES):
         wps = [_free_point(rng, layout, radius) for _ in range(N_WAYPOINTS)]
         if any(w is None for w in wps):
             continue
         entry = grid.route(start, wps[0], layout, radius)
-        legs = [grid.route(wps[i], wps[(i + 1) % N_WAYPOINTS], layout, radius)
-                for i in range(N_WAYPOINTS)]
-        if entry is None or any(leg is None for leg in legs):
+        legs = []
+        if entry is not None:                    # route the legs only while every one exists
+            for i in range(N_WAYPOINTS):
+                leg = grid.route(wps[i], wps[(i + 1) % N_WAYPOINTS], layout, radius)
+                if leg is None:
+                    break
+                legs.append(leg)
+        if len(legs) < N_WAYPOINTS:
             continue
         entry = entry[0]
         loop = list(legs[0][0])
