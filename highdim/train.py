@@ -15,9 +15,12 @@
                  A checkpoint is saved at the first rollout boundary at or after its mark, so it
                  always holds an updated policy; `ckpt_<mark>` records the mark and the exact
                  PPO step count (e.g. mark 250 000 -> 262 144 with 8 x 2048-step rollouts)
-    hold k       SB3 counts PPO decisions; one decision spans k control steps. Budget and marks
-                 are given in control steps and divided by k; the exact control-step count
-                 (from the per-step diagnostics) is recorded too
+    hold k       SB3 counts PPO decisions; one decision spans up to k control steps (fewer when
+                 the episode ends inside the hold). Budget, marks and the linear LR schedule run
+                 on real control steps, counted from the per-step diagnostics (ControlClock):
+                 training stops at the first rollout boundary at or after the budget, and
+                 progress_remaining = 1 - control steps / budget. At hold 1 a control step is a
+                 PPO step, so this is exactly SB3's own schedule and stopping point
     evaluation   at every checkpoint: the checkpoint, deterministic, on the first `eval_seeds`
                  (50) HD_DEV seeds x 2 conditions, through highdim.blocks; HD_FINAL is never
                  opened here
@@ -59,7 +62,7 @@ FROZEN_PARAM_FILES = ("H2/tuned_frozen.json", "R3/random_frozen.json")
 N_ENVS = 8
 BUFFER_FIELDS = ("actions", "values", "log_probs", "rewards", "returns", "advantages")
 TRAIN_KEYS = ("approx_kl", "clip_fraction", "explained_variance", "loss", "value_loss",
-              "policy_gradient_loss", "entropy_loss", "std")
+              "policy_gradient_loss", "entropy_loss", "std", "learning_rate")
 FINITE_DIAGNOSTICS = ("gamma", "u_exec", "a_raw", "a_disc")
 
 
@@ -138,6 +141,49 @@ def evaluate(ckpt, out_dir, steps, *, eval_seeds, workers, hold, max_steps=None)
             **{f"success_{c}": float(np.mean([r["success"] for r in res[c]])) for c in res}}
 
 
+class ControlClock:
+    """Control steps taken against the budget (HD_DESIGN.md section 13)."""
+
+    def __init__(self, budget):
+        self.budget = int(budget)
+        self.steps = 0
+        self.stopped = False
+        self.boundary_ppo_steps = 0                    # PPO steps at the last rollout start
+
+    def remaining(self):
+        return 1.0 - float(self.steps) / float(self.budget)   # as SB3's progress_remaining
+
+
+class ControlSchedule:
+    """SB3's learning-rate schedule driven by control-step progress instead of PPO steps."""
+
+    def __init__(self, base, clock):
+        self.base, self.clock = base, clock
+
+    def __call__(self, _progress_remaining):
+        return self.base(self.clock.remaining())
+
+
+class ControlBudget(BaseCallback):
+    """First in the callback list: counts control steps, and stops training at the first
+    rollout boundary at or after the budget. The stop fires on the new rollout's first step,
+    which SB3 then discards untrained; the clock does not count it."""
+
+    def __init__(self, clock):
+        super().__init__()
+        self.clock = clock
+
+    def _on_rollout_start(self):
+        self.clock.boundary_ppo_steps = self.num_timesteps
+        self.clock.stopped = self.clock.steps >= self.clock.budget
+
+    def _on_step(self):
+        if self.clock.stopped:
+            return False
+        self.clock.steps += sum(len(i.get("diagnostics", ())) for i in self.locals["infos"])
+        return True
+
+
 def buffer_finite(buf):
     """True if every stored rollout quantity PPO learns from is finite."""
     return all(np.isfinite(np.asarray(getattr(buf, k), float)).all() for k in BUFFER_FIELDS)
@@ -155,9 +201,10 @@ class TrainingHealth(BaseCallback):
     SB3 records train/* inside train(), which runs after the rollout's log dump, so an update's
     metrics are read at the next rollout start (and once more by `collect` after learn())."""
 
-    def __init__(self, log_path):
+    def __init__(self, log_path, clock=None):
         super().__init__()
         self.log_path = Path(log_path)
+        self.clock = clock
         self.rollouts = self.nonfinite_rollouts = 0
         self.updates = self.nonfinite_updates = 0
         self.diag_steps = self.diag_incomplete = 0
@@ -176,6 +223,8 @@ class TrainingHealth(BaseCallback):
         self.full_update = m.n_epochs * -(-m.n_steps * m.n_envs // m.batch_size)
 
     def _on_step(self):
+        if self.clock is not None and self.clock.stopped:
+            return True                                # the discarded step after the budget
         for info in self.locals["infos"]:
             diags = info.get("diagnostics")
             if not diags:
@@ -225,35 +274,33 @@ class Checkpoints(BaseCallback):
     just been updated, never in the middle of a rollout.
     """
 
-    def __init__(self, out_dir, every, hold, meta, eval_kw):
+    def __init__(self, out_dir, every, clock, meta, eval_kw):
         super().__init__()
         self.out_dir, self.meta, self.eval_kw = Path(out_dir), meta, eval_kw
-        self.hold = int(hold)
+        self.clock = clock
         self.every = int(every)                        # control steps
         self.next = self.every
-        self.control_steps = 0
         self.eval_time = 0.0
 
     def _on_step(self):
-        self.control_steps += sum(len(i.get("diagnostics", ())) for i in self.locals["infos"])
         return True
 
     def _on_rollout_start(self):
         self.flush()
 
     def flush(self):
-        while self.num_timesteps * self.hold >= self.next:
+        while self.clock.steps >= self.next:
             mark = self.next
             self.next += self.every
             ckpt = self.out_dir / f"ckpt_{mark}.zip"
             self.model.save(ckpt)
             (self.out_dir / f"ckpt_{mark}.json").write_text(json.dumps(
                 self.meta(steps=self.num_timesteps, mark=mark,
-                          control_steps=self.control_steps), indent=1))
+                          control_steps=self.clock.steps), indent=1))
             t0 = time.perf_counter()
             row = evaluate(ckpt, self.out_dir, mark, **self.eval_kw)
             self.eval_time += time.perf_counter() - t0
-            row.update(ppo_steps=self.num_timesteps, control_steps=self.control_steps)
+            row.update(ppo_steps=self.num_timesteps, control_steps=self.clock.steps)
             with open(self.out_dir / "evals.jsonl", "a") as f:
                 f.write(json.dumps(row) + "\n")
 
@@ -273,24 +320,26 @@ def train(*, run, seed, total_timesteps, out_dir, hold=1, n_envs=N_ENVS, every=2
     def meta(**kw):
         return metadata(run=run, seed=seed, solver=solver, hold=hold, n_envs=n_envs,
                         overrides=overrides or {}, **kw)
-    if every % hold:
-        raise ValueError(f"checkpoint interval {every} is not a multiple of hold {hold}")
-    cb = Checkpoints(out_dir, every, hold, meta, dict(
+    clock = ControlClock(total_timesteps)
+    model.lr_schedule = ControlSchedule(model.lr_schedule, clock)
+    cb = Checkpoints(out_dir, every, clock, meta, dict(
         eval_seeds=eval_seeds, workers=eval_workers, hold=hold, max_steps=eval_max_steps))
-    health = TrainingHealth(out_dir / "train_log.jsonl")
+    health = TrainingHealth(out_dir / "train_log.jsonl", clock)
     t0 = time.perf_counter()
     try:
-        model.learn(total_timesteps=-(-int(total_timesteps) // hold),
-                    callback=CallbackList([health, cb]))
+        # a decision is >= 1 control step, so the control budget ends training first (hold > 1)
+        # or at the same rollout (hold 1)
+        model.learn(total_timesteps=int(total_timesteps),
+                    callback=CallbackList([ControlBudget(clock), health, cb]))
     finally:
         venv.close()
     health.collect()                            # the last update
     cb.flush()                                  # a mark reached by the last update
     wall = time.perf_counter() - t0
     train_s = wall - cb.eval_time
-    final = meta(steps=model.num_timesteps, control_steps=cb.control_steps, wall_s=wall,
-                 eval_s=cb.eval_time,
-                 steps_per_s=cb.control_steps / train_s if train_s > 0 else float("nan"),
+    steps = clock.boundary_ppo_steps if clock.stopped else model.num_timesteps
+    final = meta(steps=steps, control_steps=clock.steps, wall_s=wall, eval_s=cb.eval_time,
+                 steps_per_s=clock.steps / train_s if train_s > 0 else float("nan"),
                  health=health.summary())
     model.save(out_dir / "final.zip")
     (out_dir / "final.json").write_text(json.dumps(final, indent=1))

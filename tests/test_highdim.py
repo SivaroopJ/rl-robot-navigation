@@ -1389,3 +1389,42 @@ def test_hd2_smoke_evaluates_a_checkpoint_on_hd_dev_and_reports(tmp_path, monkey
                  "Random event", "dynamic", "static", "wall",
                  HD2.VERDICT_TEXT[HD2._verdict({1: a})["verdict"]][:12]):
         assert must in text, must
+
+
+def test_hold_budget_and_marks_count_real_control_steps_when_episodes_end_inside_a_hold(
+        tmp_path, monkeypatch):
+    # HD_DESIGN section 13: budget and marks are control steps. Episodes of 7 steps under hold 5
+    # make 5 + 2 control steps per 2 decisions, so decisions x hold overstates control steps.
+    from highdim import train as HT
+    from highdim import wrapper as HW
+    real = HW.make_env
+
+    def short(randomized):
+        env = real(randomized)
+        env.MAX_STEPS = 7
+        return env
+    monkeypatch.setattr(HW, "make_env", short)
+    out = tmp_path / "run"
+    final = HT.train(run=99, seed=0, total_timesteps=64, out_dir=out, hold=5, n_envs=2,
+                     every=32, eval_seeds=1, eval_workers=1, eval_max_steps=10,
+                     overrides={"n_steps": 4, "batch_size": 8}, vec="dummy")
+    log = [json.loads(x) for x in (out / "train_log.jsonl").read_text().splitlines()]
+    assert [r["control_steps"] for r in log] == [28, 56, 84]     # 2 envs x 2 episodes x 7
+    assert final["control_steps"] == 84 >= 64 and final["steps"] == 24 == log[-1]["ppo_steps"]
+    assert final["health"]["diag_steps"] == 84
+    for mark, (ppo, ctrl) in ((32, (16, 56)), (64, (24, 84))):
+        meta = json.loads((out / f"ckpt_{mark}.json").read_text())
+        assert (meta["steps"], meta["control_steps"]) == (ppo, ctrl)
+    for r in log:                                  # linear LR over control steps, not decisions
+        assert r["learning_rate"] == pytest.approx(3e-4 * (1 - r["control_steps"] / 64))
+
+
+def test_hold_1_learning_rate_is_sb3_s_own_linear_schedule(tmp_path):
+    from highdim import train as HT
+    out = tmp_path / "run"
+    HT.train(run=99, seed=0, total_timesteps=64, out_dir=out, n_envs=2, every=1000,
+             eval_seeds=1, eval_workers=1, overrides={"n_steps": 16, "batch_size": 16},
+             vec="dummy")
+    log = [json.loads(x) for x in (out / "train_log.jsonl").read_text().splitlines()]
+    assert [r["learning_rate"] for r in log] == [3e-4 * (1.0 - float(s) / 64.0)
+                                                 for s in (32, 64)]
