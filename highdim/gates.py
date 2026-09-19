@@ -18,6 +18,10 @@ DU_SHARE = Fraction(99, 100)            # ... on >= 99 % of the steps where both
 MCNEMAR_P = 0.05                        # E-b: McNemar p > 0.05 on success, and
 CI_BOUND = 0.03                         # the 95 % CI of the success difference inside +-0.03
 
+# Section 9.1, the pilot.
+TARGET_KL = 0.02                        # config.json; reported against, never gated
+PILOT_FALLBACK_HOLD = 5                 # the single re-pilot after a learning failure
+
 
 def _paired_successes(floor, ceiling):
     if [r["seed"] for r in floor] != [r["seed"] for r in ceiling]:
@@ -85,3 +89,68 @@ def training_solver(ea, eb):
     ok = ea["pass"] and all(v["pass"] for v in eb.values())
     return {"pass": ok, "solver": "fast" if ok else "frozen",
             "E-a": ea["pass"], "E-b": {k: v["pass"] for k, v in eb.items()}}
+
+
+def pilot_sanity(health, log):
+    """Section 9.1 implementation sanity from the trainer's health summary and per-update log
+    (highdim.train). Gated: no non-finite rollout (action, value, log-prob, reward, return,
+    advantage) or update (losses, parameters); every diagnostic key present, with finite
+    actions, on every control step; explained variance > 0 at the last update (the 1M mark).
+    Reported only: each update's approx_kl (SB3's mean over the last epoch's minibatches)
+    against the target, and the fraction of updates the target-KL stop cut short (SB3 stops at
+    a minibatch whose approx_kl exceeds 1.5 x target)."""
+    ev = log[-1]["explained_variance"] if log else float("nan")
+    checks = {"finite_rollouts": health["nonfinite_rollouts"] == 0,
+              "finite_updates": health["nonfinite_updates"] == 0
+              and all(r["finite"] for r in log),
+              "diagnostics_complete": health["diag_steps"] > 0
+              and health["diag_incomplete"] == 0,
+              "explained_variance_positive": bool(ev > 0)}
+    n = len(log)
+    kl = [r["approx_kl"] for r in log]
+    return {**checks, "pass": bool(log) and all(checks.values()), "updates": n,
+            "explained_variance": ev,
+            "early_stop_frac": sum(r["early_stop"] for r in log) / n if n else float("nan"),
+            "kl_below_target_frac": sum(k < TARGET_KL for k in kl) / n if n else float("nan"),
+            "approx_kl_median": float(sorted(kl)[n // 2]) if n else float("nan"),
+            "target_kl": TARGET_KL}
+
+
+def pilot_learning(ppo, floor):
+    """Section 9.1 learning rule on HD_DEV pooled over conditions: the checkpoint's deterministic
+    success >= the floor's on the same episodes. Point estimates, exact counts; a tie passes."""
+    key = [(r["condition"], r["seed"]) for r in ppo]
+    if not key or key != [(r["condition"], r["seed"]) for r in floor]:
+        raise ValueError("PPO and floor records are not paired by (condition, seed)")
+    k_ppo = sum(int(r["success"]) for r in ppo)
+    k_floor = sum(int(r["success"]) for r in floor)
+    n = len(key)
+    return {"n": n, "k_ppo": k_ppo, "k_floor": k_floor, "S_ppo": k_ppo / n,
+            "S_floor": k_floor / n, "pass": k_ppo >= k_floor}
+
+
+def pilot_verdict(pilots):
+    """Section 9.1 transition from {hold: {"sanity", "learning"}} in the order the pilots ran.
+
+    A sanity failure is an implementation bug: fix and re-run at the same hold (it does not use
+    up the fallback). A hold-1 learning failure earns exactly one hold-5 re-pilot; a hold-5
+    learning failure is NO-GO."""
+    if 1 not in pilots or set(pilots) - {1, PILOT_FALLBACK_HOLD}:
+        raise ValueError(f"pilots must be hold 1, then optionally hold 5: {sorted(pilots)}")
+    first = pilots[1]
+    if not first["sanity"]["pass"]:
+        if len(pilots) > 1:
+            raise ValueError("a hold-5 pilot cannot follow a hold-1 sanity failure")
+        return {"verdict": "fix and re-run", "hold": 1}
+    if first["learning"]["pass"]:
+        if len(pilots) > 1:
+            raise ValueError("a hold-5 pilot runs only after a hold-1 learning failure")
+        return {"verdict": "viable", "hold": 1}
+    second = pilots.get(PILOT_FALLBACK_HOLD)
+    if second is None:
+        return {"verdict": "re-pilot", "hold": PILOT_FALLBACK_HOLD}
+    if not second["sanity"]["pass"]:
+        return {"verdict": "fix and re-run", "hold": PILOT_FALLBACK_HOLD}
+    if second["learning"]["pass"]:
+        return {"verdict": "viable", "hold": PILOT_FALLBACK_HOLD}
+    return {"verdict": "NO-GO", "hold": None}

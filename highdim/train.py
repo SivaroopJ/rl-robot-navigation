@@ -21,6 +21,12 @@
     evaluation   at every checkpoint: the checkpoint, deterministic, on the first `eval_seeds`
                  (50) HD_DEV seeds x 2 conditions, through highdim.blocks; HD_FINAL is never
                  opened here
+    health       section 9.1 sanity inputs: `train_log.jsonl`, one row per policy update (SB3's
+                 train/* metrics, epochs run, early stop, finiteness of losses and parameters),
+                 and a `health` summary in final.json (non-finite rollout buffers, diagnostic
+                 records missing a key or with a non-finite action, and steps whose info
+                 carries none). `early_stop` means the target-KL stop fired: the update made
+                 fewer optimizer steps than n_epochs x minibatches
 """
 from __future__ import annotations
 
@@ -34,7 +40,7 @@ import numpy as np
 import stable_baselines3
 import torch
 from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.callbacks import BaseCallback, CallbackList
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecMonitor
 
 from experiments.week6_continuation.common import RESULTS as FROZEN_DIR
@@ -42,7 +48,7 @@ from highdim import blocks as HB
 from highdim.ppo import NET_ARCH
 from highdim.seeds import seed_block, train_env_seed
 from highdim.subgoal import L
-from highdim.wrapper import HDSubgoalEnv
+from highdim.wrapper import DIAGNOSTIC_KEYS, HDSubgoalEnv
 from robot_env.robot_nav_env import load_config
 from training.train_flat import pin_torch_threads, shared_ppo_kwargs
 
@@ -51,6 +57,10 @@ CONFIG = REPO / "config.json"
 SOLVER_DECISION = REPO / "results/highdim/HD1/analysis.json"
 FROZEN_PARAM_FILES = ("H2/tuned_frozen.json", "R3/random_frozen.json")
 N_ENVS = 8
+BUFFER_FIELDS = ("actions", "values", "log_probs", "rewards", "returns", "advantages")
+TRAIN_KEYS = ("approx_kl", "clip_fraction", "explained_variance", "loss", "value_loss",
+              "policy_gradient_loss", "entropy_loss", "std")
+FINITE_DIAGNOSTICS = ("gamma", "u_exec", "a_raw", "a_disc")
 
 
 def training_solver():
@@ -128,6 +138,86 @@ def evaluate(ckpt, out_dir, steps, *, eval_seeds, workers, hold, max_steps=None)
             **{f"success_{c}": float(np.mean([r["success"] for r in res[c]])) for c in res}}
 
 
+def buffer_finite(buf):
+    """True if every stored rollout quantity PPO learns from is finite."""
+    return all(np.isfinite(np.asarray(getattr(buf, k), float)).all() for k in BUFFER_FIELDS)
+
+
+def diagnostic_complete(d):
+    """True if a per-step diagnostic record has every key and finite reference and actions."""
+    return (all(k in d for k in DIAGNOSTIC_KEYS)
+            and all(np.isfinite(np.asarray(d[k], float)).all() for k in FINITE_DIAGNOSTICS))
+
+
+class TrainingHealth(BaseCallback):
+    """Section 9.1 sanity inputs; observes only, never changes training.
+
+    SB3 records train/* inside train(), which runs after the rollout's log dump, so an update's
+    metrics are read at the next rollout start (and once more by `collect` after learn())."""
+
+    def __init__(self, log_path):
+        super().__init__()
+        self.log_path = Path(log_path)
+        self.rollouts = self.nonfinite_rollouts = 0
+        self.updates = self.nonfinite_updates = 0
+        self.diag_steps = self.diag_incomplete = 0
+        self._seen = 0                                 # model._n_updates already logged
+        self._grad_steps = 0                           # optimizer steps since the last row
+
+    def _on_training_start(self):
+        opt = self.model.policy.optimizer
+        inner = opt.step
+
+        def counted(*a, **k):
+            self._grad_steps += 1
+            return inner(*a, **k)
+        opt.step = counted
+        m = self.model
+        self.full_update = m.n_epochs * -(-m.n_steps * m.n_envs // m.batch_size)
+
+    def _on_step(self):
+        for info in self.locals["infos"]:
+            diags = info.get("diagnostics")
+            if not diags:
+                self.diag_incomplete += 1              # a step that logged nothing
+                continue
+            for d in diags:
+                self.diag_steps += 1
+                self.diag_incomplete += not diagnostic_complete(d)
+        return True
+
+    def _on_rollout_end(self):
+        self.rollouts += 1
+        self.nonfinite_rollouts += not buffer_finite(self.model.rollout_buffer)
+
+    def _on_rollout_start(self):
+        self.collect()
+
+    def collect(self):
+        epochs = self.model._n_updates - self._seen
+        if epochs == 0:
+            return
+        self._seen = self.model._n_updates
+        v = self.model.logger.name_to_value
+        row = {"update": self.updates + 1, "ppo_steps": int(self.model.num_timesteps),
+               "control_steps": self.diag_steps,
+               **{k: float(v.get(f"train/{k}", float("nan"))) for k in TRAIN_KEYS},
+               "epochs": int(epochs), "grad_steps": self._grad_steps,
+               "early_stop": self._grad_steps < self.full_update}
+        self._grad_steps = 0
+        params = all(bool(torch.isfinite(q).all()) for q in self.model.policy.parameters())
+        row["finite"] = params and all(np.isfinite(row[k]) for k in TRAIN_KEYS)
+        self.updates += 1
+        self.nonfinite_updates += not row["finite"]
+        with open(self.log_path, "a") as f:
+            f.write(json.dumps(row) + "\n")
+
+    def summary(self):
+        return {"updates": self.updates, "nonfinite_updates": self.nonfinite_updates,
+                "rollouts": self.rollouts, "nonfinite_rollouts": self.nonfinite_rollouts,
+                "diag_steps": self.diag_steps, "diag_incomplete": self.diag_incomplete}
+
+
 class Checkpoints(BaseCallback):
     """Every `every` control steps: save the model and its metadata, then evaluate it on HD_DEV.
 
@@ -187,17 +277,21 @@ def train(*, run, seed, total_timesteps, out_dir, hold=1, n_envs=N_ENVS, every=2
         raise ValueError(f"checkpoint interval {every} is not a multiple of hold {hold}")
     cb = Checkpoints(out_dir, every, hold, meta, dict(
         eval_seeds=eval_seeds, workers=eval_workers, hold=hold, max_steps=eval_max_steps))
+    health = TrainingHealth(out_dir / "train_log.jsonl")
     t0 = time.perf_counter()
     try:
-        model.learn(total_timesteps=-(-int(total_timesteps) // hold), callback=cb)
+        model.learn(total_timesteps=-(-int(total_timesteps) // hold),
+                    callback=CallbackList([health, cb]))
     finally:
         venv.close()
+    health.collect()                            # the last update
     cb.flush()                                  # a mark reached by the last update
     wall = time.perf_counter() - t0
     train_s = wall - cb.eval_time
     final = meta(steps=model.num_timesteps, control_steps=cb.control_steps, wall_s=wall,
                  eval_s=cb.eval_time,
-                 steps_per_s=cb.control_steps / train_s if train_s > 0 else float("nan"))
+                 steps_per_s=cb.control_steps / train_s if train_s > 0 else float("nan"),
+                 health=health.summary())
     model.save(out_dir / "final.zip")
     (out_dir / "final.json").write_text(json.dumps(final, indent=1))
     return final

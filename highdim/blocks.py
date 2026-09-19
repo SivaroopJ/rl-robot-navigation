@@ -193,3 +193,24 @@ def check_paired(res_a, res_b):
             if not (a["seed"] == b["seed"] and a["start"] == b["start"]
                     and a["goal"] == b["goal"]):
                 raise RuntimeError(f"pairing broken at {c}/{a['seed']}")
+
+
+def load_block(kind, seeds, *, checkpoint, traces, tag, conditions=("fixed", "randomized"),
+               max_steps=None, model=None, hold=1):
+    """A finished block read back without running or rewriting anything.
+
+    Returns ({condition: [light records sorted by seed]}, {(condition, seed): trace row}).
+    SystemExit if the stored fingerprint is not this definition's or an episode is missing."""
+    checkpoint, traces = Path(checkpoint), Path(traces)
+    rows = _read_jsonl(checkpoint)
+    fp = fingerprint(kind, seeds, conditions, max_steps, tag, None, model, hold)
+    if not rows or rows[0].get("fingerprint") != fp:
+        raise SystemExit(f"{checkpoint} is not the block {kind!r} with tag {tag!r}")
+    trace_rows = _load_traces(traces)
+    got = {(r["cond"], r["seed"]): r["rec"] for r in rows[1:]}
+    missing = [(c, s) for c in conditions for s in seeds
+               if (c, s) not in got or (c, s) not in trace_rows]
+    if missing:
+        raise SystemExit(f"{checkpoint}: {len(missing)} episodes missing, e.g. {missing[:3]}")
+    return ({c: [got[(c, s)] for s in seeds] for c in conditions},
+            {(c, s): trace_rows[(c, s)] for c in conditions for s in seeds})

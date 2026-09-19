@@ -1212,3 +1212,180 @@ def test_sb3_training_resets_each_env_on_its_hd_train_seed():
         want, _ = _wrapper(cond, seed=s).reset()
         assert np.array_equal(got[i], want), (i, s)
     venv.close()
+
+
+# =========================================================================== ticket 08
+# The 1M-step pilot: training health (HD_DESIGN.md section 9.1 sanity), the pilot rule and its
+# single hold-5 fallback, and the pilot report on HD_DEV.
+
+def test_short_training_logs_training_health_per_update(tmp_path):
+    from highdim import train as HT
+    out = tmp_path / "run"
+    final = HT.train(run=99, seed=0, total_timesteps=64, out_dir=out, n_envs=2, every=1000,
+                     eval_seeds=1, eval_workers=1, overrides={"n_steps": 16, "batch_size": 16},
+                     vec="dummy")
+    log = [json.loads(x) for x in (out / "train_log.jsonl").read_text().splitlines()]
+    assert [r["ppo_steps"] for r in log] == [32, 64]          # one row per policy update
+    for r in log:
+        for k in ("approx_kl", "clip_fraction", "explained_variance", "loss", "value_loss",
+                  "policy_gradient_loss", "entropy_loss", "std"):
+            assert np.isfinite(r[k]), k
+        full = 10 * (32 // 16)                               # n_epochs x minibatches
+        assert 1 <= r["epochs"] <= 10 and 1 <= r["grad_steps"] <= full
+        assert r["early_stop"] == (r["grad_steps"] < full)
+        assert r["finite"] is True
+    h = final["health"]
+    assert h["updates"] == 2 and h["rollouts"] == 2 and h["nonfinite_rollouts"] == 0
+    assert h["nonfinite_updates"] == 0 and h["diag_steps"] == 64 == final["control_steps"]
+    assert h["diag_incomplete"] == 0
+    assert json.loads((out / "final.json").read_text())["health"] == h
+
+
+def test_rollout_check_flags_any_non_finite_buffer_entry():
+    from types import SimpleNamespace
+    from highdim import train as HT
+    ok = {k: np.zeros((4, 2)) for k in HT.BUFFER_FIELDS}
+    assert HT.buffer_finite(SimpleNamespace(**ok))
+    for k in HT.BUFFER_FIELDS:
+        bad = dict(ok)
+        bad[k] = np.array([[0.0, np.nan]])
+        assert not HT.buffer_finite(SimpleNamespace(**bad)), k
+
+
+def test_diagnostic_check_flags_a_step_missing_a_key_or_with_a_non_finite_action():
+    from highdim import train as HT
+    from highdim.wrapper import DIAGNOSTIC_KEYS
+    good = {k: 0.0 for k in DIAGNOSTIC_KEYS}
+    good.update(a_raw=[0.1, 0.2], a_disc=[0.1, 0.2])
+    assert HT.diagnostic_complete(good)
+    assert not HT.diagnostic_complete({k: v for k, v in good.items() if k != "min_cbc"})
+    assert not HT.diagnostic_complete({**good, "a_raw": [np.nan, 0.0]})
+    assert not HT.diagnostic_complete({**good, "u_exec": [np.inf, 0.0]})
+
+
+def test_training_health_counts_a_step_without_diagnostics_as_incomplete():
+    from highdim import train as HT
+    from highdim.wrapper import DIAGNOSTIC_KEYS
+    d = {k: [0.0, 0.0] for k in DIAGNOSTIC_KEYS}
+    h = HT.TrainingHealth("unused")
+    h.locals = {"infos": [{"diagnostics": [d, d]}, {}, {"diagnostics": []}]}
+    h._on_step()
+    assert (h.diag_steps, h.diag_incomplete) == (2, 2)
+
+
+def _health(**kw):
+    h = {"updates": 62, "rollouts": 62, "nonfinite_rollouts": 0, "nonfinite_updates": 0,
+         "diag_steps": 1_015_808, "diag_incomplete": 0}
+    return {**h, **kw}
+
+
+def _log(ev_last=0.4, n=62):
+    return [{"ppo_steps": 16_384 * (i + 1), "explained_variance": 0.1 if i < n - 1 else ev_last,
+             "approx_kl": 0.01, "early_stop": False, "epochs": 10, "finite": True}
+            for i in range(n)]
+
+
+def test_pilot_sanity_needs_finite_training_full_diagnostics_and_positive_explained_variance():
+    assert HG.pilot_sanity(_health(), _log())["pass"]
+    for h in (_health(nonfinite_rollouts=1), _health(nonfinite_updates=1),
+              _health(diag_incomplete=1), _health(diag_steps=0)):
+        assert not HG.pilot_sanity(h, _log())["pass"], h
+    s = HG.pilot_sanity(_health(), _log(ev_last=0.0))
+    assert not s["pass"] and s["explained_variance"] == 0.0     # > 0 is required
+    assert not HG.pilot_sanity(_health(), [])["pass"]
+
+
+def test_pilot_sanity_reports_but_does_not_gate_kl_and_early_stopping():
+    log = _log()
+    for r in log:
+        r.update(approx_kl=0.09, early_stop=True, epochs=1)
+    s = HG.pilot_sanity(_health(), log)
+    assert s["pass"] and s["early_stop_frac"] == 1.0 and s["kl_below_target_frac"] == 0.0
+
+
+def _pair(k, n=200):
+    return [{"condition": "fixed" if i < n // 2 else "randomized", "seed": i % (n // 2),
+             "success": int(i < k)} for i in range(n)]
+
+
+def test_pilot_learning_rule_is_a_tie_passing_point_comparison_with_the_floor():
+    assert HG.pilot_learning(_pair(124), _pair(124))["pass"]          # a tie passes
+    assert HG.pilot_learning(_pair(125), _pair(124))["pass"]
+    r = HG.pilot_learning(_pair(123), _pair(124))
+    assert not r["pass"] and (r["S_ppo"], r["S_floor"], r["n"]) == (0.615, 0.62, 200)
+
+
+def test_pilot_learning_rule_requires_pairing_by_condition_and_seed():
+    b = _pair(10)
+    b[0], b[1] = b[1], b[0]
+    with pytest.raises(ValueError):
+        HG.pilot_learning(_pair(10), b)
+
+
+def test_pilot_verdict_allows_exactly_one_hold_5_re_pilot():
+    ok = {"sanity": {"pass": True}, "learning": {"pass": True}}
+    slow = {"sanity": {"pass": True}, "learning": {"pass": False}}
+    assert HG.pilot_verdict({1: ok}) == {"verdict": "viable", "hold": 1}
+    assert HG.pilot_verdict({1: slow}) == {"verdict": "re-pilot", "hold": 5}
+    assert HG.pilot_verdict({1: slow, 5: ok}) == {"verdict": "viable", "hold": 5}
+    assert HG.pilot_verdict({1: slow, 5: slow}) == {"verdict": "NO-GO", "hold": None}
+    with pytest.raises(ValueError):
+        HG.pilot_verdict({5: ok})                        # hold 5 only after a hold-1 failure
+    with pytest.raises(ValueError):
+        HG.pilot_verdict({1: ok, 5: ok})
+
+
+def test_pilot_verdict_sends_a_sanity_failure_back_as_a_bug_not_a_re_pilot():
+    bug = {"sanity": {"pass": False}, "learning": {"pass": True}}
+    assert HG.pilot_verdict({1: bug}) == {"verdict": "fix and re-run", "hold": 1}
+    slow = {"sanity": {"pass": True}, "learning": {"pass": False}}
+    assert HG.pilot_verdict({1: slow, 5: bug}) == {"verdict": "fix and re-run", "hold": 5}
+
+
+def test_subgoal_stats_measure_gamma_distance_and_goal_switches():
+    from experiments.highdim import hd2_pilot as HD2
+    goal = [5.0, 0.0]
+    row = {"trajectory": [[0.0, 0.0], [1.0, 0.0], [4.5, 0.0], [5.0, 0.0]],
+           "trace": [{"gamma": [0.5, 0.0], "u_nom": [1.0, 0.0], "u_exec": [1.0, 0.0],
+                      "qp_status": "optimal", "random_event": False},
+                     {"gamma": [2.0, 0.0], "u_nom": [1.0, 0.0], "u_exec": [0.0, 0.0],
+                      "qp_status": "infeasible", "random_event": True},
+                     {"gamma": [5.0 + 2e-6, 0.0], "u_nom": [1.0, 0.0], "u_exec": [0.9, 0.0],
+                      "qp_status": "optimal", "random_event": False}]}
+    s = HD2.step_stats([row], [{"goal": goal}])
+    assert s["steps"] == 3
+    assert s["goal_switch_rate"] == pytest.approx(1 / 3)
+    assert s["gamma_dist_mean"] == pytest.approx((0.5 + 1.0 + 0.5) / 3, abs=1e-5)
+    assert s["gamma_dist_mean_off_goal"] == pytest.approx(0.75)
+    assert s["infeasible_rate"] == pytest.approx(1 / 3)
+    assert s["random_event_rate"] == pytest.approx(1 / 3)
+    assert s["intervention_rate"] == pytest.approx(1 / 3)       # |u_exec - u_nom| > 0.1
+    assert s["u_dev_mean"] == pytest.approx((0 + 1.0 + 0.1) / 3)
+    assert sum(s["gamma_dist_hist"].values()) == 3
+
+
+def test_hd2_smoke_evaluates_a_checkpoint_on_hd_dev_and_reports(tmp_path, monkeypatch):
+    from experiments.highdim import hd2_pilot as HD2
+    from highdim import train as HT
+    run_dir = tmp_path / "run"
+    HT.train(run=99, seed=0, total_timesteps=64, out_dir=run_dir, n_envs=2, every=32,
+             eval_seeds=1, eval_workers=1, eval_max_steps=20,
+             overrides={"n_steps": 16, "batch_size": 16}, vec="dummy")
+    opened = []
+    real = HD2.seed_block
+    monkeypatch.setattr(HD2, "seed_block",
+                        lambda name, *a, **k: opened.append(name) or real(name, *a, **k))
+    a = HD2.evaluate_pilot(run_dir, tmp_path / "out", hold=1, mark=64, n=2, workers=1,
+                           max_steps=20)
+    assert set(opened) == {"HD_DEV"}
+    assert a["hold"] == 1 and a["mark"] == 64 and a["learning"]["n"] == 4
+    assert set(a["summaries"]) == {"ppo", "floor", "ceiling"}
+    assert a["step_stats"]["ppo"]["steps"] == sum(
+        r["steps"] for c in ("fixed", "randomized") for r in a["records"][c])
+    assert [e["steps"] for e in a["learning_curve"]] == [32, 64]
+    text = HD2.report({1: a}, HD2.provenance())
+    for must in ("## Verdict", "## Implementation sanity", "## Learning curve",
+                 "goal-switch", "γ distance", "intervention", "QP infeasible",
+                 "Random event", "dynamic", "static", "wall",
+                 HD2.VERDICT_TEXT[HD2._verdict({1: a})["verdict"]][:12]):
+        assert must in text, must
