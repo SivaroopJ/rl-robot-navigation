@@ -4,13 +4,13 @@
 
 **Blocked by:** 03, 04, 05, 06, 07
 
-**Status:** ready-for-human (the report is built; it awaits the researcher's approval)
+**Status:** done (approved by the researcher, 2026-09-19)
 
 - [x] An entry point generates specs for all 20 cells × 2 motion conditions on the diagnostic seed indices, plus the anchor, without running episodes
 - [x] The report shows, per cell: acceptance and resampling rates; clearance, passage-width and route-length distributions; start/goal distance bins; pedestrian counts; trigger fractions and block and spawn distances
 - [x] Rendered samples of every cell (layout, start/goal, pedestrian routes, trigger region, block or spawn), plus short rollout renders showing that pedestrians respect walls
 - [x] The report is written to the reports folder and linked in the vault note
-- [ ] **The researcher approves the report.** The approval is recorded in this ticket and the design document before ticket 09 starts
+- [x] **The researcher approves the report.** The approval is recorded in this ticket and the design document before ticket 09 starts
 
 ## Notes from ticket 06 (2026-09-19)
 
@@ -43,3 +43,4 @@
   - resampling as rates; five-number summaries; loop lengths;
   - an M0 rollout render;
   - the summary states only measured facts.
+- 2026-09-19. **Approved by the researcher.** Recorded in RS_DESIGN ("Approval: map validation report"). Two properties are recorded as known, not defects: the early-leaning trigger fractions and the short-detour blocks (dense_clutter 14 / 50, open_clutter 5 / 50). Per-family reporting is accepted. Ticket 09 may start.

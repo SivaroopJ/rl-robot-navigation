@@ -392,3 +392,14 @@ These were recorded when the triggered spawn was built, before any robot episode
    - The whole walk must keep 0.45 m of exact clearance, or the start is redrawn.
 7. **Head-on.** The walk back follows the route polyline from 2.0 m beyond the trigger centre to 1.0 m before it.
 8. **After the entry.** The spawned pedestrian walks an oracle path from the end of its scripted entry into its own 8-waypoint cycle, drawn like any pedestrian's (on the static layout). In the environment it appears at its start on the firing step and takes its first step in that same step, as the last obstacle slot. Before firing it is in no array, so it is in no LiDAR ray, collision check or observation.
+
+## Approval: map validation report (phase 1 → 2), 2026-09-19
+
+The researcher approved the map validation report (`MD_files/robustsuite/RS1_MAP_VALIDATION_REPORT.md`, generated at `2d0d624` and committed at `f2234a8`: generator `rs-gen-0.4`, RS_DIAG, 50 seeds per family). Phase 2, the baseline diagnostic, may start.
+
+The approval records two properties of the suite as known, not as defects. Neither changes a rule, and both apply equally to every arm.
+
+1. **Accepted trigger fractions lean early.** f is drawn uniformly on [0.3, 0.7], but later fractions fail more often, so the accepted draws per 0.1 bin are 108 / 62 / 46 / 34 of 250. Every event still lies within the pre-registered 30–70% of the route.
+2. **Some blocks leave a quick way round.** Blocks with a detour under 1 m: dense_clutter 14 / 50, open_clutter 5 / 50, 0–1 / 50 in the structured families. In those cells, trigger_block partly tests replanning around a nearby box rather than a shut passage.
+
+The approval also accepts that the statistics are reported per family rather than per cell, since the four cells of a family are views of one draw (40 of 40 regenerated specs matched). Aisles give no start–goal pairs in the 8.5–10.5 m bin, a consequence of the family's geometry.
