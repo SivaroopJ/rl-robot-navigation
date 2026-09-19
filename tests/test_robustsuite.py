@@ -11,6 +11,7 @@ import shutil
 
 import numpy as np
 import pytest
+from scipy import ndimage
 
 from continuation import seeds as CS
 from continuation.pursuit.config import PURSUIT_BLOCKS
@@ -20,7 +21,9 @@ from experiments.robustsuite import protect_manifest as PM
 from highdim import harness as HDH
 from highdim import seeds as HDS
 from robustsuite import blocks as RB
+from robustsuite import families as RF
 from robustsuite import harness as RH
+from robustsuite import pedestrians as RP
 from robustsuite import scenario as SC
 from robustsuite import seeds as RS
 from robustsuite.scenario_env import RSScenarioEnv
@@ -230,10 +233,11 @@ def test_open_clutter_layouts_follow_the_family_rules(open_specs):
 
 
 def test_start_and_goal_are_in_free_space_with_clearance(open_specs):
+    # 0.6 m, M0's wall margin: closer, the frozen controller's h < 0 (RS_DESIGN 14.1)
     for sp in open_specs:
         for p in (sp.start, sp.goal):
-            assert min(p[0], p[1], 10 - p[0], 10 - p[1]) >= 0.45
-            assert all(_point_rect_distance(p, r) >= 0.45 for r in sp.layout)
+            assert min(p[0], p[1], 10 - p[0], 10 - p[1]) >= 0.6
+            assert all(_point_rect_distance(p, r) >= 0.6 for r in sp.layout)
 
 
 def test_start_goal_distance_is_inside_its_m0_bin(open_specs):
@@ -263,29 +267,33 @@ def test_specs_record_feasibility_and_draw_counts(open_specs):
 SPLIT = ((5.0, 5.0, 0.2, 5.0),)
 
 
+def _patch_draw(monkeypatch, draw, family="open_clutter"):
+    fam = RF.FAMILIES[family]
+    monkeypatch.setitem(RF.FAMILIES, family, fam._replace(draw=draw))
+
+
 def test_resampling_skips_infeasible_draws_and_counts_them(monkeypatch):
-    real = SC.FAMILY_DRAWS["open_clutter"]
+    real = RF.FAMILIES["open_clutter"].draw
     calls = []
 
     def flaky(rng):
         calls.append(1)
-        return None if len(calls) == 1 else SPLIT if len(calls) == 2 else real(rng)
-    monkeypatch.setitem(SC.FAMILY_DRAWS, "open_clutter", flaky)
+        return None if len(calls) == 1 else (SPLIT, {}) if len(calls) == 2 else real(rng)
+    _patch_draw(monkeypatch, flaky)
     sp = SC.generate(OPEN_STATIC, "fixed", DIAG[0])
     assert sp.layout_draws == 3 and sp.layout != SPLIT and sp.feasible
 
 
 def test_the_resample_cap_raises_rather_than_returning_an_infeasible_spec(monkeypatch):
-    monkeypatch.setitem(SC.FAMILY_DRAWS, "open_clutter", lambda rng: SPLIT)
+    _patch_draw(monkeypatch, lambda rng: (SPLIT, {}))
     with pytest.raises(SC.FeasibilityError):
         SC.generate(OPEN_STATIC, "fixed", DIAG[0])
 
 
 def test_unbuilt_cells_and_bad_arguments_are_refused():
-    with pytest.raises(NotImplementedError):
-        SC.generate(RS.Cell("open_clutter", "dynamic"), "fixed", DIAG[0])
-    with pytest.raises(NotImplementedError):
-        SC.generate(RS.Cell("rooms", "static"), "fixed", DIAG[0])
+    for cond in ("trigger_block", "trigger_spawn"):
+        with pytest.raises(NotImplementedError):
+            SC.generate(RS.Cell("open_clutter", cond), "fixed", DIAG[0])
     with pytest.raises(ValueError):
         SC.generate(OPEN_STATIC, "wobbly", DIAG[0])
     with pytest.raises(ValueError):
@@ -470,3 +478,376 @@ def test_a_finished_block_loads_back_without_running(tmp_path, monkeypatch):
                                 traces=tmp_path / "b.traces.jsonl.gz", tag="", max_steps=SHORT)
     assert [_canon(r) for r in got["fixed"]] == [_canon(r) for r in run["fixed"]]
     assert set(traces) == {("fixed", s) for s in seeds}
+
+
+# =========================================================================== tickets 03-05
+# The other four families (seam 2 on 50 draws each, seam 1 one episode each) and pedestrians.
+
+FAMILY_SEEDS = DIAG                                   # 50 family draws per family
+PED_COUNTS = {"open_clutter": 5, "rooms": 3, "aisles": 4, "corridors": 3, "dense_clutter": 4}
+
+
+@pytest.fixture(scope="module")
+def family_specs():
+    return {f: [SC.generate(RS.Cell(f, "dynamic"), "fixed", s) for s in FAMILY_SEEDS]
+            for f in RS.FAMILIES}
+
+
+def _clear(points, layout):
+    """Independent clearance: distance to the nearest rectangle or outer wall."""
+    p = np.atleast_2d(np.asarray(points, float))
+    out = np.min([p[:, 0], 10 - p[:, 0], p[:, 1], 10 - p[:, 1]], axis=0)
+    for cx, cy, hw, hh in layout:
+        q = np.stack([np.clip(p[:, 0], cx - hw, cx + hw), np.clip(p[:, 1], cy - hh, cy + hh)], 1)
+        out = np.minimum(out, np.linalg.norm(p - q, axis=1))
+    return out
+
+
+def _polyline_clearance(poly, layout):
+    pts = [np.asarray(a) + t * (np.asarray(b) - np.asarray(a))
+           for a, b in zip(poly[:-1], poly[1:]) for t in np.linspace(0, 1, 200)]
+    return float(_clear(pts, layout).min())
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_every_family_is_deterministic_and_shared_by_motions_and_conditions(family):
+    for seed in DIAG[:2]:
+        a = SC.generate(RS.Cell(family, "dynamic"), "fixed", seed)
+        assert a == SC.generate(RS.Cell(family, "dynamic"), "randomized", seed)
+        s = SC.generate(RS.Cell(family, "static"), "fixed", seed)
+        assert s.obstacles == "static" and a.obstacles == "dynamic"
+        assert {k: v for k, v in s.as_dict().items() if k != "obstacles"} == \
+            {k: v for k, v in a.as_dict().items() if k != "obstacles"}
+        assert s.active_pedestrians == () and len(a.active_pedestrians) == PED_COUNTS[family]
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_start_goal_clearance_bins_and_route_hold_in_every_family(family, family_specs):
+    bins = [(4.0, 5.5), (5.5, 7.0), (7.0, 8.5), (8.5, 10.5)]
+    for sp in family_specs[family]:
+        assert _clear([sp.start, sp.goal], sp.layout).min() >= 0.6
+        lo, hi = bins[sp.distance_bin]
+        assert lo <= np.linalg.norm(np.subtract(sp.goal, sp.start)) <= hi
+        assert sp.route[0] == sp.start and sp.route[-1] == sp.goal
+        assert _polyline_clearance(sp.route, sp.layout) >= 0.45 - 1e-9
+    for sp in family_specs[family][:10]:                 # the frozen oracle agrees (0.2 s each)
+        orc = ShortestPathOracle(10.0, 0.45, sp.layout, resolution=200)
+        assert orc.path_length(sp.start, sp.goal) == pytest.approx(sp.route_length, abs=1e-9)
+
+
+# ---------------------------------------------------------------- 03: rooms
+def _wall_lines(layout):
+    """{(axis, coordinate): merged [lo, hi] intervals} of the 0.2 m thick wall pieces."""
+    lines = {}
+    for cx, cy, hw, hh in layout:
+        if abs(hw - 0.1) < 1e-9:
+            lines.setdefault(("v", round(cx, 9)), []).append((cy - hh, cy + hh))
+        if abs(hh - 0.1) < 1e-9:
+            lines.setdefault(("h", round(cy, 9)), []).append((cx - hw, cx + hw))
+    merged = {}
+    for key, iv in lines.items():
+        out = []
+        for a, b in sorted(iv):
+            if out and a <= out[-1][1] + 1e-9:
+                out[-1][1] = max(out[-1][1], b)
+            else:
+                out.append([a, b])
+        if out[0][0] <= 1e-9 or out[-1][1] >= 10 - 1e-9:     # a real wall reaches a boundary
+            merged[key] = out
+    return merged
+
+
+def test_rooms_have_walls_with_one_doorway_per_segment_in_range(family_specs):
+    n_rooms = set()
+    for sp in family_specs["rooms"]:
+        lines = _wall_lines(sp.layout)
+        doors = [(key, a[1], b[0]) for key, iv in lines.items() for a, b in zip(iv, iv[1:])]
+        k = sp.structure["n_rooms"]
+        n_rooms.add(k)
+        assert len(lines) == 2 and len(doors) == (4 if k == 4 else 3)
+        for (axis, line), lo, hi in doors:
+            assert 1.2 <= hi - lo <= 1.6
+            c = (line, (lo + hi) / 2) if axis == "v" else ((lo + hi) / 2, line)
+            for r in sp.layout:
+                if min(r[2], r[3]) > 0.1 + 1e-9:                 # furniture
+                    assert _point_rect_distance(c, r) >= 1.0 - 1e-9
+        for (axis, line), iv in lines.items():
+            assert 4.0 - 1e-9 <= line <= 6.0 + 1e-9
+    assert n_rooms == {3, 4}
+
+
+def test_rooms_doorways_keep_half_a_metre_from_every_wall_junction(family_specs):
+    for sp in family_specs["rooms"]:
+        lines = _wall_lines(sp.layout)
+        for (axis, line), iv in lines.items():
+            ends = [0.0, 10.0]                   # the outer walls, then crossing wall faces
+            for (ax2, line2), iv2 in lines.items():
+                if ax2 != axis and iv2[0][0] - 1e-9 <= line <= iv2[-1][1] + 1e-9:
+                    ends += [line2 - 0.1, line2 + 0.1]
+            for a, b in zip(iv, iv[1:]):
+                lo, hi = a[1], b[0]
+                assert min(abs(lo - e) for e in ends if e <= lo + 1e-9) >= 0.5 - 1e-9
+                assert min(abs(e - hi) for e in ends if e >= hi - 1e-9) >= 0.5 - 1e-9
+
+
+def test_rooms_start_and_goal_are_in_different_rooms(family_specs):
+    for sp in family_specs["rooms"]:
+        crossed = False
+        for (axis, line), iv in _wall_lines(sp.layout).items():
+            lo, hi = iv[0][0], iv[-1][1]                         # the wall's full extent
+            i, j = (0, 1) if axis == "v" else (1, 0)
+            a, b = sp.start, sp.goal
+            if (a[i] - line) * (b[i] - line) < 0:
+                t = (line - a[i]) / (b[i] - a[i])
+                crossed |= lo <= a[j] + t * (b[j] - a[j]) <= hi
+        assert crossed
+
+
+# ---------------------------------------------------------------- 03: aisles
+def _rows(sp):
+    """(orientation, sorted row intervals across, along-extent, pieces per row) from the layout."""
+    r0 = sp.layout[0]
+    vertical = 0.3 - 1e-9 <= r0[2] <= 0.4 + 1e-9 and r0[3] > 0.4
+    ax, al = (0, 1) if vertical else (1, 0)
+    rows = {}
+    for r in sp.layout:
+        rows.setdefault(round(r[ax], 9), []).append((r[al] - r[2 + al], r[al] + r[2 + al],
+                                                     r[2 + ax]))
+    across = sorted((c - v[0][2], c + v[0][2]) for c, v in rows.items())
+    along = (min(a for v in rows.values() for a, _, _ in v),
+             max(b for v in rows.values() for _, b, _ in v))
+    return vertical, across, along, rows
+
+
+def test_aisles_are_parallel_rows_with_aisles_and_cross_aisles_in_range(family_specs):
+    mids = set()
+    for sp in family_specs["aisles"]:
+        vertical, across, along, rows = _rows(sp)
+        assert 3 <= len(across) <= 4
+        assert all(0.6 - 1e-9 <= hi - lo <= 0.8 + 1e-9 for lo, hi in across)
+        assert all(1.4 - 1e-9 <= b[0] - a[1] <= 2.0 + 1e-9 for a, b in zip(across, across[1:]))
+        assert abs((across[0][0] + across[-1][1]) / 2 - 5.0) < 1e-9          # centred
+        assert 1.4 - 1e-9 <= along[0] <= 2.0 + 1e-9 and 1.4 - 1e-9 <= 10 - along[1] <= 2.0 + 1e-9
+        pieces = {len(v) for v in rows.values()}
+        assert len(pieces) == 1                                  # a mid cross-aisle cuts every row
+        mids.add(pieces.pop())
+        for v in rows.values():
+            v = sorted(v)
+            assert all(1.4 - 1e-9 <= b[0] - a[1] <= 2.0 + 1e-9 for a, b in zip(v, v[1:]))
+    assert mids == {1, 2}
+
+
+def test_aisles_start_and_goal_are_in_different_aisles_or_opposite_ends(family_specs):
+    for sp in family_specs["aisles"]:
+        vertical, across, along, _ = _rows(sp)
+        ax, al = (0, 1) if vertical else (1, 0)
+
+        def aisle(p):
+            if not along[0] <= p[al] <= along[1]:
+                return None
+            for i, (a, b) in enumerate(zip(across, across[1:])):
+                if a[1] <= p[ax] <= b[0]:
+                    return i
+            return None
+        i, j = aisle(sp.start), aisle(sp.goal)
+        assert i is not None and j is not None
+        assert i != j or abs(sp.start[al] - sp.goal[al]) >= 0.6 * (along[1] - along[0])
+
+
+# ---------------------------------------------------------------- 04: corridors, dense clutter
+def test_corridor_strips_are_in_range_and_everything_else_is_wall(family_specs):
+    rng = np.random.default_rng(0)
+    for sp in family_specs["corridors"][:20]:
+        strips = list(sp.structure["strips"].values())
+        kinds = set(sp.structure["strips"])
+        assert {"spine", "connector", "stub"} <= kinds
+        assert 2 <= sum(k.startswith("branch") for k in kinds) <= 3
+        assert all(1.5 - 1e-9 <= 2 * min(s[2], s[3]) <= 2.0 + 1e-9 for s in strips)
+        spine = sp.structure["strips"]["spine"]
+        assert abs(2 * max(spine[2], spine[3]) - 10.0) < 1e-9       # runs the length of the world
+        pts = rng.uniform(0, 10, (3000, 2))
+
+        def inside(rects, p):
+            return any(abs(p[0] - r[0]) < r[2] and abs(p[1] - r[1]) < r[3] for r in rects)
+        for p in pts:
+            assert inside(strips, p) != inside(sp.layout, p)
+
+
+def test_corridor_networks_have_the_preregistered_topology(family_specs):
+    counts = set()
+    for sp in family_specs["corridors"]:
+        s = sp.structure["strips"]
+        branches = sorted(k for k in s if k.startswith("branch"))
+        counts.add(len(branches))
+
+        def touch(a, b):
+            return _rect_rect_gap(s[a], s[b]) < 1e-9
+        assert all(touch(b, "spine") for b in branches)                  # T-junctions
+        joined = [b for b in branches if touch(b, "connector")]
+        assert len(joined) == 2 and not touch("connector", "spine")      # the loop
+        stub_on = [b for b in branches if touch(b, "stub")]
+        assert len(stub_on) == 1 and not touch("stub", "spine")
+        if len(branches) == 3:                                           # a true dead-end L
+            assert stub_on[0] not in joined and not touch("stub", "connector")
+    assert counts == {2, 3}
+
+
+def _max_turn(route, arc=1.0):
+    """Largest angle between the 1 m chords before and after any point of the route."""
+    pts = np.asarray(route, float)
+    seg = np.linalg.norm(np.diff(pts, axis=0), axis=1)
+    cum = np.concatenate([[0], np.cumsum(seg)])
+
+    def at(s):
+        k = min(np.searchsorted(cum, s, side="right") - 1, len(seg) - 1)
+        return pts[k] + (s - cum[k]) / seg[k] * (pts[k + 1] - pts[k])
+    best = 0.0
+    for s in np.arange(arc, cum[-1] - arc, 0.02):
+        a, b = at(s) - at(s - arc), at(s + arc) - at(s)
+        best = max(best, np.degrees(np.arccos(np.clip(a @ b / np.linalg.norm(a)
+                                                      / np.linalg.norm(b), -1, 1))))
+    return best
+
+
+def test_corridor_routes_turn_at_least_once(family_specs):
+    for sp in family_specs["corridors"]:
+        assert _max_turn(sp.route) >= 60.0 - 0.5
+
+
+def test_dense_clutter_follows_its_rules(family_specs):
+    for sp in family_specs["dense_clutter"]:
+        assert 12 <= len(sp.layout) <= 18
+        for cx, cy, hw, hh in sp.layout:
+            assert 0.15 <= hw <= 0.4 and 0.15 <= hh <= 0.4
+            assert min(cx - hw, cy - hh, 10 - cx - hw, 10 - cy - hh) >= 0.8 - 1e-9
+        for i, a in enumerate(sp.layout):
+            for b in sp.layout[i + 1:]:
+                assert _rect_rect_gap(a, b) >= 1.1 - 1e-6
+
+
+def test_every_family_draw_is_connected_at_the_clearance_radius(family_specs):
+    for f in RS.FAMILIES:
+        for sp in family_specs[f][:5]:
+            orc = ShortestPathOracle(10.0, 0.45, sp.layout, resolution=200)
+            assert ndimage.label(~orc.occupancy, structure=np.ones((3, 3)))[1] == 1
+
+
+# ---------------------------------------------------------------- 05: pedestrian routes
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_pedestrian_routes_follow_the_rules(family, family_specs):
+    for sp in family_specs[family]:
+        assert len(sp.pedestrians) == PED_COUNTS[family] and len(sp.pedestrians) + 1 <= 6
+        for r in sp.pedestrians:
+            assert r.speed == 0.675 <= 1.0
+            assert np.linalg.norm(np.subtract(r.start, sp.start)) >= 1.5
+            assert np.linalg.norm(np.subtract(r.start, sp.goal)) >= 1.0
+            assert len(r.waypoints) == 8
+            assert _clear([r.start, *r.waypoints], sp.layout).min() >= 0.45
+            assert r.entry[0] == r.start and r.entry[-1] == r.waypoints[0]
+            assert r.loop[0] == r.loop[-1] == r.waypoints[0]
+            order = [r.loop.index(w) for w in r.waypoints]
+            assert order == sorted(order)                        # the cycle, in order
+            assert _polyline_clearance(r.entry, sp.layout) >= 0.45 - 1e-9
+            assert _polyline_clearance(r.loop, sp.layout) >= 0.45 - 1e-9
+
+
+# ---------------------------------------------------------------- 05: pedestrian motion
+ROLLOUT = 1500                      # 150 s: every pedestrian walks its loop at least once
+
+
+@pytest.mark.parametrize("motion", RS.MOTIONS)
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_pedestrians_never_enter_walls_or_exceed_their_speed(family, motion, family_specs):
+    for sp in family_specs[family][:2]:
+        model = RP.PedestrianMotion(sp.pedestrians, sp.layout,
+                                    randomized=motion == "randomized")
+        rng = np.random.default_rng(sp.seed)
+        pos = np.zeros((len(sp.pedestrians), 2), dtype=np.float32)
+        vel = model.reset(rng, pos, 0.675)
+        assert np.allclose(pos, [r.start for r in sp.pedestrians], atol=1e-5)
+        walked = np.zeros(len(pos))
+        floor = 0.45 if motion == "fixed" else 0.3
+        for _ in range(ROLLOUT):
+            before = pos.copy()
+            pos, vel = model.step(rng, pos, vel, 0.1)
+            step = np.linalg.norm(pos - before, axis=1)
+            walked += step
+            assert step.max() <= 0.0675 + 1e-5
+            assert np.linalg.norm(vel, axis=1).max() <= 0.675 + 1e-4
+            assert _clear(pos, sp.layout).min() >= floor - 1e-5
+        assert walked.min() >= 0.5 * 0.0675 * ROLLOUT         # nobody parks
+
+
+def test_fixed_pedestrians_draw_nothing_from_the_rng(family_specs):
+    sp = family_specs["rooms"][0]
+    model = RP.PedestrianMotion(sp.pedestrians, sp.layout, randomized=False)
+    rng = np.random.default_rng(1)
+    pos = np.zeros((3, 2), dtype=np.float32)
+    vel = model.reset(rng, pos, 0.675)
+    state = rng.bit_generator.state
+    for _ in range(50):
+        pos, vel = model.step(rng, pos, vel, 0.1)
+    assert rng.bit_generator.state == state
+
+
+# ---------------------------------------------------------------- seam 1: env and harness
+def _ped_track(cell, motion, seed, actions):
+    env = RSScenarioEnv(motion)
+    env.install(SC.generate(cell, motion, seed))
+    env.reset(seed=seed)
+    out = [env.obstacle_positions.copy()]
+    for a in actions:
+        env.step(a)
+        out.append(env.obstacle_positions.copy())
+    return np.array(out)
+
+
+@pytest.mark.parametrize("motion", RS.MOTIONS)
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_pedestrians_do_not_depend_on_the_robot(family, motion):
+    # paired arms see the same pedestrians: nothing the robot does reaches them
+    cell = RS.Cell(family, "dynamic")
+    rng = np.random.default_rng(3)
+    a = _ped_track(cell, motion, DIAG[4], rng.uniform(-1, 1, (80, 2)))
+    b = _ped_track(cell, motion, DIAG[4], np.zeros((80, 2)))
+    assert a.shape == (81, PED_COUNTS[family], 2) and np.array_equal(a, b)
+
+
+def test_the_env_runs_the_cells_pedestrians_and_none_in_static():
+    seed = DIAG[5]
+    env = RSScenarioEnv("randomized")
+    for cond, n in (("dynamic", 5), ("static", 0), ("dynamic", 5)):
+        sp = SC.generate(RS.Cell("open_clutter", cond), "randomized", seed)
+        env.install(sp)
+        obs, _ = env.reset(seed=seed)
+        assert env.n_dynamic_obstacles == n and len(env.obstacle_positions) == n
+        if n:
+            assert np.allclose(env.obstacle_positions, [r.start for r in sp.pedestrians],
+                               atol=1e-5)
+            assert np.any(obs[28:] != 0)                     # the ground-truth block sees them
+        else:
+            assert not np.any(obs[28:])
+
+
+@pytest.mark.parametrize("family", RS.FAMILIES)
+def test_a_baseline_episode_runs_in_every_family_on_its_layout(family, monkeypatch):
+    seen = {}
+    real = RH.HP.build_hd_arm
+
+    def spy(arm, env, **kw):
+        seen["static"] = list(env.static_obstacles)
+        return real(arm, env, **kw)
+    monkeypatch.setattr(RH.HP, "build_hd_arm", spy)
+    for cond in ("static", "dynamic"):
+        rec = _rs(RS.Cell(family, cond), "randomized", DIAG[6], max_steps=30)
+        sp = SC.generate(RS.Cell(family, cond), "randomized", DIAG[6])
+        assert seen["static"] == [tuple(r) for r in sp.layout]
+        assert rec["planner_failed"] == 0 and rec["steps"] >= 1
+        assert rec["spec"]["obstacles"] == cond
+
+
+def test_same_seed_reproduces_a_dynamic_episode():
+    cell = RS.Cell("corridors", "dynamic")
+    a = _rs(cell, "randomized", DIAG[7], max_steps=40)
+    b = _rs(cell, "randomized", DIAG[7], max_steps=40)
+    assert _canon(a) == _canon(b)

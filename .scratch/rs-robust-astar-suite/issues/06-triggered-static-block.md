@@ -13,3 +13,10 @@
 - [ ] Seam 1: from the firing step on, the block is visible in LiDAR and in collision checks; the A* map never contains it
 - [ ] Seam 1: a policy's actions are unchanged when the spec's trigger and block fields are perturbed before firing (the information boundary)
 - [ ] Records say whether and when the trigger fired
+
+## Notes from tickets 02–05 (2026-09-19)
+
+- **Draw order.** Events go into the family draw after start and goal and before the pedestrians (§4.7). Bump `GENERATOR_VERSION`.
+- **Reserved block zone.** It must also go into `PedestrianMotion`'s layout in every condition, not only into route drawing. Randomized pedestrians may come within 0.3 m of obstacles, which a zone reserved at only 0.45 m does not cover.
+- **The fired block must reach the env as a new `static_obstacles` list**, not an in-place append, so the policy's map (taken at build time) never contains it.
+- **`EpisodeSpec.route`** is the arm-independent start→goal route at r_c, the one to place the trigger on.

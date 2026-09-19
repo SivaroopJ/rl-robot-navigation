@@ -11,3 +11,8 @@
 - [ ] Seam 2 feasibility, on a large seed sample: the spawn is at least 1.5 m from any robot position that can fire the trigger; it never lands on the start or goal; its speed is at most the robot's maximum
 - [ ] After its scripted entry, the spawned pedestrian continues as a normal pedestrian and never enters walls
 - [ ] Seam 1: spawn events are logged; paired arms see the same spawn; the information-boundary test covers the spawn fields
+
+## Notes from tickets 02–05 (2026-09-19)
+
+- **The env sizes the pedestrian arrays and `n_dynamic_obstacles` at reset.** A spawn needs a pre-allocated slot that stays out of LiDAR, collision checks and the observation until the trigger fires. `PedestrianMotion` has no inactive state yet.
+- **Per-route speed:** `Route.speed` drives each pedestrian.

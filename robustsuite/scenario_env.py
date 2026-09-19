@@ -7,15 +7,17 @@ TWO MODES, chosen per episode by `install(spec)` before `reset()`:
     spec None     the M0 anchor. reset() and step() are the canonical ones, untouched: M0's map,
                   its stratified start/goal sampler and its six dynamic obstacles under the motion
                   model of the motion condition. Bit-identical to exp6.make_env (tested).
-    EpisodeSpec   a generated cell. At reset the spec's layout replaces the static obstacles and
-                  its start and goal replace the sampled ones. The static condition has no dynamic
-                  obstacles (pedestrians arrive with ticket 05, triggers with 06 and 07).
+    EpisodeSpec   a generated cell. At reset the spec's layout replaces the static obstacles, its
+                  start and goal replace the sampled ones, and its active pedestrians (none in the
+                  static condition) become the dynamic obstacles, driven by
+                  robustsuite.pedestrians.PedestrianMotion for this env's motion condition.
+                  Triggers arrive with tickets 06 and 07.
 
 The layout is installed BEFORE super().reset(), so every draw the canonical reset makes (the
 stratified sampler, which only ever sees M0's map, and the empty obstacle draw) is a function of
 the seed alone. The start and goal the sampler returns are then overwritten by the spec's. So in
 a generated cell the env RNG has already made the sampler's draws when the episode starts;
-pedestrian noise (ticket 05) continues from there, still a function of the seed alone.
+randomized pedestrian noise continues from there, still a function of the seed alone.
 
 `scenario_events` is the per-episode event log (trigger fired, block added, spawn). It is empty
 until the triggered conditions exist. It is measurement for the record and never reaches a policy.
@@ -29,6 +31,7 @@ import numpy as np
 
 from robot_env.robot_nav_env import RobotNavEnv
 from robustsuite import seeds as RS
+from robustsuite.pedestrians import PedestrianMotion
 
 #: exp6.make_env's arguments (the M0 environment of HD Experiment 1), reused for every cell.
 N_SLOTS, PED_SPEED = 6, 0.675
@@ -46,6 +49,7 @@ class RSScenarioEnv(RobotNavEnv):
         #: M0's static map, restored for every anchor episode.
         self.m0_static = [tuple(o) for o in self.static_obstacles]
         self._m0_n_dynamic = self.n_dynamic_obstacles
+        self._m0_motion = self.motion_model
         self.spec = None
         self.scenario_events = []
 
@@ -58,13 +62,25 @@ class RSScenarioEnv(RobotNavEnv):
         if self.spec is None:
             self.static_obstacles = list(self.m0_static)
             self.n_dynamic_obstacles = self._m0_n_dynamic
+            self.motion_model = self._m0_motion
             return super().reset(seed=seed, options=options)
 
         self.static_obstacles = [tuple(float(v) for v in r) for r in self.spec.layout]
         self.n_dynamic_obstacles = 0
+        # an empty model for the canonical reset: it draws nothing, so the previous episode's
+        # model can never touch this episode's RNG stream
+        self.motion_model = PedestrianMotion((), self.spec.layout, randomized=False)
         _, info = super().reset(seed=seed, options=options)
         self.agent_position = np.asarray(self.spec.start, dtype=np.float32).copy()
         self.target_position = np.asarray(self.spec.goal, dtype=np.float32).copy()
+        peds = self.spec.active_pedestrians
+        self.motion_model = PedestrianMotion(peds, self.spec.layout,
+                                             randomized=self.motion == "randomized",
+                                             world_size=self.WORLD_SIZE)
+        self.n_dynamic_obstacles = len(peds)
+        self.obstacle_positions = np.zeros((len(peds), 2), dtype=np.float32)
+        self.obstacle_velocities = self.motion_model.reset(
+            self.np_random, self.obstacle_positions, self._episode_speed)
         self.initial_distance = float(np.linalg.norm(self.target_position - self.agent_position))
         self.previous_distance = self.initial_distance
         return self._get_observation(), info

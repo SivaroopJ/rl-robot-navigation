@@ -337,3 +337,23 @@ The 4 failures are the known, pre-existing `tests/test_week4_env.py::test_legacy
 - **The block zone is reserved for pedestrians in all conditions** (4.4). Pedestrians never walk through a block that appears, and the conditions stay paired.
 - **The HD harness is frozen**, so the RS harness is a new module (3). Ticket 02 was worded accordingly.
 - **The block spans a passage** (≤ 3.0 m, bounded on both sides) and is axis-aligned (4.6). This is the spec's "spanning the passage", made checkable in the rectangle format.
+
+### 14.1 Researcher decisions and readings before any run (2026-09-19, tickets 02–05)
+
+Recorded after the suite was built and before any robot episode was run on it. The researcher approved items 1 and 2. Items 3–8 are readings of wording the design leaves open. All of them apply from generator version `rs-gen-0.2` on.
+
+1. **Start and goal clearance is 0.6 m, not 0.45 m (section 4.5).** The frozen controller's barrier value is h = LiDAR range − 0.3. So an obstacle within 0.6 m of the robot's centre gives h < 0, which turns the reference objective's weights p1 = 4h and p3 = 5h negative. CVXPY then raises DCPError, and the frozen policy executes u = 0. Random recovery triggers only on "infeasible", so it never acts on these steps. A robot that starts inside that zone in a static scene never moves. At 0.45 m, 20–44% of starts per family did. 0.6 m is M0's own start/goal wall margin, so M0 never produced such starts. Routes, pedestrian waypoints and every feasibility check stay at r_c = 0.45 m, so passages narrower than 1.2 m still exercise the zone mid-route.
+2. **Randomized pedestrians (section 4.4).** The 0.7 rad/s turn-rate clip bounds the OU heading perturbation only. The steering is added on top of it, at gain 4.0 /s on the heading error to the route point 1 m ahead of the pedestrian's progress. Clipping the steering as well, as M0's boundary steer is clipped, left pedestrians stalled against interior walls 70–95% of the time. With this reading, randomized pedestrians stay a median of about 5 cm (95th percentile about 18 cm) from their route, so the randomized condition is mostly a small lateral and timing perturbation of the fixed routes. The OU angular velocity starts from its stationary distribution, as in M0.
+3. **The exact leg step (section 4.4).** When a noisy step would end within 0.3 m of an obstacle or the outer wall, the pedestrian takes one step towards its route point one step ahead. If that step is not clear either, it steps towards its own route point, and if neither is clear it holds. Progress along the route is the pedestrian's projection onto it, searched over the next 1.5 m.
+4. **Pedestrian routes.** A pedestrian walks an entry leg from its start to its first waypoint, then loops through its 8 waypoints. The spec carries the pedestrians in every condition; the static condition switches them off.
+5. **Resample cap (section 4.7).** Each layout draw, each failed distance-bin attempt and each failed pedestrian draw counts as one of the 200. After 4 failed bins on one layout, the layout is redrawn.
+6. **Corridors (section 4.2).**
+   - The network is built constructively. The spine centre is 1.4–3.0 m from its side of the world. Corridors keep 0.5 m of wall from the outer boundary and 1.0 m of wall between corridors that do not join. The connector's far edge is at 7.0–9.5 m. The L-stub is 1.5–3.0 m long and as wide as its branch.
+   - The stub branch is an outer branch, and the stub turns outward.
+   - With 3 branches, the stub branch is the free one: a true dead-end L.
+   - With 2 branches, both branches are in the loop. The stub then turns off a loop branch's far end, opposite the connector.
+7. **Aisles (section 4.2).**
+   - The mid cross-aisle leaves at least 1.5 m of row on each side.
+   - The strips between the outermost rows and the outer wall follow from centring the rows. They are 0.4–2.7 m wide and are not held to the 1.4–2.0 m aisle range.
+   - Start and goal never lie in those strips, because the structural rule needs an aisle between rows. Pedestrians may walk them.
+8. **Corridors turn rule (section 4.5).** "A change of direction ≥ 60° sustained over ≥ 1 m" is read as follows: at some vertex of the simplified start–goal route, the 1 m chord before the vertex and the 1 m chord after it differ in direction by at least 60°.
