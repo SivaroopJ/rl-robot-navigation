@@ -25,3 +25,5 @@ The two-axis review caught that m = 0.15 in candidate 1's default would inflate 
 On approval: record the approval in RS_DESIGN and replace ticket 11 with one implementation ticket per approved candidate.
 
 **2026-09-20 — approved.** The researcher approved all three candidates as written. The approval is recorded in RS_DESIGN ("Approval: candidate list (phase 3 → 4)"). Ticket 11 is replaced by 11a `replan`, 11b `yield` and 11c `replan_yield`. At the researcher's request, a dated correction on where h < 0 happens was also appended to RS_DESIGN; §14.1 is not edited.
+
+**2026-09-20 — revised and re-approved.** The researcher asked that A* never runs after reset (for compute, for a frozen global plan, and for simplicity), and chose a wall-following detour. Candidates 1 and 3 became `detour` and `detour_yield` (RS_DESIGN, "Revision of the candidate list"); `yield` is unchanged. The revision was approved and recorded ("Approval: revised candidate list"). Tickets 11a and 11c were renamed to match.

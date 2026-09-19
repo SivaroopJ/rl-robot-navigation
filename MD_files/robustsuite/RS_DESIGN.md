@@ -506,7 +506,7 @@ Section 14.1 item 1 says an obstacle within 0.6 m of the robot's centre gives h 
 
 In the RS2 diagnostic, 2 of 2 000 episodes froze, both 0.56 m from the outer wall. The approved 0.6 m start and goal clearance is kept: it is M0's own margin, and it keeps starts out of the band next to the outer wall. No rule changes.
 
-## Revision of the candidate list (section 7.4), 2026-09-20: awaiting the researcher's approval
+## Revision of the candidate list (section 7.4), 2026-09-20 (approved; see below)
 
 The researcher asked, after approving the list above and before any candidate was built, that **A\* is never run again after reset**. There are three reasons: the ~0.2 s replan breaks the 10 Hz step, the global plan should stay exactly the baseline's (planning once is part of the stack under test), and simplicity. The researcher chose a local LiDAR detour that follows walls (Bug2-style) over a simpler gap detour. The deciding fact was the block's detour lengths ([[RS1_MAP_VALIDATION_REPORT]]): a median 1.5 / 2.3 m in dense / open clutter, but 6.2–6.9 m in rooms, aisles and corridors. There the way round is through another doorway or aisle, usually behind a wall.
 
@@ -563,3 +563,7 @@ This revision **supersedes candidates 1 and 3** above. Candidate 2 (`yield`) is 
 - **Compute:** the sum of the two, well under 1 ms per step.
 
 **Revised list, in selection order:** 1 `detour`, 2 `yield`, 3 `detour_yield`. **Tie-break counts:** 1, 1, 1.
+
+## Approval: revised candidate list, 2026-09-20
+
+The researcher approved the revision above (committed at `42fb512`). The candidates are 1 `detour`, 2 `yield` and 3 `detour_yield`, with their grids and defaults as written. Candidates 1 and 3 of the first list (`replan`, `replan_yield`) are withdrawn and will not be built. Phase 4 may start.
