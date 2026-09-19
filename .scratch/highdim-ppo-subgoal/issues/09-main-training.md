@@ -4,7 +4,7 @@
 
 **Blocked by:** 08 (Pilot verdict = viable)
 
-**Status:** ready-for-agent
+**Status:** wontfix (HD Experiment 1 dropped as a FAILURE during the pilot, 2026-09-19; see ticket 08)
 
 - [ ] Seeds 0, 1 and 2 each train for 3M steps with 8 environments, the hold length from 08 and the chosen solver
 - [ ] Dev learning curves (50 HD_DEV seeds × 2 conditions every 250k steps) are saved for each seed

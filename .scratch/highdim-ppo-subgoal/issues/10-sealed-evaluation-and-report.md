@@ -4,7 +4,7 @@
 
 **Blocked by:** 09 (Main training)
 
-**Status:** ready-for-agent
+**Status:** wontfix (HD Experiment 1 dropped as a FAILURE during the pilot, 2026-09-19; see ticket 08)
 
 - [ ] The PPO-subgoal + Random arm and the filter-bypass arm are evaluated from each seed's final checkpoint, deterministically, on HD_FINAL (200 × 2), with the frozen SCS controller
 - [ ] The floor and ceiling results from 04 are reused on the same seeds (they are deterministic); start and goal equality is asserted

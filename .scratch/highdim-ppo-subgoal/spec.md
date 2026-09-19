@@ -1,4 +1,4 @@
-Status: ready-for-agent
+Status: closed — FAILURE (dropped during the phase 5 pilot, 2026-09-19; `MD_files/highdim/HD_EXPERIMENT1_CLOSEOUT.md`)
 
 # PPO subgoal source replaces A* in Random-CLF-DR-CBF (high-dimensionality axis, Experiment 1)
 
