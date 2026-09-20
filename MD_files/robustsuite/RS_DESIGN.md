@@ -567,3 +567,97 @@ This revision **supersedes candidates 1 and 3** above. Candidate 2 (`yield`) is 
 ## Approval: revised candidate list, 2026-09-20
 
 The researcher approved the revision above (committed at `42fb512`). The candidates are 1 `detour`, 2 `yield` and 3 `detour_yield`, with their grids and defaults as written. Candidates 1 and 3 of the first list (`replan`, `replan_yield`) are withdrawn and will not be built. Phase 4 may start.
+
+## Readings before any tuning run (2026-09-20, tickets 11a–11c)
+
+Readings of wording the revised candidate list (section 7.4) leaves open, recorded when the three
+candidates were built and before any tuning run. None of them changes a pre-registered number.
+They apply to `robustsuite/candidates.py` from this commit on. Item 14 and the phantom-cell counts
+the tickets ask for are measured properties of the mechanisms as written, reported in
+`MD_files/robustsuite/RS4_CANDIDATE_CHECKS.md`: pedestrians leave **no** phantom cells at K = 14
+(0 of 640 replayed episodes; 31 of 640 at K = 8), every candidate's p95 step time is 46–47 ms
+against the baseline's 46 ms, and the stall trigger, not a phantom cell, is what would start a
+detour in these cells (99 of 640 episodes).
+
+**The new-obstacle map and the detour**
+
+1. **The known map's outer wall is the wall LiDAR sees.** The environment reads the outer wall
+   `agent_radius` (0.3 m) inside the world boundary, so a wall hit lies 0.3 m inside it. Measured
+   against the true boundary every wall hit would be unexplained and the whole wall would become
+   "new" cells. A hit is therefore explained when it is within 0.15 m of a known rectangle or of
+   the boundary inset by 0.3 m. The leave rule's clearance (item 6) uses the true boundary, which
+   is what the robot must keep away from.
+2. **A hit is a ray that hit something** (range < LiDAR range), as the frozen `surface_points`
+   defines it, and a cell counts at most once per step towards its K of the last 20.
+3. **The blocked stretch and the rejoin point q.** The layer samples the original path every
+   0.05 m from the follower's progress. The stretch is the maximal run of samples within 0.45 m
+   of a new cell that *begins* at the first such sample within 2 m of the progress; q is 0.5 m of
+   arc past its end, capped at the path's end. Taking the run rather than the last near sample on
+   the whole path keeps a distant phantom cell from throwing q to the far end of the route.
+4. **After a rejoin, triggers look forward from q.** The design says the follower "continues from
+   q". The frozen follower's progress is never written to; instead trigger (a) and the next
+   stretch are searched from the last rejoined q on. Without this, a robot that arrives within
+   1 m of q can project back onto the path just short of the stretch and immediately re-trigger
+   the detour it has finished.
+5. **Ties.** The side test takes the left side (the +90° side of the direction to q) when the two
+   minima are equal; the yield's side test takes the left of the threat's velocity.
+6. **The leave rule's grid** is the layer's own 0.1 m grid: a cell is blocked when its centre is
+   within 0.35 m of a known rectangle, of a new cell's square or of the world boundary. The
+   segment p→q is sampled every 0.05 m, both endpoints included.
+7. **With no wall in view** — no hit that is explained or in a new cell — wall following keeps the
+   last tangent, and heads for q before there has been one. (The outer wall is within LiDAR range
+   from anywhere in the world, so this is a guard, not a regime.)
+8. **The limits are counted from the detour's first step**, the leave phase included: the side
+   flips once on step 201 and the detour gives up on step 401, after which γ is the follower's
+   again. The stall window restarts when a detour ends, so a new stall needs 30 fresh steps.
+9. **A planner failure leaves the baseline.** If A\* found no path at reset there is no follower
+   to wrap, so no layer is attached and the arm is the baseline for that episode. The record says
+   `candidate.attached = false`.
+10. **Stall** is the straight-line distance between the current position and the one 30 steps ago.
+
+**Yield**
+
+11. **The closest approach is taken over [0, H], t = 0 included.** So a track already inside D is a
+    threat while it moves away, until it leaves D. With several threats the earliest closest
+    approach decides, ties by the tracker's own order.
+12. **"Free on the known static map at 0.3 m clearance"** is read on the frozen planner's own
+    occupancy grid, which is the known map inflated by the robot radius at 0.05 m resolution. A
+    point outside the world is not free.
+13. **The tracker is read only:** a track's `position`, `velocity` and `confirmed`. The layer
+    never calls the tracker, whose state is advanced by the frozen barrier source alone.
+14. **The frozen tracker confirms moving tracks built from static geometry** — single LiDAR points
+    sliding along a wall or a rectangle edge as the robot moves, at 0.3–0.7 m/s. The yield layer
+    acts on them, so it steps aside in cells that contain no pedestrian at all. This is the
+    mechanism as pre-registered; filtering such tracks would be a change to it, so it is measured
+    and reported rather than changed. Measured on 640 replayed RS_DIAG episodes
+    ([[RS4_CANDIDATE_CHECKS]]): `yield` acts on 34% of the steps of the pedestrian-free `static`
+    cells, and 24 082 of its 39 382 yields over all those cells are to a track farther than 0.5 m
+    from any pedestrian.
+
+17. **Giving up ends the detour for that stretch.** 7.4 says the detour "gives up" after 400
+    steps and also that "a new trigger may start another once one ends". Taken together with
+    nothing else, trigger (a) re-fires on the same unchanged stretch on the very next step, with
+    a fresh d0 and the same side, so "gives up" would last one step. The rejoin point of a
+    detour that gave up therefore becomes the point later triggers look from, exactly as a
+    rejoined one does: the layer never retries the stretch it gave up on. A stretch further
+    along the path, or a stall, can still start a new detour.
+18. **The tangent's rotation sense.** "n turned 90° towards the chosen side" is read so that the
+    robot passes on the side the LiDAR test chose, which puts the wall on its other side: for
+    the left side t = n turned 90° clockwise, and for the right side counter-clockwise. At the
+    start of a detour, where n points from the obstacle back to the robot, this sends the robot
+    left of the direction to q when the left side was chosen.
+19. **The leave rule can be strict near a wall.** q lies on the reset-time A\* path, which keeps
+    only the robot radius (0.3 m) from the known map, while the leave rule wants 0.35 m of
+    clearance on the layer's own grid. Where the plan hugs a corner, the line of sight to q can
+    never be clear, and that detour runs to its 400-step give-up (item 17) rather than rejoining.
+    The rule is kept as pre-registered; item 17 is what bounds it.
+
+**Both**
+
+15. **The layer's inputs.** The harness hands the layer the observation before each `predict`, and
+    the layer keeps `obs[4:28]` only, exactly as the frozen `predict` slices it. The known map is
+    `pol.planner.static_obstacles`, the snapshot the planner was built from at reset. A layer
+    calls the follower it wraps on every step, so the frozen follower's progress is the
+    baseline's, and `detour_yield` composes as yield's layer over detour's layer over it.
+16. **Compute is measured inside the step.** `see(obs)` runs inside the part of the loop the
+    harness times, so the layer's own work is in the step times the 7.2 rule reads.

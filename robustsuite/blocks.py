@@ -8,7 +8,8 @@ BEFORE the checkpoint row (an episode is done only when both exist), and the det
 ("cond", seed), where "cond" is the motion condition.
 
 The fingerprint adds the cell and the generator version to highdim's (arm, seeds, motions,
-max_steps, tag), so a checkpoint is refused by any other cell or any other generator.
+max_steps, tag), so a checkpoint is refused by any other cell or any other generator. A
+candidate's configuration joins it too (phase 4); the baseline's fingerprint is unchanged.
 
 The checkpoint, trace and gz helpers are highdim.blocks' private functions, imported rather than
 copied: the manifest hash-freezes them, so they cannot drift under this module.
@@ -28,7 +29,7 @@ from evaluation.shortest_path import ShortestPathOracle
 from highdim.blocks import _finalise_traces, _load_traces, _partial, _read_jsonl
 from robustsuite import scenario as SC
 from robustsuite import seeds as RS
-from robustsuite.harness import check_cell, run_episode
+from robustsuite.harness import check_cell, check_config, run_episode
 from robustsuite.scenario_env import RSScenarioEnv
 
 #: Kept out of the checkpoint rows and written to the trace sidecar. The spec is regenerable
@@ -45,24 +46,27 @@ def _m0_oracle(env):
 
 
 def _worker(job):
-    arm, cell, motion, seed, max_steps = job
+    arm, cell, motion, seed, max_steps, config = job
     if motion not in _W:
         env = RSScenarioEnv(motion)
         _W[motion] = (env, env.MAX_STEPS)
     env, default_steps = _W[motion]
     env.MAX_STEPS = default_steps if max_steps is None else int(max_steps)
     oracle = _m0_oracle(env) if cell == RS.ANCHOR else None
-    return motion, seed, run_episode(arm, cell, motion, seed, env=env, oracle=oracle)
+    return motion, seed, run_episode(arm, cell, motion, seed, env=env, oracle=oracle,
+                                     config=config)
 
 
-def fingerprint(arm, cell, seeds, motions, max_steps, tag):
+def fingerprint(arm, cell, seeds, motions, max_steps, tag, config=None):
     d = {"arm": arm, "cell": list(cell), "seeds": list(seeds), "motions": list(motions),
          "max_steps": max_steps, "tag": tag, "generator_version": SC.GENERATOR_VERSION}
+    if config is not None:                  # the baseline's fingerprint is unchanged by phase 4
+        d["config"] = check_config(arm, config).name
     return hashlib.sha256(json.dumps(d, sort_keys=True).encode()).hexdigest()
 
 
 def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, traces, tag="",
-              progress=None, max_steps=None, maxtasksperchild=40):
+              progress=None, max_steps=None, maxtasksperchild=40, config=None):
     """{motion: [light records sorted by seed]} for one arm on one cell.
 
     A rerun with the IDENTICAL fingerprint resumes, skipping finished episodes; any other
@@ -72,7 +76,8 @@ def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, tr
     check_cell(cell)
     checkpoint, traces = Path(checkpoint), Path(traces)
     checkpoint.parent.mkdir(parents=True, exist_ok=True)
-    fp = fingerprint(arm, cell, seeds, motions, max_steps, tag)
+    check_config(arm, config)
+    fp = fingerprint(arm, cell, seeds, motions, max_steps, tag, config)
     rows = _read_jsonl(checkpoint)
     if rows:
         if rows[0].get("fingerprint") != fp:
@@ -89,7 +94,8 @@ def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, tr
         print(f"  resuming: {sum(len(v) for v in out.values())} episodes already in "
               f"{checkpoint}", flush=True)
 
-    jobs = [(arm, cell, m, s, max_steps) for m in motions for s in seeds if s not in out[m]]
+    jobs = [(arm, cell, m, s, max_steps, config)
+            for m in motions for s in seeds if s not in out[m]]
     t0 = time.time()
     pool = None
     if workers <= 1:
@@ -122,14 +128,14 @@ def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, tr
 
 
 def load_block(arm, cell, seeds, *, checkpoint, traces, tag, motions=RS.MOTIONS,
-               max_steps=None):
+               max_steps=None, config=None):
     """A finished block read back without running or rewriting anything.
 
     Returns ({motion: [light records sorted by seed]}, {(motion, seed): trace row}).
     SystemExit if the stored fingerprint is not this definition's or an episode is missing."""
     checkpoint, traces = Path(checkpoint), Path(traces)
     rows = _read_jsonl(checkpoint)
-    fp = fingerprint(arm, cell, seeds, motions, max_steps, tag)
+    fp = fingerprint(arm, cell, seeds, motions, max_steps, tag, config)
     if not rows or rows[0].get("fingerprint") != fp:
         raise SystemExit(f"{checkpoint} is not the block {arm!r} {tuple(cell)} with tag {tag!r}")
     trace_rows = _load_traces(traces)
