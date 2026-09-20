@@ -480,6 +480,9 @@ def main(argv=None):
         search_path.write_text(json.dumps({**_jsonable(search), "provenance": prov}, indent=1))
     else:                     # the tune and report stages read the search back, not its blocks
         search = json.loads(search_path.read_text())
+        if "provenance" not in search:            # written before every result file carried it
+            search["provenance"] = prov
+            search_path.write_text(json.dumps(search, indent=1))
     if args.stage == "search":
         print(f"chosen: {search['chosen']}\nwrote {search_path}")
         return 0
