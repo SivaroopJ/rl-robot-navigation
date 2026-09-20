@@ -164,10 +164,21 @@ def test_the_anchor_is_optional_and_then_cannot_fail():
 
 
 # --------------------------------------------------------------------------- pooling, per cell
-def test_pooled_rates_weight_every_cell_equally():
-    per_cell = [set(range(20))] * 10 + [set()] * 10       # half the cells perfect
-    out = GT.go_gate(arm(per_cell), arm(per_cell))
-    assert float(out["success"]["base"]) == 0.5 and float(out["success"]["winner"]) == 0.5
+def test_pooled_rates_weight_every_cell_equally_not_by_episode_count():
+    """One small perfect cell counts as much as a large failing one (spec story 50)."""
+    base = {c: recs(set(), n=100, cell=c) for c in CELLS}
+    base[CELLS[0]] = recs({0, 1}, n=2, cell=CELLS[0])     # 2 episodes, both successes
+    out = GT.go_gate(base, base)
+    assert float(out["success"]["base"]) == 0.05          # not 2 / 1902
+    assert out["success"]["n"] == 19 * 100 + 2
+
+
+def test_every_cell_also_carries_its_collision_comparison():
+    s, c = spread(10, n_collision=4)
+    out = GT.go_gate(arm(s, c), arm(s, c))
+    cell = out["per_cell"][CELLS[0]]
+    assert cell["collision"]["base"] == 0.2 and cell["collision"]["diff"] == 0
+    assert cell["success"]["base"] == 0.5
 
 
 def test_every_cell_is_reported_with_its_own_paired_test_but_does_not_gate():

@@ -23,7 +23,6 @@ traces.sha256). With --out, everything goes under DIR.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
 from pathlib import Path
@@ -87,7 +86,9 @@ Written after the run, from the tables below.
 7. **The M0 anchor is intact.** 361 of 400, exactly HD0's count on its own different seeds
    (0.9025, p 1.00). The scenario environment, the new pedestrian model and the cell dimension
    leave the canonical result untouched.
-8. **Real time holds**: 38.0 ms mean and 43.0 ms p95 per control step.
+8. **Real time holds**: 38.0 ms mean per control step, and 43.0 ms for the mean of the
+   episodes' own p95 values (the column §10 asks for; phase 5's 100 ms rule instead pools every
+   step of a block, and that rule was applied there, not here).
 9. **What phase 5 adds to this.** The one candidate that attacked the standstill, `detour`,
    raised the trigger_block cells but paid for it in collisions with the pedestrians it then met
    ([[RS5_SELECTION_REPORT]]). Leaving the standstill is not by itself an improvement: the block
@@ -106,7 +107,12 @@ changes a pre-registered threshold.
 | 2026-09-19 | Start and goal clearance 0.6 m, not 0.45 m, after the DCPError finding; randomized-pedestrian steering outside the turn-rate clip | §14.1 (approved) |
 | 2026-09-19 | The triggered block keeps ≥ 0.8 m from the trigger centre (§4.6 asked only that it not overlap the disc) | §14.2 (approved) |
 | 2026-09-19 | The triggered spawn ignores the block zone, and its pedestrian's noise has its own stream | §14.3 (approved) |
-| 2026-09-19 | The candidate parameter search runs on RS_DIAG, not RS_TUNE (spec story 43 says the tuning block); the cost is disclosed | §7.3 |
+| before any run | Each pedestrian's 8-waypoint cycle is part of the episode spec, so routes are fixed by the seed and identical across arms; the env's RNG drives only the heading noise | §14 |
+| before any run | The candidate parameter search runs on RS_DIAG, not RS_TUNE (spec story 43 says the tuning block); the cost is disclosed | §14, §7.3 |
+| before any run | One family draw is shared by all four obstacle conditions, so triggered cells pair with the +dynamic cell seed by seed | §14 |
+| before any run | The block zone is reserved for pedestrians in every condition, so the conditions stay paired | §14 |
+| before any run | The HD harness is frozen, so the RS harness is a new module | §14 |
+| before any run | The block spans a passage (≤ 3.0 m, bounded on both sides) and is axis-aligned: the spec's "spanning the passage" made checkable | §14 |
 | 2026-09-20 | The candidate list was revised before any candidate was built, so that A* is never run after reset | "Revision of the candidate list", re-approved |
 | 2026-09-20 | Readings of open wording in the candidates' mechanisms | "Readings before any tuning run (tickets 11a–11c)" |
 | 2026-09-20 | Readings of open wording in §§7.2, 7.3 and 8, including that p95 is pooled over every control step of a block | "Readings before the phase 5 run (ticket 12)" |
@@ -171,11 +177,8 @@ def flat(res, cells):
     return {cell_name(c): [r for m in RS.MOTIONS for r in res[c][0][m]] for c in cells}
 
 
-def trace_digest(res_dir):
-    """SHA-256 of every trace sidecar (derived bulk, kept out of the repository)."""
-    shas = {str(tr.relative_to(res_dir)): hashlib.sha256(tr.read_bytes()).hexdigest()
-            for tr in sorted(res_dir.rglob("*.traces.jsonl.gz"))}
-    return shas, hashlib.sha256(json.dumps(shas, sort_keys=True).encode()).hexdigest()
+#: The digest of the bulk .gitignore keeps out of the repository, shared with phase 5.
+trace_digest = S5.trace_digest
 
 
 # --------------------------------------------------------------------------- report
@@ -224,10 +227,10 @@ def write_report(arms, analyses, gate, prov, trace_sha, path, *, cells, n_seeds)
             "characterisation of the suite on layouts no candidate was tuned on**.\n")
         add(f"On the sealed block the baseline reaches **{_f(p['success_rate'])} pooled "
             f"success**, with {_f(p['collision_rate'])} collision and {_f(p['timeout_rate'])} "
-            "timeout, over 20 cells weighted equally.\n")
+            f"timeout, over {len(grid)} cells weighted equally.\n")
     else:
         add(f"**{gate['verdict']}**: {_gate_sentence(gate)}\n")
-        add(READING)
+    add(READING)
 
     # ---------------------------------------------------------------- 1. pooled
     add(f"## 1. Pooled result ({len(grid)} cells, equal weights, both motions)\n")
@@ -334,9 +337,9 @@ def _fr(v, nd=3):
 def _gate_sentence(gate):
     s, c, a = gate["success"], gate["safety"], gate["anchor"]
     parts = [f"pooled success {_fr(s['winner'])} against {_fr(s['base'])} "
-             f"({100 * s['diff']:+.2f} pp, McNemar p {s['p']:.4g})",
+             f"({S5._pp(s['diff'])}, McNemar p {s['p']:.4g})",
              f"collision {_fr(c['winner'])} against {_fr(c['base'])} "
-             f"({100 * c['diff']:+.2f} pp, p {c['p']:.4g})"]
+             f"({S5._pp(c['diff'])}, p {c['p']:.4g})"]
     if a is not None:
         parts.append(f"the M0 anchor {_fr(a['winner'])} against {_fr(a['base'])} (p {a['p']:.4g})")
     return "; ".join(parts) + "."
@@ -345,14 +348,14 @@ def _gate_sentence(gate):
 def _gate_tables(gate):
     s, c, a = gate["success"], gate["safety"], gate["anchor"]
     rows = [["1. success higher, p < 0.05", _fr(s["base"]), _fr(s["winner"]),
-             f"{100 * s['diff']:+.2f} pp", f"{s['p']:.4g}",
+             S5._pp(s['diff']), f"{s['p']:.4g}",
              "pass" if s["pass"] else "**fail**"],
             ["2. collision not significantly higher", _fr(c["base"]), _fr(c["winner"]),
-             f"{100 * c['diff']:+.2f} pp", f"{c['p']:.4g}",
+             S5._pp(c['diff']), f"{c['p']:.4g}",
              "**fail**" if c["fail"] else "pass"]]
     if a is not None:
         rows.append(["3. M0 anchor not significantly lower", _fr(a["base"]), _fr(a["winner"]),
-                     f"{100 * (a['winner'] - a['base']):+.2f} pp", f"{a['p']:.4g}",
+                     S5._pp(a['winner'] - a['base']), f"{a['p']:.4g}",
                      "**fail**" if a["fail"] else "pass"])
     out = _table(["condition", "baseline", "winner", "difference", "McNemar p", "verdict"], rows)
     out += f"\n**{gate['verdict']}**.\n\n"
@@ -362,9 +365,13 @@ def _gate_tables(gate):
             f"episodes. {n_cells} cell-level tests at p < 0.05 produce about "
             f"{n_cells * 0.05:.0f} false positive(s) by chance, so a single significant cell is "
             "not evidence on its own; the gate is the pooled comparison above.\n\n")
-    out += _table(["cell", "baseline", "winner", "difference", "McNemar p"],
-                  [[name, _f(v["base"]), _f(v["winner"]), f"{100 * v['d_success']:+.2f} pp",
-                    f"{v['p']:.4g}"] for name, v in gate["per_cell"].items()])
+    out += _table(["cell", "success: baseline", "winner", "difference", "McNemar p",
+                   "collision: baseline", "winner", "difference", "McNemar p"],
+                  [[name, _f(v["success"]["base"]), _f(v["success"]["winner"]),
+                    S5._pp(v["success"]["diff"]), f"{v['success']['p']:.4g}",
+                    _f(v["collision"]["base"]), _f(v["collision"]["winner"]),
+                    S5._pp(v["collision"]["diff"]), f"{v['collision']['p']:.4g}"]
+                   for name, v in gate["per_cell"].items()])
     return out
 
 
@@ -385,6 +392,9 @@ def main(argv=None):
     if args.winner and not args.smoke:
         raise SystemExit("--winner is for smoke runs only: the real winner is phase 5's, read "
                          f"from {SELECTION}")
+    if args.smoke and args.out is None:
+        raise SystemExit("--smoke needs --out: a smoke run must not write where the sealed "
+                         f"run's records and report live ({RESULTS})")
 
     res_dir = (args.out / "results") if args.out else RESULTS
     report = (args.out / REPORT_NAME) if args.out else (REPORT_DIR / REPORT_NAME)
@@ -430,8 +440,9 @@ def main(argv=None):
                   if RS.ANCHOR in cells else None)
         gate = GT.go_gate(flat(res[BASELINE], grid), flat(res[winner], grid), anchor=anchor,
                           cells=[cell_name(c) for c in grid])
-        (res_dir / "gate.json").write_text(json.dumps(D._nan_to_null(gate), indent=1,
-                                                      default=float, allow_nan=False))
+        (res_dir / "gate.json").write_text(json.dumps(
+            D._nan_to_null({**gate, "provenance": prov}), indent=1, default=float,
+            allow_nan=False))
     shas, combined = trace_digest(res_dir)
     (res_dir / "traces.sha256").write_text(
         "".join(f"{h}  {n}\n" for n, h in sorted(shas.items())))

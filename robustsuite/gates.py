@@ -27,7 +27,8 @@ ALPHA = 0.05
 
 
 def _key(recs):
-    return [(r.get("cell"), r["motion"], r["seed"]) for r in recs]
+    """The pairing key. Every field is required: a record without one is not a paired episode."""
+    return [(str(r["cell"]), r["motion"], r["seed"]) for r in recs]
 
 
 def _paired(base, winner, *, cells=POOLED_CELLS):
@@ -71,18 +72,23 @@ def condition(base, winner, key, *, cells=POOLED_CELLS):
 
 
 def per_cell(base, winner, *, cells=POOLED_CELLS):
-    """Each cell's paired success difference and its own McNemar p. Reported, never gated."""
+    """Each cell's paired differences and their own McNemar p, on success and on collision
+    (section 9: "per-cell regressions", spec story 51). Reported, never gated."""
     _paired(base, winner, cells=cells)
     out = {}
     for c in cells:
-        t = _test(winner[c], base[c], "success")
         n = len(base[c])
-        d = (sum(int(r["success"]) for r in winner[c])
-             - sum(int(r["success"]) for r in base[c])) / n
-        out[c] = {"n": n, "d_success": d, "p": t["p"],
-                  "only_winner": t["only_a"], "only_base": t["only_b"],
-                  "base": sum(int(r["success"]) for r in base[c]) / n,
-                  "winner": sum(int(r["success"]) for r in winner[c]) / n}
+        row = {"n": n}
+        for key in ("success", "collision"):
+            t = _test(winner[c], base[c], key)
+            kb = sum(int(r[key]) for r in base[c])
+            kw = sum(int(r[key]) for r in winner[c])
+            row[key] = {"base": kb / n, "winner": kw / n, "diff": (kw - kb) / n, "p": t["p"],
+                        "only_winner": t["only_a"], "only_base": t["only_b"]}
+        # the success view, flat, is what the report's per-cell table reads
+        row.update({k: row["success"][k] for k in ("base", "winner", "p")},
+                   d_success=row["success"]["diff"])
+        out[c] = row
     return out
 
 
