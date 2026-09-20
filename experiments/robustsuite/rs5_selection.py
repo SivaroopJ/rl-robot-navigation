@@ -28,6 +28,7 @@ selection.json and provenance.json). With --out, everything goes under DIR.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
@@ -291,7 +292,9 @@ def write_report(search, tune, prov, path, *, cells):
         f"{prov['seed_blocks']['search']}, selection on {prov['seed_blocks']['tune']}, "
         f"{len(cells)} cells x 2 motions")
     add("- Frozen SCS controller in every episode; every arm is the frozen `astar_random` stack "
-        "with a behaviour layer (§7.4)\n")
+        "with a behaviour layer (§7.4)")
+    add(f"- Trace sidecars (not committed, regenerable from the seeds): SHA-256 in "
+        f"`traces.sha256` (combined `{prov.get('trace_sha256', '')[:12]}`)\n")
 
     add("## 0. Verdict and reading\n")
     if sel["winner"] is None:
@@ -408,6 +411,18 @@ def write_report(search, tune, prov, path, *, cells):
     return path
 
 
+def trace_digest(res_dir):
+    """SHA-256 of every trace sidecar under `res_dir`, and one combined digest of them all.
+
+    The sidecars are derived bulk and are not committed (.gitignore): every episode re-runs
+    deterministically from its seed, and these digests prove what the run produced.
+    """
+    shas = {str(tr.relative_to(res_dir)): hashlib.sha256(tr.read_bytes()).hexdigest()
+            for tr in sorted(res_dir.rglob("*.traces.jsonl.gz"))}
+    combined = hashlib.sha256(json.dumps(shas, sort_keys=True).encode()).hexdigest()
+    return shas, combined
+
+
 # --------------------------------------------------------------------------- entry point
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__,
@@ -466,6 +481,11 @@ def main(argv=None):
     tune = tune_stage(res_dir, tune_seeds, search["chosen"], workers=args.workers,
                       max_steps=max_steps, tag=tag, cells=cells, report_only=report_only)
     sel_path.write_text(json.dumps(_jsonable(tune), indent=1))
+    shas, combined = trace_digest(res_dir)
+    (res_dir / "traces.sha256").write_text(
+        "".join(f"{h}  {n}\n" for n, h in sorted(shas.items())))
+    prov["trace_sha256"] = combined
+    prov_path.write_text(json.dumps(prov, indent=1))
     write_report(search, tune, prov, report, cells=cells)
     print(f"{tune['selection']['verdict']}\nwrote {report} and {sel_path}")
     return 0
