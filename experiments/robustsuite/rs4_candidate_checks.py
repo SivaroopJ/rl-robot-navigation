@@ -39,6 +39,7 @@ from robustsuite import candidates as CA
 from robustsuite import harness as RH
 from robustsuite import scenario as SC
 from robustsuite import seeds as RS
+from robustsuite import selection as SEL
 from robustsuite.scenario_env import RSScenarioEnv
 
 RESULTS = D.REPO / "results/robustsuite/RS4"
@@ -56,7 +57,8 @@ K_VALUES = (8, 14)
 #: one (its radius, 0.3 m, plus a 0.2 m margin for the track's own error).
 PEDESTRIAN_MATCH = 0.5
 #: The 7.2 real-time rule, in milliseconds.
-P95_LIMIT = 100.0
+#: RS_DESIGN 7.2, from the module that holds the pre-registered rules (phase 5).
+P95_LIMIT = SEL.P95_LIMIT_MS
 
 
 def phantom_cells():

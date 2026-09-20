@@ -94,7 +94,7 @@ def test_a_collision_rate_below_the_baseline_passes_the_safety_side():
 
 # --------------------------------------------------------------------------- the 100 ms rule
 def test_p95_at_the_limit_passes_and_above_it_disqualifies():
-    assert SEL.real_time(100.0) and not SEL.real_time(100.0001)
+    assert SEL.passes_real_time(100.0) and not SEL.passes_real_time(100.0001)
 
 
 def test_a_slow_candidate_is_disqualified_before_the_rule_applies():
@@ -146,6 +146,19 @@ def test_select_carries_the_baseline_and_the_deltas_through():
     assert c["pooled"]["success"] == Fraction(3, 5)
     assert c["qualify"]["d_success"] == Fraction(1, 10)
     assert c["qualify"]["d_collision"] == Fraction(-2, 100)
+
+
+def test_a_narrowed_grid_pools_only_the_cells_it_is_given():
+    """Only a smoke run narrows the grid; the rules of 7.3 and 8 need all 20 cells."""
+    two = CELLS[:2]
+    c = {n: {"success": s, "collision": 0, "episodes": 10}
+         for n, s in zip(two, (10, 0), strict=True)}
+    assert SEL.pooled(c, cells=two)["success"] == Fraction(1, 2)
+    out = SEL.select(c, [{"name": "a", "counts": c, "p95_ms": 50.0, "components": 1}],
+                     cells=two)
+    assert out["baseline"]["cells"] == 2 and not out["candidates"][0]["qualifies"]
+    with pytest.raises(ValueError):                     # the default is still the 20 cells
+        SEL.pooled(c)
 
 
 # --------------------------------------------------------------------------- the 7.3 search

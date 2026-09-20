@@ -34,8 +34,9 @@ from robustsuite.scenario_env import RSScenarioEnv
 
 #: Kept out of the checkpoint rows and written to the trace sidecar. The spec is regenerable
 #: from (cell, seed) and is the bulk of a record.
-#: `step_times` joins them when a run asks for the raw per-step times (phase 5's p95 rule).
-HEAVY = ("trace", "trajectory", "spec", "step_times")
+HEAVY = ("trace", "trajectory", "spec")
+#: Heavy too, but only present when a run asks for the raw per-step times (phase 5's p95 rule).
+OPTIONAL_HEAVY = ("step_times",)
 _W = {}          # per-process cache: motion -> (env, env default MAX_STEPS)
 _M0_ORACLE = []  # per-process cache: the anchor's SPL oracle (M0's map never changes)
 
@@ -112,7 +113,8 @@ def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, tr
     try:
         with open(checkpoint, "a") as ck, open(_partial(traces), "a") as tr:
             for i, (motion, seed, rec) in enumerate(it, 1):
-                heavy = {k: rec.pop(k) for k in HEAVY if k in rec}
+                heavy = {k: rec.pop(k) for k in HEAVY}          # KeyError if one is missing
+                heavy.update({k: rec.pop(k) for k in OPTIONAL_HEAVY if k in rec})
                 row = {"cond": motion, "seed": seed, **heavy}
                 tr.write(json.dumps(row, default=_js) + "\n")
                 tr.flush()

@@ -75,7 +75,7 @@ def qualify(base, cand):
             "pass_collision": pass_c, "qualifies": pass_s and pass_c}
 
 
-def real_time(p95_ms):
+def passes_real_time(p95_ms):
     """Section 7.2: a p95 control-step time at most the limit."""
     return float(p95_ms) <= P95_LIMIT_MS
 
@@ -95,7 +95,7 @@ def select(baseline_counts, candidates, *, cells=POOLED_CELLS):
     rows = []
     for order, c in enumerate(candidates):
         p = pooled(c["counts"], cells=cells)
-        slow = not real_time(c["p95_ms"])
+        slow = not passes_real_time(c["p95_ms"])
         row = {"name": c["name"], "order": order, "components": c["components"],
                "p95_ms": float(c["p95_ms"]), "pooled": p,
                "disqualified": (f"p95 {float(c['p95_ms']):.1f} ms exceeds "

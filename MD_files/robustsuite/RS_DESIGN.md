@@ -670,9 +670,11 @@ the tuning-block run. None of them changes a pre-registered number. They are imp
 
 1. **The 7.3 search ranks by pooled success alone.** The collision limit (the baseline's pooled
    rate + 0.01 on the same episodes) is a filter, not part of the score, as 7.3 words it.
-2. **A tie in the 7.3 search goes to the earlier configuration of the pre-registered grid**,
-   whose first member is the candidate's default. So a configuration that only ties with the
-   default does not displace it.
+2. **A tie in the 7.3 search goes to the earlier configuration of the order the search runs**,
+   which is the candidate's default first, then the pre-registered grid's own order with the
+   default removed (`robustsuite.candidates.search_grid`). So a configuration that only ties with
+   the default does not displace it. The grid's own order (7.4 writes it as a product, in which
+   the default is not first) decides only ties between two non-default configurations.
 3. **The search's baseline is run in this phase**, on the same first 20 RS_DIAG seeds, cells and
    motions, rather than read back from the phase 2 blocks: the phase 2 blocks are fingerprinted
    with their own 50-seed definition and their own commit, and a subset of them is not that

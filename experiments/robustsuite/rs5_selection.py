@@ -30,7 +30,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import subprocess
 import sys
 from fractions import Fraction
 from pathlib import Path
@@ -38,6 +37,7 @@ from pathlib import Path
 import numpy as np
 
 from experiments.robustsuite import protect_manifest as PM
+from experiments.robustsuite import rs2_diagnostic as D
 from robustsuite import blocks as RB
 from robustsuite import candidates as CA
 from robustsuite import scenario as SC
@@ -45,6 +45,7 @@ from robustsuite import seeds as RS
 from robustsuite import selection as SEL
 
 REPO = PM.REPO
+#: The frozen baseline, the arm every candidate is measured against.
 BASELINE = "astar_random"
 #: The candidates in the pre-registered list order (7.4): the last tie-break of section 8.
 CANDIDATES = ("detour", "yield", "detour_yield")
@@ -53,12 +54,14 @@ COMPONENTS = {"detour": 1, "yield": 1, "detour_yield": 1}
 #: Seeds of RS_DIAG the 7.3 search runs on.
 SEARCH_SEEDS = 20
 
+#: Report and results.
 REPORT_DIR = REPO / "MD_files/robustsuite"
 REPORT_NAME = "RS5_SELECTION_REPORT.md"
 RESULTS = REPO / "results/robustsuite/RS5"
-FROZEN_PARAM_FILES = ["results/week6_continuation/H2/tuned_frozen.json",
-                      "results/week6_continuation/R3/random_frozen.json"]
-SMOKE_SEEDS, SMOKE_STEPS = 1, 40
+#: The frozen parameter files whose hashes go into the provenance.
+FROZEN_PARAM_FILES = D.FROZEN_PARAM_FILES
+#: A --smoke run: seeds per cell and steps per episode.
+SMOKE_SEEDS, SMOKE_STEPS = D.SMOKE_SEEDS, D.SMOKE_STEPS
 
 #: What phase 5 shows, written after the run from this report's own tables. Printed as part of
 #: section 0.
@@ -96,13 +99,9 @@ Written after the run, from the tables below.
 
 
 # --------------------------------------------------------------------------- running
-def cell_name(cell):
-    return f"{cell.family}_{cell.obstacles}"
-
-
-def _git(*args):
-    return subprocess.run(["git", *args], cwd=REPO, capture_output=True, text=True,
-                          check=True).stdout.strip()
+#: Shared with the phase 2 entry point, as rs4_candidate_checks.py shares them: the cell's file
+#: name, git, and the report's table writer.
+cell_name, _git, _table = D.cell_name, D._git, D._table
 
 
 def provenance(stage, search_seeds, tune_seeds, max_steps):
@@ -167,6 +166,17 @@ def step_times_ms(rows):
 
 
 def timing(rows):
+    """The §7.2 p95, over every control step of the block.
+
+    Every episode must carry its step times. `keep_step_times` is outside the block fingerprint
+    (robustsuite.blocks), so a block half-run without it would otherwise hand the rule a biased
+    subset of its own steps.
+    """
+    episodes = [row for cell in rows for row in rows[cell].values()]
+    without = [row for row in episodes if not row.get("step_times")]
+    if without:
+        raise SystemExit(f"{len(without)} of {len(episodes)} episodes have no step times: "
+                         "the block was run without keep_step_times; delete it and rerun")
     t = step_times_ms(rows)
     if not len(t):
         raise SystemExit("no step times in the trace sidecars; rerun the tune stage")
@@ -262,11 +272,6 @@ def _pp(x):
     return f"{100 * _val(x):+.2f} pp"
 
 
-def _table(header, rows):
-    return "\n".join(["| " + " | ".join(header) + " |", "|" + "---|" * len(header)]
-                     + ["| " + " | ".join(str(x) for x in r) + " |" for r in rows]) + "\n"
-
-
 def _arm_label(arm, config):
     return f"`{arm}`" + (f" (`{config}`)" if config else "")
 
@@ -312,8 +317,8 @@ def write_report(search, tune, prov, path, *, cells):
     add(READING)
 
     add("## 1. The selection rule on RS_TUNE (§8)\n")
-    add("Pooled rates weight all 20 cells equally and pool both motions within a cell; the "
-        "anchor is excluded. Counts are compared in exact rational arithmetic. A candidate "
+    add(f"Pooled rates weight all {len(cells)} cells equally and pool both motions within a "
+        "cell; the anchor is excluded. Counts are compared in exact rational arithmetic. A candidate "
         "qualifies at ≥ +2 pp pooled success and ≤ +1 pp pooled collision.\n")
     rows = [[_arm_label(BASELINE, None), base["episodes"],
              _f(base["success"]), "—", _f(base["collision"]), "—",
@@ -344,7 +349,7 @@ def write_report(search, tune, prov, path, *, cells):
                [[_arm_label(a, v["config"]), v["timing"]["steps"], _f(v["timing"]["mean"], 1),
                  _f(v["timing"]["p50"], 1), _f(v["timing"]["p95"], 1),
                  _f(v["timing"]["max"], 1),
-                 "pass" if SEL.real_time(v["timing"]["p95"]) else "**DISQUALIFIED**"]
+                 "pass" if SEL.passes_real_time(v["timing"]["p95"]) else "**DISQUALIFIED**"]
                 for a, v in tune["arms"].items()]))
 
     add("## 3. Per-cell success and collision on RS_TUNE\n")
@@ -412,13 +417,14 @@ def write_report(search, tune, prov, path, *, cells):
 
 
 def trace_digest(res_dir):
-    """SHA-256 of every trace sidecar under `res_dir`, and one combined digest of them all.
-
-    The sidecars are derived bulk and are not committed (.gitignore): every episode re-runs
-    deterministically from its seed, and these digests prove what the run produced.
+    """SHA-256 of every file under `res_dir` that .gitignore keeps out of the repository, and one
+    combined digest of them all: the trace sidecars, and the search stage's per-configuration
+    records. All of it is derived bulk that re-runs deterministically from its seeds; these
+    digests are what proves what this run produced.
     """
+    bulk = [*res_dir.rglob("*.traces.jsonl.gz"), *(res_dir / "search").rglob("*.jsonl")]
     shas = {str(tr.relative_to(res_dir)): hashlib.sha256(tr.read_bytes()).hexdigest()
-            for tr in sorted(res_dir.rglob("*.traces.jsonl.gz"))}
+            for tr in sorted(bulk)}
     combined = hashlib.sha256(json.dumps(shas, sort_keys=True).encode()).hexdigest()
     return shas, combined
 
@@ -471,7 +477,7 @@ def main(argv=None):
     if args.stage in ("search", "all"):
         search = search_stage(res_dir, search_seeds, workers=args.workers, max_steps=max_steps,
                               tag=tag, cells=cells, report_only=report_only)
-        search_path.write_text(json.dumps(_jsonable(search), indent=1))
+        search_path.write_text(json.dumps({**_jsonable(search), "provenance": prov}, indent=1))
     else:                     # the tune and report stages read the search back, not its blocks
         search = json.loads(search_path.read_text())
     if args.stage == "search":
@@ -480,12 +486,12 @@ def main(argv=None):
 
     tune = tune_stage(res_dir, tune_seeds, search["chosen"], workers=args.workers,
                       max_steps=max_steps, tag=tag, cells=cells, report_only=report_only)
-    sel_path.write_text(json.dumps(_jsonable(tune), indent=1))
     shas, combined = trace_digest(res_dir)
     (res_dir / "traces.sha256").write_text(
         "".join(f"{h}  {n}\n" for n, h in sorted(shas.items())))
     prov["trace_sha256"] = combined
     prov_path.write_text(json.dumps(prov, indent=1))
+    sel_path.write_text(json.dumps({**_jsonable(tune), "provenance": prov}, indent=1))
     write_report(search, tune, prov, report, cells=cells)
     print(f"{tune['selection']['verdict']}\nwrote {report} and {sel_path}")
     return 0
