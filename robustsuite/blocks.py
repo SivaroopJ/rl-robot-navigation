@@ -34,7 +34,8 @@ from robustsuite.scenario_env import RSScenarioEnv
 
 #: Kept out of the checkpoint rows and written to the trace sidecar. The spec is regenerable
 #: from (cell, seed) and is the bulk of a record.
-HEAVY = ("trace", "trajectory", "spec")
+#: `step_times` joins them when a run asks for the raw per-step times (phase 5's p95 rule).
+HEAVY = ("trace", "trajectory", "spec", "step_times")
 _W = {}          # per-process cache: motion -> (env, env default MAX_STEPS)
 _M0_ORACLE = []  # per-process cache: the anchor's SPL oracle (M0's map never changes)
 
@@ -46,7 +47,7 @@ def _m0_oracle(env):
 
 
 def _worker(job):
-    arm, cell, motion, seed, max_steps, config = job
+    arm, cell, motion, seed, max_steps, config, keep_step_times = job
     if motion not in _W:
         env = RSScenarioEnv(motion)
         _W[motion] = (env, env.MAX_STEPS)
@@ -54,7 +55,7 @@ def _worker(job):
     env.MAX_STEPS = default_steps if max_steps is None else int(max_steps)
     oracle = _m0_oracle(env) if cell == RS.ANCHOR else None
     return motion, seed, run_episode(arm, cell, motion, seed, env=env, oracle=oracle,
-                                     config=config)
+                                     config=config, keep_step_times=keep_step_times)
 
 
 def fingerprint(arm, cell, seeds, motions, max_steps, tag, config=None):
@@ -66,12 +67,17 @@ def fingerprint(arm, cell, seeds, motions, max_steps, tag, config=None):
 
 
 def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, traces, tag="",
-              progress=None, max_steps=None, maxtasksperchild=40, config=None):
+              progress=None, max_steps=None, maxtasksperchild=40, config=None,
+              keep_step_times=False):
     """{motion: [light records sorted by seed]} for one arm on one cell.
 
     A rerun with the IDENTICAL fingerprint resumes, skipping finished episodes; any other
     definition refuses the checkpoint with SystemExit. `tag` is the code identity (the entry
     point passes the git commit), so a resume after a code change is refused.
+
+    `keep_step_times` sends the raw per-step times to the trace sidecar (phase 5 pools them for
+    the 7.2 p95 rule). It changes nothing an episode does, so it is not in the fingerprint; a
+    block resumed with the flag flipped simply has the times for some of its episodes only.
     """
     check_cell(cell)
     checkpoint, traces = Path(checkpoint), Path(traces)
@@ -94,7 +100,7 @@ def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, tr
         print(f"  resuming: {sum(len(v) for v in out.values())} episodes already in "
               f"{checkpoint}", flush=True)
 
-    jobs = [(arm, cell, m, s, max_steps, config)
+    jobs = [(arm, cell, m, s, max_steps, config, keep_step_times)
             for m in motions for s in seeds if s not in out[m]]
     t0 = time.time()
     pool = None
@@ -106,7 +112,7 @@ def run_block(arm, cell, seeds, *, motions=RS.MOTIONS, workers=8, checkpoint, tr
     try:
         with open(checkpoint, "a") as ck, open(_partial(traces), "a") as tr:
             for i, (motion, seed, rec) in enumerate(it, 1):
-                heavy = {k: rec.pop(k) for k in HEAVY}
+                heavy = {k: rec.pop(k) for k in HEAVY if k in rec}
                 row = {"cond": motion, "seed": seed, **heavy}
                 tr.write(json.dumps(row, default=_js) + "\n")
                 tr.flush()

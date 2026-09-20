@@ -661,3 +661,30 @@ detour in these cells (99 of 640 episodes).
     baseline's, and `detour_yield` composes as yield's layer over detour's layer over it.
 16. **Compute is measured inside the step.** `see(obs)` runs inside the part of the loop the
     harness times, so the layer's own work is in the step times the 7.2 rule reads.
+
+## Readings before the phase 5 run (2026-09-20, ticket 12)
+
+Readings of wording sections 7.2, 7.3 and 8 leave open, recorded before the parameter search and
+the tuning-block run. None of them changes a pre-registered number. They are implemented in
+`robustsuite/selection.py` and `experiments/robustsuite/rs5_selection.py`.
+
+1. **The 7.3 search ranks by pooled success alone.** The collision limit (the baseline's pooled
+   rate + 0.01 on the same episodes) is a filter, not part of the score, as 7.3 words it.
+2. **A tie in the 7.3 search goes to the earlier configuration of the pre-registered grid**,
+   whose first member is the candidate's default. So a configuration that only ties with the
+   default does not displace it.
+3. **The search's baseline is run in this phase**, on the same first 20 RS_DIAG seeds, cells and
+   motions, rather than read back from the phase 2 blocks: the phase 2 blocks are fingerprinted
+   with their own 50-seed definition and their own commit, and a subset of them is not that
+   block. The episodes are identical either way (the seed fixes the episode).
+4. **p95 is over every control step of the arm's whole tuning block** (20 cells x 2 motions x 50
+   seeds pooled), as the phase 4 checks measured it, not a mean of per-episode p95 values.
+   `robustsuite.blocks` keeps the raw per-step times in the trace sidecar for this.
+5. **The 7.2 limit passes at exactly 100 ms**: 7.2 disqualifies a candidate whose p95
+   *exceeds* 100 ms.
+6. **A disqualified candidate is not scored.** The 7.2 check runs before the section 8 rule, so a
+   candidate over the limit has no qualification verdict at all and cannot win.
+7. **The anchor is outside phase 5.** Section 8 pools the 20 generated cells, so neither stage
+   runs the M0 anchor; the anchor returns in the phase 6 gate (section 9.3).
+8. **Changed components for the tie-break are 1, 1, 1** (`detour`, `yield`, `detour_yield`), as
+   the revised candidate list fixes them, so a tie would fall to the list order.
