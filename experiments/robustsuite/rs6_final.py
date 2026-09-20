@@ -53,6 +53,47 @@ cell_name, _git, _table, _f = D.cell_name, D._git, D._table, D._f
 #: A --smoke run: seeds per cell and steps per episode.
 SMOKE_SEEDS, SMOKE_STEPS = D.SMOKE_SEEDS, D.SMOKE_STEPS
 
+#: What the sealed block shows, written after the run from this report's own tables. Printed as
+#: part of section 0.
+READING = """\
+Written after the run, from the tables below.
+
+1. **The three blocks agree.** Pooled success is 0.699 here, against 0.719 on RS_DIAG (phase 2)
+   and 0.700 on RS_TUNE (phase 5) — three disjoint seed blocks, each drawing its own layouts.
+   The characterisation is a property of the suite and the stack, not of one draw.
+2. **With a world that does not change, the frozen stack is competent.** The static cells reach
+   0.97–1.00 (SPL 0.92–0.98), so every layout family is solvable and the planner's route is a
+   good one. The whole of the pooled loss is pedestrians and events.
+3. **The triggered block is the failure of this stack, and conditioning on the event shows how
+   complete it is.** `timeout_at_block` alone is 1315 of 8000 episodes (16.4%). Unconditionally
+   the trigger_block cells reach 0.055–0.290; **conditional on the block actually appearing**
+   they reach 0.003 (corridors), 0.020 (rooms), 0.032 (aisles), 0.075 (open clutter) and 0.192
+   (dense clutter). In a structured layout, a passage that closes on the planned route is very
+   nearly the end of the episode: A* never replans, so the carrot stays past the block and the
+   CBF holds the robot in front of it until the step limit. Only dense clutter, where a way round
+   is usually within 1–2 m, escapes with any regularity.
+4. **Pedestrian collisions are the second mode** (756 episodes, 9.5%) and they scale with
+   narrowness: corridors 0.163 and aisles 0.142 in the +dynamic cells against open clutter 0.098.
+   334 of those 756 are in trigger_block cells, where the robot is not driving at all — it is
+   standing in front of the block while pedestrians walk past it.
+5. **The spawn is a minor threat** (55 collisions in 1600 episodes). The spawn cells do *better*
+   conditional on firing (e.g. open clutter 0.840 → 0.895) because an episode that ends before
+   the trigger is one that already failed for another reason — the ordering is a selection
+   effect, not evidence that the event helps.
+6. **Random recovery is still almost never feasible**: its chosen direction satisfies every
+   constraint in 14% of events, with a median margin of −0.179, close to the ~12% measured on M0
+   and the 15% of the diagnostic. This is the frozen specification's known weakness, unchanged by
+   the new layouts.
+7. **The M0 anchor is intact.** 361 of 400, exactly HD0's count on its own different seeds
+   (0.9025, p 1.00). The scenario environment, the new pedestrian model and the cell dimension
+   leave the canonical result untouched.
+8. **Real time holds**: 38.0 ms mean and 43.0 ms p95 per control step.
+9. **What phase 5 adds to this.** The one candidate that attacked the standstill, `detour`,
+   raised the trigger_block cells but paid for it in collisions with the pedestrians it then met
+   ([[RS5_SELECTION_REPORT]]). Leaving the standstill is not by itself an improvement: the block
+   and the pedestrians are one problem, and a future design has to treat them together.
+"""
+
 #: Departures from the spec's wording, all fixed before the run that produced them, with the
 #: section of RS_DESIGN that records each. Printed as the report's Deviations section
 #: (RS_DESIGN 10, spec story 54).
@@ -186,6 +227,7 @@ def write_report(arms, analyses, gate, prov, trace_sha, path, *, cells, n_seeds)
             "timeout, over 20 cells weighted equally.\n")
     else:
         add(f"**{gate['verdict']}**: {_gate_sentence(gate)}\n")
+        add(READING)
 
     # ---------------------------------------------------------------- 1. pooled
     add(f"## 1. Pooled result ({len(grid)} cells, equal weights, both motions)\n")
