@@ -1,0 +1,2234 @@
+{
+ "label": "Track A continuation / Stage C pilot (DEVELOPMENT ONLY)",
+ "seeds": [
+  13200000,
+  13200005
+ ],
+ "episodes_per_arm": 6,
+ "tuned": {
+  "alpha": 0.8,
+  "clf_rate": 1.0,
+  "wasserstein_r": 0.012,
+  "epsilon": 0.1,
+  "k_v": 0.1,
+  "k_scans": 5,
+  "tau_eff": 0.12,
+  "regime": "collapsed",
+  "eps_n": 0.5
+ },
+ "random": {
+  "K": 16,
+  "H": 1,
+  "speeds": [
+   0.8,
+   1.0
+  ],
+  "accept_m": 0.0,
+  "name": "R3_K16_H1_esc0.8"
+ },
+ "scenarios": {
+  "S4_full_stochastic": {
+   "U0_oracle": [
+    {
+     "arm": "U0_oracle",
+     "seed": 13200000,
+     "outcome": "capture",
+     "steps": 101,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6410208535496937,
+     "min_clearance": 0.2978687286376953,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      5.8024725914001465,
+      4.8084635734558105
+     ],
+     "prot_n_infeasible": 3,
+     "prot_n_solver_fail": 3,
+     "prot_frac_infeasible": 0.0297029702970297,
+     "prot_n_recovery_events": 3,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 35.771900631192295,
+     "prot_ms_p95": 39.111234014853835,
+     "episode_time_s": 7.726031190948561,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200001,
+     "outcome": "capture",
+     "steps": 166,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6307589428950773,
+     "min_clearance": 0.12968220710754397,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      8.72647476196289,
+      8.750933647155762
+     ],
+     "prot_n_infeasible": 64,
+     "prot_n_solver_fail": 64,
+     "prot_frac_infeasible": 0.3855421686746988,
+     "prot_n_recovery_events": 64,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.943315090723786,
+     "prot_ms_p95": 39.95150211267173,
+     "episode_time_s": 12.708647215971723,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200002,
+     "outcome": "protagonist_collision",
+     "steps": 142,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "dynamic",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 3.0196775969975693,
+     "min_clearance": -0.0025309085845947044,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      5.08310079574585,
+      9.388160705566406
+     ],
+     "prot_n_infeasible": 3,
+     "prot_n_solver_fail": 3,
+     "prot_frac_infeasible": 0.02112676056338028,
+     "prot_n_recovery_events": 3,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 38.770435031988775,
+     "prot_ms_p95": 44.35647580539808,
+     "episode_time_s": 11.47222870704718,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200003,
+     "outcome": "protagonist_collision",
+     "steps": 61,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.7593229024548716,
+     "min_clearance": -0.05529193878173827,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      5.805642604827881,
+      5.906867504119873
+     ],
+     "prot_n_infeasible": 14,
+     "prot_n_solver_fail": 14,
+     "prot_frac_infeasible": 0.22950819672131148,
+     "prot_n_recovery_events": 14,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 34.88163282087103,
+     "prot_ms_p95": 36.67639079503715,
+     "episode_time_s": 4.632364450022578,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200004,
+     "outcome": "capture",
+     "steps": 143,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6291486077992027,
+     "min_clearance": 0.2070675015449524,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      5.556831359863281,
+      8.884472846984863
+     ],
+     "prot_n_infeasible": 16,
+     "prot_n_solver_fail": 16,
+     "prot_frac_infeasible": 0.11188811188811189,
+     "prot_n_recovery_events": 16,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.827142407362174,
+     "prot_ms_p95": 41.300388262607164,
+     "episode_time_s": 11.118500886950642,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200005,
+     "outcome": "protagonist_collision",
+     "steps": 66,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.818462652175272,
+     "min_clearance": -0.01830448508262633,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      6.769806385040283,
+      0.9264048337936401
+     ],
+     "prot_n_infeasible": 4,
+     "prot_n_solver_fail": 4,
+     "prot_frac_infeasible": 0.06060606060606061,
+     "prot_n_recovery_events": 4,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 37.048996757772386,
+     "prot_ms_p95": 42.015040409751236,
+     "episode_time_s": 5.146405142964795,
+     "scenario": "S4_full_stochastic"
+    }
+   ],
+   "U1_unlabelled": [
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200000,
+     "outcome": "capture",
+     "steps": 101,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6290012374821365,
+     "min_clearance": 0.31395530700683594,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      5.8024725914001465,
+      4.8084635734558105
+     ],
+     "prot_n_infeasible": 12,
+     "prot_n_solver_fail": 18,
+     "prot_frac_infeasible": 0.1188118811881188,
+     "prot_n_recovery_events": 12,
+     "track_rows_mean": 5.702970297029703,
+     "track_rows_max": 10,
+     "steps_with_track_rows": 99,
+     "prot_ms_mean": 34.19265635127183,
+     "prot_ms_p95": 38.63104106858373,
+     "episode_time_s": 7.548904793104157,
+     "track_rows_built": 576,
+     "eligible_track_rows_total": 576,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200001,
+     "outcome": "capture",
+     "steps": 48,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6446672720068598,
+     "min_clearance": 0.2401113510131836,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      8.72647476196289,
+      8.750933647155762
+     ],
+     "prot_n_infeasible": 12,
+     "prot_n_solver_fail": 20,
+     "prot_frac_infeasible": 0.25,
+     "prot_n_recovery_events": 12,
+     "track_rows_mean": 6.416666666666667,
+     "track_rows_max": 11,
+     "steps_with_track_rows": 46,
+     "prot_ms_mean": 33.555564402680226,
+     "prot_ms_p95": 41.91723841940984,
+     "episode_time_s": 3.7129156289156526,
+     "track_rows_built": 308,
+     "eligible_track_rows_total": 308,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200002,
+     "outcome": "protagonist_collision",
+     "steps": 287,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "dynamic",
+     "hunter_collision": 1,
+     "hunter_collision_type": "dynamic",
+     "timeout": 0,
+     "min_hunter_distance": 0.7958884399974532,
+     "min_clearance": -0.013111329078674294,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      5.08310079574585,
+      9.388160705566406
+     ],
+     "prot_n_infeasible": 23,
+     "prot_n_solver_fail": 26,
+     "prot_frac_infeasible": 0.08013937282229965,
+     "prot_n_recovery_events": 23,
+     "track_rows_mean": 7.285714285714286,
+     "track_rows_max": 14,
+     "steps_with_track_rows": 285,
+     "prot_ms_mean": 37.76013875584595,
+     "prot_ms_p95": 42.18775229528546,
+     "episode_time_s": 21.682034326018766,
+     "track_rows_built": 2091,
+     "eligible_track_rows_total": 2091,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200003,
+     "outcome": "capture",
+     "steps": 67,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.64926721219495,
+     "min_clearance": 0.16819305419921876,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      5.805642604827881,
+      5.906867504119873
+     ],
+     "prot_n_infeasible": 20,
+     "prot_n_solver_fail": 23,
+     "prot_frac_infeasible": 0.29850746268656714,
+     "prot_n_recovery_events": 20,
+     "track_rows_mean": 6.044776119402985,
+     "track_rows_max": 9,
+     "steps_with_track_rows": 65,
+     "prot_ms_mean": 35.71486725027103,
+     "prot_ms_p95": 40.15495800413191,
+     "episode_time_s": 5.136341694043949,
+     "track_rows_built": 405,
+     "eligible_track_rows_total": 405,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200004,
+     "outcome": "protagonist_collision",
+     "steps": 108,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "dynamic",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.687120907197673,
+     "min_clearance": -0.005651271343231179,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      5.556831359863281,
+      8.884472846984863
+     ],
+     "prot_n_infeasible": 4,
+     "prot_n_solver_fail": 12,
+     "prot_frac_infeasible": 0.037037037037037035,
+     "prot_n_recovery_events": 4,
+     "track_rows_mean": 5.833333333333333,
+     "track_rows_max": 12,
+     "steps_with_track_rows": 106,
+     "prot_ms_mean": 34.89472087541664,
+     "prot_ms_p95": 41.88023393508046,
+     "episode_time_s": 8.166415906045586,
+     "track_rows_built": 630,
+     "eligible_track_rows_total": 630,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200005,
+     "outcome": "protagonist_collision",
+     "steps": 75,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.8696712900829167,
+     "min_clearance": -0.02881460189819335,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      6.769806385040283,
+      0.9264048337936401
+     ],
+     "prot_n_infeasible": 19,
+     "prot_n_solver_fail": 19,
+     "prot_frac_infeasible": 0.25333333333333335,
+     "prot_n_recovery_events": 19,
+     "track_rows_mean": 5.44,
+     "track_rows_max": 9,
+     "steps_with_track_rows": 73,
+     "prot_ms_mean": 35.34313879907131,
+     "prot_ms_p95": 38.55129829607903,
+     "episode_time_s": 5.7099852620158345,
+     "track_rows_built": 408,
+     "eligible_track_rows_total": 408,
+     "scenario": "S4_full_stochastic"
+    }
+   ],
+   "U2_visible_only": [
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200000,
+     "outcome": "capture",
+     "steps": 59,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6377639107878539,
+     "min_clearance": 0.5303049087524414,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      5.8024725914001465,
+      4.8084635734558105
+     ],
+     "prot_n_infeasible": 9,
+     "prot_n_solver_fail": 9,
+     "prot_frac_infeasible": 0.15254237288135594,
+     "prot_n_recovery_events": 9,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.739499888272356,
+     "prot_ms_p95": 43.47200910560786,
+     "episode_time_s": 4.578720541903749,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200001,
+     "outcome": "capture",
+     "steps": 51,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6088368307241647,
+     "min_clearance": 0.200599992275238,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      8.72647476196289,
+      8.750933647155762
+     ],
+     "prot_n_infeasible": 0,
+     "prot_n_solver_fail": 0,
+     "prot_frac_infeasible": 0.0,
+     "prot_n_recovery_events": 0,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.17736452496519,
+     "prot_ms_p95": 41.00923996884376,
+     "episode_time_s": 4.084244013065472,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200002,
+     "outcome": "protagonist_collision",
+     "steps": 142,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "dynamic",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 3.0196775969975693,
+     "min_clearance": -0.0025309085845947044,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      5.08310079574585,
+      9.388160705566406
+     ],
+     "prot_n_infeasible": 3,
+     "prot_n_solver_fail": 3,
+     "prot_frac_infeasible": 0.02112676056338028,
+     "prot_n_recovery_events": 3,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 38.45604805072481,
+     "prot_ms_p95": 44.114997994620346,
+     "episode_time_s": 11.354175982996821,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200003,
+     "outcome": "capture",
+     "steps": 56,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6464648282688195,
+     "min_clearance": 0.16425247192382814,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      5.805642604827881,
+      5.906867504119873
+     ],
+     "prot_n_infeasible": 6,
+     "prot_n_solver_fail": 6,
+     "prot_frac_infeasible": 0.10714285714285714,
+     "prot_n_recovery_events": 6,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 34.812279511243105,
+     "prot_ms_p95": 37.02007496031001,
+     "episode_time_s": 4.327603995800018,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200004,
+     "outcome": "capture",
+     "steps": 121,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6434320138661831,
+     "min_clearance": 0.26023937463760377,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      5.556831359863281,
+      8.884472846984863
+     ],
+     "prot_n_infeasible": 2,
+     "prot_n_solver_fail": 2,
+     "prot_frac_infeasible": 0.01652892561983471,
+     "prot_n_recovery_events": 2,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.97504138396976,
+     "prot_ms_p95": 41.981569956988096,
+     "episode_time_s": 9.407495178980753,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S4_full_stochastic"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200005,
+     "outcome": "capture",
+     "steps": 65,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.642628674908541,
+     "min_clearance": 0.20224399566650392,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      6.769806385040283,
+      0.9264048337936401
+     ],
+     "prot_n_infeasible": 10,
+     "prot_n_solver_fail": 10,
+     "prot_frac_infeasible": 0.15384615384615385,
+     "prot_n_recovery_events": 10,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 37.22246131286598,
+     "prot_ms_p95": 44.41490108147263,
+     "episode_time_s": 5.075113658094779,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S4_full_stochastic"
+    }
+   ]
+  },
+  "S1_no_decoys": {
+   "U0_oracle": [
+    {
+     "arm": "U0_oracle",
+     "seed": 13200000,
+     "outcome": "goal",
+     "steps": 125,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 2.229349966037745,
+     "min_clearance": 0.2257108211517334,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      7.945567607879639,
+      1.7489778995513916
+     ],
+     "prot_n_infeasible": 1,
+     "prot_n_solver_fail": 1,
+     "prot_frac_infeasible": 0.008,
+     "prot_n_recovery_events": 1,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.38570746220648,
+     "prot_ms_p95": 41.15423336625099,
+     "episode_time_s": 9.118550667073578,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200001,
+     "outcome": "goal",
+     "steps": 189,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6633121055288778,
+     "min_clearance": 0.25549156665802003,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      3.807769775390625,
+      8.768845558166504
+     ],
+     "prot_n_infeasible": 37,
+     "prot_n_solver_fail": 37,
+     "prot_frac_infeasible": 0.19576719576719576,
+     "prot_n_recovery_events": 37,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.14317710393123,
+     "prot_ms_p95": 41.08981559984385,
+     "episode_time_s": 14.07321411697194,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200002,
+     "outcome": "capture",
+     "steps": 46,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.641096040992842,
+     "min_clearance": 0.6397995471954345,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      5.2328314781188965,
+      5.399319648742676
+     ],
+     "prot_n_infeasible": 12,
+     "prot_n_solver_fail": 12,
+     "prot_frac_infeasible": 0.2608695652173913,
+     "prot_n_recovery_events": 12,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 33.80724904633573,
+     "prot_ms_p95": 35.13154975371435,
+     "episode_time_s": 3.44511896581389,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200003,
+     "outcome": "protagonist_collision",
+     "steps": 61,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.865141123465201,
+     "min_clearance": -0.04117898941040038,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      3.63224196434021,
+      1.523671269416809
+     ],
+     "prot_n_infeasible": 6,
+     "prot_n_solver_fail": 6,
+     "prot_frac_infeasible": 0.09836065573770492,
+     "prot_n_recovery_events": 6,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.34405347564426,
+     "prot_ms_p95": 39.4766868557781,
+     "episode_time_s": 4.526147191878408,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200004,
+     "outcome": "capture",
+     "steps": 143,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 1,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.5910797788995082,
+     "min_clearance": 0.18524093627929689,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      4.004364967346191,
+      4.462433338165283
+     ],
+     "prot_n_infeasible": 23,
+     "prot_n_solver_fail": 23,
+     "prot_frac_infeasible": 0.16083916083916083,
+     "prot_n_recovery_events": 23,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 33.90655066277441,
+     "prot_ms_p95": 37.01769169420004,
+     "episode_time_s": 10.280429556034505,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200005,
+     "outcome": "capture",
+     "steps": 90,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6372589410856639,
+     "min_clearance": 0.15018959045410157,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      9.039225578308105,
+      5.297320365905762
+     ],
+     "prot_n_infeasible": 11,
+     "prot_n_solver_fail": 11,
+     "prot_frac_infeasible": 0.12222222222222222,
+     "prot_n_recovery_events": 11,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 35.2386616066926,
+     "prot_ms_p95": 38.622369954828166,
+     "episode_time_s": 6.583979764021933,
+     "scenario": "S1_no_decoys"
+    }
+   ],
+   "U1_unlabelled": [
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200000,
+     "outcome": "protagonist_collision",
+     "steps": 120,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "wall",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 1.1894096276144572,
+     "min_clearance": 0.0,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      7.945567607879639,
+      1.7489778995513916
+     ],
+     "prot_n_infeasible": 23,
+     "prot_n_solver_fail": 29,
+     "prot_frac_infeasible": 0.19166666666666668,
+     "prot_n_recovery_events": 23,
+     "track_rows_mean": 6.941666666666666,
+     "track_rows_max": 13,
+     "steps_with_track_rows": 118,
+     "prot_ms_mean": 37.11566848796792,
+     "prot_ms_p95": 45.71549368556589,
+     "episode_time_s": 8.864835598040372,
+     "track_rows_built": 833,
+     "eligible_track_rows_total": 833,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200001,
+     "outcome": "capture",
+     "steps": 82,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6287643611934383,
+     "min_clearance": 0.25861228704452516,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      3.807769775390625,
+      8.768845558166504
+     ],
+     "prot_n_infeasible": 1,
+     "prot_n_solver_fail": 3,
+     "prot_frac_infeasible": 0.012195121951219513,
+     "prot_n_recovery_events": 1,
+     "track_rows_mean": 4.573170731707317,
+     "track_rows_max": 10,
+     "steps_with_track_rows": 80,
+     "prot_ms_mean": 34.933880846038825,
+     "prot_ms_p95": 41.694848670158535,
+     "episode_time_s": 6.1536858240142465,
+     "track_rows_built": 375,
+     "eligible_track_rows_total": 375,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200002,
+     "outcome": "capture",
+     "steps": 46,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6203836112915234,
+     "min_clearance": 0.6285502314567566,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      5.2328314781188965,
+      5.399319648742676
+     ],
+     "prot_n_infeasible": 3,
+     "prot_n_solver_fail": 3,
+     "prot_frac_infeasible": 0.06521739130434782,
+     "prot_n_recovery_events": 3,
+     "track_rows_mean": 4.6521739130434785,
+     "track_rows_max": 8,
+     "steps_with_track_rows": 44,
+     "prot_ms_mean": 34.87851415031954,
+     "prot_ms_p95": 37.46196813881397,
+     "episode_time_s": 3.5062557759229094,
+     "track_rows_built": 214,
+     "eligible_track_rows_total": 214,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200003,
+     "outcome": "protagonist_collision",
+     "steps": 54,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6074466700611045,
+     "min_clearance": -0.005434560775756825,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      3.63224196434021,
+      1.523671269416809
+     ],
+     "prot_n_infeasible": 15,
+     "prot_n_solver_fail": 17,
+     "prot_frac_infeasible": 0.2777777777777778,
+     "prot_n_recovery_events": 15,
+     "track_rows_mean": 5.425925925925926,
+     "track_rows_max": 8,
+     "steps_with_track_rows": 52,
+     "prot_ms_mean": 34.89211999328324,
+     "prot_ms_p95": 37.96975378645584,
+     "episode_time_s": 3.9693042000290006,
+     "track_rows_built": 293,
+     "eligible_track_rows_total": 293,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200004,
+     "outcome": "capture",
+     "steps": 75,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6460556920829881,
+     "min_clearance": 0.24765510559082032,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      4.004364967346191,
+      4.462433338165283
+     ],
+     "prot_n_infeasible": 1,
+     "prot_n_solver_fail": 2,
+     "prot_frac_infeasible": 0.013333333333333334,
+     "prot_n_recovery_events": 1,
+     "track_rows_mean": 3.533333333333333,
+     "track_rows_max": 8,
+     "steps_with_track_rows": 73,
+     "prot_ms_mean": 34.42847649256388,
+     "prot_ms_p95": 37.23334660753608,
+     "episode_time_s": 5.540631492855027,
+     "track_rows_built": 265,
+     "eligible_track_rows_total": 265,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200005,
+     "outcome": "capture",
+     "steps": 91,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6086424480083781,
+     "min_clearance": 0.16302390098571778,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      9.039225578308105,
+      5.297320365905762
+     ],
+     "prot_n_infeasible": 9,
+     "prot_n_solver_fail": 12,
+     "prot_frac_infeasible": 0.0989010989010989,
+     "prot_n_recovery_events": 9,
+     "track_rows_mean": 4.538461538461538,
+     "track_rows_max": 9,
+     "steps_with_track_rows": 89,
+     "prot_ms_mean": 34.08974882440416,
+     "prot_ms_p95": 38.530025514774024,
+     "episode_time_s": 6.522429425967857,
+     "track_rows_built": 413,
+     "eligible_track_rows_total": 413,
+     "scenario": "S1_no_decoys"
+    }
+   ],
+   "U2_visible_only": [
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200000,
+     "outcome": "goal",
+     "steps": 125,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 2.229349991072948,
+     "min_clearance": 0.2257108211517334,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      7.945567607879639,
+      1.7489778995513916
+     ],
+     "prot_n_infeasible": 1,
+     "prot_n_solver_fail": 1,
+     "prot_frac_infeasible": 0.008,
+     "prot_n_recovery_events": 1,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.1415176410228,
+     "prot_ms_p95": 41.4982795715332,
+     "episode_time_s": 9.13660461991094,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200001,
+     "outcome": "capture",
+     "steps": 59,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6457734830320202,
+     "min_clearance": 0.25549156665802003,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      3.807769775390625,
+      8.768845558166504
+     ],
+     "prot_n_infeasible": 3,
+     "prot_n_solver_fail": 3,
+     "prot_frac_infeasible": 0.05084745762711865,
+     "prot_n_recovery_events": 3,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 35.63984074645629,
+     "prot_ms_p95": 40.6819089083001,
+     "episode_time_s": 4.572293858975172,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200002,
+     "outcome": "capture",
+     "steps": 45,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6454218460306929,
+     "min_clearance": 0.7589529156684875,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      5.2328314781188965,
+      5.399319648742676
+     ],
+     "prot_n_infeasible": 3,
+     "prot_n_solver_fail": 3,
+     "prot_frac_infeasible": 0.06666666666666667,
+     "prot_n_recovery_events": 3,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 34.519287235000064,
+     "prot_ms_p95": 36.42933238297701,
+     "episode_time_s": 3.4517490309663117,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200003,
+     "outcome": "capture",
+     "steps": 63,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6333928927979868,
+     "min_clearance": 0.10149712562561036,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      3.63224196434021,
+      1.523671269416809
+     ],
+     "prot_n_infeasible": 5,
+     "prot_n_solver_fail": 5,
+     "prot_frac_infeasible": 0.07936507936507936,
+     "prot_n_recovery_events": 5,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 35.45232644555942,
+     "prot_ms_p95": 39.22525562811643,
+     "episode_time_s": 4.651994550134987,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200004,
+     "outcome": "capture",
+     "steps": 59,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.644751236407313,
+     "min_clearance": 0.21993131637573243,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      4.004364967346191,
+      4.462433338165283
+     ],
+     "prot_n_infeasible": 0,
+     "prot_n_solver_fail": 0,
+     "prot_frac_infeasible": 0.0,
+     "prot_n_recovery_events": 0,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 34.15266409816252,
+     "prot_ms_p95": 36.18622370995581,
+     "episode_time_s": 4.38825878710486,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S1_no_decoys"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200005,
+     "outcome": "capture",
+     "steps": 78,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6498709530783058,
+     "min_clearance": 0.7734673738479614,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      9.039225578308105,
+      5.297320365905762
+     ],
+     "prot_n_infeasible": 0,
+     "prot_n_solver_fail": 0,
+     "prot_frac_infeasible": 0.0,
+     "prot_n_recovery_events": 0,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 34.495390942678426,
+     "prot_ms_p95": 37.14179168455302,
+     "episode_time_s": 5.660357746994123,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S1_no_decoys"
+    }
+   ]
+  },
+  "S3_several_movers": {
+   "U0_oracle": [
+    {
+     "arm": "U0_oracle",
+     "seed": 13200000,
+     "outcome": "goal",
+     "steps": 126,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 1,
+     "hunter_collision_type": "dynamic",
+     "timeout": 0,
+     "min_hunter_distance": 3.616531626126507,
+     "min_clearance": 0.11063184738159182,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      3.3208887577056885,
+      3.2548584938049316
+     ],
+     "prot_n_infeasible": 1,
+     "prot_n_solver_fail": 1,
+     "prot_frac_infeasible": 0.007936507936507936,
+     "prot_n_recovery_events": 1,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.367525708758166,
+     "prot_ms_p95": 41.58186388667673,
+     "episode_time_s": 8.91273996210657,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200001,
+     "outcome": "goal",
+     "steps": 159,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.7328628732325132,
+     "min_clearance": 0.25549156665802003,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      6.216150283813477,
+      7.166707515716553
+     ],
+     "prot_n_infeasible": 13,
+     "prot_n_solver_fail": 13,
+     "prot_frac_infeasible": 0.08176100628930817,
+     "prot_n_recovery_events": 13,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.48128361242044,
+     "prot_ms_p95": 42.10797380656004,
+     "episode_time_s": 12.193281708052382,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200002,
+     "outcome": "goal",
+     "steps": 159,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 1.3715913651296252,
+     "min_clearance": 0.2003624081611633,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      7.372109413146973,
+      0.8120191097259521
+     ],
+     "prot_n_infeasible": 5,
+     "prot_n_solver_fail": 5,
+     "prot_frac_infeasible": 0.031446540880503145,
+     "prot_n_recovery_events": 5,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.22223563498156,
+     "prot_ms_p95": 40.63876154832541,
+     "episode_time_s": 12.047389704966918,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200003,
+     "outcome": "protagonist_collision",
+     "steps": 60,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6850591098749026,
+     "min_clearance": -0.03167133331298827,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      5.2897844314575195,
+      2.531588315963745
+     ],
+     "prot_n_infeasible": 8,
+     "prot_n_solver_fail": 8,
+     "prot_frac_infeasible": 0.13333333333333333,
+     "prot_n_recovery_events": 8,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 35.789202293381095,
+     "prot_ms_p95": 36.91264938097447,
+     "episode_time_s": 4.544986161170527,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200004,
+     "outcome": "protagonist_collision",
+     "steps": 91,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "dynamic",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6803013613479294,
+     "min_clearance": -0.047049856185913064,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      9.02338981628418,
+      5.915868282318115
+     ],
+     "prot_n_infeasible": 20,
+     "prot_n_solver_fail": 20,
+     "prot_frac_infeasible": 0.21978021978021978,
+     "prot_n_recovery_events": 20,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.34578960558788,
+     "prot_ms_p95": 39.48061296250671,
+     "episode_time_s": 7.168786455178633,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U0_oracle",
+     "seed": 13200005,
+     "outcome": "protagonist_collision",
+     "steps": 54,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.7330525096024081,
+     "min_clearance": -0.002072620391845692,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      5.075585842132568,
+      2.9576361179351807
+     ],
+     "prot_n_infeasible": 5,
+     "prot_n_solver_fail": 5,
+     "prot_frac_infeasible": 0.09259259259259259,
+     "prot_n_recovery_events": 5,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 33.59598974714539,
+     "prot_ms_p95": 35.7944868854247,
+     "episode_time_s": 3.929196422919631,
+     "scenario": "S3_several_movers"
+    }
+   ],
+   "U1_unlabelled": [
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200000,
+     "outcome": "protagonist_collision",
+     "steps": 183,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "wall",
+     "hunter_collision": 1,
+     "hunter_collision_type": "dynamic",
+     "timeout": 0,
+     "min_hunter_distance": 3.6794112309392357,
+     "min_clearance": 0.0,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      3.3208887577056885,
+      3.2548584938049316
+     ],
+     "prot_n_infeasible": 35,
+     "prot_n_solver_fail": 48,
+     "prot_frac_infeasible": 0.1912568306010929,
+     "prot_n_recovery_events": 35,
+     "track_rows_mean": 7.453551912568306,
+     "track_rows_max": 15,
+     "steps_with_track_rows": 181,
+     "prot_ms_mean": 36.24478816385559,
+     "prot_ms_p95": 44.9584829621017,
+     "episode_time_s": 13.23675744002685,
+     "track_rows_built": 1364,
+     "eligible_track_rows_total": 1364,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200001,
+     "outcome": "capture",
+     "steps": 57,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.628082537087876,
+     "min_clearance": 0.16674423217773438,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      6.216150283813477,
+      7.166707515716553
+     ],
+     "prot_n_infeasible": 9,
+     "prot_n_solver_fail": 16,
+     "prot_frac_infeasible": 0.15789473684210525,
+     "prot_n_recovery_events": 9,
+     "track_rows_mean": 6.456140350877193,
+     "track_rows_max": 10,
+     "steps_with_track_rows": 55,
+     "prot_ms_mean": 33.98407702007445,
+     "prot_ms_p95": 40.201108856126666,
+     "episode_time_s": 4.25993134197779,
+     "track_rows_built": 368,
+     "eligible_track_rows_total": 368,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200002,
+     "outcome": "capture",
+     "steps": 133,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 1,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.5929596378824616,
+     "min_clearance": 0.1920227646827698,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      7.372109413146973,
+      0.8120191097259521
+     ],
+     "prot_n_infeasible": 33,
+     "prot_n_solver_fail": 37,
+     "prot_frac_infeasible": 0.24812030075187969,
+     "prot_n_recovery_events": 33,
+     "track_rows_mean": 6.7293233082706765,
+     "track_rows_max": 12,
+     "steps_with_track_rows": 131,
+     "prot_ms_mean": 35.95739405574207,
+     "prot_ms_p95": 40.71128480136394,
+     "episode_time_s": 9.950546289095655,
+     "track_rows_built": 895,
+     "eligible_track_rows_total": 895,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200003,
+     "outcome": "protagonist_collision",
+     "steps": 59,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.7685481907077658,
+     "min_clearance": -0.024684715270996083,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      5.2897844314575195,
+      2.531588315963745
+     ],
+     "prot_n_infeasible": 14,
+     "prot_n_solver_fail": 16,
+     "prot_frac_infeasible": 0.23728813559322035,
+     "prot_n_recovery_events": 14,
+     "track_rows_mean": 5.796610169491525,
+     "track_rows_max": 10,
+     "steps_with_track_rows": 57,
+     "prot_ms_mean": 34.91842426691141,
+     "prot_ms_p95": 39.07050192356107,
+     "episode_time_s": 4.333275559125468,
+     "track_rows_built": 342,
+     "eligible_track_rows_total": 342,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200004,
+     "outcome": "capture",
+     "steps": 79,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6434900169752887,
+     "min_clearance": 0.2649704337120056,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      9.02338981628418,
+      5.915868282318115
+     ],
+     "prot_n_infeasible": 4,
+     "prot_n_solver_fail": 5,
+     "prot_frac_infeasible": 0.05063291139240506,
+     "prot_n_recovery_events": 4,
+     "track_rows_mean": 6.012658227848101,
+     "track_rows_max": 11,
+     "steps_with_track_rows": 77,
+     "prot_ms_mean": 36.265172798162965,
+     "prot_ms_p95": 43.68424329441041,
+     "episode_time_s": 6.1884066259954125,
+     "track_rows_built": 475,
+     "eligible_track_rows_total": 475,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U1_unlabelled",
+     "seed": 13200005,
+     "outcome": "protagonist_collision",
+     "steps": 52,
+     "goal": 0,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 1,
+     "protagonist_collision_type": "static",
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.7565284242751573,
+     "min_clearance": -0.012393760681152333,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      5.075585842132568,
+      2.9576361179351807
+     ],
+     "prot_n_infeasible": 6,
+     "prot_n_solver_fail": 6,
+     "prot_frac_infeasible": 0.11538461538461539,
+     "prot_n_recovery_events": 6,
+     "track_rows_mean": 4.673076923076923,
+     "track_rows_max": 8,
+     "steps_with_track_rows": 50,
+     "prot_ms_mean": 34.804379674964224,
+     "prot_ms_p95": 37.25092464592308,
+     "episode_time_s": 3.7960598999634385,
+     "track_rows_built": 243,
+     "eligible_track_rows_total": 243,
+     "scenario": "S3_several_movers"
+    }
+   ],
+   "U2_visible_only": [
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200000,
+     "outcome": "goal",
+     "steps": 126,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 1,
+     "hunter_collision_type": "dynamic",
+     "timeout": 0,
+     "min_hunter_distance": 3.6165301187113466,
+     "min_clearance": 0.11063184738159182,
+     "start": [
+      0.838031530380249,
+      9.170785903930664
+     ],
+     "goal_xy": [
+      8.687759399414062,
+      5.83457088470459
+     ],
+     "hunter_start": [
+      3.3208887577056885,
+      3.2548584938049316
+     ],
+     "prot_n_infeasible": 1,
+     "prot_n_solver_fail": 1,
+     "prot_frac_infeasible": 0.007936507936507936,
+     "prot_n_recovery_events": 1,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.12890274315659,
+     "prot_ms_p95": 40.40314938174561,
+     "episode_time_s": 8.863559094956145,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200001,
+     "outcome": "capture",
+     "steps": 38,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6144447598882445,
+     "min_clearance": 0.25549156665802003,
+     "start": [
+      8.65993595123291,
+      2.828686475753784
+     ],
+     "goal_xy": [
+      1.5749964714050293,
+      9.384519577026367
+     ],
+     "hunter_start": [
+      6.216150283813477,
+      7.166707515716553
+     ],
+     "prot_n_infeasible": 0,
+     "prot_n_solver_fail": 0,
+     "prot_frac_infeasible": 0.0,
+     "prot_n_recovery_events": 0,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 34.79436932646326,
+     "prot_ms_p95": 40.90856299735606,
+     "episode_time_s": 2.988349403021857,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200002,
+     "outcome": "goal",
+     "steps": 163,
+     "goal": 1,
+     "captured": 0,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.666723549416946,
+     "min_clearance": 0.027001047134399436,
+     "start": [
+      3.609147548675537,
+      2.429685592651367
+     ],
+     "goal_xy": [
+      0.8468453288078308,
+      9.101816177368164
+     ],
+     "hunter_start": [
+      7.372109413146973,
+      0.8120191097259521
+     ],
+     "prot_n_infeasible": 5,
+     "prot_n_solver_fail": 5,
+     "prot_frac_infeasible": 0.03067484662576687,
+     "prot_n_recovery_events": 5,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.48942056900473,
+     "prot_ms_p95": 41.67682097759098,
+     "episode_time_s": 12.357638492947444,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200003,
+     "outcome": "capture",
+     "steps": 57,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.644808261288058,
+     "min_clearance": 0.1292648732662201,
+     "start": [
+      0.992438554763794,
+      4.291061878204346
+     ],
+     "goal_xy": [
+      4.981295108795166,
+      8.634086608886719
+     ],
+     "hunter_start": [
+      5.2897844314575195,
+      2.531588315963745
+     ],
+     "prot_n_infeasible": 8,
+     "prot_n_solver_fail": 8,
+     "prot_frac_infeasible": 0.14035087719298245,
+     "prot_n_recovery_events": 8,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.13358908414579,
+     "prot_ms_p95": 39.23864783719182,
+     "episode_time_s": 4.3220252129249275,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200004,
+     "outcome": "capture",
+     "steps": 78,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6493219572334191,
+     "min_clearance": 0.26462109088897706,
+     "start": [
+      7.259426116943359,
+      1.3308401107788086
+     ],
+     "goal_xy": [
+      2.6237192153930664,
+      9.246129989624023
+     ],
+     "hunter_start": [
+      9.02338981628418,
+      5.915868282318115
+     ],
+     "prot_n_infeasible": 4,
+     "prot_n_solver_fail": 4,
+     "prot_frac_infeasible": 0.05128205128205128,
+     "prot_n_recovery_events": 4,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 36.472571413749115,
+     "prot_ms_p95": 42.0211212709546,
+     "episode_time_s": 6.105276704998687,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S3_several_movers"
+    },
+    {
+     "arm": "U2_visible_only",
+     "seed": 13200005,
+     "outcome": "capture",
+     "steps": 54,
+     "goal": 0,
+     "captured": 1,
+     "agent_contact": 0,
+     "protagonist_collision": 0,
+     "protagonist_collision_type": null,
+     "hunter_collision": 0,
+     "hunter_collision_type": null,
+     "timeout": 0,
+     "min_hunter_distance": 0.6200929425308326,
+     "min_clearance": 0.17165107727050782,
+     "start": [
+      1.1620367765426636,
+      5.672633171081543
+     ],
+     "goal_xy": [
+      9.394903182983398,
+      3.464118003845215
+     ],
+     "hunter_start": [
+      5.075585842132568,
+      2.9576361179351807
+     ],
+     "prot_n_infeasible": 8,
+     "prot_n_solver_fail": 8,
+     "prot_frac_infeasible": 0.14814814814814814,
+     "prot_n_recovery_events": 8,
+     "track_rows_mean": 0.0,
+     "track_rows_max": 0,
+     "steps_with_track_rows": 0,
+     "prot_ms_mean": 35.744352369672725,
+     "prot_ms_p95": 41.00028653629121,
+     "episode_time_s": 4.053484081989154,
+     "track_rows_built": 0,
+     "eligible_track_rows_total": 0,
+     "scenario": "S3_several_movers"
+    }
+   ]
+  }
+ },
+ "wall_s": 390.4945912361145
+}

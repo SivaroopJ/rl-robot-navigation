@@ -1,0 +1,4192 @@
+{
+ "label": "Week6 / Generalization Suite / screen",
+ "id": "F10a_behind",
+ "family": "F10",
+ "level": 2,
+ "classification": "interface",
+ "difficulty": "ood",
+ "stress": false,
+ "motion_model": "stochastic",
+ "episodes": 50,
+ "seed_base": 8000000,
+ "meta": {
+  "trigger": [
+   5.0,
+   5.0
+  ],
+  "trigger_radius": 0.5,
+  "rect": [
+   3.6,
+   5.0,
+   0.5,
+   1.2
+  ],
+  "replanning": "none, both arms"
+ },
+ "seconds": 464.87298035621643,
+ "A": {
+  "episodes": 50,
+  "steps": 5858,
+  "success": 0.76,
+  "collision": 0.24,
+  "timeout": 0.0,
+  "dynamic": 12,
+  "static": 0,
+  "wall": 0,
+  "spl": 0.6605455908595451,
+  "path_length": 8.849713869094849,
+  "min_clearance": 0.11064706110954287,
+  "min_clearance_worst": -0.08176950216293333,
+  "frac_infeasible": 0.05906452714236941,
+  "n_infeasible": 346,
+  "n_recovered": 0,
+  "coll_after_infeasible": 12,
+  "coll_while_feasible": 0,
+  "planner_failures": 0,
+  "n_solver_fail": 347,
+  "mean_u_dev": 0.5231315528873445,
+  "min_cbc_solved": 0.03997183046180305,
+  "mean_step_time_ms": 35.16159570543856,
+  "rungs": {},
+  "tiers": {},
+  "m_median_of_episode_medians": NaN
+ },
+ "B": {
+  "episodes": 50,
+  "steps": 6393,
+  "success": 0.86,
+  "collision": 0.14,
+  "timeout": 0.0,
+  "dynamic": 7,
+  "static": 0,
+  "wall": 0,
+  "spl": 0.6980805528548081,
+  "path_length": 10.268700132369995,
+  "min_clearance": 0.16324014735221865,
+  "min_clearance_worst": -0.048349416255950906,
+  "frac_infeasible": 0.04317221961520413,
+  "n_infeasible": 276,
+  "n_recovered": 276,
+  "coll_after_infeasible": 4,
+  "coll_while_feasible": 3,
+  "planner_failures": 0,
+  "n_solver_fail": 276,
+  "mean_u_dev": 0.5425004420348116,
+  "min_cbc_solved": 0.0399666505714477,
+  "mean_step_time_ms": 37.086073695496474,
+  "rungs": {
+   "R2": 207,
+   "R1": 63,
+   "R2_lp": 6
+  },
+  "tiers": {
+   "2": 270,
+   "1": 6
+  },
+  "m_median_of_episode_medians": -0.07171752103099002
+ },
+ "episodes_A": [
+  {
+   "seed": 8000000,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 116,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1459986686706543,
+   "path_length": 8.645489692687988,
+   "spl": 0.9716048828447955,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.06896551724137931,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3995640461594404,
+   "min_cbc_solved": 0.03998561307797954,
+   "mean_step_time": 0.03673306417426672,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4459986686706543
+    }
+   ]
+  },
+  {
+   "seed": 8000001,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 63,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.04513881206512449,
+   "path_length": 4.096179962158203,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.07936507936507936,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7533536110230503,
+   "min_cbc_solved": 0.03999048733262822,
+   "mean_step_time": 0.035129769278379776,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 55,
+   "wall_events": []
+  },
+  {
+   "seed": 8000002,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 66,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06930372714996336,
+   "path_length": 5.642736434936523,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.07575757575757576,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6683650808750596,
+   "min_cbc_solved": 0.03997658721735542,
+   "mean_step_time": 0.03649735107672203,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 59,
+   "wall_events": []
+  },
+  {
+   "seed": 8000003,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 130,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.24611968994140626,
+   "path_length": 9.239553451538086,
+   "spl": 0.9091348455375484,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.03076923076923077,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.45689068265014665,
+   "min_cbc_solved": 0.03996425157282463,
+   "mean_step_time": 0.03517621829926681,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 31,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 57,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5461196899414062
+    }
+   ]
+  },
+  {
+   "seed": 8000004,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 79,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.021950817108154275,
+   "path_length": 5.605231761932373,
+   "spl": 0.0,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.10126582278481013,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8084997178431873,
+   "min_cbc_solved": 0.03997020556883202,
+   "mean_step_time": 0.035614509991653075,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": []
+  },
+  {
+   "seed": 8000005,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 134,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.12192649841308595,
+   "path_length": 9.361709594726562,
+   "spl": 0.8972720115919541,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.05223880597014925,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4722517767854947,
+   "min_cbc_solved": 0.03998022982935934,
+   "mean_step_time": 0.03453550859243234,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 77,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.42192649841308594
+    }
+   ]
+  },
+  {
+   "seed": 8000006,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 177,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.06816228628158572,
+   "path_length": 12.649442672729492,
+   "spl": 0.6640608774099809,
+   "n_infeasible": 11,
+   "n_solver_fail": 11,
+   "frac_infeasible": 0.062146892655367235,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6292756918642866,
+   "min_cbc_solved": 0.039970309459995024,
+   "mean_step_time": 0.03574824054386088,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4459986686706543
+    }
+   ]
+  },
+  {
+   "seed": 8000007,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 119,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1459986686706543,
+   "path_length": 8.89745807647705,
+   "spl": 0.944089865644636,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.06722689075630252,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.40605869401823874,
+   "min_cbc_solved": 0.03997610088422171,
+   "mean_step_time": 0.03494588131018515,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4459986686706543
+    }
+   ]
+  },
+  {
+   "seed": 8000008,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 151,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.12699718475341798,
+   "path_length": 11.51386833190918,
+   "spl": 0.7295549816841747,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.039735099337748346,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5395584931638224,
+   "min_cbc_solved": 0.03994597943432243,
+   "mean_step_time": 0.0357976922686736,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 40,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 93,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.42699718475341797
+    }
+   ]
+  },
+  {
+   "seed": 8000009,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 116,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.028249597549438454,
+   "path_length": 8.113794326782227,
+   "spl": 0.0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.0603448275862069,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.46814116009780965,
+   "min_cbc_solved": 0.03998139888661226,
+   "mean_step_time": 0.03495675468604594,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 26,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 63,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5011458396911621
+    }
+   ]
+  },
+  {
+   "seed": 8000010,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 110,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1459986686706543,
+   "path_length": 8.714615821838379,
+   "spl": 0.9638979126251364,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.03636363636363636,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.35955412169115614,
+   "min_cbc_solved": 0.03997500078127644,
+   "mean_step_time": 0.035438973958265375,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4459986686706543
+    }
+   ]
+  },
+  {
+   "seed": 8000011,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 104,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20604581832885743,
+   "path_length": 8.14962387084961,
+   "spl": 1.0,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.028846153846153848,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.31399817856773193,
+   "min_cbc_solved": 0.039976214938326024,
+   "mean_step_time": 0.034829614463468224,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 75,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 48,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5060458183288574
+    }
+   ]
+  },
+  {
+   "seed": 8000012,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 204,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.18578615188598635,
+   "path_length": 14.296274185180664,
+   "spl": 0.5875656755875132,
+   "n_infeasible": 11,
+   "n_solver_fail": 11,
+   "frac_infeasible": 0.05392156862745098,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6884080323636589,
+   "min_cbc_solved": 0.039943226764388995,
+   "mean_step_time": 0.03489777337195918,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 31,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 99,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.49297475814819336
+    }
+   ]
+  },
+  {
+   "seed": 8000013,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 104,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1459986686706543,
+   "path_length": 8.25068473815918,
+   "spl": 1.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.04807692307692308,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3085753067550587,
+   "min_cbc_solved": 0.03998322445058394,
+   "mean_step_time": 0.03422280567331025,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4459986686706543
+    }
+   ]
+  },
+  {
+   "seed": 8000014,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 118,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.21127147674560548,
+   "path_length": 9.288866996765137,
+   "spl": 0.9043083513764719,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.41480110767033257,
+   "min_cbc_solved": 0.03995939108691626,
+   "mean_step_time": 0.03478437602437117,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 61,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5112714767456055
+    }
+   ]
+  },
+  {
+   "seed": 8000015,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 63,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.047741270065307595,
+   "path_length": 4.294175624847412,
+   "spl": 0.0,
+   "n_infeasible": 13,
+   "n_solver_fail": 13,
+   "frac_infeasible": 0.20634920634920634,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.75576117149071,
+   "min_cbc_solved": 0.03997519732436666,
+   "mean_step_time": 0.03433153723802654,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": []
+  },
+  {
+   "seed": 8000016,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 104,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1459986686706543,
+   "path_length": 8.396059036254883,
+   "spl": 1.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.04807692307692308,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.32122005028644673,
+   "min_cbc_solved": 0.03998155961429796,
+   "mean_step_time": 0.035742084753180206,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4459986686706543
+    }
+   ]
+  },
+  {
+   "seed": 8000017,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 144,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.06118633747100832,
+   "path_length": 11.106125831604004,
+   "spl": 0.7563393506758809,
+   "n_infeasible": 18,
+   "n_solver_fail": 18,
+   "frac_infeasible": 0.125,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5792054603971013,
+   "min_cbc_solved": 0.039968461777561304,
+   "mean_step_time": 0.03508268673613202,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 32,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 96,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.42734622955322266
+    }
+   ]
+  },
+  {
+   "seed": 8000018,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 39,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.06402430534362791,
+   "path_length": 2.5162391662597656,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.15384615384615385,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 1.0398305719316547,
+   "min_cbc_solved": 0.03999255434977189,
+   "mean_step_time": 0.03338173697165285,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 24,
+   "wall_events": []
+  },
+  {
+   "seed": 8000019,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 119,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.16926164627075196,
+   "path_length": 8.721693992614746,
+   "spl": 0.9631156524309216,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.06722689075630252,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4013009999833224,
+   "min_cbc_solved": 0.03997525036660049,
+   "mean_step_time": 0.034813335264187714,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 62,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.46926164627075195
+    }
+   ]
+  },
+  {
+   "seed": 8000020,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 131,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.11690444946289064,
+   "path_length": 9.429140090942383,
+   "spl": 0.8908553610385985,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.05343511450381679,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4663985470424798,
+   "min_cbc_solved": 0.03997276069975314,
+   "mean_step_time": 0.03553738158270859,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 72,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4169044494628906
+    }
+   ]
+  },
+  {
+   "seed": 8000021,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 128,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20554132461547853,
+   "path_length": 9.823501586914062,
+   "spl": 0.8550922423822565,
+   "n_infeasible": 9,
+   "n_solver_fail": 9,
+   "frac_infeasible": 0.0703125,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4487684553425844,
+   "min_cbc_solved": 0.03996469587717611,
+   "mean_step_time": 0.034600053246322204,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 16,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 74,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5055413246154785
+    }
+   ]
+  },
+  {
+   "seed": 8000022,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 75,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.031938588619232156,
+   "path_length": 5.7512078285217285,
+   "spl": 0.0,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.13333333333333333,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.45265500607082876,
+   "min_cbc_solved": 0.039985748974027235,
+   "mean_step_time": 0.034670698690849044,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4459986686706543
+    }
+   ]
+  },
+  {
+   "seed": 8000023,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 181,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.041944479942321755,
+   "path_length": 12.527088165283203,
+   "spl": 0.0,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.04419889502762431,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9129729102810245,
+   "min_cbc_solved": 0.039966356998476726,
+   "mean_step_time": 0.0345674506137765,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 134,
+   "wall_events": []
+  },
+  {
+   "seed": 8000024,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 145,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.02244081497192385,
+   "path_length": 10.8385648727417,
+   "spl": 0.7750103541037491,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.04827586206896552,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5571800573342307,
+   "min_cbc_solved": 0.039937599448294434,
+   "mean_step_time": 0.03428435740542823,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 18,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 86,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.48903989791870117
+    }
+   ]
+  },
+  {
+   "seed": 8000025,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 138,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20037384033203126,
+   "path_length": 10.08877182006836,
+   "spl": 0.8326087803166395,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.028985507246376812,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.48691181295963704,
+   "min_cbc_solved": 0.03997507596307798,
+   "mean_step_time": 0.03513040448424231,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 79,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5003738403320312
+    }
+   ]
+  },
+  {
+   "seed": 8000026,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 158,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.16283912658691407,
+   "path_length": 11.783223152160645,
+   "spl": 0.7128779529614293,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.02531645569620253,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5611139998093556,
+   "min_cbc_solved": 0.03997111279368351,
+   "mean_step_time": 0.03530625425002101,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 53,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 101,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.46283912658691406
+    }
+   ]
+  },
+  {
+   "seed": 8000027,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 120,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.11989755630493165,
+   "path_length": 9.170778274536133,
+   "spl": 0.9159527957756541,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.08333333333333333,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.42681443679354364,
+   "min_cbc_solved": 0.03997881090751129,
+   "mean_step_time": 0.035295492677444903,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 37,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 54,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.41989755630493164
+    }
+   ]
+  },
+  {
+   "seed": 8000028,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 120,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.3295973181724548,
+   "path_length": 9.643926620483398,
+   "spl": 0.8710145079452039,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.058333333333333334,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5343669340831447,
+   "min_cbc_solved": 0.03997513632355715,
+   "mean_step_time": 0.03521888777710653,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 59,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 54,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 1.0114083290100098
+    }
+   ]
+  },
+  {
+   "seed": 8000029,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 55,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.08176950216293333,
+   "path_length": 4.1751556396484375,
+   "spl": 0.0,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.18181818181818182,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5722023348201083,
+   "min_cbc_solved": 0.0399931113418861,
+   "mean_step_time": 0.035298910072412,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": []
+  },
+  {
+   "seed": 8000030,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 111,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.14927310943603517,
+   "path_length": 8.577974319458008,
+   "spl": 0.9792521739014425,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.06306306306306306,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.36028777422336183,
+   "min_cbc_solved": 0.039972339169455084,
+   "mean_step_time": 0.035175949079194316,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 55,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.44927310943603516
+    }
+   ]
+  },
+  {
+   "seed": 8000031,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 126,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2104646682739258,
+   "path_length": 9.769733428955078,
+   "spl": 0.85979828017666,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.07936507936507936,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.45079597498632756,
+   "min_cbc_solved": 0.039947465032491136,
+   "mean_step_time": 0.03486013139084366,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 9,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 71,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5104646682739258
+    }
+   ]
+  },
+  {
+   "seed": 8000032,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 136,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.17150659561157228,
+   "path_length": 9.110353469848633,
+   "spl": 0.9220278914314798,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.07352941176470588,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.47781251360593374,
+   "min_cbc_solved": 0.039961202946204095,
+   "mean_step_time": 0.03356478258416139,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 49,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 61,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.47150659561157227
+    }
+   ]
+  },
+  {
+   "seed": 8000033,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 168,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.04108836650848391,
+   "path_length": 13.667600631713867,
+   "spl": 0.6145921457866501,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.047619047619047616,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6025701768372872,
+   "min_cbc_solved": 0.03994374809114354,
+   "mean_step_time": 0.03575036394024556,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 72,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 44,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4616885185241699
+    }
+   ]
+  },
+  {
+   "seed": 8000034,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 114,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2731673240661621,
+   "path_length": 8.89052963256836,
+   "spl": 0.9448256006288512,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.03508771929824561,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.43053130748075125,
+   "min_cbc_solved": 0.03997462573762345,
+   "mean_step_time": 0.03496405920892006,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 52,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5731673240661621
+    }
+   ]
+  },
+  {
+   "seed": 8000035,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 129,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.251800262928009,
+   "path_length": 10.9163818359375,
+   "spl": 0.7694857257875138,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.046511627906976744,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6156164423270133,
+   "min_cbc_solved": 0.03997160729167887,
+   "mean_step_time": 0.03511848172367832,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 86,
+   "wall_events": []
+  },
+  {
+   "seed": 8000036,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 69,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.05568323135375974,
+   "path_length": 5.9191718101501465,
+   "spl": 0.0,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.043478260869565216,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8309506262609806,
+   "min_cbc_solved": 0.039975981596082955,
+   "mean_step_time": 0.03641898387982308,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 66,
+   "wall_events": []
+  },
+  {
+   "seed": 8000037,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 115,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.15136260986328126,
+   "path_length": 8.958213806152344,
+   "spl": 0.9376869297572501,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3830821471764866,
+   "min_cbc_solved": 0.03998163922641115,
+   "mean_step_time": 0.03534720200518875,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 56,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.45136260986328125
+    }
+   ]
+  },
+  {
+   "seed": 8000038,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 115,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.15032787322998048,
+   "path_length": 8.792527198791504,
+   "spl": 0.9553567262384522,
+   "n_infeasible": 8,
+   "n_solver_fail": 9,
+   "frac_infeasible": 0.06956521739130435,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3970175715493896,
+   "min_cbc_solved": 0.039984053358744276,
+   "mean_step_time": 0.038246667716125754,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.45032787322998047
+    }
+   ]
+  },
+  {
+   "seed": 8000039,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 47,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.041626906394958474,
+   "path_length": 3.4908690452575684,
+   "spl": 0.0,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.1276595744680851,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7302785764132622,
+   "min_cbc_solved": 0.039974793463903646,
+   "mean_step_time": 0.03470760378540751,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 37,
+   "wall_events": []
+  },
+  {
+   "seed": 8000040,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 103,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1369935989379883,
+   "path_length": 8.431549072265625,
+   "spl": 0.9962582116292958,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.038834951456310676,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3111558579804581,
+   "min_cbc_solved": 0.03997792449671933,
+   "mean_step_time": 0.03469196924921668,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4369935989379883
+    }
+   ]
+  },
+  {
+   "seed": 8000041,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 109,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.13194818496704103,
+   "path_length": 8.338098526000977,
+   "spl": 1.0,
+   "n_infeasible": 9,
+   "n_solver_fail": 9,
+   "frac_infeasible": 0.08256880733944955,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.34310707027858184,
+   "min_cbc_solved": 0.03997420327469952,
+   "mean_step_time": 0.03485328901063548,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.431948184967041
+    }
+   ]
+  },
+  {
+   "seed": 8000042,
+   "arm": "A",
+   "outcome": "collision",
+   "steps": 53,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.044771766662597634,
+   "path_length": 4.091352462768555,
+   "spl": 0.0,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.09433962264150944,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.7652832204629445,
+   "min_cbc_solved": 0.03996506720996973,
+   "mean_step_time": 0.035342985019527096,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 43,
+   "wall_events": []
+  },
+  {
+   "seed": 8000043,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 210,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.08531608581542971,
+   "path_length": 15.241483688354492,
+   "spl": 0.551127447416301,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.047619047619047616,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6927801029609817,
+   "min_cbc_solved": 0.03996508981307034,
+   "mean_step_time": 0.03480793419571239,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 87,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 60,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4919142723083496
+    }
+   ]
+  },
+  {
+   "seed": 8000044,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 103,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.17800111770629884,
+   "path_length": 8.594086647033691,
+   "spl": 0.9774162566651942,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.02912621359223301,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.30716572503292683,
+   "min_cbc_solved": 0.039962012445499906,
+   "mean_step_time": 0.0352700716370572,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 78,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 47,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.47800111770629883
+    }
+   ]
+  },
+  {
+   "seed": 8000045,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 164,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.181161904335022,
+   "path_length": 12.292110443115234,
+   "spl": 0.6833651583975809,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.03048780487804878,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5898158978837764,
+   "min_cbc_solved": 0.03997573118536302,
+   "mean_step_time": 0.03543647578363761,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 52,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 109,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5240054130554199
+    }
+   ]
+  },
+  {
+   "seed": 8000046,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 143,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1579896926879883,
+   "path_length": 10.519006729125977,
+   "spl": 0.7985544848774857,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.06993006993006994,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5518080300029856,
+   "min_cbc_solved": 0.03996704018666608,
+   "mean_step_time": 0.03500183496764255,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 28,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 84,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4579896926879883
+    }
+   ]
+  },
+  {
+   "seed": 8000047,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 108,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.22984857559204103,
+   "path_length": 8.65339183807373,
+   "spl": 0.9707176280913524,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.046296296296296294,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.35369506756171987,
+   "min_cbc_solved": 0.03997609786061493,
+   "mean_step_time": 0.03507667199462756,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 34,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 53,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.529848575592041
+    }
+   ]
+  },
+  {
+   "seed": 8000048,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 117,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1211869239807129,
+   "path_length": 9.063484191894531,
+   "spl": 0.9267959012398472,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.06837606837606838,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.43043289522880024,
+   "min_cbc_solved": 0.039969942603779715,
+   "mean_step_time": 0.03539858602532624,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 31,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 54,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4211869239807129
+    }
+   ]
+  },
+  {
+   "seed": 8000049,
+   "arm": "A",
+   "outcome": "success",
+   "steps": 107,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2007143020629883,
+   "path_length": 8.436593055725098,
+   "spl": 0.9956625790193513,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.06542056074766354,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.32839221595860774,
+   "min_cbc_solved": 0.039979304054367434,
+   "mean_step_time": 0.03547593659860578,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": 29,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5007143020629883
+    }
+   ]
+  }
+ ],
+ "episodes_B": [
+  {
+   "seed": 8000000,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 110,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.24396104812622071,
+   "path_length": 8.949746131896973,
+   "spl": 0.9385741088300067,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.03636363636363636,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.38720609925498545,
+   "min_cbc_solved": 0.03995249199216616,
+   "mean_step_time": 0.03643663041822782,
+   "n_recovered": 4,
+   "rungs": {
+    "R2": 3,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 4
+   },
+   "m_median": -0.08507941678591123,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 49,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5439610481262207
+    }
+   ]
+  },
+  {
+   "seed": 8000001,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 138,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.015100753307342507,
+   "path_length": 10.993610382080078,
+   "spl": 0.0,
+   "n_infeasible": 13,
+   "n_solver_fail": 13,
+   "frac_infeasible": 0.09420289855072464,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8145586100912938,
+   "min_cbc_solved": 0.03993184475194833,
+   "mean_step_time": 0.03974168460083909,
+   "n_recovered": 13,
+   "rungs": {
+    "R2": 11,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 13
+   },
+   "m_median": -0.2572931551785243,
+   "m_min": -0.694660262067893,
+   "first_infeasible_step": 56,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 126,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 1.378849983215332
+    }
+   ]
+  },
+  {
+   "seed": 8000002,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 157,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2562413454055786,
+   "path_length": 13.592924118041992,
+   "spl": 0.6179685788763152,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.006369426751592357,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6565550943941451,
+   "min_cbc_solved": 0.03996527980381598,
+   "mean_step_time": 0.035826390602471676,
+   "n_recovered": 1,
+   "rungs": {
+    "R1": 1
+   },
+   "tiers": {
+    "1": 1
+   },
+   "m_median": 7.058020834449508e-12,
+   "m_min": 7.058020834449508e-12,
+   "first_infeasible_step": 59,
+   "wall_events": []
+  },
+  {
+   "seed": 8000003,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 130,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20719451904296876,
+   "path_length": 9.7391939163208,
+   "spl": 0.8624943780946184,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.015384615384615385,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.48495234909629853,
+   "min_cbc_solved": 0.039975504031689924,
+   "mean_step_time": 0.03629616351816087,
+   "n_recovered": 2,
+   "rungs": {
+    "R2": 2
+   },
+   "tiers": {
+    "2": 2
+   },
+   "m_median": -0.07171752103099002,
+   "m_min": -0.11261851231398251,
+   "first_infeasible_step": 32,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 55,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5071945190429688
+    }
+   ]
+  },
+  {
+   "seed": 8000004,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 113,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.12443418502807618,
+   "path_length": 9.060504913330078,
+   "spl": 0.9271006506096229,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.02654867256637168,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3969651628363954,
+   "min_cbc_solved": 0.039972091140931504,
+   "mean_step_time": 0.03628103172950513,
+   "n_recovered": 3,
+   "rungs": {
+    "R2": 2,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 3
+   },
+   "m_median": -0.06815411164988316,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 53,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.42443418502807617
+    }
+   ]
+  },
+  {
+   "seed": 8000005,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 137,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.17403287887573243,
+   "path_length": 9.868307113647461,
+   "spl": 0.8512098279129505,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.0072992700729927005,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.48751184314375484,
+   "min_cbc_solved": 0.03996403507959448,
+   "mean_step_time": 0.03509620062745156,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.1545140161258406,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 77,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4740328788757324
+    }
+   ]
+  },
+  {
+   "seed": 8000006,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 195,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.08287092447280886,
+   "path_length": 16.11459732055664,
+   "spl": 0.5212665158740586,
+   "n_infeasible": 13,
+   "n_solver_fail": 13,
+   "frac_infeasible": 0.06666666666666667,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.716231929241749,
+   "min_cbc_solved": 0.03997196568286146,
+   "mean_step_time": 0.038511693560016845,
+   "n_recovered": 13,
+   "rungs": {
+    "R2": 12,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 13
+   },
+   "m_median": -0.12082216454886341,
+   "m_min": -0.26590247536067807,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5578103065490723
+    }
+   ]
+  },
+  {
+   "seed": 8000007,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 118,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2270233154296875,
+   "path_length": 9.141386032104492,
+   "spl": 0.918897853181044,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.0423728813559322,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4339042502504486,
+   "min_cbc_solved": 0.039976810559340215,
+   "mean_step_time": 0.03638404987701136,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 4,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -0.06815289330815744,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 49,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5270233154296875
+    }
+   ]
+  },
+  {
+   "seed": 8000008,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 163,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.15319318771362306,
+   "path_length": 13.097570419311523,
+   "spl": 0.6413403196988917,
+   "n_infeasible": 13,
+   "n_solver_fail": 13,
+   "frac_infeasible": 0.07975460122699386,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5831428078530064,
+   "min_cbc_solved": 0.039965259291694144,
+   "mean_step_time": 0.038672526938372226,
+   "n_recovered": 13,
+   "rungs": {
+    "R2": 9,
+    "R2_lp": 1,
+    "R1": 3
+   },
+   "tiers": {
+    "2": 13
+   },
+   "m_median": -0.12206941870475038,
+   "m_min": -0.1874426611862096,
+   "first_infeasible_step": 40,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 103,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.45319318771362305
+    }
+   ]
+  },
+  {
+   "seed": 8000009,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 201,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1509126663208008,
+   "path_length": 14.230060577392578,
+   "spl": 0.5902996655787365,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.01990049751243781,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6992506866719482,
+   "min_cbc_solved": 0.039967850598559146,
+   "mean_step_time": 0.035808451746507035,
+   "n_recovered": 4,
+   "rungs": {
+    "R2": 4
+   },
+   "tiers": {
+    "2": 4
+   },
+   "m_median": -0.01925305725836715,
+   "m_min": -0.03648767221504899,
+   "first_infeasible_step": 26,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 62,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.46190500259399414
+    }
+   ]
+  },
+  {
+   "seed": 8000010,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 95,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2578103065490723,
+   "path_length": 8.421730041503906,
+   "spl": 0.9974197651317703,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.031578947368421054,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.2762916974675228,
+   "min_cbc_solved": 0.039968057794023126,
+   "mean_step_time": 0.03700199127197266,
+   "n_recovered": 3,
+   "rungs": {
+    "R2": 2,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 3
+   },
+   "m_median": -0.06815411164988316,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5578103065490723
+    }
+   ]
+  },
+  {
+   "seed": 8000011,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 105,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20604581832885743,
+   "path_length": 8.404991149902344,
+   "spl": 0.9994061683333954,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.009523809523809525,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3177707614633271,
+   "min_cbc_solved": 0.03997499428160364,
+   "mean_step_time": 0.035180097788439266,
+   "n_recovered": 1,
+   "rungs": {
+    "R1": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -8.187694262848377e-06,
+   "m_min": -8.187694262848377e-06,
+   "first_infeasible_step": 75,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 48,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5060458183288574
+    }
+   ]
+  },
+  {
+   "seed": 8000012,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 195,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1475555419921875,
+   "path_length": 14.190607070922852,
+   "spl": 0.5919408491841024,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.035897435897435895,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.666071592931972,
+   "min_cbc_solved": 0.039960637551488376,
+   "mean_step_time": 0.03661762267792932,
+   "n_recovered": 7,
+   "rungs": {
+    "R2": 4,
+    "R1": 3
+   },
+   "tiers": {
+    "2": 7
+   },
+   "m_median": -0.07847646005045883,
+   "m_min": -0.3177327262092541,
+   "first_infeasible_step": 31,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 91,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4475555419921875
+    }
+   ]
+  },
+  {
+   "seed": 8000013,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 100,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2578103065490723,
+   "path_length": 8.488160133361816,
+   "spl": 0.9896137523354075,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.03,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3112149765008168,
+   "min_cbc_solved": 0.039973678985029924,
+   "mean_step_time": 0.035838452610187234,
+   "n_recovered": 3,
+   "rungs": {
+    "R2": 2,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 3
+   },
+   "m_median": -0.06815411164988316,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5578103065490723
+    }
+   ]
+  },
+  {
+   "seed": 8000014,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 118,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.21127147674560548,
+   "path_length": 9.288866996765137,
+   "spl": 0.9043083513764719,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.41480110767033257,
+   "min_cbc_solved": 0.03995939108691626,
+   "mean_step_time": 0.03502273248899254,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 61,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5112714767456055
+    }
+   ]
+  },
+  {
+   "seed": 8000015,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 179,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1927324175834656,
+   "path_length": 13.9258451461792,
+   "spl": 0.6031949882987668,
+   "n_infeasible": 18,
+   "n_solver_fail": 18,
+   "frac_infeasible": 0.1005586592178771,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6661900800143434,
+   "min_cbc_solved": 0.03997239283917764,
+   "mean_step_time": 0.03931016103278679,
+   "n_recovered": 18,
+   "rungs": {
+    "R2": 16,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 18
+   },
+   "m_median": -0.11144537614243624,
+   "m_min": -0.17461210215013817,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 80,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.7972941398620605
+    }
+   ]
+  },
+  {
+   "seed": 8000016,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 111,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2117645263671875,
+   "path_length": 9.099043846130371,
+   "spl": 0.9231739226723631,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.04504504504504504,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.39279918634198535,
+   "min_cbc_solved": 0.03997747465244328,
+   "mean_step_time": 0.037853247590933566,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 2,
+    "R1": 3
+   },
+   "tiers": {
+    "2": 4,
+    "1": 1
+   },
+   "m_median": -3.992969961452708e-06,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5117645263671875
+    }
+   ]
+  },
+  {
+   "seed": 8000017,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 180,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.23034014701843258,
+   "path_length": 14.665087699890137,
+   "spl": 0.5727889373660499,
+   "n_infeasible": 18,
+   "n_solver_fail": 18,
+   "frac_infeasible": 0.1,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6860109456870132,
+   "min_cbc_solved": 0.039969423045285724,
+   "mean_step_time": 0.038150515784380126,
+   "n_recovered": 18,
+   "rungs": {
+    "R1": 11,
+    "R2": 7
+   },
+   "tiers": {
+    "2": 18
+   },
+   "m_median": -6.80765189921273e-07,
+   "m_min": -0.2781530066498785,
+   "first_infeasible_step": 32,
+   "wall_events": []
+  },
+  {
+   "seed": 8000018,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 155,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.04329105615615847,
+   "path_length": 13.123859405517578,
+   "spl": 0.6400556223932453,
+   "n_infeasible": 14,
+   "n_solver_fail": 14,
+   "frac_infeasible": 0.09032258064516129,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6990985060054373,
+   "min_cbc_solved": 0.03993516624944704,
+   "mean_step_time": 0.03920173383648357,
+   "n_recovered": 14,
+   "rungs": {
+    "R2": 13,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 14
+   },
+   "m_median": -0.0944961905212003,
+   "m_min": -0.24108203577915832,
+   "first_infeasible_step": 24,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 78,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5312108993530273
+    }
+   ]
+  },
+  {
+   "seed": 8000019,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 116,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1889364242553711,
+   "path_length": 8.980335235595703,
+   "spl": 0.9353771078282906,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.034482758620689655,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.41833737783997293,
+   "min_cbc_solved": 0.039975288986351165,
+   "mean_step_time": 0.03580988540840014,
+   "n_recovered": 4,
+   "rungs": {
+    "R2": 3,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 4
+   },
+   "m_median": -0.08266460161084549,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 60,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4889364242553711
+    }
+   ]
+  },
+  {
+   "seed": 8000020,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 124,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.11109895706176759,
+   "path_length": 9.582449913024902,
+   "spl": 0.876602546973122,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.008064516129032258,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.451159237243502,
+   "min_cbc_solved": 0.039969028685802155,
+   "mean_step_time": 0.03593462644118605,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.1545140161258406,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 71,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4110989570617676
+    }
+   ]
+  },
+  {
+   "seed": 8000021,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 127,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.18736095428466798,
+   "path_length": 10.232063293457031,
+   "spl": 0.8209487919578686,
+   "n_infeasible": 14,
+   "n_solver_fail": 14,
+   "frac_infeasible": 0.11023622047244094,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.45152660252761495,
+   "min_cbc_solved": 0.039976287738847344,
+   "mean_step_time": 0.040005258451340585,
+   "n_recovered": 14,
+   "rungs": {
+    "R2": 11,
+    "R2_lp": 1,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 14
+   },
+   "m_median": -0.10587100961702045,
+   "m_min": -0.20345477005124446,
+   "first_infeasible_step": 17,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 77,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.48736095428466797
+    }
+   ]
+  },
+  {
+   "seed": 8000022,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 77,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.017851984500884988,
+   "path_length": 6.961380958557129,
+   "spl": 0.0,
+   "n_infeasible": 14,
+   "n_solver_fail": 14,
+   "frac_infeasible": 0.18181818181818182,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5743260786992612,
+   "min_cbc_solved": 0.03998117463531267,
+   "mean_step_time": 0.04207784539790123,
+   "n_recovered": 14,
+   "rungs": {
+    "R2": 10,
+    "R1": 4
+   },
+   "tiers": {
+    "2": 13,
+    "1": 1
+   },
+   "m_median": -0.060274406524909285,
+   "m_min": -0.23964449912828298,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5578103065490723
+    }
+   ]
+  },
+  {
+   "seed": 8000023,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 212,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.08819123506546023,
+   "path_length": 16.36212158203125,
+   "spl": 0.5133808569925805,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.02358490566037736,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8198510583621074,
+   "min_cbc_solved": 0.039966356998476726,
+   "mean_step_time": 0.03548369142622248,
+   "n_recovered": 5,
+   "rungs": {
+    "R1": 3,
+    "R2": 2
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -7.89839361420297e-06,
+   "m_min": -0.25842102902069575,
+   "first_infeasible_step": 90,
+   "wall_events": []
+  },
+  {
+   "seed": 8000024,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 44,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.003667926788330056,
+   "path_length": 3.2500033378601074,
+   "spl": 0.0,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.1590909090909091,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 1.1879282725737383,
+   "min_cbc_solved": 0.039980876399792864,
+   "mean_step_time": 0.04141165923316625,
+   "n_recovered": 7,
+   "rungs": {
+    "R2": 7
+   },
+   "tiers": {
+    "2": 7
+   },
+   "m_median": -0.2591380001917172,
+   "m_min": -0.422749379034564,
+   "first_infeasible_step": 18,
+   "wall_events": []
+  },
+  {
+   "seed": 8000025,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 139,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.12820262908935548,
+   "path_length": 10.695148468017578,
+   "spl": 0.7854028417762582,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.02877697841726619,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5152342254247928,
+   "min_cbc_solved": 0.039970377727584494,
+   "mean_step_time": 0.03651068429881372,
+   "n_recovered": 4,
+   "rungs": {
+    "R2": 2,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 4
+   },
+   "m_median": -0.03407905230992231,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 79,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.42820262908935547
+    }
+   ]
+  },
+  {
+   "seed": 8000026,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 168,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20288438796997071,
+   "path_length": 13.141158103942871,
+   "spl": 0.639213068860321,
+   "n_infeasible": 8,
+   "n_solver_fail": 8,
+   "frac_infeasible": 0.047619047619047616,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6244992337012902,
+   "min_cbc_solved": 0.03997715378157155,
+   "mean_step_time": 0.03738169619880084,
+   "n_recovered": 8,
+   "rungs": {
+    "R2": 6,
+    "R2_lp": 1,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 8
+   },
+   "m_median": -0.13275474866715653,
+   "m_min": -0.18006357129052666,
+   "first_infeasible_step": 53,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 107,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5028843879699707
+    }
+   ]
+  },
+  {
+   "seed": 8000027,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 109,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20992822647094728,
+   "path_length": 9.069031715393066,
+   "spl": 0.9262289805142588,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.009174311926605505,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3926080566071359,
+   "min_cbc_solved": 0.03997703081634915,
+   "mean_step_time": 0.03562767853866408,
+   "n_recovered": 1,
+   "rungs": {
+    "R1": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -7.0665131709085616e-06,
+   "m_min": -7.0665131709085616e-06,
+   "first_infeasible_step": 76,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5099282264709473
+    }
+   ]
+  },
+  {
+   "seed": 8000028,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 128,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.3282776117324829,
+   "path_length": 10.578438758850098,
+   "spl": 0.7940680275690418,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.046875,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5645330914448236,
+   "min_cbc_solved": 0.03997513632355715,
+   "mean_step_time": 0.037099614726685104,
+   "n_recovered": 6,
+   "rungs": {
+    "R2": 6
+   },
+   "tiers": {
+    "2": 6
+   },
+   "m_median": -0.07545790136037772,
+   "m_min": -0.09198081785111861,
+   "first_infeasible_step": 59,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 54,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 1.0114083290100098
+    }
+   ]
+  },
+  {
+   "seed": 8000029,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 56,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.048349416255950906,
+   "path_length": 5.2462239265441895,
+   "spl": 0.0,
+   "n_infeasible": 10,
+   "n_solver_fail": 10,
+   "frac_infeasible": 0.17857142857142858,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.635580345151952,
+   "min_cbc_solved": 0.03997528384235921,
+   "mean_step_time": 0.04272389212565031,
+   "n_recovered": 10,
+   "rungs": {
+    "R2": 9,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 10
+   },
+   "m_median": -0.21580184974707833,
+   "m_min": -0.6235516661985138,
+   "first_infeasible_step": 30,
+   "wall_events": []
+  },
+  {
+   "seed": 8000030,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 108,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.16137428283691407,
+   "path_length": 8.828548431396484,
+   "spl": 0.9514587890946533,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.037037037037037035,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3537126695414371,
+   "min_cbc_solved": 0.03998026841873469,
+   "mean_step_time": 0.03652049323944892,
+   "n_recovered": 4,
+   "rungs": {
+    "R2": 3,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 4
+   },
+   "m_median": -0.14555729925219868,
+   "m_min": -0.18084956619783749,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 50,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.46137428283691406
+    }
+   ]
+  },
+  {
+   "seed": 8000031,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 118,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.22071237564086915,
+   "path_length": 9.768402099609375,
+   "spl": 0.8599154615406244,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.0423728813559322,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.4460981436454447,
+   "min_cbc_solved": 0.039975364528951784,
+   "mean_step_time": 0.037143928352033055,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 4,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -0.04327826886208602,
+   "m_min": -0.117647437556885,
+   "first_infeasible_step": 9,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 63,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5207123756408691
+    }
+   ]
+  },
+  {
+   "seed": 8000032,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 136,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.16406173706054689,
+   "path_length": 9.812493324279785,
+   "spl": 0.856051537809993,
+   "n_infeasible": 5,
+   "n_solver_fail": 5,
+   "frac_infeasible": 0.03676470588235294,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5061623223638506,
+   "min_cbc_solved": 0.039908114444033874,
+   "mean_step_time": 0.03589222935432404,
+   "n_recovered": 5,
+   "rungs": {
+    "R2": 5
+   },
+   "tiers": {
+    "2": 5
+   },
+   "m_median": -0.06422051281470953,
+   "m_min": -0.14369302403281559,
+   "first_infeasible_step": 63,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 58,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4640617370605469
+    }
+   ]
+  },
+  {
+   "seed": 8000033,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 96,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.040258920192718484,
+   "path_length": 8.272198677062988,
+   "spl": 0.0,
+   "n_infeasible": 9,
+   "n_solver_fail": 9,
+   "frac_infeasible": 0.09375,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8626792322768494,
+   "min_cbc_solved": 0.039963583968641386,
+   "mean_step_time": 0.03872704414485876,
+   "n_recovered": 9,
+   "rungs": {
+    "R2": 7,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 8,
+    "1": 1
+   },
+   "m_median": -0.08017270514680858,
+   "m_min": -0.2899392131546799,
+   "first_infeasible_step": 72,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 44,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4616885185241699
+    }
+   ]
+  },
+  {
+   "seed": 8000034,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 104,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.2578169822692871,
+   "path_length": 8.95236873626709,
+   "spl": 0.9382991527114629,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.028846153846153848,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.38278979534964097,
+   "min_cbc_solved": 0.03996974626801736,
+   "mean_step_time": 0.035980190810872816,
+   "n_recovered": 3,
+   "rungs": {
+    "R2": 2,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 3
+   },
+   "m_median": -0.06815411164988316,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5578169822692871
+    }
+   ]
+  },
+  {
+   "seed": 8000035,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 130,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.21653487682342526,
+   "path_length": 11.563243865966797,
+   "spl": 0.7264397514544402,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.007692307692307693,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.641871261871414,
+   "min_cbc_solved": 0.03997160729167887,
+   "mean_step_time": 0.03566159452848996,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.16002652544488435,
+   "m_min": -0.16002652544488435,
+   "first_infeasible_step": 105,
+   "wall_events": []
+  },
+  {
+   "seed": 8000036,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 79,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.0023987650871276633,
+   "path_length": 6.930298328399658,
+   "spl": 0.0,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.012658227848101266,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 1,
+   "planner_failed": 0,
+   "mean_u_dev": 0.9725215812470004,
+   "min_cbc_solved": 0.03991491466591435,
+   "mean_step_time": 0.036507858290584595,
+   "n_recovered": 1,
+   "rungs": {
+    "R1": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -2.639448754004903e-07,
+   "m_min": -2.639448754004903e-07,
+   "first_infeasible_step": 67,
+   "wall_events": []
+  },
+  {
+   "seed": 8000037,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 115,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.15136260986328126,
+   "path_length": 8.958213806152344,
+   "spl": 0.9376869297572501,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.3830821471764866,
+   "min_cbc_solved": 0.03998163922641115,
+   "mean_step_time": 0.03470600041581075,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 56,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.45136260986328125
+    }
+   ]
+  },
+  {
+   "seed": 8000038,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 104,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.26220245361328126,
+   "path_length": 8.728096008300781,
+   "spl": 0.9624092118156413,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.028846153846153848,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.33845662806120796,
+   "min_cbc_solved": 0.0399671753225031,
+   "mean_step_time": 0.03644701023250281,
+   "n_recovered": 3,
+   "rungs": {
+    "R2": 2,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 3
+   },
+   "m_median": -0.06914861745201051,
+   "m_min": -0.1557129487870924,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 45,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5622024536132812
+    }
+   ]
+  },
+  {
+   "seed": 8000039,
+   "arm": "B",
+   "outcome": "collision",
+   "steps": 102,
+   "success": 0,
+   "collision": 1,
+   "timeout": 0,
+   "collision_type": "dynamic",
+   "min_clearance": -0.04133275747299192,
+   "path_length": 7.225668907165527,
+   "spl": 0.0,
+   "n_infeasible": 14,
+   "n_solver_fail": 14,
+   "frac_infeasible": 0.13725490196078433,
+   "coll_after_infeasible": 1,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.8970711576891339,
+   "min_cbc_solved": 0.039962858564362186,
+   "mean_step_time": 0.039541094555912135,
+   "n_recovered": 14,
+   "rungs": {
+    "R2": 11,
+    "R1": 3
+   },
+   "tiers": {
+    "2": 13,
+    "1": 1
+   },
+   "m_median": -0.047157015413718056,
+   "m_min": -0.34737512894458844,
+   "first_infeasible_step": 36,
+   "wall_events": []
+  },
+  {
+   "seed": 8000040,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 99,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.4055063247680664,
+   "path_length": 8.627735137939453,
+   "spl": 0.9736042965739625,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.04040404040404041,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.35149583149130315,
+   "min_cbc_solved": 0.03996571561335854,
+   "mean_step_time": 0.037825450187106854,
+   "n_recovered": 4,
+   "rungs": {
+    "R2_lp": 1,
+    "R2": 3
+   },
+   "tiers": {
+    "2": 4
+   },
+   "m_median": -0.09933406763151528,
+   "m_min": -0.19215609342588835,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 46,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.7055063247680664
+    }
+   ]
+  },
+  {
+   "seed": 8000041,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 111,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.17883653640747071,
+   "path_length": 9.258843421936035,
+   "spl": 0.9072407445727763,
+   "n_infeasible": 3,
+   "n_solver_fail": 3,
+   "frac_infeasible": 0.02702702702702703,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.377446610482767,
+   "min_cbc_solved": 0.03995140385880991,
+   "mean_step_time": 0.03677642523092931,
+   "n_recovered": 3,
+   "rungs": {
+    "R2_lp": 1,
+    "R2": 1,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 3
+   },
+   "m_median": -0.005205585940519453,
+   "m_min": -0.37699911618505033,
+   "first_infeasible_step": 31,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 47,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4788365364074707
+    }
+   ]
+  },
+  {
+   "seed": 8000042,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 158,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.179825496673584,
+   "path_length": 13.286283493041992,
+   "spl": 0.6322309774888567,
+   "n_infeasible": 6,
+   "n_solver_fail": 6,
+   "frac_infeasible": 0.0379746835443038,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6083336973186182,
+   "min_cbc_solved": 0.039972019311766874,
+   "mean_step_time": 0.036826470936059105,
+   "n_recovered": 6,
+   "rungs": {
+    "R2": 6
+   },
+   "tiers": {
+    "2": 6
+   },
+   "m_median": -0.0762741882551257,
+   "m_min": -0.1477959446268256,
+   "first_infeasible_step": 44,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 108,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.479825496673584
+    }
+   ]
+  },
+  {
+   "seed": 8000043,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 206,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.07814952135086062,
+   "path_length": 15.892986297607422,
+   "spl": 0.5285350306546581,
+   "n_infeasible": 2,
+   "n_solver_fail": 2,
+   "frac_infeasible": 0.009708737864077669,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.690322178391009,
+   "min_cbc_solved": 0.03996513460974821,
+   "mean_step_time": 0.035530947446054555,
+   "n_recovered": 2,
+   "rungs": {
+    "R2_lp": 1,
+    "R2": 1
+   },
+   "tiers": {
+    "2": 2
+   },
+   "m_median": -0.11374192704071157,
+   "m_min": -0.12773249305588685,
+   "first_infeasible_step": 88,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 59,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5370478630065918
+    }
+   ]
+  },
+  {
+   "seed": 8000044,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 98,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.20180387496948243,
+   "path_length": 8.483087539672852,
+   "spl": 0.9902055072184183,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.01020408163265306,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.27227541677417244,
+   "min_cbc_solved": 0.039962012445499906,
+   "mean_step_time": 0.03600433840278574,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.10450731575957362,
+   "m_min": -0.10450731575957362,
+   "first_infeasible_step": 72,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 43,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5018038749694824
+    }
+   ]
+  },
+  {
+   "seed": 8000045,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 165,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.29286029338836667,
+   "path_length": 12.673715591430664,
+   "spl": 0.6627890565636223,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.006060606060606061,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.6187191932326963,
+   "min_cbc_solved": 0.03996057063652843,
+   "mean_step_time": 0.035699290207897624,
+   "n_recovered": 1,
+   "rungs": {
+    "R2": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -0.06377064277347934,
+   "m_min": -0.06377064277347934,
+   "first_infeasible_step": 53,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 108,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.6493654251098633
+    }
+   ]
+  },
+  {
+   "seed": 8000046,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 138,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.12507410049438478,
+   "path_length": 10.743351936340332,
+   "spl": 0.7818788819145226,
+   "n_infeasible": 7,
+   "n_solver_fail": 7,
+   "frac_infeasible": 0.050724637681159424,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.5417591004474673,
+   "min_cbc_solved": 0.03996990554706903,
+   "mean_step_time": 0.03839537359274708,
+   "n_recovered": 7,
+   "rungs": {
+    "R2": 6,
+    "R1": 1
+   },
+   "tiers": {
+    "2": 7
+   },
+   "m_median": -0.22880669481274074,
+   "m_min": -0.3030365699771035,
+   "first_infeasible_step": 28,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 78,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.42507410049438477
+    }
+   ]
+  },
+  {
+   "seed": 8000047,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 101,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1755244255065918,
+   "path_length": 8.516914367675781,
+   "spl": 0.9862726848447009,
+   "n_infeasible": 0,
+   "n_solver_fail": 0,
+   "frac_infeasible": 0.0,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.32734673679584997,
+   "min_cbc_solved": 0.039981400534298106,
+   "mean_step_time": 0.03484964135822167,
+   "n_recovered": 0,
+   "rungs": {},
+   "tiers": {},
+   "m_median": NaN,
+   "m_min": NaN,
+   "first_infeasible_step": -1,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 48,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4755244255065918
+    }
+   ]
+  },
+  {
+   "seed": 8000048,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 117,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.1982743263244629,
+   "path_length": 9.545734405517578,
+   "spl": 0.8799742003239346,
+   "n_infeasible": 1,
+   "n_solver_fail": 1,
+   "frac_infeasible": 0.008547008547008548,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.45466139347578394,
+   "min_cbc_solved": 0.039976950037928116,
+   "mean_step_time": 0.035410394861251436,
+   "n_recovered": 1,
+   "rungs": {
+    "R1": 1
+   },
+   "tiers": {
+    "2": 1
+   },
+   "m_median": -7.875067337126396e-08,
+   "m_min": -7.875067337126396e-08,
+   "first_infeasible_step": 84,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 51,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.4982743263244629
+    }
+   ]
+  },
+  {
+   "seed": 8000049,
+   "arm": "B",
+   "outcome": "success",
+   "steps": 108,
+   "success": 1,
+   "collision": 0,
+   "timeout": 0,
+   "collision_type": null,
+   "min_clearance": 0.23768157958984376,
+   "path_length": 8.872374534606934,
+   "spl": 0.946758950181327,
+   "n_infeasible": 4,
+   "n_solver_fail": 4,
+   "frac_infeasible": 0.037037037037037035,
+   "coll_after_infeasible": 0,
+   "coll_while_feasible": 0,
+   "planner_failed": 0,
+   "mean_u_dev": 0.37210573761548044,
+   "min_cbc_solved": 0.03997379792410856,
+   "mean_step_time": 0.036559997679432854,
+   "n_recovered": 4,
+   "rungs": {
+    "R2": 2,
+    "R1": 2
+   },
+   "tiers": {
+    "2": 3,
+    "1": 1
+   },
+   "m_median": -0.03407905230992231,
+   "m_min": -0.1545140161258406,
+   "first_infeasible_step": 30,
+   "wall_events": [
+    {
+     "name": "F10a_behind",
+     "step": 47,
+     "rect": [
+      3.6,
+      5.0,
+      0.5,
+      1.2
+     ],
+     "distance_at_activation": 0.5376815795898438
+    }
+   ]
+  }
+ ]
+}

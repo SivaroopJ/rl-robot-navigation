@@ -241,3 +241,16 @@ venv/
 # full, so every Stage 1 gate except the final-tier L2-L4 sweep runs from what is in git.
 #   python -m experiments.exp7_0_trace_corpus --tiers final --conditions fixed randomized
 results/week5_phase7/stage0_trace_corpus/trace_final_*.npz
+# HD Experiment 1: per-step traces are derived bulk; every episode re-runs deterministically from
+# its seed. Their sha256 digests are committed next to the records (results/highdim/*/traces.sha256).
+results/highdim/**/*.traces.jsonl.gz
+results/highdim/**/*.traces.partial.jsonl
+
+# RS Experiment 1: per-step trace sidecars are derived bulk; every episode re-runs
+# deterministically from its (cell, seed) and the run's commit. Their sha256 digests are
+# committed next to the records (results/robustsuite/*/traces.sha256).
+results/robustsuite/**/*.traces.jsonl.gz
+results/robustsuite/**/*.traces.partial.jsonl
+# The phase 5 parameter search's per-configuration records: 19 intermediate blocks whose whole
+# conclusion is in results/robustsuite/RS5/search.json. The tuning and final blocks are committed.
+results/robustsuite/RS5/search/**/*.jsonl
